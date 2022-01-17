@@ -5,24 +5,28 @@
 #include <vector>
 
 class Tape {
-	std::vector<int> tape;
-	std::vector<int> tapeNeg;
-	int head;
-
-	int earliestSymbol;
-	int latestSymbol;
-
-	int get(int index);	
 public:
 	Tape(const std::string& s, int offset);
-	int read();
-	void write(int symbol);
+	~Tape();
+	char read();
+	void write(char symbol);
 	void moveHead(int shift);
 	void moveHeadLeft();
 	void moveHeadRight();
-	
+	void clear();
+
 	int headPosition();
 	void display();
+
+private:
+	std::vector<char> tape;
+	std::vector<char> tapeNeg;
+	int head;
+
+	int earliestIndex;
+	int latestIndex;
+
+	char get(int index);	
 };
 
 #endif
