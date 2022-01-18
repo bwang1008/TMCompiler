@@ -5,7 +5,7 @@
 #include <string>			// string
 #include <iostream>			// cout, endl
 
-Tape::Tape(const std::string& s, const int offset) : tape(std::max(int(offset + s.size()), 0), Constants::blank), tapeNeg(std::max(-offset + 1, 1), Constants::blank), head{offset} {
+Tape::Tape(const std::string& s, const int offset) : tape(std::max(int(offset + s.size()), 1), Constants::blank), tapeNeg(std::max(-offset + 1, 1), Constants::blank), head{offset} {
 	for(size_t i = 0; i < s.size(); i++) {
 		char c = s[i];
 		int index = offset + i;
@@ -47,7 +47,6 @@ char Tape::read() const {
 
 // assume head in valid position
 void Tape::write(const char symbol) {
-
 	if(this->head < 0) {
 		this->tapeNeg[-(this->head)] = symbol;
 	}

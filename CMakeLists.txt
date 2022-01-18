@@ -19,6 +19,8 @@ add_executable(tmCompilation
 	src/tm_definition/turing_machine.hpp
 	src/tm_definition/single_tape_turing_machine.hpp
 	src/tm_definition/single_tape_turing_machine.cpp
+	src/tm_definition/multi_tape_turing_machine.hpp
+	src/tm_definition/multi_tape_turing_machine.cpp
 	src/tm_definition/runner.cpp)
 
 # add properties to the executable: set c++=std_11, as well as compilation options -Wall,... for coding standards

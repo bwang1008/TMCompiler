@@ -9,15 +9,17 @@
 
 class MultiTapeTuringMachine : public TuringMachine {
 public:
-	MultiTapeTuringMachine(int numStates, int numTapes, int initialState, int haltState, std::vector<Transition> transitions);
+	MultiTapeTuringMachine(const int numStates, const int numTapes, const int initialState, const int haltState, const std::vector<Transition> transitions);
 	~MultiTapeTuringMachine();
 
 	void setInput(const std::string &input);
+	void setInput(const std::string &input, const int tapeIndex);
 	bool halted() const;
 	int step(const int verbose=0);
 	std::tuple<int, int> run(const int verbose=0, const int maxSteps=-1);		// run, until reject/accept, return (ongoing/halted, number of steps)
 
-	void displayTape(const int tapeIndex):
+	void displayTape(const int tapeIndex) const;
+	void displayTapes() const;
 
 private:
 	int Q;						// number of states, indexed from [0, Q-1]

@@ -31,5 +31,7 @@
 *.out
 *.app
 
+# bwang edit
 # CMAKE build folder
 build*/
+*.swp
