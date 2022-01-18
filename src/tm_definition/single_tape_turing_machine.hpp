@@ -5,24 +5,24 @@
 #include "transition.hpp"
 #include "turing_machine.hpp"
 
-#include <string>					// string
-#include <vector>					// vector
+#include <string>					// std::string
+#include <vector>					// std::vector
 
 class SingleTapeTuringMachine : public TuringMachine {
 public:
-	SingleTapeTuringMachine(int numStates, int initialState, int haltState, std::vector<Transition> transitions);
+	SingleTapeTuringMachine(const int numStates, const int initialState, const int haltState, const std::vector<Transition> transitions);
 
-	~SingleTapeTuringMachine() {}
+	~SingleTapeTuringMachine();
 
 	void setInput(const std::string &input);
 	bool halted() const;
 	int step(const int verbose=0);		// make a single transition step
 	std::tuple<int, int> run(const int verbose=0, const int maxSteps=-1);		// run, until reject/accept. return (ongoing/halted, number of steps)
 
-	void displayTape();
+	void displayTape() const;
 
 private:
-	Tape* tape;
+	Tape tape;
 	int Q;							// number of states, indexed from [0, Q-1]
 	int initialState;
 	int currentState;

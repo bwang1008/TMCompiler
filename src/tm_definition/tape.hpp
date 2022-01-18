@@ -6,17 +6,17 @@
 
 class Tape {
 public:
-	Tape(const std::string& s, int offset);
+	Tape(const std::string& s, const int offset);
 	~Tape();
-	char read();
-	void write(char symbol);
+	char read() const;
+	void write(const char symbol);
 	void moveHead(int shift);
 	void moveHeadLeft();
 	void moveHeadRight();
 	void clear();
 
-	int headPosition();
-	void display();
+	int headPosition() const;
+	void display() const;
 
 private:
 	std::vector<char> tape;
@@ -26,7 +26,7 @@ private:
 	int earliestIndex;
 	int latestIndex;
 
-	char get(int index);	
+	char get(const int index) const;	
 };
 
 #endif

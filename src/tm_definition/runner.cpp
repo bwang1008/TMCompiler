@@ -35,28 +35,23 @@ void testSTTM() {
 	int haltState = 2;
 	
 	std::vector<Transition> transitions;
-	transitions.emplace_back(0, "0", 0, "0", std::vector<int>{Constants::Shift::right});
-	transitions.emplace_back(0, "1", 0, "1", std::vector<int>{Constants::Shift::right});
-	transitions.emplace_back(0, "_", 1, "_", std::vector<int>{Constants::Shift::left});
-
+	transitions.emplace_back(0, "[01]", 0, ".", std::vector<int>{Constants::Shift::right});
+	transitions.emplace_back(0, "_", 1, ".", std::vector<int>{Constants::Shift::left});	
 	transitions.emplace_back(1, "1", 1, "0", std::vector<int>{Constants::Shift::left});
 	transitions.emplace_back(1, "[0_]", 2, "1", std::vector<int>{Constants::Shift::left});
 
 	int maxSteps = -1;
-
 	std::string input = "10010111";
 
 	SingleTapeTuringMachine tm(numStates, initialState, haltState, transitions);
-	
 	tm.setInput(input);
 
-	std::tuple<int, int> ans = tm.run(0, maxSteps);
+	std::tuple<int, int> ans = tm.run(2, maxSteps);
 
 	tm.displayTape();
 
 	std::cout << "Status: " << std::get<0>(ans) << "; steps = " << std::get<1>(ans) << std::endl;
 }
-
 
 int main() {
 	testSTTM();

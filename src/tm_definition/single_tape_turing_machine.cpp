@@ -6,25 +6,24 @@
 #include <tuple>		// std::tuple, std::make_tuple
 #include <regex>		// std::regex, std::regex_match
 
-SingleTapeTuringMachine::SingleTapeTuringMachine(int numStates, int initialState, int haltState, std::vector<Transition> transitions) : Q(numStates), initialState(initialState), currentState(initialState), haltState(haltState) {
-	//this->setInput("");
-	this->tape = new Tape("", 0);
+SingleTapeTuringMachine::SingleTapeTuringMachine(const int numStates, const int initialState, const int haltState, const std::vector<Transition> transitions) : tape("", 0), Q(numStates), initialState(initialState), currentState(initialState), haltState(haltState) {
+	//this->tape = new Tape("", 0);
 	this->transitions = transitions;
 	std::sort(this->transitions.begin(), this->transitions.end());
 }
 
+SingleTapeTuringMachine::~SingleTapeTuringMachine() {}
+
 void SingleTapeTuringMachine::setInput(const std::string &input) {
-	//std::cout << "start setInput" << std::endl;
-	this->tape->clear();
-	//std::cout << "Cleared tape" << std::endl;
+	this->tape.clear();
 	for(size_t i = 0; i < input.size(); ++i) {
 		char c = input[i];
-		this->tape->write(c);
-		this->tape->moveHead(Constants::Shift::right);
+		this->tape.write(c);
+		this->tape.moveHead(Constants::Shift::right);
 	}
 
 	for(size_t i = 0; i < input.size(); ++i) {
-		this->tape->moveHead(Constants::Shift::left);
+		this->tape.moveHead(Constants::Shift::left);
 	}
 }
 
@@ -71,7 +70,7 @@ int SingleTapeTuringMachine::step(const int verbose) {
 		return Constants::StateStatus::halted;
 	}
 
-	char symbol = this->tape->read();
+	char symbol = this->tape.read();
 	Transition transition = this->findTransition(this->currentState, symbol);
 
 	// if no valid transition found,
@@ -87,7 +86,11 @@ int SingleTapeTuringMachine::step(const int verbose) {
 	}
 
 	int state2 = transition.state2;
-	char symbol2 = transition.symbols2[0];
+	char symbol2 = transition.symbols2[transition.symbols2.size() - 1];
+
+	// if symbols2 == '.', means new char that is written == old char that was read
+	symbol2 = (symbol2 == '.' && transition.symbols2.size() == 1) ? symbol : symbol2;
+
 	int shift = transition.shifts[0];
 
 	if(verbose >= 1) {
@@ -95,8 +98,8 @@ int SingleTapeTuringMachine::step(const int verbose) {
 	}
 
 	this->currentState = state2;
-	this->tape->write(symbol2);
-	this->tape->moveHead(shift);
+	this->tape.write(symbol2);
+	this->tape.moveHead(shift);
 
 	return (this->halted()) ? Constants::StateStatus::halted : Constants::StateStatus::ongoing;	
 }
@@ -115,6 +118,6 @@ std::tuple<int, int> SingleTapeTuringMachine::run(const int verbose, const int m
 	return ret;
 }
 
-void SingleTapeTuringMachine::displayTape() {
-	tape->display();	
+void SingleTapeTuringMachine::displayTape() const {
+	this->tape.display();	
 }

@@ -5,15 +5,15 @@
 #include <string>			// string
 #include <iostream>			// cout, endl
 
-Tape::Tape(const std::string& s, int offset) : tape(std::max(int(offset + s.size()), 0), Constants::blank), tapeNeg(std::max(-offset + 1, 1), Constants::blank), head{offset} {
+Tape::Tape(const std::string& s, const int offset) : tape(std::max(int(offset + s.size()), 0), Constants::blank), tapeNeg(std::max(-offset + 1, 1), Constants::blank), head{offset} {
 	for(size_t i = 0; i < s.size(); i++) {
 		char c = s[i];
 		int index = offset + i;
 		if(index < 0) {
-			tapeNeg[-index] = c;
+			this->tapeNeg[-index] = c;
 		}
 		else {
-			tape[index] = c;
+			this->tape[index] = c;
 		}
 	}
 
@@ -25,98 +25,98 @@ Tape::~Tape() {
 	this->clear();
 }
 
-char Tape::get(int index) {
+char Tape::get(const int index) const {
 	if(index < 0) {
-		if((size_t) (-index) >= tapeNeg.size()) {
+		if((size_t) (-index) >= this->tapeNeg.size()) {
 			return Constants::blank;
 		}
-		return tapeNeg[-index];
+		return this->tapeNeg[-index];
 	}
 	else {
-		if((size_t) (index) >= tape.size()) {
+		if((size_t) (index) >= this->tape.size()) {
 			return Constants::blank;
 		}
-		return tape[index];
+		return this->tape[index];
 	}
 }
 
 // assume head in valid position
-char Tape::read() {
-	return get(head);
+char Tape::read() const {
+	return this->get(this->head);
 }
 
 // assume head in valid position
-void Tape::write(char symbol) {
+void Tape::write(const char symbol) {
 
-	if(head < 0) {
-		tapeNeg[-head] = symbol;
+	if(this->head < 0) {
+		this->tapeNeg[-(this->head)] = symbol;
 	}
 	else {
-		tape[head] = symbol;
+		this->tape[this->head] = symbol;
 	}
 
 	if(symbol != Constants::blank) {
-		if(head < earliestIndex) {
-			earliestIndex = head;
+		if(this->head < earliestIndex) {
+			this->earliestIndex = this->head;
 		}
-		if(head > latestIndex) {
-			latestIndex = head;
+		if(this->head > this->latestIndex) {
+			this->latestIndex = this->head;
 		}
 	}
 	else {
 		// is blank
-		if(head == earliestIndex) {
-			earliestIndex++;
+		if(this->head == this->earliestIndex) {
+			this->earliestIndex++;
 		}
-		else if(head == latestIndex) {
-			latestIndex--;
+		else if(this->head == this->latestIndex) {
+			this->latestIndex--;
 		}
 	}
 }
 
 void Tape::moveHead(int shift) {
 	if(shift == Constants::Shift::left) {
-		moveHeadLeft();
+		this->moveHeadLeft();
 	}
 	else if(shift == Constants::Shift::right) {
-		moveHeadRight();
+		this->moveHeadRight();
 	}
 }
 
 void Tape::moveHeadLeft() {
-	head--;
-	if(head < 0 && tapeNeg.size() == (size_t) (-head)) {
-		tapeNeg.push_back(Constants::blank);
+	this->head--;
+	if(this->head < 0 && this->tapeNeg.size() == (size_t) (-(this->head))) {
+		this->tapeNeg.push_back(Constants::blank);
 	}
 }
 
 void Tape::moveHeadRight() {
-	head++;
-	if(head >= 0 && tape.size() == (size_t) head) {
-		tape.push_back(Constants::blank);
+	this->head++;
+	if(this->head >= 0 && this->tape.size() == (size_t) this->head) {
+		this->tape.push_back(Constants::blank);
 	}
 }
 
 void Tape::clear() {
-	tape.clear();
-	tapeNeg.clear();
+	this->tape.clear();
+	this->tapeNeg.clear();
 	char c = Constants::blank;
-	tape.push_back(c);
-	tapeNeg.push_back(c);
-	head = 0;
+	this->tape.push_back(c);
+	this->tapeNeg.push_back(c);
+	this->head = 0;
 	
-	earliestIndex = 0;
-	latestIndex = 0;
+	this->earliestIndex = 0;
+	this->latestIndex = 0;
 }
 
-int Tape::headPosition() {
-	return head;
+int Tape::headPosition() const {
+	return this->head;
 }
 
-void Tape::display() {
-	std::cout << earliestIndex << ": [";
-	for(int i = earliestIndex; i <= latestIndex; i++) {
-		char symbol = get(i);
+void Tape::display() const {
+	std::cout << this->earliestIndex << ": [";
+	for(int i = this->earliestIndex; i <= this->latestIndex; i++) {
+		char symbol = this->get(i);
 		std::cout << char(symbol);
 	}
 	std::cout << "]\n";

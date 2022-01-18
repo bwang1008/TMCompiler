@@ -3,11 +3,11 @@
 #include <string>		// std::string
 #include <utility>		// std::move
 
-Transition::Transition(int state1, std::string &&symbols1, int state2, std::string &&symbols2, std::vector<int> &&shifts): state1(state1), symbols1(std::move(symbols1)), state2(state2), symbols2(std::move(symbols2)), shifts(std::move(shifts)) {
+Transition::Transition(const int state1, const std::string &&symbols1, const int state2, const std::string &&symbols2, const std::vector<int> &&shifts): state1(state1), symbols1(std::move(symbols1)), state2(state2), symbols2(std::move(symbols2)), shifts(std::move(shifts)) {
 	
 }
 
-Transition::Transition(int state1, const char symbols1[], int state2, const char symbols2[], std::vector<int> &&shifts) : state1(state1), symbols1(std::string(symbols1)), state2(state2), symbols2(std::string(symbols2)), shifts(std::move(shifts)) {
+Transition::Transition(const int state1, const char symbols1[], const int state2, const char symbols2[], const std::vector<int> &&shifts) : state1(state1), symbols1(std::string(symbols1)), state2(state2), symbols2(std::string(symbols2)), shifts(std::move(shifts)) {
 
 }
 
