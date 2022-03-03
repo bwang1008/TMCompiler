@@ -10,11 +10,12 @@ int main() {
 	int x = nextInt();
 	int y = x + 1;
 	int z = MEM[2] + 1;
+
+	/*
 	MEM[3] = MEM[1] - 1;
 	MEM[MEM[2] += 3] += MEM[5];
 	MEM[5] = MEM[3];
 
-	/*
 	for(int i = 0; i < 5; i += 1) {
 		if(i % 3 == 0) {
 			continue;
@@ -33,7 +34,6 @@ int main() {
 			z += i;
 		}
 	}
-	*/
 
 	bool b = !!!!!true;
 	bool c = (b ^= b);
@@ -45,11 +45,15 @@ int main() {
 			s += i;
 		}
 	}
+	*/
 
 	int ans = -linear(x, -x, x) + 0;
 	printInt(ans);
 
 	ans += 1;
+
+	int w;
+	w = x = y = 18;
 
 	return 0;
 }

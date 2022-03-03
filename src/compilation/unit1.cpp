@@ -449,6 +449,15 @@ std::vector<std::string> getWords(std::string &letters)  {
 
 // END HELPER FUNCTIONS
 
+/**
+ * create a new identifier for temporary variable
+ */
+std::string createTemp() {
+	std::string varName = "!VAR_TEMP_temp" + std::to_string(tempCount);
+	++tempCount;
+	return varName;
+}
+
 int checkCompilation(std::string &fileName) {
 	int periodIndex = findPrev(fileName, '.', fileName.size() - 1);
 
@@ -916,6 +925,7 @@ std::vector<std::string> renameUserVariables(std::vector<std::string> &program) 
 		}
 	}
 
+	/*
 	std::cout << "origFuncNames: " << std::endl;
 	for(std::string w : origFuncNames) {
 		std::cout << w << ", ";
@@ -926,6 +936,7 @@ std::vector<std::string> renameUserVariables(std::vector<std::string> &program) 
 		std::cout << w << ", ";
 	}
 	std::cout << "]" << std::endl;
+	*/
 
 	std::string letters;
 	for(size_t i = 0; i < program.size(); ++i) {
@@ -1445,7 +1456,7 @@ std::vector<std::string> moveUpDeclaration(std::vector<std::string> &program) {
 				words.push_back(varName);
 				words.push_back("=");
 				words.push_back(validTypes[typeName]);
-
+				words.push_back(";");
 			}
 			else {
 				words.erase(words.begin());
@@ -1752,22 +1763,20 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 	for(size_t i = 0; i < words.size(); ++i) {
 		std::string word = words[i];
 		if(word == "true" || word == "false") {
-			std::string var = std::string("!VAR_TEMP_temp") + std::to_string(tempCount);
+			std::string var = createTemp();
 			//decBoolean.push_back(var);
 			words[i] = var;
 			
 			ans.push_back("bool " + var + " ; ");	
 			ans.push_back(var + " " + word + " = ; ");		// have statement like "temp1 = true" prepended
-			++tempCount;
 		}
 		else if(isIntegerLiteral(word)) {
-			std::string var = std::string("!VAR_TEMP_temp") + std::to_string(tempCount);
+			std::string var = createTemp();
 			//decInt.push_back(var);
 			words[i] = var;
 			
 			ans.push_back("int " + var + " ; ");	
 			ans.push_back(var + " " + word + " = ; ");		// have statement like "temp2 = 20" prepended
-			++tempCount;
 		}
 	}
 
@@ -1878,7 +1887,7 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 			subexpression.append(postfix[i]);
 			subexpression.append(" ");
 		}
-		std::string tempVar = "!VAR_TEMP_temp" + std::to_string(tempCount);
+		std::string tempVar = createTemp();
 		subexpression.append(" = " + tempVar + " ; ");
 
 		// find return type of the operator
@@ -1897,8 +1906,7 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 		ans.push_back(subexpression);
 			
 		postfix.erase(postfix.begin() + paramIndex, postfix.begin() + op + 1);
-		postfix.insert(postfix.begin() + paramIndex, "!VAR_TEMP_temp" + std::to_string(tempCount));
-		++tempCount;
+		postfix.insert(postfix.begin() + paramIndex, tempVar);
 	}
 
 	// 1 operator left
@@ -1943,7 +1951,7 @@ std::vector<std::string> simplifyExpressions(std::vector<std::string> &program) 
 		//std::cout << "line = " << line << std::endl;
 		for(size_t j = 0; j < lines.size(); ++j) {
 			ans.push_back(lines[j]);
-			//std::cout << ": " << lines[j] << std::endl;
+		//std::cout << ": " << lines[j] << std::endl;
 		}
 		//std::cout << std::endl;
 	}
@@ -1995,8 +2003,7 @@ std::vector<std::string> convertSpecialAssignment(std::vector<std::string> &prog
 		}
 		else {
 			//ans.push_back(line);
-			std::string tempVar = "temp" + std::to_string(tempCount);
-			++tempCount;
+			std::string tempVar = createTemp();
 
 			std::string desiredType = "int";
 			if(words[desiredOp] == "|=" || words[desiredOp] == "&=" || words[desiredOp] == "^=") {
@@ -2071,7 +2078,7 @@ std::vector<std::string> paramsToTemp(std::vector<std::string> &program) {
 		numParams[std::get<0>(func)] = std::get<1>(func).size();
 	}
 	
-	// have to know variable declarations (process as you go to avoid "int x"in one function, then "bool x"in another function
+	// have to know variable declarations (process as you go to avoid "int x"in one function, then "bool x"in another function)
 	std::unordered_map<std::string, std::string> varType;
 
 	std::vector<std::string> ans;
@@ -2122,12 +2129,11 @@ std::vector<std::string> paramsToTemp(std::vector<std::string> &program) {
 			for(size_t j = 0; j < params.size(); ++j) {
 				std::string param = params[j];
 				if(param.substr(0, 9) != "!VAR_TEMP" || param.substr(param.size() - 13, 13) == " !VAR_LIB_MEM") {
-					std::string tempVar = "!VAR_TEMP_temp" + std::to_string(tempCount);
-					++tempCount;
+					std::string tempVar = createTemp();
 
 					fixedParams.push_back(tempVar);
 						
-					std::string desiredType = varType[param];
+					std::string desiredType = (param.size() > 13 && param.substr(param.size() - 13, 13) == " !VAR_LIB_MEM") ? "int" : varType[param];
 					ans.push_back(desiredType + " " + tempVar + " ; "); 		// equiv to: int/bool tempVar;
 					ans.push_back(tempVar + " " + param + " = ; ");				// tempVar = param;
 				}
@@ -2175,74 +2181,84 @@ std::vector<std::string> paramsToTemp(std::vector<std::string> &program) {
 
 /**
  * Change memory access to functions
- * !VAR_LIB_MEM[0] = x  ->  !FUNC_LIB_memset(0, x)
- * x = !VAR_LIB_MEM[0]  ->  x = !FUNC_LIB_memget(0)
+ * 0 MEM x = -> !VAR_LIB_MEM[0] = x -> !FUNC_PRIV_memset(0, x)  -> 0 x !FUNC_PRIV_memset
+ * x 0 MEM = -> x = !VAR_LIB_MEM[0]  ->  x = !FUNC_PRIV_memget(0) -> 0 !FUNC_PRIV_memget = x (meaning assign to variable x)
+ * 0 MEM 1 MEM = -> MEM[0] = MEM[1] -> int temp; temp = MEM[1]; MEM[0] = temp; -> int temp; 1 !FUNC_PRIV_memget = temp; 0 temp !FUNC_PRIV_memset;
  */
 std::vector<std::string> convertMemoryAccess(std::vector<std::string> &program) {
-	// first find and replace setting memory: 
-	// anywhere it looks like MEM [ ... ] =  or += or ...
-
-	std::string letters = getLetters(program);
-	std::vector<std::string> words = getWords(letters);
-	
-	for(size_t i = 0; i < words.size(); ++i) {
-		if(words[i] == "!VAR_LIB_MEM") {
-			int openBracket = i + 1;
-			int closeBrace = findOpposite(words, openBracket);
-			std::string op = words[closeBrace + 1];
-			if(op[op.size() - 1] == '=') {
-				
-				// search for end of expression
-				int startSearch = closeBrace + 2;
-				while(words[startSearch] != ";" && (words[startSearch] != ")" || findOpposite(words, startSearch) > openBracket) && (words[startSearch] != "]" || findOpposite(words, startSearch) > openBracket)) {
-					++startSearch;		
-				}
-
-				std::vector<std::string> temp;
-				for(size_t j = closeBrace + 2; j < startSearch; ++j) {
-					temp.push_back(words[j]);
-				}
-
-				std::vector<std::string> index;
-				for(size_t j = openBracket + 1; j < closeBrace; ++j) {
-					index.push_back(words[j]);
-				}
-
-				// create new copy with changes
-				std::vector<std::string> words2;
-				for(size_t j = 0; j < i; ++j) {
-					words2.push_back(words[j]);
-				}
-				words2.push_back("!FUNC_LIB_MEMSET");
-				words2.push_back("(");
-				for(std::string word : index) {
-					words2.push_back(word);
-				}
-				words2.push_back(",");
-				for(std::string word : temp) {
-					words2.push_back(word);
-				}
-				words2.push_back(")");
-				for(size_t j = startSearch; j < words.size(); ++j) {
-					words2.push_back(words[j]);
-				}
-
-				// now swap new content into original words
-				words = words2;
-			}
-		}
-	}
-	
+	// first convert all instances of "A B = = C ;" (meaning C = (A = B)"), to "A = B; C = A;"
+	// -> "A B =; C A =;"
 	std::vector<std::string> ans;
-	for(size_t i = 0; i < words.size(); ++i) {
-		std::string word = words[i];
-		ans.push_back(word);
-		if(i + 1 < words.size()) {
-			ans.push_back(" ");
+
+	for(size_t i = 0; i < program.size(); ++i) {
+		std::vector<std::string> words = getWords(program[i]);
+		if(words.size() >= 6 && words[words.size() - 4] == "=" && words[words.size() - 3] == "=") {
+			int index = (int) words.size() - 5;
+			std::string B = words[index];
+			if(B == "!VAR_LIB_MEM") {
+				--index;
+				B = words[index] + " " + words[index + 1];
+			}
+			
+			--index;
+			std::string A = words[index];
+			if(A == "!VAR_LIB_MEM") {
+				--index;
+				A = words[index] + " " + words[index + 1];
+			}
+
+			std::string C = words[words.size() - 2];
+
+			ans.push_back(A + " " + B + " = ; ");
+			ans.push_back(C + " " + A + " = ; ");
+		}	
+		else {
+			ans.push_back(program[i]);
+		}
+	}
+
+	std::vector<std::string> ans2;
+
+	for(size_t i = 0; i < ans.size(); ++i) {
+		std::vector<std::string> words = getWords(ans[i]);
+
+		if(words.size() > 4 && words[1] == "!VAR_LIB_MEM" && words[3] == "!VAR_LIB_MEM" && words[4] == "=") {
+			// case where sth like "MEM[0] = MEM[1];" 
+			std::string tempVar = createTemp();
+			std::string A = words[0];
+			std::string B = words[2];
+
+			ans2.push_back("int " + tempVar + " ; ");
+			ans2.push_back(B + " " + "!FUNC_PRIV_memget = " + tempVar + " ; ");
+			ans2.push_back(A + " " + tempVar + " !FUNC_PRIV_memset ; ");
+		}
+		else if(words.size() > 3 && words[2] == "!VAR_LIB_MEM" && words[3] == "=") {
+			std::string A = words[0];
+			std::string B = words[1];
+			ans2.push_back(B + " " + "!FUNC_PRIV_memget = " + A + " ; ");
+		}
+		else if(words.size() > 3 && words[1] == "!VAR_LIB_MEM" && words[3] == "=") {
+			std::string A = words[0];
+			std::string B = words[2];
+			ans2.push_back(A + " " + B + " " + "!FUNC_PRIV_memset ; ");
+		}
+		else {
+			ans2.push_back(ans[i]);
 		}
 	}
 	
-	return ans;
+	std::vector<std::string> ans3;
+	std::string tempLine;
+	for(size_t i = 0; i < ans2.size(); ++i) {
+		std::vector<std::string> words = getWords(ans2[i]);
+		for(size_t j = 0; j < words.size(); ++j) {
+			tempLine.append(words[j]);
+			tempLine.append(" ");
+		}
+	}
+
+	ans3.push_back(tempLine);
+	return ans3;
 }
 
 std::vector<std::string> midToLow(std::vector<std::string> &program) {
@@ -2278,8 +2294,8 @@ std::vector<std::string> midToLow(std::vector<std::string> &program) {
 	modifiedProgram = paramsToTemp(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
 
-	//modifiedProgram = convertMemoryAccess(modifiedProgram);
-	//modifiedProgram = formatProgram(modifiedProgram);
+	modifiedProgram = convertMemoryAccess(modifiedProgram);
+	modifiedProgram = formatProgram(modifiedProgram);
 	
 	return modifiedProgram;
 }
@@ -2313,6 +2329,7 @@ int main() {
 	
 	std::vector<std::string> transformedProgram = midToLow(program);
 	printPrettyProgram(transformedProgram);
+	//printProgram(transformedProgram);
 
 	return 0;
 }
