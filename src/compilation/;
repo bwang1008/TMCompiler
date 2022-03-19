@@ -638,6 +638,7 @@ std::vector<std::string> addSpaceAroundOperators(std::vector<std::string> &progr
 				op.push_back(letters[letters.size() - 1]);
 
 				if(oper1.find(op) != oper1.end()) {
+					// TODO
 					if(false && (op == ";" || op == "{" || op == "}")) {
 						letters.pop_back();
 						letters.push_back(' ');
@@ -1518,8 +1519,6 @@ std::vector<std::string> assignDefaultToDeclaration(std::vector<std::string> &pr
 std::vector<std::string> moveUpDeclaration(std::vector<std::string> &program) {
 	std::vector<std::vector<std::string> > allWords;
 
-	std::unordered_set<std::string> validTypes {"void", "int", "bool"};
-
 	std::vector<int> funcLines;
 	for(size_t i = 0; i < program.size(); ++i) {
 		std::string line = program[i];
@@ -1527,6 +1526,7 @@ std::vector<std::string> moveUpDeclaration(std::vector<std::string> &program) {
 	
 		allWords.push_back(words);
 
+		std::unordered_set<std::string> validTypes {"void", "int", "bool"};
 		if(validTypes.find(words[0]) != validTypes.end() && words[1].substr(0, 5) == "!FUNC") {
 			// function declaration found
 			funcLines.push_back((int) i);
@@ -1557,7 +1557,7 @@ std::vector<std::string> moveUpDeclaration(std::vector<std::string> &program) {
 			
 			std::string typeName = words[0];
 			std::string varName = words[1];
-			if(words[2] == ";") { 		// change "int x ;" into "nop"; putting declaration earlier
+			if(words[2] == ";") { 		// change "int x ;" into "nop"
 				words.clear();
 				words.push_back("nop");
 			}
@@ -1621,12 +1621,13 @@ std::vector<std::string> moveUpDeclaration(std::vector<std::string> &program) {
 
 	// we need to have a declare line on every function, even those where you don't declare any variables
 	
-	// get function declaration lines for which variables already exist(again);
-	std::vector<int> funcLines2;
+	// get function declaration lines
+	for(size_t i = 0; i < allWords.size(); ++i) {
+		if(
+	}
+
 	for(std::map<int, std::unordered_set<std::string> >::reverse_iterator it = vars.rbegin(); it != vars.rend(); ++it) {
 		std::unordered_set<std::string> varNames = it->second;
-
-		funcLines2.push_back(it->first);
 
 		std::vector<std::string> tempWords {"declare"};
 		for(std::string varName : varNames) {
@@ -1637,34 +1638,6 @@ std::vector<std::string> moveUpDeclaration(std::vector<std::string> &program) {
 		allWords.insert(allWords.begin() + it->first + 1, tempWords);
 	}
 
-	// since you went from front to back, by inserting into the lower lines, the upper lines are off. compensate!
-	for(size_t i = 0; i < funcLines2.size(); ++i) {
-		funcLines2[funcLines2.size() - i - 1] += i;	
-	}
-
-	// get function declaration lines (again); (after the changes to allWords above)
-	std::set<int> funcLines3;
-	for(size_t i = 0; i < allWords.size(); ++i) {
-		std::vector<std::string> words = allWords[i];
-		if(validTypes.find(words[0]) != validTypes.end() && words[words.size() - 1] == "{") {
-			funcLines3.insert((int) i);		
-		}
-	}
-
-	// remove funcLines2 values from funcLines3: get function declarations, for which variables had not existed, and therefore need a declare line explicitly added
-	for(int val : funcLines2) {
-		funcLines3.erase(val);
-	}
-
-	// for the rest of the functions, add in a "declare" line, right after function declaration (traverse from high to low line numbers)
-	for(std::set<int>::reverse_iterator it = funcLines3.rbegin(); it != funcLines3.rend(); ++it) {
-		int funcLine = *it;
-		
-		std::vector<std::string> words {"declare", ";"};
-		allWords.insert(allWords.begin() + funcLine + 1, words);
-	}
-
-	// reformat
 	std::vector<std::string> ans;
 	std::string temp;
 	for(size_t i = 0; i < allWords.size(); ++i) {
@@ -1879,7 +1852,6 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 	}
 	
 	if(words[0] == "continue" || words[0] == "break" || words[0] == "else" || words[0] == "}" || words[0] == "while") {
-		// keep while loop as "while(true) {"
 		ans.push_back(line);
 		return ans;
 	}
@@ -1946,7 +1918,7 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 	// turn "x += 5 ; " to "x = x + (5) ;"
 	
 	/*
-	// What. are you doing. += doesn't have to be words[1]
+	// TODO  ??? What. are you doing. += doesn't have to be words[1]
 	if(words.size() >= 2) {
 		std::string op = words[1];
 		std::unordered_map<std::string, std::string> special {{"+=", "+"}, {"-=", "-"}, {"*=", "*"}, {"/=", "/"}, {"%=", "%"}, {"&=", "&&"}, {"|=", "||"}, {"^=", "^"}};
@@ -1983,6 +1955,9 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 
 	std::vector<std::string> postfix = shuntingYard(words);
 
+	// TODO
+	// what to do about hasOpenBrace and hasComma?
+	// MEM is incorrect...
 	/*
 	std::cout << "orig: " << std::endl;
 	for(std::string word : words) {
@@ -2057,8 +2032,8 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 
 	// 1 operator left
 	
-	// careful: could be "temp1 temp2 && if" or "temp1 temp2 - return" (but don't count sth like "temp return"
-	if(postfix.size() > 2 && (postfix[postfix.size() - 1] == "if" || postfix[postfix.size() - 1] == "return")) {
+	// careful: could be "temp1 temp2 && if" or "temp1 temp2 - return"
+	if(postfix.size() > 1 && (postfix[postfix.size() - 1] == "if" || postfix[postfix.size() - 1] == "return")) {
 		std::string tempVar = createTemp();
 		// create first expression: "temp1 temp2 && = temp3"
 		std::string subexpression;
@@ -2267,7 +2242,7 @@ std::vector<std::string> replaceDivModOps(std::vector<std::string> &program) {
  */
 std::vector<std::string> paramsToTemp(std::vector<std::string> &program) {
 	std::vector<std::tuple<std::string, std::vector<std::string>, std::string> > funcs = getFunctions(program);
-
+		
 	std::unordered_map<std::string, int> numParams;
 	for(size_t i = 0; i < funcs.size(); ++i) {
 		std::tuple<std::string, std::vector<std::string>, std::string> func = funcs[i];
@@ -2708,14 +2683,14 @@ std::vector<std::string> explicitReturn(std::vector<std::string> &program) {
 		std::vector<std::string> words = getWords(program[i]);
 		if(words.size() >= 3 && words[words.size() - 2] == "return") {
 			std::string var = words[words.size() - 3];
-			ans.push_back("!TAPE_RAX " + var + " = ; ");
+			ans.push_back(var + " !TAPE_RAX = ; ");
 			ans.push_back("return ; ");
 		}
 		else {
 			ans.push_back(program[i]);
 		}
 	}
-
+	
 	std::vector<std::string> ans2;
 	std::string temp;
 	for(size_t i = 0; i < ans.size(); ++i) {
@@ -2763,15 +2738,17 @@ std::vector<std::string> pushAndPop(std::vector<std::string> &program) {
 			}
 
 			// if next line has "declare x y z temp ;", then add parameters to this list: "declare param1 param2 x y z temp ;"
-			// edit: changed moveUpDeclaration to always have a "declare" line per function
 			if(i + 1 < program.size() && allWords[i + 1][0] == "declare") {
-				// add parameter names to list of declared variables
+				std::cout << "yea?"  << std::endl;
 				allWords[i + 1].insert(allWords[i + 1].begin() + 1, paramNames.begin(), paramNames.end());
+			}
+			else {
+				// declare line doesn't exist.....
 			}
 
 			ans.push_back(words[0] + " " + funcName + " " + "{");
 			for(size_t j = 0; j < paramTypes.size(); ++j) {
-				ans.push_back("pop !TAPE_PARAMS !TAPE_tape" + std::to_string(j) + " ; ");
+				ans.push_back("pop !TAPE_PARAMS " + paramNames[j] + " ; ");
 			}
 		}
 		else if((words.size() >= 2 && words[words.size() - 2].substr(0, 5) == "!FUNC") || (words.size() >= 4 && words[words.size() - 4].substr(0, 5) == "!FUNC")) {
@@ -2811,229 +2788,6 @@ std::vector<std::string> pushAndPop(std::vector<std::string> &program) {
 }
 
 /**
- * Convert variable names, like parameters and !VAR_TEMP_temp5, into tape indices: !TAPE_tape0, !TAPE_tape1,...
- * as referenced by the "declare" line in each function
- */
-std::vector<std::string> remapVariableNames(std::vector<std::string> &program) {
-	std::vector<std::string> allWords;
-	for(size_t i = 0; i < program.size(); ++i) {
-		std::vector<std::string> words = getWords(program[i]);
-		allWords.insert(allWords.end(), words.begin(), words.end());
-	}
-
-	int openBrace = findNext(allWords, "{", 0);
-
-	while(0 <= openBrace && openBrace < allWords.size()) {
-		int closeBrace = findOpposite(allWords, openBrace);
-
-		// find declaration line
-		int declareLine = openBrace;
-		while(allWords[declareLine] != "declare") {
-			++declareLine;
-		}
-		
-		int semicolon = findNext(allWords, ";", declareLine);
-		int numVar = semicolon - declareLine - 1; 	// ex: declare a b ;  : 3 - 0 - 1 = 2 variables
-
-		// remap variables in declare line, to "!TAPE_tape0" and so on
-		std::unordered_map<std::string, std::string> mapping;
-		for(int i = 0; i < numVar; ++i) {
-			std::string varName = allWords[declareLine + i + 1];
-			mapping[varName] = "!TAPE_tape" + std::to_string(i);
-		}
-
-		// rename the variables
-		for(int i = semicolon + 1; i < closeBrace; ++i) {
-			std::string word = allWords[i];
-			if(mapping.find(word) != mapping.end()) {
-				allWords[i] = mapping[word];
-			}
-		}
-
-		// clean out the declare line
-		for(int i = declareLine; i <= semicolon; ++i) {
-			allWords[i] = "nop";
-		}
-
-		openBrace = findNext(allWords, "{", closeBrace + 1);
-	}
-
-	std::vector<std::string> ans;
-	std::string tempLine;
-	for(size_t i = 0; i < allWords.size(); ++i) {
-		std::string word = allWords[i];
-		if(word != "nop") {
-			tempLine.append(word);
-			tempLine.append(" ");
-		}
-	}
-
-	ans.push_back(tempLine);
-	return ans;
-}
-
-/**
- * Helper function to addJumpsAndLineNumbers. Convert statements for if and if-else
- */
-std::vector<std::string> ifElseToJump(std::vector<std::string> &program, std::vector<std::string> &allWords, std::vector<int> &wordLines) {
-	for(size_t i = 0; i < allWords.size(); ++i) {
-		if(i + 2 < allWords.size() && allWords[i + 1] == "if") {
-			// check if it's just the if case
-			int openBrace = findNext(allWords, "{", i + 1);	
-			int closeBrace = findOpposite(allWords, openBrace);
-
-			if(allWords[closeBrace + 1] != "else") {
-				// if scenario	
-
-				// change "temp if {" line into "jf temp <line number of closing brace>" (jf stands for jump if temp is false)
-				int lineNum1 = wordLines[openBrace];
-				int lineNum2 = wordLines[closeBrace];
-				program[lineNum1] = "jf " + allWords[i] + " " + std::to_string(lineNum2) + " ; ";
-
-				// change "}" into "nop"
-				program[lineNum2] = "nop ; ";
-			}
-			else {
-				// if-else scenario
-
-				int elseIndex = closeBrace + 1;
-				int closeBrace2 = findOpposite(allWords, elseIndex + 1);
-
-				int lineNum1 = wordLines[openBrace];
-				int lineNum2 = wordLines[closeBrace];
-				int lineNum3 = wordLines[elseIndex];
-				int lineNum4 = wordLines[closeBrace2];
-
-				program[lineNum1] = "jf " + allWords[i] + " " + std::to_string(lineNum3) + " ; ";
-				program[lineNum2] = "jmp " + std::to_string(lineNum4) + " ; ";
-				program[lineNum3] = "nop ; ";
-				program[lineNum4] = "nop ; ";
-			}
-		}
-	}
-	
-	return program;	
-}
-
-/**
- * Helper function to addJumpsAndLineNumbers. Convert while loops + break + continue
- */
-std::vector<std::string> whileToJump(std::vector<std::string> &program, std::vector<std::string> &allWords, std::vector<int> &wordLines) {
-	// stack indicating where current while loop "{" occurs index-wise in allWords
-	std::vector<int> openWhile;
-	
-	// map from open "{" to close "}" of while loops (and vice-versa)
-	std::unordered_map<int, int> braces;
-	std::unordered_map<int, int> braces2;
-	
-	for(size_t i = 1; i < allWords.size(); ++i) {
-		if(allWords[i] == "while") {
-			int openBrace = findNext(allWords, "{", i);
-			int closeBrace = findOpposite(allWords, openBrace);
-			
-			openWhile.push_back(openBrace);
-			braces[openBrace] = closeBrace;
-			braces2[closeBrace] = openBrace;	
-		}
-		else if(allWords[i] == "}" && braces2.find(i) != braces2.end()) {
-			// if this is a closing brace matching an active while loop, close it (by popp ing from active stack)
-			openWhile.pop_back();
-		}
-		else if(allWords[i] == "break") {
-			// this break belongs to the most recently active while
-			int openBrace = openWhile[openWhile.size() - 1];
-			int closeBrace = braces[openBrace];	
-
-			// jump to line after closeBrace: we manually added a nop after each one before in addJumpsAndLineNumbers
-			int fromLine = wordLines[i];
-			int toLine = 1 + wordLines[closeBrace];
-			program[fromLine] = "jmp " + std::to_string(toLine) + " ; ";
-		}
-		else if(allWords[i] == "continue") {
-			// this break belongs to the most recently active while
-			int openBrace = openWhile[openWhile.size() - 1];
-			int closeBrace = braces[openBrace];	
-
-			// jump to line with openBrace
-			int fromLine = wordLines[i];
-			int toLine = wordLines[openBrace];
-			program[fromLine] = "jmp " + std::to_string(toLine) + " ; ";
-		}
-	}
-
-	// we have converted the break + continues
-	// now change the while loop + open brace line and the closing brace line
-	for(std::unordered_map<int, int>::iterator it = braces.begin(); it != braces.end(); ++it) {
-		int closeBrace = it->first;
-		int openBrace = it->second;
-		
-		int openLine = wordLines[openBrace];
-		int closeLine = wordLines[closeBrace];
-		
-		// line with open brace becomes nop, line with close brace jumps to line with open brace
-		program[openLine] = "nop ; ";
-		program[closeLine] = "jmp " + std::to_string(openLine) + " ; ";
-	}
-	
-	return program;
-}
-
-/**
- * Helper function to addJumpsAndLineNumbers. Convert function calls to "jmp <line #>" and
- * function declarations to "nop"
- */
-std::vector<std::string> funcToJump(std::vector<std::string> &program, std::vector<std::string> &allWords, std::vector<int> &wordLines) {
-	// maintain map of what lines function declarations are
-	std::unordered_set<std::string> validTypes {"void", "int", "bool"};
-	std::unordered_map<std::string, int> funcLines;
-
-	int lineNum = 0;
-	for(size_t i = 1; i < allWords.size(); ++i) {
-		std::string word = allWords[i];
-		if(word == ";" || word == "{" || word == "}") {
-			++lineNum;
-			continue;
-		}
-
-		if(i + 2 < allWords.size() && validTypes.find(word) != validTypes.end() && allWords[i + 1].substr(0, 5) == "!FUNC" && allWords[i + 2] == "{") {
-			std::string funcName = allWords[i + 1];
-			funcLines[funcName] = lineNum;
-		}
-	}
-	
-	// replace each function declaration line with a "nop"
-	for(std::unordered_map<std::string, int>::iterator it = funcLines.begin(); it != funcLines.end(); ++it) {
-		int funcLine = it->second;
-		program[funcLine] = "nop ; ";
-	}
-
-	// replace each closing brace with "nop" : the only remaining closing braces were from function declarations
-	for(size_t i = 0; i < program.size(); ++i) {
-		std::string line = program[i];
-		trim(line);
-		if(line == "}") {
-			program[i] = "nop ; ";
-		}
-	}
-
-	// replace each occurrence of "call func", with "jmp <line #>" (if it exists)
-	// if it doesn't exist, leave alone, as will take care of it when actual generate Turing Machine
-	for(size_t i = 0; i + 1 < allWords.size(); ++i) {
-		if(allWords[i] == "call" && allWords[i + 1].substr(0, 5) == "!FUNC") {
-			std::string funcName = allWords[i + 1];
-			if(funcLines.find(funcName) != funcLines.end()) {
-				int fromLine = wordLines[i];
-				int toLine = funcLines[funcName];
-				program[fromLine] = "call " + std::to_string(toLine) + " ; ";	
-			}
-		}	
-	}
-
-	return program;
-}
-
-
-/**
  * Convert if/else/call/while loops into jump statements / line numbers
  * Fill in empty lines with "nop" : no-ops aka no-operations aka do nothing
  */
@@ -3052,7 +2806,7 @@ std::vector<std::string> addJumpsAndLineNumbers(std::vector<std::string> &progra
 	 * 3.nop 		// the closing brace } becomes a nop 
 	 * 4.B
 	 */ 
-
+	
 	/* if-else statements:
 	 *
 	 * 1. if(temp) {
@@ -3065,7 +2819,7 @@ std::vector<std::string> addJumpsAndLineNumbers(std::vector<std::string> &progra
 	 *
 	 * translated to
 	 *
-	 * 1. jf temp 4 	// if temp == false, go to nop on line 4
+	 * 1. jf temp 3 	// if temp == false, go to nop on line 3
 	 * 2. A
 	 * 3. jmp 6 		// jump to nop on line 6
 	 * 4. nop
@@ -3126,141 +2880,7 @@ std::vector<std::string> addJumpsAndLineNumbers(std::vector<std::string> &progra
 	 *
 	 *
 	 */
-
-	// first, add a placeholder jump as the very first statement: jumps to main (to a copy of program)
-	std::vector<std::string> p2 {"jmp # ; "};
-	p2.insert(p2.end(), program.begin(), program.end());
-
-	// convert to words
-	std::vector<std::string> allWords;
-	for(size_t i = 0; i < p2.size(); ++i) {
-		std::vector<std::string> words = getWords(p2[i]);
-		allWords.insert(allWords.end(), words.begin(), words.end());
-	}
-
-	std::vector<std::string> allWords2;
-
-	// end of while loop closing brace gets translated to two lines (jump and nop), so add nop. 
-	// all other conversions don't change number of lines. add in nop so translations later in 
-	// this function aren't as painful
-	
-	/*
-	for(size_t i = 0; i < allWords.size(); ++i) {
-		if(allWords[i] == "while") {
-			int openBrace = findNext(allWords, "{", i);
-			int closeBrace = findOpposite(allWords, openBrace);
-//uhhhhhhhhhhhhhhhh what about nested TODO 			
-			for(size_t j = i; j <= closeBrace; ++j) {
-				allWords2.push_back(allWords[j]);
-			}	
-			allWords2.push_back("nop");
-			allWords2.push_back(";");
-
-			i = closeBrace;
-		}
-		else {
-			allWords2.push_back(allWords[i]);
-		}
-	}
-	*/
-	
-	// allWords2 first gets filled in words backwards
-	for(int i = allWords.size() - 1; i >= 0; --i) {
-		std::string word = allWords[i];
-
-		if(word == "}") {
-			int openBrace = findOpposite(allWords, i);
-			if(allWords[openBrace - 1] == "while") {
-				// if i is index of closing brace of while loop, fill in "nop ; " backwards
-				allWords2.push_back(";");
-				allWords2.push_back("nop");
-			}
-		}
-
-		allWords2.push_back(word);
-	}
-
-	// now reverse words into correct order
-	std::reverse(allWords2.begin(), allWords2.end());
-
-	// find which line main() starts on
-	for(size_t i = 1; i < p2.size(); ++i) {
-		std::vector<std::string> words = getWords(p2[i]);
-
-		if(words.size() == 3 && words[0] == "int" && words[1] == "!FUNC_USER_main" && words[2] == "{") {
-			p2[0] = "jmp " + std::to_string(i) + " ; ";
-			allWords2[1] = std::to_string(i);
-		}
-	}
-
-	// maintain lookup of what line each word belongs in
-	std::vector<int> wordLines(allWords2.size(), -1);
-
-	if(wordLines.size() > 0) {
-		wordLines[0] = 0;
-	}
-
-	int lineNum = 0;
-	for(size_t i = 1; i < allWords2.size(); ++i) {
-		std::string word = allWords2[i];
-		if(wordLines[i] == -1) {
-			wordLines[i] = wordLines[i - 1];
-		}
-
-		if(word == ";" || word == "{" || word == "}") {
-			++lineNum;
-			wordLines[i + 1] = 1 + wordLines[i]; 
-			continue;
-		}
-	}
-
-	// now get back program in line form
-	std::vector<std::string> p3;
-	std::string tempLine;
-	for(size_t i = 0; i < allWords2.size(); ++i) {
-		std::string word = allWords2[i];
-		if(i == 0) {
-			tempLine.append(word);
-			tempLine.append(" ");
-		}
-		else {
-			if(wordLines[i] == wordLines[i-1]) { 	// if words belong to same line, append to same line
-				tempLine.append(word);
-				tempLine.append(" ");
-			}
-			else {
-				p3.push_back(tempLine);
-				tempLine.clear();
-				tempLine.append(word);
-				tempLine.append(" ");
-			}
-		}
-	}
-
-	if(tempLine.size() > 0) {
-		p3.push_back(tempLine);
-	}
-
-	// do translations! changes appear in p3, the line form of the program. view above long comments. match based on syntax (especially if vs if-else)
-	p3 = ifElseToJump(p3, allWords2, wordLines);
-	p3 = whileToJump(p3, allWords2, wordLines);
-	p3 = funcToJump(p3, allWords2, wordLines);
-
-	// convert p3 (line program) into bunch of words to reformat
-	std::vector<std::string> ans;
-	tempLine.clear();
-	for(size_t i = 0; i < p3.size(); ++i) {
-		std::string line = p3[i];
-		std::vector<std::string> words = getWords(line);
-		for(size_t j = 0; j < words.size(); ++j) {
-			tempLine.append(words[j]);
-			tempLine.append(" ");
-		}
-	}
-
-	ans.push_back(tempLine);
-
-	return ans;
+	return program;
 }
 
 std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
@@ -3314,12 +2934,6 @@ std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
 	modifiedProgram = formatProgram(modifiedProgram);
 
 	modifiedProgram = pushAndPop(modifiedProgram);
-	modifiedProgram = formatProgram(modifiedProgram);
-
-	modifiedProgram = remapVariableNames(modifiedProgram);
-	modifiedProgram = formatProgram(modifiedProgram);
-
-	modifiedProgram = addJumpsAndLineNumbers(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
 
 	return modifiedProgram;

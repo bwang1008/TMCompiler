@@ -13,6 +13,6 @@
  * Takes in a program (vector of strings), does some transformations / translations on it, and returns new one
  * If error occurs, return program (vector of strings) of size 0 instead
  */
-std::vector<std::string> midToLow(std::vector<std::string> &program);
+std::vector<std::string> sourceToAssembly(std::vector<std::string> &program);
 
 #endif
