@@ -1,351 +1,1981 @@
-Execute: g++ -fsyntax-only example_temp.cpp
-Compilation OK
-  0: jmp 120 ;
-  1: nop ;
-  2: pop !TAPE_PARAMS !TAPE_tape0 ;
-  3: pop !TAPE_PARAMS !TAPE_tape1 ;
-  4: !TAPE_tape5 0 = ;
-  5: !TAPE_tape4 !TAPE_tape0 = ;
-  6: !TAPE_tape4 !TAPE_tape5 == = !TAPE_tape3 ;
-  7: jf !TAPE_tape3 11 ;
-  8: !TAPE_tape5 0 = ;
-  9: !TAPE_RAX !TAPE_tape5 = ;
- 10: return ;
- 11: nop ;
- 12: !TAPE_tape5 0 = ;
- 13: !TAPE_tape4 0 = ;
- 14: !TAPE_tape3 !TAPE_tape0 = ;
- 15: !TAPE_tape3 !TAPE_tape5 < = !TAPE_tape2 ;
- 16: !TAPE_tape5 !TAPE_tape1 = ;
- 17: !TAPE_tape5 !TAPE_tape4 < = !TAPE_tape3 ;
- 18: !TAPE_tape2 !TAPE_tape3 && = !TAPE_tape5 ;
- 19: jf !TAPE_tape5 28 ;
- 20: !TAPE_tape0 u- = !TAPE_tape5 ;
- 21: !TAPE_tape1 u- = !TAPE_tape4 ;
- 22: push !TAPE_tape4 !TAPE_PARAMS ;
- 23: push !TAPE_tape5 !TAPE_PARAMS ;
- 24: call 1 ;
- 25: pop !TAPE_RAX !TAPE_tape3 ;
- 26: !TAPE_RAX !TAPE_tape3 = ;
- 27: return ;
- 28: nop ;
- 29: !TAPE_tape5 0 = ;
- 30: !TAPE_tape4 !TAPE_tape0 = ;
- 31: !TAPE_tape4 !TAPE_tape5 < = !TAPE_tape3 ;
- 32: jf !TAPE_tape3 41 ;
- 33: !TAPE_tape0 u- = !TAPE_tape5 ;
- 34: !TAPE_tape4 !TAPE_tape1 = ;
- 35: push !TAPE_tape4 !TAPE_PARAMS ;
- 36: push !TAPE_tape5 !TAPE_PARAMS ;
- 37: call 1 ;
- 38: pop !TAPE_RAX !TAPE_tape3 ;
- 39: !TAPE_RAX !TAPE_tape3 = ;
- 40: return ;
- 41: nop ;
- 42: !TAPE_tape5 0 = ;
- 43: !TAPE_tape4 !TAPE_tape1 = ;
- 44: !TAPE_tape4 !TAPE_tape5 < = !TAPE_tape3 ;
- 45: jf !TAPE_tape3 54 ;
- 46: !TAPE_tape1 u- = !TAPE_tape5 ;
- 47: !TAPE_tape4 !TAPE_tape0 = ;
- 48: push !TAPE_tape5 !TAPE_PARAMS ;
- 49: push !TAPE_tape4 !TAPE_PARAMS ;
- 50: call 1 ;
- 51: pop !TAPE_RAX !TAPE_tape3 ;
- 52: !TAPE_RAX !TAPE_tape3 = ;
- 53: return ;
- 54: nop ;
- 55: !TAPE_tape5 0 = ;
- 56: !TAPE_tape6 !TAPE_tape5 = ;
- 57: jmp 73 ;
- 58: !TAPE_tape5 1 = ;
- 59: !TAPE_tape4 !TAPE_tape6 = ;
- 60: !TAPE_tape4 !TAPE_tape5 + = !TAPE_tape3 ;
- 61: !TAPE_tape5 !TAPE_tape1 = ;
- 62: !TAPE_tape5 !TAPE_tape3 * = !TAPE_tape4 ;
- 63: !TAPE_tape5 !TAPE_tape0 = ;
- 64: !TAPE_tape4 !TAPE_tape5 < = !TAPE_tape3 ;
- 65: !TAPE_tape3 ! = !TAPE_tape5 ;
- 66: jf !TAPE_tape5 68 ;
- 67: jmp 74 ;
- 68: nop ;
- 69: !TAPE_tape5 1 = ;
- 70: !TAPE_tape4 !TAPE_tape6 = ;
- 71: !TAPE_tape4 !TAPE_tape5 + = !TAPE_tape3 ;
- 72: !TAPE_tape6 !TAPE_tape3 = ;
- 73: nop ;
- 74: !TAPE_RAX !TAPE_tape6 = ;
- 75: return ;
- 76: nop ;
- 77: nop ;
- 78: pop !TAPE_PARAMS !TAPE_tape0 ;
- 79: pop !TAPE_PARAMS !TAPE_tape1 ;
- 80: !TAPE_tape5 !TAPE_tape0 = ;
- 81: !TAPE_tape3 !TAPE_tape1 = ;
- 82: push !TAPE_tape3 !TAPE_PARAMS ;
- 83: push !TAPE_tape5 !TAPE_PARAMS ;
- 84: call 1 ;
- 85: pop !TAPE_RAX !TAPE_tape4 ;
- 86: !TAPE_tape2 !TAPE_tape4 = ;
- 87: !TAPE_tape5 !TAPE_tape1 = ;
- 88: !TAPE_tape3 !TAPE_tape2 = ;
- 89: !TAPE_tape5 !TAPE_tape3 * = !TAPE_tape4 ;
- 90: !TAPE_tape5 !TAPE_tape0 = ;
- 91: !TAPE_tape5 !TAPE_tape4 - = !TAPE_tape3 ;
- 92: !TAPE_RAX !TAPE_tape3 = ;
- 93: return ;
- 94: nop ;
- 95: nop ;
- 96: pop !TAPE_PARAMS !TAPE_tape0 ;
- 97: return ;
- 98: nop ;
- 99: nop ;
-100: pop !TAPE_PARAMS !TAPE_tape0 ;
-101: pop !TAPE_PARAMS !TAPE_tape1 ;
-102: pop !TAPE_PARAMS !TAPE_tape2 ;
-103: !TAPE_tape5 !TAPE_tape0 = ;
-104: !TAPE_tape6 !TAPE_tape1 = ;
-105: !TAPE_tape5 !TAPE_tape6 * = !TAPE_tape4 ;
-106: !TAPE_tape5 !TAPE_tape2 = ;
-107: push !TAPE_tape5 !TAPE_PARAMS ;
-108: push !TAPE_tape4 !TAPE_PARAMS ;
-109: call 1 ;
-110: pop !TAPE_RAX !TAPE_tape6 ;
-111: !TAPE_tape3 !TAPE_tape6 = ;
-112: !TAPE_tape5 1 = ;
-113: !TAPE_tape5 u- = !TAPE_tape6 ;
-114: !TAPE_tape5 !TAPE_tape0 = ;
-115: !TAPE_tape5 !TAPE_tape6 - = !TAPE_tape4 ;
-116: !TAPE_tape7 !TAPE_tape4 = ;
-117: !TAPE_RAX !TAPE_tape3 = ;
-118: return ;
-119: nop ;
-120: nop ;
-121: call !FUNC_LIB_nextInt ;
-122: pop !TAPE_RAX !TAPE_tape7 ;
-123: !TAPE_tape5 !TAPE_tape7 = ;
-124: !TAPE_tape7 1 = ;
-125: !TAPE_tape10 !TAPE_tape5 = ;
-126: !TAPE_tape10 !TAPE_tape7 + = !TAPE_tape8 ;
-127: !TAPE_tape0 !TAPE_tape8 = ;
-128: !TAPE_tape7 2 = ;
-129: !TAPE_tape10 1 = ;
-130: push !TAPE_tape7 !TAPE_PARAMS ;
-131: call !FUNC_PRIV_memget ;
-132: pop !TAPE_RAX !TAPE_tape8 ;
-133: !TAPE_tape8 !TAPE_tape10 + = !TAPE_tape7 ;
-134: !TAPE_tape3 !TAPE_tape7 = ;
-135: !TAPE_tape7 3 = ;
-136: !TAPE_tape10 1 = ;
-137: !TAPE_tape8 1 = ;
-138: push !TAPE_tape10 !TAPE_PARAMS ;
-139: call !FUNC_PRIV_memget ;
-140: pop !TAPE_RAX !TAPE_tape4 ;
-141: !TAPE_tape4 !TAPE_tape8 - = !TAPE_tape10 ;
-142: push !TAPE_tape10 !TAPE_PARAMS ;
-143: push !TAPE_tape7 !TAPE_PARAMS ;
-144: call !FUNC_PRIV_memset ;
-145: !TAPE_tape7 2 = ;
-146: !TAPE_tape10 3 = ;
-147: !TAPE_tape8 5 = ;
-148: push !TAPE_tape7 !TAPE_PARAMS ;
-149: call !FUNC_PRIV_memget ;
-150: pop !TAPE_RAX !TAPE_tape4 ;
-151: !TAPE_tape4 !TAPE_tape10 + = !TAPE_tape11 ;
-152: push !TAPE_tape11 !TAPE_PARAMS ;
-153: push !TAPE_tape7 !TAPE_PARAMS ;
-154: call !FUNC_PRIV_memset ;
-155: push !TAPE_tape7 !TAPE_PARAMS ;
-156: call !FUNC_PRIV_memget ;
-157: pop !TAPE_RAX !TAPE_tape10 ;
-158: push !TAPE_tape10 !TAPE_PARAMS ;
-159: call !FUNC_PRIV_memget ;
-160: pop !TAPE_RAX !TAPE_tape7 ;
-161: push !TAPE_tape8 !TAPE_PARAMS ;
-162: call !FUNC_PRIV_memget ;
-163: pop !TAPE_RAX !TAPE_tape4 ;
-164: !TAPE_tape7 !TAPE_tape4 + = !TAPE_tape8 ;
-165: push !TAPE_tape8 !TAPE_PARAMS ;
-166: push !TAPE_tape10 !TAPE_PARAMS ;
-167: call !FUNC_PRIV_memset ;
-168: !TAPE_tape7 5 = ;
-169: !TAPE_tape10 3 = ;
-170: push !TAPE_tape10 !TAPE_PARAMS ;
-171: call !FUNC_PRIV_memget ;
-172: pop !TAPE_RAX !TAPE_tape8 ;
-173: push !TAPE_tape8 !TAPE_PARAMS ;
-174: push !TAPE_tape7 !TAPE_PARAMS ;
-175: call !FUNC_PRIV_memset ;
-176: !TAPE_tape7 0 = ;
-177: !TAPE_tape6 !TAPE_tape7 = ;
-178: jmp 259 ;
-179: !TAPE_tape7 5 = ;
-180: !TAPE_tape10 !TAPE_tape6 = ;
-181: !TAPE_tape10 !TAPE_tape7 < = !TAPE_tape8 ;
-182: !TAPE_tape8 ! = !TAPE_tape7 ;
-183: jf !TAPE_tape7 185 ;
-184: jmp 260 ;
-185: nop ;
-186: !TAPE_tape7 3 = ;
-187: !TAPE_tape10 0 = ;
-188: !TAPE_tape8 !TAPE_tape6 = ;
-189: !TAPE_tape8 !TAPE_tape7 % = !TAPE_tape4 ;
-190: !TAPE_tape4 !TAPE_tape10 == = !TAPE_tape7 ;
-191: jf !TAPE_tape7 198 ;
-192: !TAPE_tape7 1 = ;
-193: !TAPE_tape10 !TAPE_tape6 = ;
-194: !TAPE_tape10 !TAPE_tape7 + = !TAPE_tape8 ;
-195: !TAPE_tape6 !TAPE_tape8 = ;
-196: jmp 178 ;
-197: jmp 223 ;
-198: nop ;
-199: !TAPE_tape7 3 = ;
-200: !TAPE_tape10 1 = ;
-201: !TAPE_tape8 !TAPE_tape6 = ;
-202: !TAPE_tape8 !TAPE_tape7 % = !TAPE_tape4 ;
-203: !TAPE_tape4 !TAPE_tape10 == = !TAPE_tape7 ;
-204: jf !TAPE_tape7 210 ;
-205: !TAPE_tape7 1 = ;
-206: !TAPE_tape10 !TAPE_tape3 = ;
-207: !TAPE_tape10 !TAPE_tape7 + = !TAPE_tape8 ;
-208: !TAPE_tape3 !TAPE_tape8 = ;
-209: jmp 222 ;
-210: nop ;
-211: !TAPE_tape7 3 = ;
-212: !TAPE_tape10 2 = ;
-213: !TAPE_tape8 !TAPE_tape6 = ;
-214: !TAPE_tape8 !TAPE_tape7 % = !TAPE_tape4 ;
-215: !TAPE_tape4 !TAPE_tape10 == = !TAPE_tape7 ;
-216: jf !TAPE_tape7 221 ;
-217: !TAPE_tape7 2 = ;
-218: !TAPE_tape10 !TAPE_tape3 = ;
-219: !TAPE_tape10 !TAPE_tape7 * = !TAPE_tape8 ;
-220: !TAPE_tape3 !TAPE_tape8 = ;
-221: nop ;
-222: nop ;
-223: nop ;
-224: !TAPE_tape7 0 = ;
-225: !TAPE_tape1 !TAPE_tape7 = ;
-226: jmp 254 ;
-227: !TAPE_tape7 3 = ;
-228: !TAPE_tape10 !TAPE_tape1 = ;
-229: !TAPE_tape10 !TAPE_tape7 < = !TAPE_tape8 ;
-230: !TAPE_tape8 ! = !TAPE_tape7 ;
-231: jf !TAPE_tape7 233 ;
-232: jmp 255 ;
-233: nop ;
-234: !TAPE_tape7 2 = ;
-235: !TAPE_tape10 0 = ;
-236: !TAPE_tape8 !TAPE_tape1 = ;
-237: !TAPE_tape8 !TAPE_tape7 % = !TAPE_tape4 ;
-238: !TAPE_tape4 !TAPE_tape10 == = !TAPE_tape7 ;
-239: jf !TAPE_tape7 245 ;
-240: !TAPE_tape7 1 = ;
-241: !TAPE_tape10 !TAPE_tape1 = ;
-242: !TAPE_tape10 !TAPE_tape7 + = !TAPE_tape8 ;
-243: !TAPE_tape1 !TAPE_tape8 = ;
-244: jmp 226 ;
-245: nop ;
-246: !TAPE_tape7 !TAPE_tape3 = ;
-247: !TAPE_tape10 !TAPE_tape6 = ;
-248: !TAPE_tape7 !TAPE_tape10 + = !TAPE_tape8 ;
-249: !TAPE_tape3 !TAPE_tape8 = ;
-250: !TAPE_tape7 1 = ;
-251: !TAPE_tape10 !TAPE_tape1 = ;
-252: !TAPE_tape10 !TAPE_tape7 + = !TAPE_tape8 ;
-253: !TAPE_tape1 !TAPE_tape8 = ;
-254: nop ;
-255: !TAPE_tape7 1 = ;
-256: !TAPE_tape10 !TAPE_tape6 = ;
-257: !TAPE_tape10 !TAPE_tape7 + = !TAPE_tape8 ;
-258: !TAPE_tape6 !TAPE_tape8 = ;
-259: nop ;
-260: !TAPE_tape7 true = ;
-261: !TAPE_tape7 ! = !TAPE_tape10 ;
-262: !TAPE_tape10 ! = !TAPE_tape7 ;
-263: !TAPE_tape7 ! = !TAPE_tape10 ;
-264: !TAPE_tape10 ! = !TAPE_tape7 ;
-265: !TAPE_tape7 ! = !TAPE_tape10 ;
-266: !TAPE_tape2 !TAPE_tape10 = ;
-267: !TAPE_tape7 !TAPE_tape2 = ;
-268: !TAPE_tape10 !TAPE_tape2 = ;
-269: !TAPE_tape7 !TAPE_tape10 ^ = !TAPE_tape8 ;
-270: !TAPE_tape2 !TAPE_tape8 = ;
-271: !TAPE_tape7 !TAPE_tape2 = ;
-272: !TAPE_tape12 !TAPE_tape7 = ;
-273: !TAPE_tape7 0 = ;
-274: !TAPE_tape14 !TAPE_tape7 = ;
-275: !TAPE_tape7 0 = ;
-276: !TAPE_tape6 !TAPE_tape7 = ;
-277: jmp 297 ;
-278: !TAPE_tape7 10 = ;
-279: !TAPE_tape10 !TAPE_tape6 = ;
-280: !TAPE_tape10 !TAPE_tape7 < = !TAPE_tape8 ;
-281: !TAPE_tape8 ! = !TAPE_tape7 ;
-282: jf !TAPE_tape7 284 ;
-283: jmp 298 ;
-284: nop ;
-285: !TAPE_tape2 ! = !TAPE_tape7 ;
-286: !TAPE_tape2 !TAPE_tape7 = ;
-287: jf !TAPE_tape2 292 ;
-288: !TAPE_tape7 !TAPE_tape14 = ;
-289: !TAPE_tape10 !TAPE_tape6 = ;
-290: !TAPE_tape7 !TAPE_tape10 + = !TAPE_tape8 ;
-291: !TAPE_tape14 !TAPE_tape8 = ;
-292: nop ;
-293: !TAPE_tape7 1 = ;
-294: !TAPE_tape10 !TAPE_tape6 = ;
-295: !TAPE_tape10 !TAPE_tape7 + = !TAPE_tape8 ;
-296: !TAPE_tape6 !TAPE_tape8 = ;
-297: nop ;
-298: !TAPE_tape7 0 = ;
-299: !TAPE_tape5 u- = !TAPE_tape10 ;
-300: !TAPE_tape8 !TAPE_tape5 = ;
-301: !TAPE_tape4 !TAPE_tape5 = ;
-302: push !TAPE_tape4 !TAPE_PARAMS ;
-303: push !TAPE_tape10 !TAPE_PARAMS ;
-304: push !TAPE_tape8 !TAPE_PARAMS ;
-305: call 99 ;
-306: pop !TAPE_RAX !TAPE_tape11 ;
-307: !TAPE_tape11 u- = !TAPE_tape10 ;
-308: !TAPE_tape10 !TAPE_tape7 + = !TAPE_tape8 ;
-309: !TAPE_tape13 !TAPE_tape8 = ;
-310: push !TAPE_tape13 !TAPE_PARAMS ;
-311: call !FUNC_LIB_printInt ;
-312: !TAPE_tape7 1 = ;
-313: !TAPE_tape10 !TAPE_tape13 = ;
-314: !TAPE_tape10 !TAPE_tape7 + = !TAPE_tape8 ;
-315: !TAPE_tape13 !TAPE_tape8 = ;
-316: !TAPE_tape7 0 = ;
-317: !TAPE_tape9 !TAPE_tape7 = ;
-318: !TAPE_tape7 18 = ;
-319: !TAPE_tape0 !TAPE_tape7 = ;
-320: !TAPE_tape7 !TAPE_tape0 = ;
-321: !TAPE_tape5 !TAPE_tape7 = ;
-322: !TAPE_tape7 !TAPE_tape5 = ;
-323: !TAPE_tape9 !TAPE_tape7 = ;
-324: !TAPE_tape7 true = ;
-325: !TAPE_tape10 false = ;
-326: !TAPE_tape7 !TAPE_tape10 && = !TAPE_tape8 ;
-327: !TAPE_tape7 !TAPE_tape5 = ;
-328: !TAPE_tape10 !TAPE_tape0 = ;
-329: !TAPE_tape7 !TAPE_tape10 > = !TAPE_tape4 ;
-330: !TAPE_tape8 !TAPE_tape4 || = !TAPE_tape7 ;
-331: jf !TAPE_tape7 340 ;
-332: !TAPE_tape7 !TAPE_tape5 = ;
-333: !TAPE_tape10 !TAPE_tape0 = ;
-334: push !TAPE_tape10 !TAPE_PARAMS ;
-335: push !TAPE_tape7 !TAPE_PARAMS ;
-336: call 1 ;
-337: pop !TAPE_RAX !TAPE_tape8 ;
-338: !TAPE_RAX !TAPE_tape8 = ;
-339: return ;
-340: nop ;
-341: !TAPE_tape7 !TAPE_tape5 = ;
-342: !TAPE_tape10 !TAPE_tape0 = ;
-343: !TAPE_tape7 !TAPE_tape10 * = !TAPE_tape8 ;
-344: !TAPE_tape7 !TAPE_tape9 = ;
-345: !TAPE_tape7 !TAPE_tape8 - = !TAPE_tape10 ;
-346: !TAPE_RAX !TAPE_tape10 = ;
-347: return ;
-348: nop ;
+Execute: g++ -fsyntax-only ../programs/example_temp.cpp
+Initial compilation OK
+Library file found
+Point Z
+  0: int !FUNC_LIB_add ( int !VAR_USER_x , int !VAR_USER_y ) {
+  1: 	!VAR_USER_x !FUNC_LIB_isZero = !VAR_TEMP_temp0 ;
+  2: 	!VAR_TEMP_temp0 if {
+  3: 		!VAR_USER_y return ;
+  4: 	}
+  5: 	!VAR_USER_y !FUNC_LIB_isZero = !VAR_TEMP_temp1 ;
+  6: 	!VAR_TEMP_temp1 if {
+  7: 		!VAR_USER_x return ;
+  8: 	}
+  9: 	bool !VAR_TEMP_temp2 ;
+ 10: 	!VAR_USER_x !FUNC_LIB_isNeg = !VAR_TEMP_temp2 ;
+ 11: 	bool !VAR_TEMP_temp3 ;
+ 12: 	!VAR_USER_y !FUNC_LIB_isPos = !VAR_TEMP_temp3 ;
+ 13: 	!VAR_TEMP_temp2 !VAR_TEMP_temp3 && = !VAR_TEMP_temp4 ;
+ 14: 	!VAR_TEMP_temp4 if {
+ 15: 		int !VAR_TEMP_temp5 ;
+ 16: 		!VAR_USER_x u- = !VAR_TEMP_temp5 ;
+ 17: 		!VAR_TEMP_temp5 !VAR_USER_y == = !VAR_TEMP_temp6 ;
+ 18: 		!VAR_TEMP_temp6 if {
+ 19: 			int !VAR_TEMP_temp7 ;
+ 20: 			!VAR_TEMP_temp7 0 = ;
+ 21: 			!VAR_TEMP_temp7 return ;
+ 22: 		}
+ 23: 		else {
+ 24: 			int !VAR_TEMP_temp8 ;
+ 25: 			!VAR_USER_x u- = !VAR_TEMP_temp8 ;
+ 26: 			!VAR_TEMP_temp8 !VAR_USER_y < = !VAR_TEMP_temp9 ;
+ 27: 			!VAR_TEMP_temp9 if {
+ 28: 				int !VAR_TEMP_temp10 ;
+ 29: 				!VAR_USER_x u- = !VAR_TEMP_temp10 ;
+ 30: 				!VAR_USER_y !VAR_TEMP_temp10 !FUNC_LIB_basic_sub = !VAR_TEMP_temp11 ;
+ 31: 				!VAR_TEMP_temp11 return ;
+ 32: 			}
+ 33: 			else {
+ 34: 				int !VAR_TEMP_temp12 ;
+ 35: 				!VAR_USER_x u- = !VAR_TEMP_temp12 ;
+ 36: 				int !VAR_TEMP_temp13 ;
+ 37: 				!VAR_USER_y !FUNC_LIB_basic_sub = !VAR_TEMP_temp13 ;
+ 38: 				!VAR_TEMP_temp12 !VAR_TEMP_temp13 u- = !VAR_TEMP_temp14 ;
+ 39: 				!VAR_TEMP_temp14 return ;
+ 40: 			}
+ 41: 		}
+ 42: 	}
+ 43: 	else {
+ 44: 		bool !VAR_TEMP_temp15 ;
+ 45: 		!VAR_USER_x !FUNC_LIB_isPos = !VAR_TEMP_temp15 ;
+ 46: 		bool !VAR_TEMP_temp16 ;
+ 47: 		!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp16 ;
+ 48: 		!VAR_TEMP_temp15 !VAR_TEMP_temp16 && = !VAR_TEMP_temp17 ;
+ 49: 		!VAR_TEMP_temp17 if {
+ 50: 			int !VAR_TEMP_temp18 ;
+ 51: 			!VAR_USER_y u- = !VAR_TEMP_temp18 ;
+ 52: 			!VAR_TEMP_temp18 !VAR_USER_x == = !VAR_TEMP_temp19 ;
+ 53: 			!VAR_TEMP_temp19 if {
+ 54: 				int !VAR_TEMP_temp20 ;
+ 55: 				!VAR_TEMP_temp20 0 = ;
+ 56: 				!VAR_TEMP_temp20 return ;
+ 57: 			}
+ 58: 			else if ( - !VAR_USER_y < !VAR_USER_x ) {
+ 59: 				int !VAR_TEMP_temp21 ;
+ 60: 				!VAR_USER_y u- = !VAR_TEMP_temp21 ;
+ 61: 				!VAR_USER_x !VAR_TEMP_temp21 !FUNC_LIB_basic_sub = !VAR_TEMP_temp22 ;
+ 62: 				!VAR_TEMP_temp22 return ;
+ 63: 			}
+ 64: 			else {
+ 65: 				int !VAR_TEMP_temp23 ;
+ 66: 				!VAR_USER_y u- = !VAR_TEMP_temp23 ;
+ 67: 				int !VAR_TEMP_temp24 ;
+ 68: 				!VAR_USER_x !FUNC_LIB_basic_sub = !VAR_TEMP_temp24 ;
+ 69: 				!VAR_TEMP_temp23 !VAR_TEMP_temp24 u- = !VAR_TEMP_temp25 ;
+ 70: 				!VAR_TEMP_temp25 return ;
+ 71: 			}
+ 72: 		}
+ 73: 		else {
+ 74: 			bool !VAR_TEMP_temp26 ;
+ 75: 			!VAR_USER_x !FUNC_LIB_isNeg = !VAR_TEMP_temp26 ;
+ 76: 			bool !VAR_TEMP_temp27 ;
+ 77: 			!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp27 ;
+ 78: 			!VAR_TEMP_temp26 !VAR_TEMP_temp27 && = !VAR_TEMP_temp28 ;
+ 79: 			!VAR_TEMP_temp28 if {
+ 80: 				int !VAR_TEMP_temp29 ;
+ 81: 				!VAR_USER_x u- = !VAR_TEMP_temp29 ;
+ 82: 				int !VAR_TEMP_temp30 ;
+ 83: 				!VAR_USER_y u- = !VAR_TEMP_temp30 ;
+ 84: 				int !VAR_TEMP_temp31 ;
+ 85: 				!VAR_TEMP_temp30 !FUNC_LIB_basic_add = !VAR_TEMP_temp31 ;
+ 86: 				!VAR_TEMP_temp29 !VAR_TEMP_temp31 u- = !VAR_TEMP_temp32 ;
+ 87: 				!VAR_TEMP_temp32 return ;
+ 88: 			}
+ 89: 			else {
+ 90: 				!VAR_USER_x !VAR_USER_y !FUNC_LIB_basic_add = !VAR_TEMP_temp33 ;
+ 91: 				!VAR_TEMP_temp33 return ;
+ 92: 			}
+ 93: 		}
+ 94: 	}
+ 95: }
+ 96: int !FUNC_LIB_sub ( int !VAR_USER_x , int !VAR_USER_y ) {
+ 97: 	!VAR_USER_x !FUNC_LIB_isZero = !VAR_TEMP_temp34 ;
+ 98: 	!VAR_TEMP_temp34 if {
+ 99: 		!VAR_USER_y u- = !VAR_TEMP_temp35 ;
+100: 		!VAR_TEMP_temp35 return ;
+101: 	}
+102: 	!VAR_USER_y !FUNC_LIB_isZero = !VAR_TEMP_temp36 ;
+103: 	!VAR_TEMP_temp36 if {
+104: 		!VAR_USER_x return ;
+105: 	}
+106: 	bool !VAR_TEMP_temp37 ;
+107: 	!VAR_USER_x !FUNC_LIB_isNeg = !VAR_TEMP_temp37 ;
+108: 	bool !VAR_TEMP_temp38 ;
+109: 	!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp38 ;
+110: 	!VAR_TEMP_temp37 !VAR_TEMP_temp38 && = !VAR_TEMP_temp39 ;
+111: 	!VAR_TEMP_temp39 if {
+112: 		int !VAR_TEMP_temp40 ;
+113: 		!VAR_USER_y u- = !VAR_TEMP_temp40 ;
+114: 		!VAR_USER_x !VAR_TEMP_temp40 !FUNC_LIB_add = !VAR_TEMP_temp41 ;
+115: 		!VAR_TEMP_temp41 return ;
+116: 	}
+117: 	else {
+118: 		bool !VAR_TEMP_temp42 ;
+119: 		!VAR_USER_x !FUNC_LIB_isNeg = !VAR_TEMP_temp42 ;
+120: 		bool !VAR_TEMP_temp43 ;
+121: 		!VAR_USER_y !FUNC_LIB_isPos = !VAR_TEMP_temp43 ;
+122: 		!VAR_TEMP_temp42 !VAR_TEMP_temp43 && = !VAR_TEMP_temp44 ;
+123: 		!VAR_TEMP_temp44 if {
+124: 			int !VAR_TEMP_temp45 ;
+125: 			!VAR_USER_x u- = !VAR_TEMP_temp45 ;
+126: 			int !VAR_TEMP_temp46 ;
+127: 			!VAR_USER_y !FUNC_LIB_basic_add = !VAR_TEMP_temp46 ;
+128: 			!VAR_TEMP_temp45 !VAR_TEMP_temp46 u- = !VAR_TEMP_temp47 ;
+129: 			!VAR_TEMP_temp47 return ;
+130: 		}
+131: 		else {
+132: 			bool !VAR_TEMP_temp48 ;
+133: 			!VAR_USER_x !FUNC_LIB_isPos = !VAR_TEMP_temp48 ;
+134: 			bool !VAR_TEMP_temp49 ;
+135: 			!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp49 ;
+136: 			!VAR_TEMP_temp48 !VAR_TEMP_temp49 && = !VAR_TEMP_temp50 ;
+137: 			!VAR_TEMP_temp50 if {
+138: 				int !VAR_TEMP_temp51 ;
+139: 				!VAR_USER_y u- = !VAR_TEMP_temp51 ;
+140: 				!VAR_USER_x !VAR_TEMP_temp51 !FUNC_LIB_basic_add = !VAR_TEMP_temp52 ;
+141: 				!VAR_TEMP_temp52 return ;
+142: 			}
+143: 			else {
+144: 				int !VAR_TEMP_temp53 ;
+145: 				!VAR_USER_y u- = !VAR_TEMP_temp53 ;
+146: 				!VAR_USER_x !VAR_TEMP_temp53 !FUNC_LIB_add = !VAR_TEMP_temp54 ;
+147: 				!VAR_TEMP_temp54 return ;
+148: 			}
+149: 		}
+150: 	}
+151: }
+152: int !FUNC_LIB_mul ( int !VAR_USER_x , int !VAR_USER_y ) {
+153: 	bool !VAR_TEMP_temp55 ;
+154: 	!VAR_USER_x !FUNC_LIB_isZero = !VAR_TEMP_temp55 ;
+155: 	bool !VAR_TEMP_temp56 ;
+156: 	!VAR_USER_y !FUNC_LIB_isZero = !VAR_TEMP_temp56 ;
+157: 	!VAR_TEMP_temp55 !VAR_TEMP_temp56 || = !VAR_TEMP_temp57 ;
+158: 	!VAR_TEMP_temp57 if {
+159: 		int !VAR_TEMP_temp58 ;
+160: 		!VAR_TEMP_temp58 0 = ;
+161: 		!VAR_TEMP_temp58 return ;
+162: 	}
+163: 	bool !VAR_USER_ansNeg ;
+164: 	bool !VAR_TEMP_temp59 ;
+165: 	!VAR_TEMP_temp59 false = ;
+166: 	!VAR_USER_ansNeg !VAR_TEMP_temp59 = ;
+167: 	!VAR_USER_x !FUNC_LIB_isNeg = !VAR_TEMP_temp60 ;
+168: 	!VAR_TEMP_temp60 if {
+169: 		int !VAR_TEMP_temp61 ;
+170: 		!VAR_USER_x u- = !VAR_TEMP_temp61 ;
+171: 		!VAR_USER_x !VAR_TEMP_temp61 = ;
+172: 		bool !VAR_TEMP_temp62 ;
+173: 		!VAR_TEMP_temp62 true = ;
+174: 		!VAR_USER_ansNeg !VAR_TEMP_temp62 = ;
+175: 	}
+176: 	!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp63 ;
+177: 	!VAR_TEMP_temp63 if {
+178: 		int !VAR_TEMP_temp64 ;
+179: 		!VAR_USER_y u- = !VAR_TEMP_temp64 ;
+180: 		!VAR_USER_y !VAR_TEMP_temp64 = ;
+181: 		bool !VAR_TEMP_temp65 ;
+182: 		!VAR_USER_ansNeg ! = !VAR_TEMP_temp65 ;
+183: 		!VAR_USER_ansNeg !VAR_TEMP_temp65 = ;
+184: 	}
+185: 	int !VAR_USER_ans ;
+186: 	int !VAR_TEMP_temp66 ;
+187: 	!VAR_TEMP_temp66 0 = ;
+188: 	!VAR_USER_ans !VAR_TEMP_temp66 = ;
+189: 	int !VAR_USER_y0 ;
+190: 	!VAR_USER_y0 !VAR_USER_y = ;
+191: 	while ( true ) {
+192: 		bool !VAR_TEMP_temp67 ;
+193: 		!VAR_USER_y0 !VAR_USER_y > = !VAR_TEMP_temp67 ;
+194: 		!VAR_TEMP_temp67 ! = !VAR_TEMP_temp68 ;
+195: 		!VAR_TEMP_temp68 if {
+196: 			break ;
+197: 		}
+198: 		int !VAR_USER_y1 ;
+199: 		int !VAR_TEMP_temp69 ;
+200: 		!VAR_TEMP_temp69 1 = ;
+201: 		!VAR_USER_y1 !VAR_TEMP_temp69 = ;
+202: 		int !VAR_USER_y2 ;
+203: 		int !VAR_TEMP_temp70 ;
+204: 		!VAR_TEMP_temp70 2 = ;
+205: 		!VAR_USER_y2 !VAR_TEMP_temp70 = ;
+206: 		int !VAR_USER_val1 ;
+207: 		!VAR_USER_val1 !VAR_USER_x = ;
+208: 		int !VAR_USER_val2 ;
+209: 		int !VAR_TEMP_temp71 ;
+210: 		!VAR_USER_x !VAR_USER_x + = !VAR_TEMP_temp71 ;
+211: 		!VAR_USER_val2 !VAR_TEMP_temp71 = ;
+212: 		while ( true ) {
+213: 			bool !VAR_TEMP_temp72 ;
+214: 			!VAR_USER_val2 !VAR_USER_y0 <= = !VAR_TEMP_temp72 ;
+215: 			!VAR_TEMP_temp72 ! = !VAR_TEMP_temp73 ;
+216: 			!VAR_TEMP_temp73 if {
+217: 				break ;
+218: 			}
+219: 			!VAR_USER_y1 !VAR_USER_y2 = ;
+220: 			!VAR_USER_val1 !VAR_USER_val2 = ;
+221: 			int !VAR_TEMP_temp173 ;
+222: 			!VAR_USER_y2 !VAR_USER_y2 + = !VAR_TEMP_temp173 ;
+223: 			!VAR_USER_y2 !VAR_TEMP_temp173 = ;
+224: 			int !VAR_TEMP_temp172 ;
+225: 			!VAR_USER_val2 !VAR_USER_val2 + = !VAR_TEMP_temp172 ;
+226: 			!VAR_USER_val2 !VAR_TEMP_temp172 = ;
+227: 		}
+228: 		int !VAR_TEMP_temp171 ;
+229: 		!VAR_USER_ans !VAR_USER_val1 + = !VAR_TEMP_temp171 ;
+230: 		!VAR_USER_ans !VAR_TEMP_temp171 = ;
+231: 		int !VAR_TEMP_temp170 ;
+232: 		!VAR_USER_y0 !VAR_USER_y1 - = !VAR_TEMP_temp170 ;
+233: 		!VAR_USER_y0 !VAR_TEMP_temp170 = ;
+234: 	}
+235: 	!VAR_USER_ansNeg if {
+236: 		int !VAR_TEMP_temp74 ;
+237: 		!VAR_USER_ans u- = !VAR_TEMP_temp74 ;
+238: 		!VAR_USER_ans !VAR_TEMP_temp74 = ;
+239: 	}
+240: 	!VAR_USER_ans return ;
+241: }
+242: int !FUNC_LIB_div ( int !VAR_USER_x , int !VAR_USER_y ) {
+243: 	!VAR_USER_x !FUNC_LIB_isZero = !VAR_TEMP_temp75 ;
+244: 	!VAR_TEMP_temp75 if {
+245: 		int !VAR_TEMP_temp76 ;
+246: 		!VAR_TEMP_temp76 0 = ;
+247: 		!VAR_TEMP_temp76 return ;
+248: 	}
+249: 	int !VAR_TEMP_temp77 ;
+250: 	!VAR_TEMP_temp77 0 = ;
+251: 	int !VAR_TEMP_temp78 ;
+252: 	!VAR_TEMP_temp78 0 = ;
+253: 	bool !VAR_TEMP_temp79 ;
+254: 	!VAR_USER_x !VAR_TEMP_temp77 < = !VAR_TEMP_temp79 ;
+255: 	bool !VAR_TEMP_temp80 ;
+256: 	!VAR_USER_y !VAR_TEMP_temp78 < = !VAR_TEMP_temp80 ;
+257: 	!VAR_TEMP_temp79 !VAR_TEMP_temp80 && = !VAR_TEMP_temp81 ;
+258: 	!VAR_TEMP_temp81 if {
+259: 		int !VAR_TEMP_temp82 ;
+260: 		!VAR_USER_x u- = !VAR_TEMP_temp82 ;
+261: 		int !VAR_TEMP_temp83 ;
+262: 		!VAR_USER_y u- = !VAR_TEMP_temp83 ;
+263: 		!VAR_TEMP_temp82 !VAR_TEMP_temp83 !FUNC_LIB_div = !VAR_TEMP_temp84 ;
+264: 		!VAR_TEMP_temp84 return ;
+265: 	}
+266: 	int !VAR_TEMP_temp85 ;
+267: 	!VAR_TEMP_temp85 0 = ;
+268: 	!VAR_USER_x !VAR_TEMP_temp85 < = !VAR_TEMP_temp86 ;
+269: 	!VAR_TEMP_temp86 if {
+270: 		int !VAR_TEMP_temp87 ;
+271: 		!VAR_USER_x u- = !VAR_TEMP_temp87 ;
+272: 		int !VAR_TEMP_temp88 ;
+273: 		!VAR_TEMP_temp87 !VAR_USER_y !FUNC_LIB_div = !VAR_TEMP_temp88 ;
+274: 		!VAR_TEMP_temp88 u- = !VAR_TEMP_temp89 ;
+275: 		!VAR_TEMP_temp89 return ;
+276: 	}
+277: 	int !VAR_TEMP_temp90 ;
+278: 	!VAR_TEMP_temp90 0 = ;
+279: 	!VAR_USER_y !VAR_TEMP_temp90 < = !VAR_TEMP_temp91 ;
+280: 	!VAR_TEMP_temp91 if {
+281: 		int !VAR_TEMP_temp92 ;
+282: 		!VAR_USER_y u- = !VAR_TEMP_temp92 ;
+283: 		int !VAR_TEMP_temp93 ;
+284: 		!VAR_USER_x !VAR_TEMP_temp92 !FUNC_LIB_div = !VAR_TEMP_temp93 ;
+285: 		!VAR_TEMP_temp93 u- = !VAR_TEMP_temp94 ;
+286: 		!VAR_TEMP_temp94 return ;
+287: 	}
+288: 	int !VAR_USER_ans ;
+289: 	int !VAR_TEMP_temp95 ;
+290: 	!VAR_TEMP_temp95 0 = ;
+291: 	!VAR_USER_ans !VAR_TEMP_temp95 = ;
+292: 	int !VAR_USER_n ;
+293: 	!VAR_USER_n !VAR_USER_x = ;
+294: 	while ( true ) {
+295: 		bool !VAR_TEMP_temp96 ;
+296: 		!VAR_USER_n !VAR_USER_y >= = !VAR_TEMP_temp96 ;
+297: 		!VAR_TEMP_temp96 ! = !VAR_TEMP_temp97 ;
+298: 		!VAR_TEMP_temp97 if {
+299: 			break ;
+300: 		}
+301: 		int !VAR_USER_prevJump ;
+302: 		int !VAR_TEMP_temp98 ;
+303: 		!VAR_TEMP_temp98 0 = ;
+304: 		!VAR_USER_prevJump !VAR_TEMP_temp98 = ;
+305: 		int !VAR_USER_jump ;
+306: 		int !VAR_TEMP_temp99 ;
+307: 		!VAR_TEMP_temp99 1 = ;
+308: 		!VAR_USER_jump !VAR_TEMP_temp99 = ;
+309: 		while ( true ) {
+310: 			int !VAR_TEMP_temp100 ;
+311: 			!VAR_USER_ans !VAR_USER_jump + = !VAR_TEMP_temp100 ;
+312: 			int !VAR_TEMP_temp101 ;
+313: 			!VAR_USER_y !VAR_TEMP_temp100 * = !VAR_TEMP_temp101 ;
+314: 			bool !VAR_TEMP_temp102 ;
+315: 			!VAR_TEMP_temp101 !VAR_USER_x <= = !VAR_TEMP_temp102 ;
+316: 			!VAR_TEMP_temp102 ! = !VAR_TEMP_temp103 ;
+317: 			!VAR_TEMP_temp103 if {
+318: 				break ;
+319: 			}
+320: 			!VAR_USER_prevJump !VAR_USER_jump = ;
+321: 			int !VAR_TEMP_temp169 ;
+322: 			!VAR_USER_jump !VAR_USER_jump + = !VAR_TEMP_temp169 ;
+323: 			!VAR_USER_jump !VAR_TEMP_temp169 = ;
+324: 		}
+325: 		int !VAR_TEMP_temp168 ;
+326: 		!VAR_USER_ans !VAR_USER_prevJump + = !VAR_TEMP_temp168 ;
+327: 		!VAR_USER_ans !VAR_TEMP_temp168 = ;
+328: 		int !VAR_TEMP_temp104 ;
+329: 		!VAR_USER_y !VAR_USER_ans * = !VAR_TEMP_temp104 ;
+330: 		int !VAR_TEMP_temp105 ;
+331: 		!VAR_USER_x !VAR_TEMP_temp104 - = !VAR_TEMP_temp105 ;
+332: 		!VAR_USER_n !VAR_TEMP_temp105 = ;
+333: 	}
+334: 	!VAR_USER_ans return ;
+335: }
+336: int !FUNC_LIB_mod ( int !VAR_USER_x , int !VAR_USER_y ) {
+337: 	int !VAR_USER_d ;
+338: 	int !VAR_TEMP_temp106 ;
+339: 	!VAR_USER_x !VAR_USER_y !FUNC_LIB_div = !VAR_TEMP_temp106 ;
+340: 	!VAR_USER_d !VAR_TEMP_temp106 = ;
+341: 	int !VAR_TEMP_temp107 ;
+342: 	!VAR_USER_y !VAR_USER_d * = !VAR_TEMP_temp107 ;
+343: 	!VAR_USER_x !VAR_TEMP_temp107 - = !VAR_TEMP_temp108 ;
+344: 	!VAR_TEMP_temp108 return ;
+345: }
+346: int !FUNC_LIB_neg ( int !VAR_USER_x ) {
+347: 	!VAR_USER_x !FUNC_LIB_isZero = !VAR_TEMP_temp109 ;
+348: 	!VAR_TEMP_temp109 if {
+349: 		int !VAR_TEMP_temp110 ;
+350: 		!VAR_TEMP_temp110 0 = ;
+351: 		!VAR_TEMP_temp110 return ;
+352: 	}
+353: 	int !VAR_TEMP_temp111 ;
+354: 	!VAR_TEMP_temp111 0 = ;
+355: 	!VAR_TEMP_temp111 !VAR_USER_x !FUNC_LIB_sub = !VAR_TEMP_temp112 ;
+356: 	!VAR_TEMP_temp112 return ;
+357: }
+358: bool !FUNC_LIB_lt ( int !VAR_USER_x , int !VAR_USER_y ) {
+359: 	!VAR_USER_x !FUNC_LIB_isNeg = !VAR_TEMP_temp113 ;
+360: 	!VAR_TEMP_temp113 if {
+361: 		!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp114 ;
+362: 		!VAR_TEMP_temp114 if {
+363: 			int !VAR_TEMP_temp115 ;
+364: 			!VAR_USER_y u- = !VAR_TEMP_temp115 ;
+365: 			int !VAR_TEMP_temp116 ;
+366: 			!VAR_USER_x u- = !VAR_TEMP_temp116 ;
+367: 			!VAR_TEMP_temp115 !VAR_TEMP_temp116 !FUNC_LIB_lt = !VAR_TEMP_temp117 ;
+368: 			!VAR_TEMP_temp117 return ;
+369: 		}
+370: 		else {
+371: 			bool !VAR_TEMP_temp118 ;
+372: 			!VAR_TEMP_temp118 true = ;
+373: 			!VAR_TEMP_temp118 return ;
+374: 		}
+375: 	}
+376: 	else {
+377: 		!VAR_USER_x !FUNC_LIB_isZero = !VAR_TEMP_temp119 ;
+378: 		!VAR_TEMP_temp119 if {
+379: 			!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp120 ;
+380: 			!VAR_TEMP_temp120 if {
+381: 				bool !VAR_TEMP_temp121 ;
+382: 				!VAR_TEMP_temp121 false = ;
+383: 				!VAR_TEMP_temp121 return ;
+384: 			}
+385: 			else if ( !FUNC_LIB_isZero ( !VAR_USER_y ) ) {
+386: 				bool !VAR_TEMP_temp122 ;
+387: 				!VAR_TEMP_temp122 false = ;
+388: 				!VAR_TEMP_temp122 return ;
+389: 			}
+390: 			else {
+391: 				bool !VAR_TEMP_temp123 ;
+392: 				!VAR_TEMP_temp123 true = ;
+393: 				!VAR_TEMP_temp123 return ;
+394: 			}
+395: 		}
+396: 		else {
+397: 			bool !VAR_TEMP_temp124 ;
+398: 			!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp124 ;
+399: 			bool !VAR_TEMP_temp125 ;
+400: 			!VAR_USER_y !FUNC_LIB_isZero = !VAR_TEMP_temp125 ;
+401: 			!VAR_TEMP_temp124 !VAR_TEMP_temp125 || = !VAR_TEMP_temp126 ;
+402: 			!VAR_TEMP_temp126 if {
+403: 				bool !VAR_TEMP_temp127 ;
+404: 				!VAR_TEMP_temp127 false = ;
+405: 				!VAR_TEMP_temp127 return ;
+406: 			}
+407: 			else {
+408: 				!VAR_USER_x !VAR_USER_y !FUNC_LIB_basic_lt = !VAR_TEMP_temp128 ;
+409: 				!VAR_TEMP_temp128 return ;
+410: 			}
+411: 		}
+412: 	}
+413: }
+414: bool !FUNC_LIB_leq ( int !VAR_USER_x , int !VAR_USER_y ) {
+415: 	bool !VAR_TEMP_temp129 ;
+416: 	!VAR_USER_x !VAR_USER_y == = !VAR_TEMP_temp129 ;
+417: 	bool !VAR_TEMP_temp130 ;
+418: 	!VAR_USER_x !VAR_USER_y < = !VAR_TEMP_temp130 ;
+419: 	!VAR_TEMP_temp129 return !VAR_TEMP_temp130 || ;
+420: }
+421: bool !FUNC_LIB_gt ( int !VAR_USER_x , int !VAR_USER_y ) {
+422: 	bool !VAR_TEMP_temp131 ;
+423: 	!VAR_USER_x !VAR_USER_y <= = !VAR_TEMP_temp131 ;
+424: 	!VAR_TEMP_temp131 ! = !VAR_TEMP_temp132 ;
+425: 	!VAR_TEMP_temp132 return ;
+426: }
+427: bool !FUNC_LIB_geq ( int !VAR_USER_x , int !VAR_USER_y ) {
+428: 	bool !VAR_TEMP_temp133 ;
+429: 	!VAR_USER_x !VAR_USER_y < = !VAR_TEMP_temp133 ;
+430: 	!VAR_TEMP_temp133 ! = !VAR_TEMP_temp134 ;
+431: 	!VAR_TEMP_temp134 return ;
+432: }
+433: bool !FUNC_LIB_eq ( int !VAR_USER_x , int !VAR_USER_y ) {
+434: 	!VAR_USER_x !FUNC_LIB_isZero = !VAR_TEMP_temp135 ;
+435: 	!VAR_TEMP_temp135 if {
+436: 		!VAR_USER_y !FUNC_LIB_isZero = !VAR_TEMP_temp136 ;
+437: 		!VAR_TEMP_temp136 if {
+438: 			bool !VAR_TEMP_temp137 ;
+439: 			!VAR_TEMP_temp137 true = ;
+440: 			!VAR_TEMP_temp137 return ;
+441: 		}
+442: 		bool !VAR_TEMP_temp138 ;
+443: 		!VAR_TEMP_temp138 false = ;
+444: 		!VAR_TEMP_temp138 return ;
+445: 	}
+446: 	else {
+447: 		!VAR_USER_x !FUNC_LIB_isNeg = !VAR_TEMP_temp139 ;
+448: 		!VAR_TEMP_temp139 if {
+449: 			!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp140 ;
+450: 			!VAR_TEMP_temp140 if {
+451: 				int !VAR_TEMP_temp141 ;
+452: 				!VAR_USER_x u- = !VAR_TEMP_temp141 ;
+453: 				int !VAR_TEMP_temp142 ;
+454: 				!VAR_USER_y u- = !VAR_TEMP_temp142 ;
+455: 				!VAR_TEMP_temp141 !VAR_TEMP_temp142 !FUNC_LIB_basic_eq = !VAR_TEMP_temp143 ;
+456: 				!VAR_TEMP_temp143 return ;
+457: 			}
+458: 			bool !VAR_TEMP_temp144 ;
+459: 			!VAR_TEMP_temp144 false = ;
+460: 			!VAR_TEMP_temp144 return ;
+461: 		}
+462: 		else {
+463: 			!VAR_USER_y !FUNC_LIB_isPos = !VAR_TEMP_temp145 ;
+464: 			!VAR_TEMP_temp145 if {
+465: 				!VAR_USER_x !VAR_USER_y !FUNC_LIB_basic_eq = !VAR_TEMP_temp146 ;
+466: 				!VAR_TEMP_temp146 return ;
+467: 			}
+468: 			bool !VAR_TEMP_temp147 ;
+469: 			!VAR_TEMP_temp147 false = ;
+470: 			!VAR_TEMP_temp147 return ;
+471: 		}
+472: 	}
+473: }
+474: bool !FUNC_LIB_neq ( int !VAR_USER_x , int !VAR_USER_y ) {
+475: 	bool !VAR_TEMP_temp148 ;
+476: 	!VAR_USER_x !VAR_USER_y == = !VAR_TEMP_temp148 ;
+477: 	!VAR_TEMP_temp148 ! = !VAR_TEMP_temp149 ;
+478: 	!VAR_TEMP_temp149 return ;
+479: }
+480: int !FUNC_LIB_xor ( int !VAR_USER_x , int !VAR_USER_y ) {
+481: 	!VAR_USER_x !FUNC_LIB_isZero = !VAR_TEMP_temp150 ;
+482: 	!VAR_TEMP_temp150 if {
+483: 		!VAR_USER_y return ;
+484: 	}
+485: 	!VAR_USER_y !FUNC_LIB_isZero = !VAR_TEMP_temp151 ;
+486: 	!VAR_TEMP_temp151 if {
+487: 		!VAR_USER_x return ;
+488: 	}
+489: 	!VAR_USER_x !VAR_USER_y !FUNC_LIB_basic_xor = !VAR_TEMP_temp152 ;
+490: 	!VAR_TEMP_temp152 return ;
+491: }
+492: void !FUNC_LIB_memset ( int !VAR_USER_index , int !VAR_USER_val ) {
+493: 	return ;
+494: }
+495: int !FUNC_LIB_memget ( int !VAR_USER_index ) {
+496: 	int !VAR_TEMP_temp153 ;
+497: 	!VAR_TEMP_temp153 0 = ;
+498: 	!VAR_TEMP_temp153 return ;
+499: }
+500: void !FUNC_USER_what ( int !VAR_USER_x ) {
+501: 	return ;
+502: }
+503: int !FUNC_USER_linear ( int !VAR_USER_a , int !VAR_USER_b , int !VAR_USER_c ) {
+504: 	int !VAR_USER_temp ;
+505: 	int !VAR_TEMP_temp154 ;
+506: 	!VAR_USER_a !VAR_USER_b * = !VAR_TEMP_temp154 ;
+507: 	int !VAR_TEMP_temp155 ;
+508: 	!VAR_TEMP_temp154 !VAR_USER_c / = !VAR_TEMP_temp155 ;
+509: 	!VAR_USER_temp !VAR_TEMP_temp155 = ;
+510: 	int !VAR_USER_x ;
+511: 	int !VAR_TEMP_temp156 ;
+512: 	!VAR_TEMP_temp156 1 = ;
+513: 	int !VAR_TEMP_temp157 ;
+514: 	!VAR_TEMP_temp156 u- = !VAR_TEMP_temp157 ;
+515: 	int !VAR_TEMP_temp158 ;
+516: 	!VAR_USER_a !VAR_TEMP_temp157 - = !VAR_TEMP_temp158 ;
+517: 	!VAR_USER_x !VAR_TEMP_temp158 = ;
+518: 	!VAR_USER_temp return ;
+519: }
+520: int !FUNC_USER_main ( ) {
+521: 	int !VAR_USER_x ;
+522: 	int !VAR_TEMP_temp159 ;
+523: 	!FUNC_LIB_nextInt = !VAR_TEMP_temp159 ;
+524: 	!VAR_USER_x !VAR_TEMP_temp159 = ;
+525: 	int !VAR_USER_y ;
+526: 	int !VAR_TEMP_temp160 ;
+527: 	!VAR_TEMP_temp160 1 = ;
+528: 	int !VAR_TEMP_temp161 ;
+529: 	!VAR_USER_x !VAR_TEMP_temp160 + = !VAR_TEMP_temp161 ;
+530: 	!VAR_USER_y !VAR_TEMP_temp161 = ;
+531: 	int !VAR_USER_z ;
+532: 	int !VAR_TEMP_temp162 ;
+533: 	!VAR_TEMP_temp162 2 = ;
+534: 	int !VAR_TEMP_temp163 ;
+535: 	!VAR_TEMP_temp163 1 = ;
+536: 	int !VAR_TEMP_temp164 ;
+537: 	!VAR_TEMP_temp162 !VAR_LIB_MEM !VAR_TEMP_temp163 + = !VAR_TEMP_temp164 ;
+538: 	!VAR_USER_z !VAR_TEMP_temp164 = ;
+539: 	int !VAR_USER_w ;
+540: 	int !VAR_TEMP_temp165 ;
+541: 	!VAR_TEMP_temp165 5 = ;
+542: 	!VAR_USER_w !VAR_TEMP_temp165 = ;
+543: 	int !VAR_TEMP_temp166 ;
+544: 	!VAR_USER_x !VAR_USER_y * = !VAR_TEMP_temp166 ;
+545: 	!VAR_USER_w !VAR_TEMP_temp166 - = !VAR_TEMP_temp167 ;
+546: 	!VAR_TEMP_temp167 return ;
+547: }
+End point Z
+Point A
+  0: int !FUNC_LIB_add ( int !VAR_USER_x , int !VAR_USER_y ) {
+  1: 	declare !VAR_TEMP_temp1 !VAR_TEMP_temp0 !VAR_TEMP_temp2 ;
+  2: 	!VAR_USER_x !FUNC_LIB_isZero = !VAR_TEMP_temp0 ;
+  3: 	!VAR_TEMP_temp0 if {
+  4: 		!TAPE_RAX !VAR_USER_y = ;
+  5: 		return ;
+  6: 	}
+  7: 	!VAR_USER_y !FUNC_LIB_isZero = !VAR_TEMP_temp0 ;
+  8: 	!VAR_TEMP_temp0 if {
+  9: 		!TAPE_RAX !VAR_USER_x = ;
+ 10: 		return ;
+ 11: 	}
+ 12: 	!VAR_USER_x !FUNC_LIB_isNeg = !VAR_TEMP_temp0 ;
+ 13: 	!VAR_USER_y !FUNC_LIB_isPos = !VAR_TEMP_temp1 ;
+ 14: 	!VAR_TEMP_temp0 !VAR_TEMP_temp1 && = !VAR_TEMP_temp2 ;
+ 15: 	!VAR_TEMP_temp2 if {
+ 16: 		!VAR_USER_x !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+ 17: 		!VAR_TEMP_temp1 !VAR_USER_y = ;
+ 18: 		!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_eq = !VAR_TEMP_temp2 ;
+ 19: 		!VAR_TEMP_temp2 if {
+ 20: 			!VAR_TEMP_temp0 0 = ;
+ 21: 			!TAPE_RAX !VAR_TEMP_temp0 = ;
+ 22: 			return ;
+ 23: 		}
+ 24: 		else {
+ 25: 			!VAR_USER_x !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+ 26: 			!VAR_TEMP_temp1 !VAR_USER_y = ;
+ 27: 			!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_lt = !VAR_TEMP_temp2 ;
+ 28: 			!VAR_TEMP_temp2 if {
+ 29: 				!VAR_USER_x !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+ 30: 				!VAR_USER_y !VAR_TEMP_temp0 !FUNC_LIB_basic_sub = !VAR_TEMP_temp1 ;
+ 31: 				!TAPE_RAX !VAR_TEMP_temp1 = ;
+ 32: 				return ;
+ 33: 			}
+ 34: 			else {
+ 35: 				!VAR_USER_x !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+ 36: 				!VAR_USER_y !FUNC_LIB_basic_sub = !VAR_TEMP_temp1 ;
+ 37: 				!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_neg = !VAR_TEMP_temp2 ;
+ 38: 				!TAPE_RAX !VAR_TEMP_temp2 = ;
+ 39: 				return ;
+ 40: 			}
+ 41: 		}
+ 42: 	}
+ 43: 	else {
+ 44: 		!VAR_USER_x !FUNC_LIB_isPos = !VAR_TEMP_temp0 ;
+ 45: 		!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp1 ;
+ 46: 		!VAR_TEMP_temp0 !VAR_TEMP_temp1 && = !VAR_TEMP_temp2 ;
+ 47: 		!VAR_TEMP_temp2 if {
+ 48: 			!VAR_USER_y !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+ 49: 			!VAR_TEMP_temp1 !VAR_USER_x = ;
+ 50: 			!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_eq = !VAR_TEMP_temp2 ;
+ 51: 			!VAR_TEMP_temp2 if {
+ 52: 				!VAR_TEMP_temp0 0 = ;
+ 53: 				!TAPE_RAX !VAR_TEMP_temp0 = ;
+ 54: 				return ;
+ 55: 			}
+ 56: 			else if ( !FUNC_LIB_sub !VAR_USER_y !FUNC_LIB_lt !VAR_USER_x ) {
+ 57: 				!VAR_USER_y !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+ 58: 				!VAR_USER_x !VAR_TEMP_temp0 !FUNC_LIB_basic_sub = !VAR_TEMP_temp1 ;
+ 59: 				!TAPE_RAX !VAR_TEMP_temp1 = ;
+ 60: 				return ;
+ 61: 			}
+ 62: 			else {
+ 63: 				!VAR_USER_y !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+ 64: 				!VAR_USER_x !FUNC_LIB_basic_sub = !VAR_TEMP_temp1 ;
+ 65: 				!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_neg = !VAR_TEMP_temp2 ;
+ 66: 				!TAPE_RAX !VAR_TEMP_temp2 = ;
+ 67: 				return ;
+ 68: 			}
+ 69: 		}
+ 70: 		else {
+ 71: 			!VAR_USER_x !FUNC_LIB_isNeg = !VAR_TEMP_temp0 ;
+ 72: 			!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp1 ;
+ 73: 			!VAR_TEMP_temp0 !VAR_TEMP_temp1 && = !VAR_TEMP_temp2 ;
+ 74: 			!VAR_TEMP_temp2 if {
+ 75: 				!VAR_USER_x !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+ 76: 				!VAR_USER_y !FUNC_LIB_neg = !VAR_TEMP_temp1 ;
+ 77: 				!VAR_TEMP_temp1 !FUNC_LIB_basic_add = !VAR_TEMP_temp2 ;
+ 78: 				!VAR_TEMP_temp0 !VAR_TEMP_temp2 !FUNC_LIB_neg = !VAR_TEMP_temp1 ;
+ 79: 				!TAPE_RAX !VAR_TEMP_temp1 = ;
+ 80: 				return ;
+ 81: 			}
+ 82: 			else {
+ 83: 				!VAR_USER_x !VAR_USER_y !FUNC_LIB_basic_add = !VAR_TEMP_temp0 ;
+ 84: 				!TAPE_RAX !VAR_TEMP_temp0 = ;
+ 85: 				return ;
+ 86: 			}
+ 87: 		}
+ 88: 	}
+ 89: }
+ 90: int !FUNC_LIB_sub ( int !VAR_USER_x , int !VAR_USER_y ) {
+ 91: 	declare !VAR_TEMP_temp0 !VAR_TEMP_temp1 ;
+ 92: 	!VAR_USER_x !FUNC_LIB_isZero = !VAR_TEMP_temp0 ;
+ 93: 	!VAR_TEMP_temp0 if {
+ 94: 		!VAR_USER_y !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+ 95: 		!TAPE_RAX !VAR_TEMP_temp0 = ;
+ 96: 		return ;
+ 97: 	}
+ 98: 	!VAR_USER_y !FUNC_LIB_isZero = !VAR_TEMP_temp0 ;
+ 99: 	!VAR_TEMP_temp0 if {
+100: 		!TAPE_RAX !VAR_USER_x = ;
+101: 		return ;
+102: 	}
+103: 	!VAR_USER_x !FUNC_LIB_isNeg = !VAR_TEMP_temp0 ;
+104: 	!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp1 ;
+105: 	!VAR_TEMP_temp0 !VAR_TEMP_temp1 && = !VAR_TEMP_temp2 ;
+106: 	!VAR_TEMP_temp2 if {
+107: 		!VAR_USER_y !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+108: 		!VAR_TEMP_temp1 !VAR_USER_x = ;
+109: 		!VAR_TEMP_temp1 !VAR_TEMP_temp0 !FUNC_LIB_add = !VAR_TEMP_temp2 ;
+110: 		!TAPE_RAX !VAR_TEMP_temp2 = ;
+111: 		return ;
+112: 	}
+113: 	else {
+114: 		!VAR_USER_x !FUNC_LIB_isNeg = !VAR_TEMP_temp0 ;
+115: 		!VAR_USER_y !FUNC_LIB_isPos = !VAR_TEMP_temp1 ;
+116: 		!VAR_TEMP_temp0 !VAR_TEMP_temp1 && = !VAR_TEMP_temp2 ;
+117: 		!VAR_TEMP_temp2 if {
+118: 			!VAR_USER_x !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+119: 			!VAR_USER_y !FUNC_LIB_basic_add = !VAR_TEMP_temp1 ;
+120: 			!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_neg = !VAR_TEMP_temp2 ;
+121: 			!TAPE_RAX !VAR_TEMP_temp2 = ;
+122: 			return ;
+123: 		}
+124: 		else {
+125: 			!VAR_USER_x !FUNC_LIB_isPos = !VAR_TEMP_temp0 ;
+126: 			!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp1 ;
+127: 			!VAR_TEMP_temp0 !VAR_TEMP_temp1 && = !VAR_TEMP_temp2 ;
+128: 			!VAR_TEMP_temp2 if {
+129: 				!VAR_USER_y !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+130: 				!VAR_USER_x !VAR_TEMP_temp0 !FUNC_LIB_basic_add = !VAR_TEMP_temp1 ;
+131: 				!TAPE_RAX !VAR_TEMP_temp1 = ;
+132: 				return ;
+133: 			}
+134: 			else {
+135: 				!VAR_USER_y !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+136: 				!VAR_TEMP_temp1 !VAR_USER_x = ;
+137: 				!VAR_TEMP_temp1 !VAR_TEMP_temp0 !FUNC_LIB_add = !VAR_TEMP_temp2 ;
+138: 				!TAPE_RAX !VAR_TEMP_temp2 = ;
+139: 				return ;
+140: 			}
+141: 		}
+142: 	}
+143: }
+144: int !FUNC_LIB_mul ( int !VAR_USER_x , int !VAR_USER_y ) {
+145: 	declare !VAR_USER_ans !VAR_USER_y0 !VAR_USER_y1 !VAR_USER_y2 !VAR_USER_val1 !VAR_TEMP_temp2 !VAR_USER_val2 !VAR_USER_ansNeg !VAR_TEMP_temp0 !VAR_TEMP_temp1 ;
+146: 	!VAR_USER_x !FUNC_LIB_isZero = !VAR_TEMP_temp0 ;
+147: 	!VAR_USER_y !FUNC_LIB_isZero = !VAR_TEMP_temp1 ;
+148: 	!VAR_TEMP_temp0 !VAR_TEMP_temp1 || = !VAR_TEMP_temp2 ;
+149: 	!VAR_TEMP_temp2 if {
+150: 		!VAR_TEMP_temp0 0 = ;
+151: 		!TAPE_RAX !VAR_TEMP_temp0 = ;
+152: 		return ;
+153: 	}
+154: 	!VAR_TEMP_temp0 false = ;
+155: 	!VAR_USER_ansNeg !VAR_TEMP_temp0 = ;
+156: 	!VAR_USER_x !FUNC_LIB_isNeg = !VAR_TEMP_temp0 ;
+157: 	!VAR_TEMP_temp0 if {
+158: 		!VAR_USER_x !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+159: 		!VAR_USER_x !VAR_TEMP_temp0 = ;
+160: 		!VAR_TEMP_temp0 true = ;
+161: 		!VAR_USER_ansNeg !VAR_TEMP_temp0 = ;
+162: 	}
+163: 	!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp0 ;
+164: 	!VAR_TEMP_temp0 if {
+165: 		!VAR_USER_y !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+166: 		!VAR_USER_y !VAR_TEMP_temp0 = ;
+167: 		!VAR_USER_ansNeg ! = !VAR_TEMP_temp0 ;
+168: 		!VAR_USER_ansNeg !VAR_TEMP_temp0 = ;
+169: 	}
+170: 	!VAR_TEMP_temp0 0 = ;
+171: 	!VAR_USER_ans !VAR_TEMP_temp0 = ;
+172: 	!VAR_USER_y0 !VAR_USER_y = ;
+173: 	while ( true ) {
+174: 		!VAR_TEMP_temp0 !VAR_USER_y0 = ;
+175: 		!VAR_TEMP_temp1 !VAR_USER_y = ;
+176: 		!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_gt = !VAR_TEMP_temp2 ;
+177: 		!VAR_TEMP_temp2 ! = !VAR_TEMP_temp0 ;
+178: 		!VAR_TEMP_temp0 if {
+179: 			break ;
+180: 		}
+181: 		!VAR_TEMP_temp0 1 = ;
+182: 		!VAR_USER_y1 !VAR_TEMP_temp0 = ;
+183: 		!VAR_TEMP_temp0 2 = ;
+184: 		!VAR_USER_y2 !VAR_TEMP_temp0 = ;
+185: 		!VAR_USER_val1 !VAR_USER_x = ;
+186: 		!VAR_TEMP_temp0 !VAR_USER_x = ;
+187: 		!VAR_TEMP_temp1 !VAR_USER_x = ;
+188: 		!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_add = !VAR_TEMP_temp2 ;
+189: 		!VAR_USER_val2 !VAR_TEMP_temp2 = ;
+190: 		while ( true ) {
+191: 			!VAR_TEMP_temp0 !VAR_USER_val2 = ;
+192: 			!VAR_TEMP_temp1 !VAR_USER_y0 = ;
+193: 			!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_leq = !VAR_TEMP_temp2 ;
+194: 			!VAR_TEMP_temp2 ! = !VAR_TEMP_temp0 ;
+195: 			!VAR_TEMP_temp0 if {
+196: 				break ;
+197: 			}
+198: 			!VAR_USER_y1 !VAR_USER_y2 = ;
+199: 			!VAR_USER_val1 !VAR_USER_val2 = ;
+200: 			!VAR_TEMP_temp0 !VAR_USER_y2 = ;
+201: 			!VAR_TEMP_temp1 !VAR_USER_y2 = ;
+202: 			!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_add = !VAR_TEMP_temp2 ;
+203: 			!VAR_USER_y2 !VAR_TEMP_temp2 = ;
+204: 			!VAR_TEMP_temp0 !VAR_USER_val2 = ;
+205: 			!VAR_TEMP_temp1 !VAR_USER_val2 = ;
+206: 			!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_add = !VAR_TEMP_temp2 ;
+207: 			!VAR_USER_val2 !VAR_TEMP_temp2 = ;
+208: 		}
+209: 		!VAR_TEMP_temp0 !VAR_USER_ans = ;
+210: 		!VAR_TEMP_temp1 !VAR_USER_val1 = ;
+211: 		!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_add = !VAR_TEMP_temp2 ;
+212: 		!VAR_USER_ans !VAR_TEMP_temp2 = ;
+213: 		!VAR_TEMP_temp0 !VAR_USER_y0 = ;
+214: 		!VAR_TEMP_temp1 !VAR_USER_y1 = ;
+215: 		!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_sub = !VAR_TEMP_temp2 ;
+216: 		!VAR_USER_y0 !VAR_TEMP_temp2 = ;
+217: 	}
+218: 	!VAR_USER_ansNeg if {
+219: 		!VAR_USER_ans !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+220: 		!VAR_USER_ans !VAR_TEMP_temp0 = ;
+221: 	}
+222: 	!TAPE_RAX !VAR_USER_ans = ;
+223: 	return ;
+224: }
+225: int !FUNC_LIB_div ( int !VAR_USER_x , int !VAR_USER_y ) {
+226: 	declare !VAR_TEMP_temp3 !VAR_USER_n !VAR_USER_prevJump !VAR_TEMP_temp2 !VAR_TEMP_temp0 !VAR_TEMP_temp1 !VAR_USER_ans !VAR_USER_jump ;
+227: 	!VAR_USER_x !FUNC_LIB_isZero = !VAR_TEMP_temp0 ;
+228: 	!VAR_TEMP_temp0 if {
+229: 		!VAR_TEMP_temp0 0 = ;
+230: 		!TAPE_RAX !VAR_TEMP_temp0 = ;
+231: 		return ;
+232: 	}
+233: 	!VAR_TEMP_temp0 0 = ;
+234: 	!VAR_TEMP_temp1 0 = ;
+235: 	!VAR_TEMP_temp2 !VAR_USER_x = ;
+236: 	!VAR_TEMP_temp2 !VAR_TEMP_temp0 !FUNC_LIB_lt = !VAR_TEMP_temp3 ;
+237: 	!VAR_TEMP_temp0 !VAR_USER_y = ;
+238: 	!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_lt = !VAR_TEMP_temp2 ;
+239: 	!VAR_TEMP_temp3 !VAR_TEMP_temp2 && = !VAR_TEMP_temp0 ;
+240: 	!VAR_TEMP_temp0 if {
+241: 		!VAR_USER_x !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+242: 		!VAR_USER_y !FUNC_LIB_neg = !VAR_TEMP_temp1 ;
+243: 		!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_div = !VAR_TEMP_temp2 ;
+244: 		!TAPE_RAX !VAR_TEMP_temp2 = ;
+245: 		return ;
+246: 	}
+247: 	!VAR_TEMP_temp0 0 = ;
+248: 	!VAR_TEMP_temp1 !VAR_USER_x = ;
+249: 	!VAR_TEMP_temp1 !VAR_TEMP_temp0 !FUNC_LIB_lt = !VAR_TEMP_temp2 ;
+250: 	!VAR_TEMP_temp2 if {
+251: 		!VAR_USER_x !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+252: 		!VAR_TEMP_temp1 !VAR_USER_y = ;
+253: 		!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_div = !VAR_TEMP_temp2 ;
+254: 		!VAR_TEMP_temp2 !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+255: 		!TAPE_RAX !VAR_TEMP_temp0 = ;
+256: 		return ;
+257: 	}
+258: 	!VAR_TEMP_temp0 0 = ;
+259: 	!VAR_TEMP_temp1 !VAR_USER_y = ;
+260: 	!VAR_TEMP_temp1 !VAR_TEMP_temp0 !FUNC_LIB_lt = !VAR_TEMP_temp2 ;
+261: 	!VAR_TEMP_temp2 if {
+262: 		!VAR_USER_y !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+263: 		!VAR_TEMP_temp1 !VAR_USER_x = ;
+264: 		!VAR_TEMP_temp1 !VAR_TEMP_temp0 !FUNC_LIB_div = !VAR_TEMP_temp2 ;
+265: 		!VAR_TEMP_temp2 !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+266: 		!TAPE_RAX !VAR_TEMP_temp0 = ;
+267: 		return ;
+268: 	}
+269: 	!VAR_TEMP_temp0 0 = ;
+270: 	!VAR_USER_ans !VAR_TEMP_temp0 = ;
+271: 	!VAR_USER_n !VAR_USER_x = ;
+272: 	while ( true ) {
+273: 		!VAR_TEMP_temp0 !VAR_USER_n = ;
+274: 		!VAR_TEMP_temp1 !VAR_USER_y = ;
+275: 		!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_geq = !VAR_TEMP_temp2 ;
+276: 		!VAR_TEMP_temp2 ! = !VAR_TEMP_temp0 ;
+277: 		!VAR_TEMP_temp0 if {
+278: 			break ;
+279: 		}
+280: 		!VAR_TEMP_temp0 0 = ;
+281: 		!VAR_USER_prevJump !VAR_TEMP_temp0 = ;
+282: 		!VAR_TEMP_temp0 1 = ;
+283: 		!VAR_USER_jump !VAR_TEMP_temp0 = ;
+284: 		while ( true ) {
+285: 			!VAR_TEMP_temp0 !VAR_USER_ans = ;
+286: 			!VAR_TEMP_temp1 !VAR_USER_jump = ;
+287: 			!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_add = !VAR_TEMP_temp2 ;
+288: 			!VAR_TEMP_temp0 !VAR_USER_y = ;
+289: 			!VAR_TEMP_temp0 !VAR_TEMP_temp2 !FUNC_LIB_mul = !VAR_TEMP_temp1 ;
+290: 			!VAR_TEMP_temp0 !VAR_USER_x = ;
+291: 			!VAR_TEMP_temp1 !VAR_TEMP_temp0 !FUNC_LIB_leq = !VAR_TEMP_temp2 ;
+292: 			!VAR_TEMP_temp2 ! = !VAR_TEMP_temp0 ;
+293: 			!VAR_TEMP_temp0 if {
+294: 				break ;
+295: 			}
+296: 			!VAR_USER_prevJump !VAR_USER_jump = ;
+297: 			!VAR_TEMP_temp0 !VAR_USER_jump = ;
+298: 			!VAR_TEMP_temp1 !VAR_USER_jump = ;
+299: 			!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_add = !VAR_TEMP_temp2 ;
+300: 			!VAR_USER_jump !VAR_TEMP_temp2 = ;
+301: 		}
+302: 		!VAR_TEMP_temp0 !VAR_USER_ans = ;
+303: 		!VAR_TEMP_temp1 !VAR_USER_prevJump = ;
+304: 		!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_add = !VAR_TEMP_temp2 ;
+305: 		!VAR_USER_ans !VAR_TEMP_temp2 = ;
+306: 		!VAR_TEMP_temp0 !VAR_USER_y = ;
+307: 		!VAR_TEMP_temp1 !VAR_USER_ans = ;
+308: 		!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_mul = !VAR_TEMP_temp2 ;
+309: 		!VAR_TEMP_temp0 !VAR_USER_x = ;
+310: 		!VAR_TEMP_temp0 !VAR_TEMP_temp2 !FUNC_LIB_sub = !VAR_TEMP_temp1 ;
+311: 		!VAR_USER_n !VAR_TEMP_temp1 = ;
+312: 	}
+313: 	!TAPE_RAX !VAR_USER_ans = ;
+314: 	return ;
+315: }
+316: int !FUNC_LIB_mod ( int !VAR_USER_x , int !VAR_USER_y ) {
+317: 	declare !VAR_USER_d !VAR_TEMP_temp1 !VAR_TEMP_temp2 !VAR_TEMP_temp0 ;
+318: 	!VAR_TEMP_temp0 !VAR_USER_x = ;
+319: 	!VAR_TEMP_temp1 !VAR_USER_y = ;
+320: 	!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_div = !VAR_TEMP_temp2 ;
+321: 	!VAR_USER_d !VAR_TEMP_temp2 = ;
+322: 	!VAR_TEMP_temp0 !VAR_USER_y = ;
+323: 	!VAR_TEMP_temp1 !VAR_USER_d = ;
+324: 	!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_mul = !VAR_TEMP_temp2 ;
+325: 	!VAR_TEMP_temp0 !VAR_USER_x = ;
+326: 	!VAR_TEMP_temp0 !VAR_TEMP_temp2 !FUNC_LIB_sub = !VAR_TEMP_temp1 ;
+327: 	!TAPE_RAX !VAR_TEMP_temp1 = ;
+328: 	return ;
+329: }
+330: int !FUNC_LIB_neg ( int !VAR_USER_x ) {
+331: 	declare !VAR_TEMP_temp0 !VAR_TEMP_temp1 ;
+332: 	!VAR_USER_x !FUNC_LIB_isZero = !VAR_TEMP_temp0 ;
+333: 	!VAR_TEMP_temp0 if {
+334: 		!VAR_TEMP_temp0 0 = ;
+335: 		!TAPE_RAX !VAR_TEMP_temp0 = ;
+336: 		return ;
+337: 	}
+338: 	!VAR_TEMP_temp0 0 = ;
+339: 	!VAR_TEMP_temp1 !VAR_USER_x = ;
+340: 	!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_sub = !VAR_TEMP_temp2 ;
+341: 	!TAPE_RAX !VAR_TEMP_temp2 = ;
+342: 	return ;
+343: }
+344: bool !FUNC_LIB_lt ( int !VAR_USER_x , int !VAR_USER_y ) {
+345: 	declare !VAR_TEMP_temp1 !VAR_TEMP_temp0 ;
+346: 	!VAR_USER_x !FUNC_LIB_isNeg = !VAR_TEMP_temp0 ;
+347: 	!VAR_TEMP_temp0 if {
+348: 		!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp0 ;
+349: 		!VAR_TEMP_temp0 if {
+350: 			!VAR_USER_y !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+351: 			!VAR_USER_x !FUNC_LIB_neg = !VAR_TEMP_temp1 ;
+352: 			!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_lt = !VAR_TEMP_temp2 ;
+353: 			!TAPE_RAX !VAR_TEMP_temp2 = ;
+354: 			return ;
+355: 		}
+356: 		else {
+357: 			!VAR_TEMP_temp0 true = ;
+358: 			!TAPE_RAX !VAR_TEMP_temp0 = ;
+359: 			return ;
+360: 		}
+361: 	}
+362: 	else {
+363: 		!VAR_USER_x !FUNC_LIB_isZero = !VAR_TEMP_temp0 ;
+364: 		!VAR_TEMP_temp0 if {
+365: 			!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp0 ;
+366: 			!VAR_TEMP_temp0 if {
+367: 				!VAR_TEMP_temp0 false = ;
+368: 				!TAPE_RAX !VAR_TEMP_temp0 = ;
+369: 				return ;
+370: 			}
+371: 			else if ( !FUNC_LIB_isZero ( !VAR_USER_y ) ) {
+372: 				!VAR_TEMP_temp0 false = ;
+373: 				!TAPE_RAX !VAR_TEMP_temp0 = ;
+374: 				return ;
+375: 			}
+376: 			else {
+377: 				!VAR_TEMP_temp0 true = ;
+378: 				!TAPE_RAX !VAR_TEMP_temp0 = ;
+379: 				return ;
+380: 			}
+381: 		}
+382: 		else {
+383: 			!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp0 ;
+384: 			!VAR_USER_y !FUNC_LIB_isZero = !VAR_TEMP_temp1 ;
+385: 			!VAR_TEMP_temp0 !VAR_TEMP_temp1 || = !VAR_TEMP_temp2 ;
+386: 			!VAR_TEMP_temp2 if {
+387: 				!VAR_TEMP_temp0 false = ;
+388: 				!TAPE_RAX !VAR_TEMP_temp0 = ;
+389: 				return ;
+390: 			}
+391: 			else {
+392: 				!VAR_USER_x !VAR_USER_y !FUNC_LIB_basic_lt = !VAR_TEMP_temp0 ;
+393: 				!TAPE_RAX !VAR_TEMP_temp0 = ;
+394: 				return ;
+395: 			}
+396: 		}
+397: 	}
+398: }
+399: bool !FUNC_LIB_leq ( int !VAR_USER_x , int !VAR_USER_y ) {
+400: 	declare !VAR_TEMP_temp0 !VAR_TEMP_temp1 ;
+401: 	!VAR_TEMP_temp0 !VAR_USER_x = ;
+402: 	!VAR_TEMP_temp1 !VAR_USER_y = ;
+403: 	!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_eq = !VAR_TEMP_temp0 ;
+404: 	!VAR_TEMP_temp0 !VAR_USER_x = ;
+405: 	!VAR_TEMP_temp1 !VAR_USER_y = ;
+406: 	!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_lt = !VAR_TEMP_temp0 ;
+407: 	!VAR_TEMP_temp0 ;
+408: 	!VAR_TEMP_temp0 return = ;
+409: 	!VAR_TEMP_temp0 !VAR_TEMP_temp0 || ;
+410: }
+411: bool !FUNC_LIB_gt ( int !VAR_USER_x , int !VAR_USER_y ) {
+412: 	declare !VAR_TEMP_temp2 !VAR_TEMP_temp0 !VAR_TEMP_temp1 ;
+413: 	!VAR_TEMP_temp0 !VAR_USER_x = ;
+414: 	!VAR_TEMP_temp1 !VAR_USER_y = ;
+415: 	!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_leq = !VAR_TEMP_temp2 ;
+416: 	!VAR_TEMP_temp2 ! = !VAR_TEMP_temp0 ;
+417: 	!TAPE_RAX !VAR_TEMP_temp0 = ;
+418: 	return ;
+419: }
+420: bool !FUNC_LIB_geq ( int !VAR_USER_x , int !VAR_USER_y ) {
+421: 	declare !VAR_TEMP_temp2 !VAR_TEMP_temp0 !VAR_TEMP_temp1 ;
+422: 	!VAR_TEMP_temp0 !VAR_USER_x = ;
+423: 	!VAR_TEMP_temp1 !VAR_USER_y = ;
+424: 	!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_lt = !VAR_TEMP_temp2 ;
+425: 	!VAR_TEMP_temp2 ! = !VAR_TEMP_temp0 ;
+426: 	!TAPE_RAX !VAR_TEMP_temp0 = ;
+427: 	return ;
+428: }
+429: bool !FUNC_LIB_eq ( int !VAR_USER_x , int !VAR_USER_y ) {
+430: 	declare !VAR_TEMP_temp1 !VAR_TEMP_temp0 ;
+431: 	!VAR_USER_x !FUNC_LIB_isZero = !VAR_TEMP_temp0 ;
+432: 	!VAR_TEMP_temp0 if {
+433: 		!VAR_USER_y !FUNC_LIB_isZero = !VAR_TEMP_temp0 ;
+434: 		!VAR_TEMP_temp0 if {
+435: 			!VAR_TEMP_temp0 true = ;
+436: 			!TAPE_RAX !VAR_TEMP_temp0 = ;
+437: 			return ;
+438: 		}
+439: 		!VAR_TEMP_temp0 false = ;
+440: 		!TAPE_RAX !VAR_TEMP_temp0 = ;
+441: 		return ;
+442: 	}
+443: 	else {
+444: 		!VAR_USER_x !FUNC_LIB_isNeg = !VAR_TEMP_temp0 ;
+445: 		!VAR_TEMP_temp0 if {
+446: 			!VAR_USER_y !FUNC_LIB_isNeg = !VAR_TEMP_temp0 ;
+447: 			!VAR_TEMP_temp0 if {
+448: 				!VAR_USER_x !FUNC_LIB_neg = !VAR_TEMP_temp0 ;
+449: 				!VAR_USER_y !FUNC_LIB_neg = !VAR_TEMP_temp1 ;
+450: 				!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_basic_eq = !VAR_TEMP_temp2 ;
+451: 				!TAPE_RAX !VAR_TEMP_temp2 = ;
+452: 				return ;
+453: 			}
+454: 			!VAR_TEMP_temp0 false = ;
+455: 			!TAPE_RAX !VAR_TEMP_temp0 = ;
+456: 			return ;
+457: 		}
+458: 		else {
+459: 			!VAR_USER_y !FUNC_LIB_isPos = !VAR_TEMP_temp0 ;
+460: 			!VAR_TEMP_temp0 if {
+461: 				!VAR_USER_x !VAR_USER_y !FUNC_LIB_basic_eq = !VAR_TEMP_temp0 ;
+462: 				!TAPE_RAX !VAR_TEMP_temp0 = ;
+463: 				return ;
+464: 			}
+465: 			!VAR_TEMP_temp0 false = ;
+466: 			!TAPE_RAX !VAR_TEMP_temp0 = ;
+467: 			return ;
+468: 		}
+469: 	}
+470: }
+471: bool !FUNC_LIB_neq ( int !VAR_USER_x , int !VAR_USER_y ) {
+472: 	declare !VAR_TEMP_temp2 !VAR_TEMP_temp0 !VAR_TEMP_temp1 ;
+473: 	!VAR_TEMP_temp0 !VAR_USER_x = ;
+474: 	!VAR_TEMP_temp1 !VAR_USER_y = ;
+475: 	!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_eq = !VAR_TEMP_temp2 ;
+476: 	!VAR_TEMP_temp2 ! = !VAR_TEMP_temp0 ;
+477: 	!TAPE_RAX !VAR_TEMP_temp0 = ;
+478: 	return ;
+479: }
+480: int !FUNC_LIB_xor ( int !VAR_USER_x , int !VAR_USER_y ) {
+481: 	declare ;
+482: 	!VAR_USER_x !FUNC_LIB_isZero = !VAR_TEMP_temp0 ;
+483: 	!VAR_TEMP_temp0 if {
+484: 		!TAPE_RAX !VAR_USER_y = ;
+485: 		return ;
+486: 	}
+487: 	!VAR_USER_y !FUNC_LIB_isZero = !VAR_TEMP_temp0 ;
+488: 	!VAR_TEMP_temp0 if {
+489: 		!TAPE_RAX !VAR_USER_x = ;
+490: 		return ;
+491: 	}
+492: 	!VAR_USER_x !VAR_USER_y !FUNC_LIB_basic_xor = !VAR_TEMP_temp0 ;
+493: 	!TAPE_RAX !VAR_TEMP_temp0 = ;
+494: 	return ;
+495: }
+496: void !FUNC_LIB_memset ( int !VAR_USER_index , int !VAR_USER_val ) {
+497: 	declare ;
+498: 	return ;
+499: }
+500: int !FUNC_LIB_memget ( int !VAR_USER_index ) {
+501: 	declare !VAR_TEMP_temp0 ;
+502: 	!VAR_TEMP_temp0 0 = ;
+503: 	!TAPE_RAX !VAR_TEMP_temp0 = ;
+504: 	return ;
+505: }
+506: void !FUNC_USER_what ( int !VAR_USER_x ) {
+507: 	declare ;
+508: 	return ;
+509: }
+510: int !FUNC_USER_linear ( int !VAR_USER_a , int !VAR_USER_b , int !VAR_USER_c ) {
+511: 	declare !VAR_USER_temp !VAR_TEMP_temp2 !VAR_TEMP_temp0 !VAR_TEMP_temp1 !VAR_USER_x ;
+512: 	!VAR_TEMP_temp0 !VAR_USER_a = ;
+513: 	!VAR_TEMP_temp1 !VAR_USER_b = ;
+514: 	!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_mul = !VAR_TEMP_temp2 ;
+515: 	!VAR_TEMP_temp0 !VAR_USER_c = ;
+516: 	!VAR_TEMP_temp2 !VAR_TEMP_temp0 !FUNC_LIB_div = !VAR_TEMP_temp1 ;
+517: 	!VAR_USER_temp !VAR_TEMP_temp1 = ;
+518: 	!VAR_TEMP_temp0 1 = ;
+519: 	!VAR_TEMP_temp0 !FUNC_LIB_neg = !VAR_TEMP_temp1 ;
+520: 	!VAR_TEMP_temp0 !VAR_USER_a = ;
+521: 	!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_sub = !VAR_TEMP_temp2 ;
+522: 	!VAR_USER_x !VAR_TEMP_temp2 = ;
+523: 	!TAPE_RAX !VAR_USER_temp = ;
+524: 	return ;
+525: }
+526: int !FUNC_USER_main ( ) {
+527: 	declare !VAR_USER_x !VAR_USER_z !VAR_USER_y !VAR_TEMP_temp2 !VAR_TEMP_temp0 !VAR_TEMP_temp1 !VAR_USER_w ;
+528: 	!FUNC_LIB_nextInt = !VAR_TEMP_temp0 ;
+529: 	!VAR_USER_x !VAR_TEMP_temp0 = ;
+530: 	!VAR_TEMP_temp0 1 = ;
+531: 	!VAR_TEMP_temp1 !VAR_USER_x = ;
+532: 	!VAR_TEMP_temp1 !VAR_TEMP_temp0 !FUNC_LIB_add = !VAR_TEMP_temp2 ;
+533: 	!VAR_USER_y !VAR_TEMP_temp2 = ;
+534: 	!VAR_TEMP_temp0 2 = ;
+535: 	!VAR_TEMP_temp1 1 = ;
+536: 	!VAR_TEMP_temp0 !FUNC_LIB_memget = !VAR_TEMP_temp2 ;
+537: 	!VAR_TEMP_temp2 !VAR_TEMP_temp1 !FUNC_LIB_add = !VAR_TEMP_temp0 ;
+538: 	!VAR_USER_z !VAR_TEMP_temp0 = ;
+539: 	!VAR_TEMP_temp0 5 = ;
+540: 	!VAR_USER_w !VAR_TEMP_temp0 = ;
+541: 	!VAR_TEMP_temp0 !VAR_USER_x = ;
+542: 	!VAR_TEMP_temp1 !VAR_USER_y = ;
+543: 	!VAR_TEMP_temp0 !VAR_TEMP_temp1 !FUNC_LIB_mul = !VAR_TEMP_temp2 ;
+544: 	!VAR_TEMP_temp0 !VAR_USER_w = ;
+545: 	!VAR_TEMP_temp0 !VAR_TEMP_temp2 !FUNC_LIB_sub = !VAR_TEMP_temp1 ;
+546: 	!TAPE_RAX !VAR_TEMP_temp1 = ;
+547: 	return ;
+548: }
+End point A
+after push and pop
+Point B
+  0: int !FUNC_LIB_add {
+  1: 	pop !TAPE_PARAMS !TAPE_tape0 ;
+  2: 	pop !TAPE_PARAMS !TAPE_tape1 ;
+  3: 	declare !VAR_USER_x !VAR_USER_y !VAR_TEMP_temp1 !VAR_TEMP_temp0 !VAR_TEMP_temp2 ;
+  4: 	push !VAR_USER_x !TAPE_PARAMS ;
+  5: 	call !FUNC_LIB_isZero ;
+  6: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+  7: 	!VAR_TEMP_temp0 if {
+  8: 		!TAPE_RAX !VAR_USER_y = ;
+  9: 		return ;
+ 10: 	}
+ 11: 	push !VAR_USER_y !TAPE_PARAMS ;
+ 12: 	call !FUNC_LIB_isZero ;
+ 13: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+ 14: 	!VAR_TEMP_temp0 if {
+ 15: 		!TAPE_RAX !VAR_USER_x = ;
+ 16: 		return ;
+ 17: 	}
+ 18: 	push !VAR_USER_x !TAPE_PARAMS ;
+ 19: 	call !FUNC_LIB_isNeg ;
+ 20: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+ 21: 	push !VAR_USER_y !TAPE_PARAMS ;
+ 22: 	call !FUNC_LIB_isPos ;
+ 23: 	pop !TAPE_RAX !VAR_TEMP_temp1 ;
+ 24: 	!VAR_TEMP_temp0 !VAR_TEMP_temp1 && = !VAR_TEMP_temp2 ;
+ 25: 	!VAR_TEMP_temp2 if {
+ 26: 		push !VAR_USER_x !TAPE_PARAMS ;
+ 27: 		call !FUNC_LIB_neg ;
+ 28: 		pop !TAPE_RAX !VAR_TEMP_temp0 ;
+ 29: 		!VAR_TEMP_temp1 !VAR_USER_y = ;
+ 30: 		push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+ 31: 		push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+ 32: 		call !FUNC_LIB_eq ;
+ 33: 		pop !TAPE_RAX !VAR_TEMP_temp2 ;
+ 34: 		!VAR_TEMP_temp2 if {
+ 35: 			!VAR_TEMP_temp0 0 = ;
+ 36: 			!TAPE_RAX !VAR_TEMP_temp0 = ;
+ 37: 			return ;
+ 38: 		}
+ 39: 		else {
+ 40: 			push !VAR_USER_x !TAPE_PARAMS ;
+ 41: 			call !FUNC_LIB_neg ;
+ 42: 			pop !TAPE_RAX !VAR_TEMP_temp0 ;
+ 43: 			!VAR_TEMP_temp1 !VAR_USER_y = ;
+ 44: 			push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+ 45: 			push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+ 46: 			call !FUNC_LIB_lt ;
+ 47: 			pop !TAPE_RAX !VAR_TEMP_temp2 ;
+ 48: 			!VAR_TEMP_temp2 if {
+ 49: 				push !VAR_USER_x !TAPE_PARAMS ;
+ 50: 				call !FUNC_LIB_neg ;
+ 51: 				pop !TAPE_RAX !VAR_TEMP_temp0 ;
+ 52: 				push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+ 53: 				push !VAR_USER_y !TAPE_PARAMS ;
+ 54: 				call !FUNC_LIB_basic_sub ;
+ 55: 				pop !TAPE_RAX !VAR_TEMP_temp1 ;
+ 56: 				!TAPE_RAX !VAR_TEMP_temp1 = ;
+ 57: 				return ;
+ 58: 			}
+ 59: 			else {
+ 60: 				push !VAR_USER_x !TAPE_PARAMS ;
+ 61: 				call !FUNC_LIB_neg ;
+ 62: 				pop !TAPE_RAX !VAR_TEMP_temp0 ;
+ 63: 				push !VAR_USER_y !TAPE_PARAMS ;
+ 64: 				call !FUNC_LIB_basic_sub ;
+ 65: 				pop !TAPE_RAX !VAR_TEMP_temp1 ;
+ 66: 				push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+ 67: 				push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+ 68: 				call !FUNC_LIB_neg ;
+ 69: 				pop !TAPE_RAX !VAR_TEMP_temp2 ;
+ 70: 				!TAPE_RAX !VAR_TEMP_temp2 = ;
+ 71: 				return ;
+ 72: 			}
+ 73: 		}
+ 74: 	}
+ 75: 	else {
+ 76: 		push !VAR_USER_x !TAPE_PARAMS ;
+ 77: 		call !FUNC_LIB_isPos ;
+ 78: 		pop !TAPE_RAX !VAR_TEMP_temp0 ;
+ 79: 		push !VAR_USER_y !TAPE_PARAMS ;
+ 80: 		call !FUNC_LIB_isNeg ;
+ 81: 		pop !TAPE_RAX !VAR_TEMP_temp1 ;
+ 82: 		!VAR_TEMP_temp0 !VAR_TEMP_temp1 && = !VAR_TEMP_temp2 ;
+ 83: 		!VAR_TEMP_temp2 if {
+ 84: 			push !VAR_USER_y !TAPE_PARAMS ;
+ 85: 			call !FUNC_LIB_neg ;
+ 86: 			pop !TAPE_RAX !VAR_TEMP_temp0 ;
+ 87: 			!VAR_TEMP_temp1 !VAR_USER_x = ;
+ 88: 			push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+ 89: 			push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+ 90: 			call !FUNC_LIB_eq ;
+ 91: 			pop !TAPE_RAX !VAR_TEMP_temp2 ;
+ 92: 			!VAR_TEMP_temp2 if {
+ 93: 				!VAR_TEMP_temp0 0 = ;
+ 94: 				!TAPE_RAX !VAR_TEMP_temp0 = ;
+ 95: 				return ;
+ 96: 			}
+ 97: 			push !VAR_USER_y !TAPE_PARAMS ;
+ 98: 			push !FUNC_LIB_sub !TAPE_PARAMS ;
+ 99: 			push ( !TAPE_PARAMS ;
+100: 			push if !TAPE_PARAMS ;
+101: 			push else !TAPE_PARAMS ;
+102: 			call !FUNC_LIB_lt ;
+103: 			pop !TAPE_RAX ) ;
+104: 			push !VAR_USER_y !TAPE_PARAMS ;
+105: 			call !FUNC_LIB_neg ;
+106: 			pop !TAPE_RAX !VAR_TEMP_temp0 ;
+107: 			push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+108: 			push !VAR_USER_x !TAPE_PARAMS ;
+109: 			call !FUNC_LIB_basic_sub ;
+110: 			pop !TAPE_RAX !VAR_TEMP_temp1 ;
+111: 			!TAPE_RAX !VAR_TEMP_temp1 = ;
+112: 			return ;
+113: 		}
+114: 		else {
+115: 			push !VAR_USER_y !TAPE_PARAMS ;
+116: 			call !FUNC_LIB_neg ;
+117: 			pop !TAPE_RAX !VAR_TEMP_temp0 ;
+118: 			push !VAR_USER_x !TAPE_PARAMS ;
+119: 			call !FUNC_LIB_basic_sub ;
+120: 			pop !TAPE_RAX !VAR_TEMP_temp1 ;
+121: 			push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+122: 			push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+123: 			call !FUNC_LIB_neg ;
+124: 			pop !TAPE_RAX !VAR_TEMP_temp2 ;
+125: 			!TAPE_RAX !VAR_TEMP_temp2 = ;
+126: 			return ;
+127: 		}
+128: 	}
+129: 	else {
+130: 		push !VAR_USER_x !TAPE_PARAMS ;
+131: 		call !FUNC_LIB_isNeg ;
+132: 		pop !TAPE_RAX !VAR_TEMP_temp0 ;
+133: 		push !VAR_USER_y !TAPE_PARAMS ;
+134: 		call !FUNC_LIB_isNeg ;
+135: 		pop !TAPE_RAX !VAR_TEMP_temp1 ;
+136: 		!VAR_TEMP_temp0 !VAR_TEMP_temp1 && = !VAR_TEMP_temp2 ;
+137: 		!VAR_TEMP_temp2 if {
+138: 			push !VAR_USER_x !TAPE_PARAMS ;
+139: 			call !FUNC_LIB_neg ;
+140: 			pop !TAPE_RAX !VAR_TEMP_temp0 ;
+141: 			push !VAR_USER_y !TAPE_PARAMS ;
+142: 			call !FUNC_LIB_neg ;
+143: 			pop !TAPE_RAX !VAR_TEMP_temp1 ;
+144: 			push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+145: 			call !FUNC_LIB_basic_add ;
+146: 			pop !TAPE_RAX !VAR_TEMP_temp2 ;
+147: 			push !VAR_TEMP_temp2 !TAPE_PARAMS ;
+148: 			push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+149: 			call !FUNC_LIB_neg ;
+150: 			pop !TAPE_RAX !VAR_TEMP_temp1 ;
+151: 			!TAPE_RAX !VAR_TEMP_temp1 = ;
+152: 			return ;
+153: 		}
+154: 		else {
+155: 			push !VAR_USER_y !TAPE_PARAMS ;
+156: 			push !VAR_USER_x !TAPE_PARAMS ;
+157: 			call !FUNC_LIB_basic_add ;
+158: 			pop !TAPE_RAX !VAR_TEMP_temp0 ;
+159: 			!TAPE_RAX !VAR_TEMP_temp0 = ;
+160: 			return ;
+161: 		}
+162: 	}
+163: }}
+164: int !FUNC_LIB_sub {
+165: pop !TAPE_PARAMS !TAPE_tape0 ;
+166: pop !TAPE_PARAMS !TAPE_tape1 ;
+167: declare !VAR_USER_x !VAR_USER_y !VAR_TEMP_temp0 !VAR_TEMP_temp1 ;
+168: push !VAR_USER_x !TAPE_PARAMS ;
+169: call !FUNC_LIB_isZero ;
+170: pop !TAPE_RAX !VAR_TEMP_temp0 ;
+171: !VAR_TEMP_temp0 if {
+172: 	push !VAR_USER_y !TAPE_PARAMS ;
+173: 	call !FUNC_LIB_neg ;
+174: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+175: 	!TAPE_RAX !VAR_TEMP_temp0 = ;
+176: 	return ;
+177: }
+178: push !VAR_USER_y !TAPE_PARAMS ;
+179: call !FUNC_LIB_isZero ;
+180: pop !TAPE_RAX !VAR_TEMP_temp0 ;
+181: !VAR_TEMP_temp0 if {
+182: 	!TAPE_RAX !VAR_USER_x = ;
+183: 	return ;
+184: }
+185: push !VAR_USER_x !TAPE_PARAMS ;
+186: call !FUNC_LIB_isNeg ;
+187: pop !TAPE_RAX !VAR_TEMP_temp0 ;
+188: push !VAR_USER_y !TAPE_PARAMS ;
+189: call !FUNC_LIB_isNeg ;
+190: pop !TAPE_RAX !VAR_TEMP_temp1 ;
+191: !VAR_TEMP_temp0 !VAR_TEMP_temp1 && = !VAR_TEMP_temp2 ;
+192: !VAR_TEMP_temp2 if {
+193: 	push !VAR_USER_y !TAPE_PARAMS ;
+194: 	call !FUNC_LIB_neg ;
+195: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+196: 	!VAR_TEMP_temp1 !VAR_USER_x = ;
+197: 	push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+198: 	push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+199: 	call !FUNC_LIB_add ;
+200: 	pop !TAPE_RAX !VAR_TEMP_temp2 ;
+201: 	!TAPE_RAX !VAR_TEMP_temp2 = ;
+202: 	return ;
+203: }
+204: else {
+205: 	push !VAR_USER_x !TAPE_PARAMS ;
+206: 	call !FUNC_LIB_isNeg ;
+207: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+208: 	push !VAR_USER_y !TAPE_PARAMS ;
+209: 	call !FUNC_LIB_isPos ;
+210: 	pop !TAPE_RAX !VAR_TEMP_temp1 ;
+211: 	!VAR_TEMP_temp0 !VAR_TEMP_temp1 && = !VAR_TEMP_temp2 ;
+212: 	!VAR_TEMP_temp2 if {
+213: 		push !VAR_USER_x !TAPE_PARAMS ;
+214: 		call !FUNC_LIB_neg ;
+215: 		pop !TAPE_RAX !VAR_TEMP_temp0 ;
+216: 		push !VAR_USER_y !TAPE_PARAMS ;
+217: 		call !FUNC_LIB_basic_add ;
+218: 		pop !TAPE_RAX !VAR_TEMP_temp1 ;
+219: 		push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+220: 		push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+221: 		call !FUNC_LIB_neg ;
+222: 		pop !TAPE_RAX !VAR_TEMP_temp2 ;
+223: 		!TAPE_RAX !VAR_TEMP_temp2 = ;
+224: 		return ;
+225: 	}
+226: 	else {
+227: 		push !VAR_USER_x !TAPE_PARAMS ;
+228: 		call !FUNC_LIB_isPos ;
+229: 		pop !TAPE_RAX !VAR_TEMP_temp0 ;
+230: 		push !VAR_USER_y !TAPE_PARAMS ;
+231: 		call !FUNC_LIB_isNeg ;
+232: 		pop !TAPE_RAX !VAR_TEMP_temp1 ;
+233: 		!VAR_TEMP_temp0 !VAR_TEMP_temp1 && = !VAR_TEMP_temp2 ;
+234: 		!VAR_TEMP_temp2 if {
+235: 			push !VAR_USER_y !TAPE_PARAMS ;
+236: 			call !FUNC_LIB_neg ;
+237: 			pop !TAPE_RAX !VAR_TEMP_temp0 ;
+238: 			push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+239: 			push !VAR_USER_x !TAPE_PARAMS ;
+240: 			call !FUNC_LIB_basic_add ;
+241: 			pop !TAPE_RAX !VAR_TEMP_temp1 ;
+242: 			!TAPE_RAX !VAR_TEMP_temp1 = ;
+243: 			return ;
+244: 		}
+245: 		else {
+246: 			push !VAR_USER_y !TAPE_PARAMS ;
+247: 			call !FUNC_LIB_neg ;
+248: 			pop !TAPE_RAX !VAR_TEMP_temp0 ;
+249: 			!VAR_TEMP_temp1 !VAR_USER_x = ;
+250: 			push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+251: 			push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+252: 			call !FUNC_LIB_add ;
+253: 			pop !TAPE_RAX !VAR_TEMP_temp2 ;
+254: 			!TAPE_RAX !VAR_TEMP_temp2 = ;
+255: 			return ;
+256: 		}
+257: 	}
+258: }}
+259: int !FUNC_LIB_mul {
+260: pop !TAPE_PARAMS !TAPE_tape0 ;
+261: pop !TAPE_PARAMS !TAPE_tape1 ;
+262: declare !VAR_USER_x !VAR_USER_y !VAR_USER_ans !VAR_USER_y0 !VAR_USER_y1 !VAR_USER_y2 !VAR_USER_val1 !VAR_TEMP_temp2 !VAR_USER_val2 !VAR_USER_ansNeg !VAR_TEMP_temp0 !VAR_TEMP_temp1 ;
+263: push !VAR_USER_x !TAPE_PARAMS ;
+264: call !FUNC_LIB_isZero ;
+265: pop !TAPE_RAX !VAR_TEMP_temp0 ;
+266: push !VAR_USER_y !TAPE_PARAMS ;
+267: call !FUNC_LIB_isZero ;
+268: pop !TAPE_RAX !VAR_TEMP_temp1 ;
+269: !VAR_TEMP_temp0 !VAR_TEMP_temp1 || = !VAR_TEMP_temp2 ;
+270: !VAR_TEMP_temp2 if {
+271: 	!VAR_TEMP_temp0 0 = ;
+272: 	!TAPE_RAX !VAR_TEMP_temp0 = ;
+273: 	return ;
+274: }
+275: !VAR_TEMP_temp0 false = ;
+276: !VAR_USER_ansNeg !VAR_TEMP_temp0 = ;
+277: push !VAR_USER_x !TAPE_PARAMS ;
+278: call !FUNC_LIB_isNeg ;
+279: pop !TAPE_RAX !VAR_TEMP_temp0 ;
+280: !VAR_TEMP_temp0 if {
+281: 	push !VAR_USER_x !TAPE_PARAMS ;
+282: 	call !FUNC_LIB_neg ;
+283: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+284: 	!VAR_USER_x !VAR_TEMP_temp0 = ;
+285: 	!VAR_TEMP_temp0 true = ;
+286: 	!VAR_USER_ansNeg !VAR_TEMP_temp0 = ;
+287: }
+288: push !VAR_USER_y !TAPE_PARAMS ;
+289: call !FUNC_LIB_isNeg ;
+290: pop !TAPE_RAX !VAR_TEMP_temp0 ;
+291: !VAR_TEMP_temp0 if {
+292: 	push !VAR_USER_y !TAPE_PARAMS ;
+293: 	call !FUNC_LIB_neg ;
+294: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+295: 	!VAR_USER_y !VAR_TEMP_temp0 = ;
+296: 	!VAR_USER_ansNeg ! = !VAR_TEMP_temp0 ;
+297: 	!VAR_USER_ansNeg !VAR_TEMP_temp0 = ;
+298: }
+299: !VAR_TEMP_temp0 0 = ;
+300: !VAR_USER_ans !VAR_TEMP_temp0 = ;
+301: !VAR_USER_y0 !VAR_USER_y = ;
+302: while ( true ) {
+303: 	!VAR_TEMP_temp0 !VAR_USER_y0 = ;
+304: 	!VAR_TEMP_temp1 !VAR_USER_y = ;
+305: 	push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+306: 	push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+307: 	call !FUNC_LIB_gt ;
+308: 	pop !TAPE_RAX !VAR_TEMP_temp2 ;
+309: 	!VAR_TEMP_temp2 ! = !VAR_TEMP_temp0 ;
+310: 	!VAR_TEMP_temp0 if {
+311: 		break ;
+312: 	}
+313: 	!VAR_TEMP_temp0 1 = ;
+314: 	!VAR_USER_y1 !VAR_TEMP_temp0 = ;
+315: 	!VAR_TEMP_temp0 2 = ;
+316: 	!VAR_USER_y2 !VAR_TEMP_temp0 = ;
+317: 	!VAR_USER_val1 !VAR_USER_x = ;
+318: 	!VAR_TEMP_temp0 !VAR_USER_x = ;
+319: 	!VAR_TEMP_temp1 !VAR_USER_x = ;
+320: 	push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+321: 	push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+322: 	call !FUNC_LIB_add ;
+323: 	pop !TAPE_RAX !VAR_TEMP_temp2 ;
+324: 	!VAR_USER_val2 !VAR_TEMP_temp2 = ;
+325: 	while ( true ) {
+326: 		!VAR_TEMP_temp0 !VAR_USER_val2 = ;
+327: 		!VAR_TEMP_temp1 !VAR_USER_y0 = ;
+328: 		push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+329: 		push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+330: 		call !FUNC_LIB_leq ;
+331: 		pop !TAPE_RAX !VAR_TEMP_temp2 ;
+332: 		!VAR_TEMP_temp2 ! = !VAR_TEMP_temp0 ;
+333: 		!VAR_TEMP_temp0 if {
+334: 			break ;
+335: 		}
+336: 		!VAR_USER_y1 !VAR_USER_y2 = ;
+337: 		!VAR_USER_val1 !VAR_USER_val2 = ;
+338: 		!VAR_TEMP_temp0 !VAR_USER_y2 = ;
+339: 		!VAR_TEMP_temp1 !VAR_USER_y2 = ;
+340: 		push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+341: 		push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+342: 		call !FUNC_LIB_add ;
+343: 		pop !TAPE_RAX !VAR_TEMP_temp2 ;
+344: 		!VAR_USER_y2 !VAR_TEMP_temp2 = ;
+345: 		!VAR_TEMP_temp0 !VAR_USER_val2 = ;
+346: 		!VAR_TEMP_temp1 !VAR_USER_val2 = ;
+347: 		push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+348: 		push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+349: 		call !FUNC_LIB_add ;
+350: 		pop !TAPE_RAX !VAR_TEMP_temp2 ;
+351: 		!VAR_USER_val2 !VAR_TEMP_temp2 = ;
+352: 	}
+353: 	!VAR_TEMP_temp0 !VAR_USER_ans = ;
+354: 	!VAR_TEMP_temp1 !VAR_USER_val1 = ;
+355: 	push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+356: 	push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+357: 	call !FUNC_LIB_add ;
+358: 	pop !TAPE_RAX !VAR_TEMP_temp2 ;
+359: 	!VAR_USER_ans !VAR_TEMP_temp2 = ;
+360: 	!VAR_TEMP_temp0 !VAR_USER_y0 = ;
+361: 	!VAR_TEMP_temp1 !VAR_USER_y1 = ;
+362: 	push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+363: 	push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+364: 	call !FUNC_LIB_sub ;
+365: 	pop !TAPE_RAX !VAR_TEMP_temp2 ;
+366: 	!VAR_USER_y0 !VAR_TEMP_temp2 = ;
+367: }
+368: !VAR_USER_ansNeg if {
+369: 	push !VAR_USER_ans !TAPE_PARAMS ;
+370: 	call !FUNC_LIB_neg ;
+371: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+372: 	!VAR_USER_ans !VAR_TEMP_temp0 = ;
+373: }
+374: !TAPE_RAX !VAR_USER_ans = ;
+375: return ;}
+376: int !FUNC_LIB_div {
+377: pop !TAPE_PARAMS !TAPE_tape0 ;
+378: pop !TAPE_PARAMS !TAPE_tape1 ;
+379: declare !VAR_USER_x !VAR_USER_y !VAR_TEMP_temp3 !VAR_USER_n !VAR_USER_prevJump !VAR_TEMP_temp2 !VAR_TEMP_temp0 !VAR_TEMP_temp1 !VAR_USER_ans !VAR_USER_jump ;
+380: push !VAR_USER_x !TAPE_PARAMS ;
+381: call !FUNC_LIB_isZero ;
+382: pop !TAPE_RAX !VAR_TEMP_temp0 ;
+383: !VAR_TEMP_temp0 if {
+384: 	!VAR_TEMP_temp0 0 = ;
+385: 	!TAPE_RAX !VAR_TEMP_temp0 = ;
+386: 	return ;
+387: }
+388: !VAR_TEMP_temp0 0 = ;
+389: !VAR_TEMP_temp1 0 = ;
+390: !VAR_TEMP_temp2 !VAR_USER_x = ;
+391: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+392: push !VAR_TEMP_temp2 !TAPE_PARAMS ;
+393: call !FUNC_LIB_lt ;
+394: pop !TAPE_RAX !VAR_TEMP_temp3 ;
+395: !VAR_TEMP_temp0 !VAR_USER_y = ;
+396: push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+397: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+398: call !FUNC_LIB_lt ;
+399: pop !TAPE_RAX !VAR_TEMP_temp2 ;
+400: !VAR_TEMP_temp3 !VAR_TEMP_temp2 && = !VAR_TEMP_temp0 ;
+401: !VAR_TEMP_temp0 if {
+402: 	push !VAR_USER_x !TAPE_PARAMS ;
+403: 	call !FUNC_LIB_neg ;
+404: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+405: 	push !VAR_USER_y !TAPE_PARAMS ;
+406: 	call !FUNC_LIB_neg ;
+407: 	pop !TAPE_RAX !VAR_TEMP_temp1 ;
+408: 	push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+409: 	push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+410: 	call !FUNC_LIB_div ;
+411: 	pop !TAPE_RAX !VAR_TEMP_temp2 ;
+412: 	!TAPE_RAX !VAR_TEMP_temp2 = ;
+413: 	return ;
+414: }
+415: !VAR_TEMP_temp0 0 = ;
+416: !VAR_TEMP_temp1 !VAR_USER_x = ;
+417: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+418: push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+419: call !FUNC_LIB_lt ;
+420: pop !TAPE_RAX !VAR_TEMP_temp2 ;
+421: !VAR_TEMP_temp2 if {
+422: 	push !VAR_USER_x !TAPE_PARAMS ;
+423: 	call !FUNC_LIB_neg ;
+424: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+425: 	!VAR_TEMP_temp1 !VAR_USER_y = ;
+426: 	push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+427: 	push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+428: 	call !FUNC_LIB_div ;
+429: 	pop !TAPE_RAX !VAR_TEMP_temp2 ;
+430: 	push !VAR_TEMP_temp2 !TAPE_PARAMS ;
+431: 	call !FUNC_LIB_neg ;
+432: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+433: 	!TAPE_RAX !VAR_TEMP_temp0 = ;
+434: 	return ;
+435: }
+436: !VAR_TEMP_temp0 0 = ;
+437: !VAR_TEMP_temp1 !VAR_USER_y = ;
+438: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+439: push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+440: call !FUNC_LIB_lt ;
+441: pop !TAPE_RAX !VAR_TEMP_temp2 ;
+442: !VAR_TEMP_temp2 if {
+443: 	push !VAR_USER_y !TAPE_PARAMS ;
+444: 	call !FUNC_LIB_neg ;
+445: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+446: 	!VAR_TEMP_temp1 !VAR_USER_x = ;
+447: 	push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+448: 	push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+449: 	call !FUNC_LIB_div ;
+450: 	pop !TAPE_RAX !VAR_TEMP_temp2 ;
+451: 	push !VAR_TEMP_temp2 !TAPE_PARAMS ;
+452: 	call !FUNC_LIB_neg ;
+453: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+454: 	!TAPE_RAX !VAR_TEMP_temp0 = ;
+455: 	return ;
+456: }
+457: !VAR_TEMP_temp0 0 = ;
+458: !VAR_USER_ans !VAR_TEMP_temp0 = ;
+459: !VAR_USER_n !VAR_USER_x = ;
+460: while ( true ) {
+461: 	!VAR_TEMP_temp0 !VAR_USER_n = ;
+462: 	!VAR_TEMP_temp1 !VAR_USER_y = ;
+463: 	push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+464: 	push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+465: 	call !FUNC_LIB_geq ;
+466: 	pop !TAPE_RAX !VAR_TEMP_temp2 ;
+467: 	!VAR_TEMP_temp2 ! = !VAR_TEMP_temp0 ;
+468: 	!VAR_TEMP_temp0 if {
+469: 		break ;
+470: 	}
+471: 	!VAR_TEMP_temp0 0 = ;
+472: 	!VAR_USER_prevJump !VAR_TEMP_temp0 = ;
+473: 	!VAR_TEMP_temp0 1 = ;
+474: 	!VAR_USER_jump !VAR_TEMP_temp0 = ;
+475: 	while ( true ) {
+476: 		!VAR_TEMP_temp0 !VAR_USER_ans = ;
+477: 		!VAR_TEMP_temp1 !VAR_USER_jump = ;
+478: 		push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+479: 		push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+480: 		call !FUNC_LIB_add ;
+481: 		pop !TAPE_RAX !VAR_TEMP_temp2 ;
+482: 		!VAR_TEMP_temp0 !VAR_USER_y = ;
+483: 		push !VAR_TEMP_temp2 !TAPE_PARAMS ;
+484: 		push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+485: 		call !FUNC_LIB_mul ;
+486: 		pop !TAPE_RAX !VAR_TEMP_temp1 ;
+487: 		!VAR_TEMP_temp0 !VAR_USER_x = ;
+488: 		push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+489: 		push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+490: 		call !FUNC_LIB_leq ;
+491: 		pop !TAPE_RAX !VAR_TEMP_temp2 ;
+492: 		!VAR_TEMP_temp2 ! = !VAR_TEMP_temp0 ;
+493: 		!VAR_TEMP_temp0 if {
+494: 			break ;
+495: 		}
+496: 		!VAR_USER_prevJump !VAR_USER_jump = ;
+497: 		!VAR_TEMP_temp0 !VAR_USER_jump = ;
+498: 		!VAR_TEMP_temp1 !VAR_USER_jump = ;
+499: 		push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+500: 		push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+501: 		call !FUNC_LIB_add ;
+502: 		pop !TAPE_RAX !VAR_TEMP_temp2 ;
+503: 		!VAR_USER_jump !VAR_TEMP_temp2 = ;
+504: 	}
+505: 	!VAR_TEMP_temp0 !VAR_USER_ans = ;
+506: 	!VAR_TEMP_temp1 !VAR_USER_prevJump = ;
+507: 	push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+508: 	push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+509: 	call !FUNC_LIB_add ;
+510: 	pop !TAPE_RAX !VAR_TEMP_temp2 ;
+511: 	!VAR_USER_ans !VAR_TEMP_temp2 = ;
+512: 	!VAR_TEMP_temp0 !VAR_USER_y = ;
+513: 	!VAR_TEMP_temp1 !VAR_USER_ans = ;
+514: 	push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+515: 	push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+516: 	call !FUNC_LIB_mul ;
+517: 	pop !TAPE_RAX !VAR_TEMP_temp2 ;
+518: 	!VAR_TEMP_temp0 !VAR_USER_x = ;
+519: 	push !VAR_TEMP_temp2 !TAPE_PARAMS ;
+520: 	push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+521: 	call !FUNC_LIB_sub ;
+522: 	pop !TAPE_RAX !VAR_TEMP_temp1 ;
+523: 	!VAR_USER_n !VAR_TEMP_temp1 = ;
+524: }
+525: !TAPE_RAX !VAR_USER_ans = ;
+526: return ;}
+527: int !FUNC_LIB_mod {
+528: pop !TAPE_PARAMS !TAPE_tape0 ;
+529: pop !TAPE_PARAMS !TAPE_tape1 ;
+530: declare !VAR_USER_x !VAR_USER_y !VAR_USER_d !VAR_TEMP_temp1 !VAR_TEMP_temp2 !VAR_TEMP_temp0 ;
+531: !VAR_TEMP_temp0 !VAR_USER_x = ;
+532: !VAR_TEMP_temp1 !VAR_USER_y = ;
+533: push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+534: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+535: call !FUNC_LIB_div ;
+536: pop !TAPE_RAX !VAR_TEMP_temp2 ;
+537: !VAR_USER_d !VAR_TEMP_temp2 = ;
+538: !VAR_TEMP_temp0 !VAR_USER_y = ;
+539: !VAR_TEMP_temp1 !VAR_USER_d = ;
+540: push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+541: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+542: call !FUNC_LIB_mul ;
+543: pop !TAPE_RAX !VAR_TEMP_temp2 ;
+544: !VAR_TEMP_temp0 !VAR_USER_x = ;
+545: push !VAR_TEMP_temp2 !TAPE_PARAMS ;
+546: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+547: call !FUNC_LIB_sub ;
+548: pop !TAPE_RAX !VAR_TEMP_temp1 ;
+549: !TAPE_RAX !VAR_TEMP_temp1 = ;
+550: return ;}
+551: int !FUNC_LIB_neg {
+552: pop !TAPE_PARAMS !TAPE_tape0 ;
+553: declare !VAR_USER_x !VAR_TEMP_temp0 !VAR_TEMP_temp1 ;
+554: push !VAR_USER_x !TAPE_PARAMS ;
+555: call !FUNC_LIB_isZero ;
+556: pop !TAPE_RAX !VAR_TEMP_temp0 ;
+557: !VAR_TEMP_temp0 if {
+558: 	!VAR_TEMP_temp0 0 = ;
+559: 	!TAPE_RAX !VAR_TEMP_temp0 = ;
+560: 	return ;
+561: }
+562: !VAR_TEMP_temp0 0 = ;
+563: !VAR_TEMP_temp1 !VAR_USER_x = ;
+564: push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+565: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+566: call !FUNC_LIB_sub ;
+567: pop !TAPE_RAX !VAR_TEMP_temp2 ;
+568: !TAPE_RAX !VAR_TEMP_temp2 = ;
+569: return ;}
+570: bool !FUNC_LIB_lt {
+571: pop !TAPE_PARAMS !TAPE_tape0 ;
+572: pop !TAPE_PARAMS !TAPE_tape1 ;
+573: declare !VAR_USER_x !VAR_USER_y !VAR_TEMP_temp1 !VAR_TEMP_temp0 ;
+574: push !VAR_USER_x !TAPE_PARAMS ;
+575: call !FUNC_LIB_isNeg ;
+576: pop !TAPE_RAX !VAR_TEMP_temp0 ;
+577: !VAR_TEMP_temp0 if {
+578: 	push !VAR_USER_y !TAPE_PARAMS ;
+579: 	call !FUNC_LIB_isNeg ;
+580: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+581: 	!VAR_TEMP_temp0 if {
+582: 		push !VAR_USER_y !TAPE_PARAMS ;
+583: 		call !FUNC_LIB_neg ;
+584: 		pop !TAPE_RAX !VAR_TEMP_temp0 ;
+585: 		push !VAR_USER_x !TAPE_PARAMS ;
+586: 		call !FUNC_LIB_neg ;
+587: 		pop !TAPE_RAX !VAR_TEMP_temp1 ;
+588: 		push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+589: 		push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+590: 		call !FUNC_LIB_lt ;
+591: 		pop !TAPE_RAX !VAR_TEMP_temp2 ;
+592: 		!TAPE_RAX !VAR_TEMP_temp2 = ;
+593: 		return ;
+594: 	}
+595: 	else {
+596: 		!VAR_TEMP_temp0 true = ;
+597: 		!TAPE_RAX !VAR_TEMP_temp0 = ;
+598: 		return ;
+599: 	}
+600: }
+601: else {
+602: 	push !VAR_USER_x !TAPE_PARAMS ;
+603: 	call !FUNC_LIB_isZero ;
+604: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+605: 	!VAR_TEMP_temp0 if {
+606: 		push !VAR_USER_y !TAPE_PARAMS ;
+607: 		call !FUNC_LIB_isNeg ;
+608: 		pop !TAPE_RAX !VAR_TEMP_temp0 ;
+609: 		!VAR_TEMP_temp0 if {
+610: 			!VAR_TEMP_temp0 false = ;
+611: 			!TAPE_RAX !VAR_TEMP_temp0 = ;
+612: 			return ;
+613: 		}
+614: 		else if ( !FUNC_LIB_isZero ( !VAR_USER_y ) ) {
+615: 			!VAR_TEMP_temp0 false = ;
+616: 			!TAPE_RAX !VAR_TEMP_temp0 = ;
+617: 			return ;
+618: 		}
+619: 		else {
+620: 			!VAR_TEMP_temp0 true = ;
+621: 			!TAPE_RAX !VAR_TEMP_temp0 = ;
+622: 			return ;
+623: 		}
+624: 	}
+625: 	else {
+626: 		push !VAR_USER_y !TAPE_PARAMS ;
+627: 		call !FUNC_LIB_isNeg ;
+628: 		pop !TAPE_RAX !VAR_TEMP_temp0 ;
+629: 		push !VAR_USER_y !TAPE_PARAMS ;
+630: 		call !FUNC_LIB_isZero ;
+631: 		pop !TAPE_RAX !VAR_TEMP_temp1 ;
+632: 		!VAR_TEMP_temp0 !VAR_TEMP_temp1 || = !VAR_TEMP_temp2 ;
+633: 		!VAR_TEMP_temp2 if {
+634: 			!VAR_TEMP_temp0 false = ;
+635: 			!TAPE_RAX !VAR_TEMP_temp0 = ;
+636: 			return ;
+637: 		}
+638: 		else {
+639: 			push !VAR_USER_y !TAPE_PARAMS ;
+640: 			push !VAR_USER_x !TAPE_PARAMS ;
+641: 			call !FUNC_LIB_basic_lt ;
+642: 			pop !TAPE_RAX !VAR_TEMP_temp0 ;
+643: 			!TAPE_RAX !VAR_TEMP_temp0 = ;
+644: 			return ;
+645: 		}
+646: 	}
+647: }}
+648: bool !FUNC_LIB_leq {
+649: pop !TAPE_PARAMS !TAPE_tape0 ;
+650: pop !TAPE_PARAMS !TAPE_tape1 ;
+651: declare !VAR_USER_x !VAR_USER_y !VAR_TEMP_temp0 !VAR_TEMP_temp1 ;
+652: !VAR_TEMP_temp0 !VAR_USER_x = ;
+653: !VAR_TEMP_temp1 !VAR_USER_y = ;
+654: push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+655: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+656: call !FUNC_LIB_eq ;
+657: pop !TAPE_RAX !VAR_TEMP_temp0 ;
+658: !VAR_TEMP_temp0 !VAR_USER_x = ;
+659: !VAR_TEMP_temp1 !VAR_USER_y = ;
+660: push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+661: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+662: call !FUNC_LIB_lt ;
+663: pop !TAPE_RAX !VAR_TEMP_temp0 ;
+664: !VAR_TEMP_temp0 ;
+665: !VAR_TEMP_temp0 return = ;
+666: !VAR_TEMP_temp0 !VAR_TEMP_temp0 || ;}
+667: bool !FUNC_LIB_gt {
+668: pop !TAPE_PARAMS !TAPE_tape0 ;
+669: pop !TAPE_PARAMS !TAPE_tape1 ;
+670: declare !VAR_USER_x !VAR_USER_y !VAR_TEMP_temp2 !VAR_TEMP_temp0 !VAR_TEMP_temp1 ;
+671: !VAR_TEMP_temp0 !VAR_USER_x = ;
+672: !VAR_TEMP_temp1 !VAR_USER_y = ;
+673: push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+674: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+675: call !FUNC_LIB_leq ;
+676: pop !TAPE_RAX !VAR_TEMP_temp2 ;
+677: !VAR_TEMP_temp2 ! = !VAR_TEMP_temp0 ;
+678: !TAPE_RAX !VAR_TEMP_temp0 = ;
+679: return ;}
+680: bool !FUNC_LIB_geq {
+681: pop !TAPE_PARAMS !TAPE_tape0 ;
+682: pop !TAPE_PARAMS !TAPE_tape1 ;
+683: declare !VAR_USER_x !VAR_USER_y !VAR_TEMP_temp2 !VAR_TEMP_temp0 !VAR_TEMP_temp1 ;
+684: !VAR_TEMP_temp0 !VAR_USER_x = ;
+685: !VAR_TEMP_temp1 !VAR_USER_y = ;
+686: push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+687: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+688: call !FUNC_LIB_lt ;
+689: pop !TAPE_RAX !VAR_TEMP_temp2 ;
+690: !VAR_TEMP_temp2 ! = !VAR_TEMP_temp0 ;
+691: !TAPE_RAX !VAR_TEMP_temp0 = ;
+692: return ;}
+693: bool !FUNC_LIB_eq {
+694: pop !TAPE_PARAMS !TAPE_tape0 ;
+695: pop !TAPE_PARAMS !TAPE_tape1 ;
+696: declare !VAR_USER_x !VAR_USER_y !VAR_TEMP_temp1 !VAR_TEMP_temp0 ;
+697: push !VAR_USER_x !TAPE_PARAMS ;
+698: call !FUNC_LIB_isZero ;
+699: pop !TAPE_RAX !VAR_TEMP_temp0 ;
+700: !VAR_TEMP_temp0 if {
+701: 	push !VAR_USER_y !TAPE_PARAMS ;
+702: 	call !FUNC_LIB_isZero ;
+703: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+704: 	!VAR_TEMP_temp0 if {
+705: 		!VAR_TEMP_temp0 true = ;
+706: 		!TAPE_RAX !VAR_TEMP_temp0 = ;
+707: 		return ;
+708: 	}
+709: 	!VAR_TEMP_temp0 false = ;
+710: 	!TAPE_RAX !VAR_TEMP_temp0 = ;
+711: 	return ;
+712: }
+713: else {
+714: 	push !VAR_USER_x !TAPE_PARAMS ;
+715: 	call !FUNC_LIB_isNeg ;
+716: 	pop !TAPE_RAX !VAR_TEMP_temp0 ;
+717: 	!VAR_TEMP_temp0 if {
+718: 		push !VAR_USER_y !TAPE_PARAMS ;
+719: 		call !FUNC_LIB_isNeg ;
+720: 		pop !TAPE_RAX !VAR_TEMP_temp0 ;
+721: 		!VAR_TEMP_temp0 if {
+722: 			push !VAR_USER_x !TAPE_PARAMS ;
+723: 			call !FUNC_LIB_neg ;
+724: 			pop !TAPE_RAX !VAR_TEMP_temp0 ;
+725: 			push !VAR_USER_y !TAPE_PARAMS ;
+726: 			call !FUNC_LIB_neg ;
+727: 			pop !TAPE_RAX !VAR_TEMP_temp1 ;
+728: 			push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+729: 			push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+730: 			call !FUNC_LIB_basic_eq ;
+731: 			pop !TAPE_RAX !VAR_TEMP_temp2 ;
+732: 			!TAPE_RAX !VAR_TEMP_temp2 = ;
+733: 			return ;
+734: 		}
+735: 		!VAR_TEMP_temp0 false = ;
+736: 		!TAPE_RAX !VAR_TEMP_temp0 = ;
+737: 		return ;
+738: 	}
+739: 	else {
+740: 		push !VAR_USER_y !TAPE_PARAMS ;
+741: 		call !FUNC_LIB_isPos ;
+742: 		pop !TAPE_RAX !VAR_TEMP_temp0 ;
+743: 		!VAR_TEMP_temp0 if {
+744: 			push !VAR_USER_y !TAPE_PARAMS ;
+745: 			push !VAR_USER_x !TAPE_PARAMS ;
+746: 			call !FUNC_LIB_basic_eq ;
+747: 			pop !TAPE_RAX !VAR_TEMP_temp0 ;
+748: 			!TAPE_RAX !VAR_TEMP_temp0 = ;
+749: 			return ;
+750: 		}
+751: 		!VAR_TEMP_temp0 false = ;
+752: 		!TAPE_RAX !VAR_TEMP_temp0 = ;
+753: 		return ;
+754: 	}
+755: }}
+756: bool !FUNC_LIB_neq {
+757: pop !TAPE_PARAMS !TAPE_tape0 ;
+758: pop !TAPE_PARAMS !TAPE_tape1 ;
+759: declare !VAR_USER_x !VAR_USER_y !VAR_TEMP_temp2 !VAR_TEMP_temp0 !VAR_TEMP_temp1 ;
+760: !VAR_TEMP_temp0 !VAR_USER_x = ;
+761: !VAR_TEMP_temp1 !VAR_USER_y = ;
+762: push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+763: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+764: call !FUNC_LIB_eq ;
+765: pop !TAPE_RAX !VAR_TEMP_temp2 ;
+766: !VAR_TEMP_temp2 ! = !VAR_TEMP_temp0 ;
+767: !TAPE_RAX !VAR_TEMP_temp0 = ;
+768: return ;}
+769: int !FUNC_LIB_xor {
+770: pop !TAPE_PARAMS !TAPE_tape0 ;
+771: pop !TAPE_PARAMS !TAPE_tape1 ;
+772: declare !VAR_USER_x !VAR_USER_y ;
+773: push !VAR_USER_x !TAPE_PARAMS ;
+774: call !FUNC_LIB_isZero ;
+775: pop !TAPE_RAX !VAR_TEMP_temp0 ;
+776: !VAR_TEMP_temp0 if {
+777: 	!TAPE_RAX !VAR_USER_y = ;
+778: 	return ;
+779: }
+780: push !VAR_USER_y !TAPE_PARAMS ;
+781: call !FUNC_LIB_isZero ;
+782: pop !TAPE_RAX !VAR_TEMP_temp0 ;
+783: !VAR_TEMP_temp0 if {
+784: 	!TAPE_RAX !VAR_USER_x = ;
+785: 	return ;
+786: }
+787: push !VAR_USER_y !TAPE_PARAMS ;
+788: push !VAR_USER_x !TAPE_PARAMS ;
+789: call !FUNC_LIB_basic_xor ;
+790: pop !TAPE_RAX !VAR_TEMP_temp0 ;
+791: !TAPE_RAX !VAR_TEMP_temp0 = ;
+792: return ;}
+793: void !FUNC_LIB_memset {
+794: pop !TAPE_PARAMS !TAPE_tape0 ;
+795: pop !TAPE_PARAMS !TAPE_tape1 ;
+796: declare !VAR_USER_index !VAR_USER_val ;
+797: return ;}
+798: int !FUNC_LIB_memget {
+799: pop !TAPE_PARAMS !TAPE_tape0 ;
+800: declare !VAR_USER_index !VAR_TEMP_temp0 ;
+801: !VAR_TEMP_temp0 0 = ;
+802: !TAPE_RAX !VAR_TEMP_temp0 = ;
+803: return ;}
+804: void !FUNC_USER_what {
+805: pop !TAPE_PARAMS !TAPE_tape0 ;
+806: declare !VAR_USER_x ;
+807: return ;}
+808: int !FUNC_USER_linear {
+809: pop !TAPE_PARAMS !TAPE_tape0 ;
+810: pop !TAPE_PARAMS !TAPE_tape1 ;
+811: pop !TAPE_PARAMS !TAPE_tape2 ;
+812: declare !VAR_USER_a !VAR_USER_b !VAR_USER_c !VAR_USER_temp !VAR_TEMP_temp2 !VAR_TEMP_temp0 !VAR_TEMP_temp1 !VAR_USER_x ;
+813: !VAR_TEMP_temp0 !VAR_USER_a = ;
+814: !VAR_TEMP_temp1 !VAR_USER_b = ;
+815: push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+816: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+817: call !FUNC_LIB_mul ;
+818: pop !TAPE_RAX !VAR_TEMP_temp2 ;
+819: !VAR_TEMP_temp0 !VAR_USER_c = ;
+820: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+821: push !VAR_TEMP_temp2 !TAPE_PARAMS ;
+822: call !FUNC_LIB_div ;
+823: pop !TAPE_RAX !VAR_TEMP_temp1 ;
+824: !VAR_USER_temp !VAR_TEMP_temp1 = ;
+825: !VAR_TEMP_temp0 1 = ;
+826: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+827: call !FUNC_LIB_neg ;
+828: pop !TAPE_RAX !VAR_TEMP_temp1 ;
+829: !VAR_TEMP_temp0 !VAR_USER_a = ;
+830: push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+831: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+832: call !FUNC_LIB_sub ;
+833: pop !TAPE_RAX !VAR_TEMP_temp2 ;
+834: !VAR_USER_x !VAR_TEMP_temp2 = ;
+835: !TAPE_RAX !VAR_USER_temp = ;
+836: return ;}
+837: int !FUNC_USER_main {
+838: declare !VAR_USER_x !VAR_USER_z !VAR_USER_y !VAR_TEMP_temp2 !VAR_TEMP_temp0 !VAR_TEMP_temp1 !VAR_USER_w ;
+839: call !FUNC_LIB_nextInt ;
+840: pop !TAPE_RAX !VAR_TEMP_temp0 ;
+841: !VAR_USER_x !VAR_TEMP_temp0 = ;
+842: !VAR_TEMP_temp0 1 = ;
+843: !VAR_TEMP_temp1 !VAR_USER_x = ;
+844: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+845: push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+846: call !FUNC_LIB_add ;
+847: pop !TAPE_RAX !VAR_TEMP_temp2 ;
+848: !VAR_USER_y !VAR_TEMP_temp2 = ;
+849: !VAR_TEMP_temp0 2 = ;
+850: !VAR_TEMP_temp1 1 = ;
+851: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+852: call !FUNC_LIB_memget ;
+853: pop !TAPE_RAX !VAR_TEMP_temp2 ;
+854: push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+855: push !VAR_TEMP_temp2 !TAPE_PARAMS ;
+856: call !FUNC_LIB_add ;
+857: pop !TAPE_RAX !VAR_TEMP_temp0 ;
+858: !VAR_USER_z !VAR_TEMP_temp0 = ;
+859: !VAR_TEMP_temp0 5 = ;
+860: !VAR_USER_w !VAR_TEMP_temp0 = ;
+861: !VAR_TEMP_temp0 !VAR_USER_x = ;
+862: !VAR_TEMP_temp1 !VAR_USER_y = ;
+863: push !VAR_TEMP_temp1 !TAPE_PARAMS ;
+864: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+865: call !FUNC_LIB_mul ;
+866: pop !TAPE_RAX !VAR_TEMP_temp2 ;
+867: !VAR_TEMP_temp0 !VAR_USER_w = ;
+868: push !VAR_TEMP_temp2 !TAPE_PARAMS ;
+869: push !VAR_TEMP_temp0 !TAPE_PARAMS ;
+870: call !FUNC_LIB_sub ;
+871: pop !TAPE_RAX !VAR_TEMP_temp1 ;
+872: !TAPE_RAX !VAR_TEMP_temp1 = ;
+873: return ;}
+End point B
