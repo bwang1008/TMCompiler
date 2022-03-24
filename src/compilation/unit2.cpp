@@ -12,445 +12,20 @@ An important difference to standard C++, is here we don't have boolean short-cir
 #define SINGLE_FILE 1
 
 #include "unit2.h"
+#include "utils.h"			// helper functions; basic algorithms
 
-#include <algorithm>		// std::find_if, std::reverse
-#include <cctype>			// std::isspace
-#include <cstdlib>			// std::system
+#include <algorithm>		// std::reverse
 #include <fstream>			// std::ifstream
-#include <iomanip>			// std::setw
 #include <iostream>			// std::cerr, std::cout, std::endl
 #include <map>				// std::map
 #include <set>				// std::set
 #include <string>			// std::string, std::getline, std::to_string, std::insert, std::replace
 #include <tuple>			// std::tuple, std::make_tuple, std::get<>
-#include <typeinfo>			// typeid
 #include <unordered_map>	// std::unordered_map
 #include <unordered_set>	// std::unordered_set
-#include <map>				// std::map
 #include <vector>			// std::vector
 
-int tempCount = 0;				// counter for number of temp variables used
-
-// HELPER FUNCTIONS
-
-// next 3 functions found on : https://stackoverflow.com/questions/216823/how-to-trim-a-stdstring
-// trim from start (in place)
-static inline void ltrim(std::string &s) {
-	s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
-				return !std::isspace(ch);
-				}));
-}
-
-// trim from end (in place)
-static inline void rtrim(std::string &s) {
-	s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
-				return !std::isspace(ch);
-				}).base(), s.end());
-}
-
-// trim from both ends (in place)
-static inline void trim(std::string &s) {
-	ltrim(s);
-	rtrim(s);
-}
-
-bool isBlankString(const std::string &s) {
-	if(s.size() == 0) {
-		return true;
-	}
-
-	for(size_t i = 0; i < s.size(); ++i) {
-		if(!std::isspace(s[i])) {
-			return false;
-		}
-	}
-
-	return true;
-}
-
-bool isIntegerLiteral(const std::string &s) {
-	if(isBlankString(s)) {
-		return false;
-	}
-	
-	if(s[0] == '-') {
-		if(s.size() == 1) {
-			return false;
-		}
-		for(int i = 1; i < s.size(); ++i) {
-			if(s[i] < '0' || '9' < s[i]) {
-				return false;
-			}
-		}
-		
-		return true;
-	}
-	
-	for(int i = 0; i < s.size(); ++i) {
-		if(s[i] < '0' || '9' < s[i]) {
-			return false;
-		}
-	}
-	
-	return true;
-}
-
-std::string getAlphaNumericWord(const std::string &s, int index) {
-	int left = index;
-	while(0 <= left && (('0' <= s[left] && s[left] <= '9') || ('a' <= s[left] && s[left] <= 'z') || ('A' <= s[left] && s[left] <= 'Z'))) {
-		--left;
-	}
-	
-	int right = index;
-	while(right < s.size() && (('0' <= s[right] && s[right] <= '9') || ('a' <= s[right] && s[right] <= 'z') || ('A' <= s[right] && s[right] <= 'Z'))) {
-		++right;
-	}
-	
-	return s.substr(1 + left, right - left - 1);
-}
-
-std::string getNonBlankWord(const std::string &s, int index) {
-	int left = index;
-	while(0 <= left && !std::isspace(s[left])) {
-		--left;
-	}
-		
-	int right = index;
-	while(right < s.size() && !std::isspace(s[right])) {
-		++right;
-	}
-	
-	return s.substr(1 + left, right - left - 1);
-}
-
-std::string formSubstring(std::vector<char> &s, int start, int end) {
-	std::string ans = "";
-	for(int i = start; i < end; ++i) {
-		ans.push_back(s[i]);
-	}
-
-	return ans;
-}
-
-int findNext(std::string &s, char c, int start = 0) {
-	int index = start;
-	while(index < s.size() && s[index] != c) {
-		++index;	
-	}
-
-	if(index == s.size()) {
-		return -1;
-	}
-
-	return index;
-}
-
-int findNext(std::vector<char> &s, char c, int start = 0) {
-	std::string s2 = formSubstring(s, 0, s.size());
-	return findNext(s2, c, start);
-}
-
-int findNext(std::vector<std::string> &words, const std::string &word, int start = 0) {
-	int index = start;
-	while(index < words.size() && words[index] != word) {
-		++index;
-	}
-	
-	if(index == words.size()) {
-		return -1;
-	}
-	
-	return index;
-}
-
-int findPrev(std::string &s, char c, int start = 0) {
-	int index = start;
-	while(index >= 0 && s[index] != c) {
-		--index;
-	}
-
-	// i know i can just "return index", but just to make it clear
-	if(index == -1) {
-		return -1;	
-	}
-
-	return index;
-}
-
-int findPrev(std::vector<char> &s, char c, int start = 0) {
-	std::string s2 = formSubstring(s, 0, s.size());
-	return findPrev(s2, c, start);
-}
-
-int findNonBlank(std::vector<char> &s, int start = 0) {
-	int index = start;
-	while(index < s.size() && std::isspace(s[index])) {
-		++index;
-	}
-
-	if(index == s.size()) {
-		return -1;
-	}
-
-	return index;
-}
-
-int findNonBlank(std::string &s, int start = 0) {
-	std::vector<char> v(s.begin(), s.end());
-	return findNonBlank(v, start);
-}
-
-int findBlank(std::string &s, int start = 0) {
-	int index = start;
-	while(index < s.size() && !std::isspace(s[index])) {
-		++index;
-	}
-	
-	if(index == s.size()) {
-		index = -1;
-	}
-	
-	return index;
-}
-
-int findOpposite(std::vector<char> &s, int index) {
-	char c = s[index];
-	char op = c;
-	bool findBack = false;
-
-	if(c == '(') {
-		op = ')';
-	}
-	else if(c == ')') {
-		op = '(';
-		findBack = true;
-	}
-	else if(c == '[') {
-		op = ']';
-	}
-	else if(c == ']') {
-		op = '[';
-		findBack = true;
-	}
-	else if(c == '{') {
-		op = '}';
-	}
-	else if(c == '}') {
-		op = '{';
-		findBack = true;
-	}
-
-	int stack = 1;
-	if(findBack) {
-		for(int i = index - 1; i >= 0; --i) {
-			if(s[i] == c) {
-				++stack;
-			}
-			else if(s[i] == op) {
-				--stack;
-				if(stack == 0) {
-					return i;
-				}
-			}
-		}
-	}
-	else {
-		for(int i = index + 1; i < (int) s.size(); ++i) {
-			if(s[i] == c) {
-				++stack;
-			}
-			else if(s[i] == op) {
-				--stack;
-				if(stack == 0) {
-					return i;
-				}
-			}
-		}
-	}
-
-	return -1;
-}
-
-int findOpposite(std::string &s, int index) {
-	std::vector<char> v(s.begin(), s.end());
-	return findOpposite(v, index);
-}
-
-int findOpposite(std::vector<std::string> &words, int index) {
-	std::string word = words[index];
-	std::string op = word;
-	bool findBack = false;
-
-	if(word == "(") {
-		op = ")";
-	}
-	else if(word == ")") {
-		op = "(" ;
-		findBack = true;
-	}
-	else if(word == "[") {
-		op = "]";
-	}
-	else if(word == "]") {
-		op = "["; 
-		findBack = true;
-	}
-	else if(word == "{") {
-		op = "}";
-	}
-	else if(word == "}") {
-		op = "{"; 
-		findBack = true;
-	}
-
-	int stack = 1;
-	if(findBack) {
-		for(int i = index - 1; i >= 0; --i) {
-			if(words[i] == word) {
-				++stack;
-			}
-			else if(words[i] == op) {
-				--stack;
-				if(stack == 0) {
-					return i;
-				}
-			}
-		}
-	}
-	else {
-		for(int i = index + 1; i < (int) words.size(); ++i) {
-			if(words[i] == word) {
-				++stack;
-			}
-			else if(words[i] == op) {
-				--stack;
-				if(stack == 0) {
-					return i;
-				}
-			}
-		}
-	}
-
-	return -1;
-}
-
-int vimB(std::string &s, int index) {
-	if(s.size() == 0) {
-		return -1;
-	}
-	
-	if(index == 0) {
-		return -1;
-	}
-	
-	--index;
-	while(index >= 1 && !(std::isspace(s[index - 1]) && !std::isspace(s[index]))) {
-		--index;	
-	}
-	
-	if(index < 1) {
-		return -1;
-	}
-	
-	return index;
-}
-
-void addIndents(std::string &s, int numIndent) {
-	for(int i = 0; i < numIndent; ++i) {
-		s.push_back('\t');
-	}
-}
-
-void printProgram(std::vector<std::string> &program, bool showLines = true) {
-	if(program.size() == 0) {
-		std::cout << "Program is empty" << std::endl;
-		return;
-	}
-
-	size_t numDigits = std::to_string(program.size() - 1).size();
-	for(size_t i = 0; i < program.size(); ++i) {
-		if(showLines) {
-			std::cout << std::setw(numDigits) << i << ": ";
-		}
-		std::cout << program[i] << std::endl;
-	}
-}
-
-void printPrettyProgram(std::vector<std::string> &program, bool showLines = true) {
-	if(program.size() == 0) {
-		std::cout << "Program is empty" << std::endl;
-	}
-
-	size_t numDigits = std::to_string(program.size() - 1).size();
-	for(size_t i = 0; i < program.size(); ++i) {
-		if(showLines) {
-			std::cout << std::setw(numDigits) << i << ": ";
-		}
-		
-		std::string line = program[i];
-		
-		size_t start = 0;
-		while(start < line.size()) {
-			if(line.substr(start, 10) == "!VAR_USER_") {
-				start += 10;
-				continue;
-			}
-			else if(line.substr(start, 10) == "!VAR_TEMP_") {
-				start += 10;
-				continue;
-			}
-			else if(line.substr(start, 11) == "!FUNC_USER_") {
-				start += 11;
-				continue;
-			}
-			else if(line.substr(start, 10) == "!FUNC_LIB_") {
-				start += 10;
-				continue;
-			}
-			else if(line.substr(start, 9) == "!VAR_LIB_") {
-				start += 9;
-				continue;
-			}
-
-			std::cout << line[start]; 
-			++start;
-		}
-
-		std::cout << std::endl;
-	}
-}
-
-std::string getLetters(std::vector<std::string> &program) {
-	std::string ans;
-	for(size_t i = 0; i < program.size(); ++i) {
-		for(size_t j = 0; j < program[i].size(); ++j) {
-			ans.push_back(program[i][j]);
-		}
-		ans.push_back('\n');
-	}
-	
-	return ans;
-}
-
-std::vector<std::string> getWords(std::string &letters)  {
-	std::vector<std::string> words;
-	
-	int startSearch = findNonBlank(letters, 0);
-	while(startSearch < letters.size()) {
-		std::string word = getNonBlankWord(letters, startSearch);
-		words.push_back(word);
-
-		startSearch = findBlank(letters, startSearch);
-		if(startSearch < 0 || startSearch >= letters.size()) {
-			break;
-		}
-		startSearch = findNonBlank(letters, startSearch);
-	}
- 
-	return words;
-}
-
-// END HELPER FUNCTIONS
+int tempCount = 0;			// counter for number of temp variables used
 
 /**
  * create a new identifier for temporary variable
@@ -460,46 +35,6 @@ std::string createTemp() {
 	++tempCount;
 	return varName;
 }
-
-#if SINGLE_FILE==1
-int checkCompilation(std::string &fileName) {
-	int periodIndex = findPrev(fileName, '.', fileName.size() - 1);
-
-	std::string prefix = "";
-
-	if(periodIndex == -1) {
-		prefix = fileName;
-	}
-	else {
-		prefix = fileName.substr(0, periodIndex);
-	}
-
-	std::string tempFileName = prefix + "_temp.cpp";
-	
-	std::ofstream file;
-	file.open(tempFileName);
-	file << "int MEM[5];" << std::endl;
-	file << "int nextInt();" << std::endl;
-	file << "void printInt(int x);" << std::endl;
-	file << "void printSpace();" << std::endl;
-
-	std::ifstream origFile;
-	origFile.open(fileName);
-	std::string line;
-	while(std::getline(origFile, line)) {
-		file << line << std::endl;
-	}
-
-	origFile.close();
-	file.close();
-
-	std::string command = std::string("g++ -fsyntax-only ") + tempFileName;
-	std::cout << "Execute: " << command << std::endl;
-	int status = std::system(command.c_str());
-
-	return status;
-}
-#endif
 
 /**
  * Remove all user comments: line comments of the form //
@@ -1038,7 +573,7 @@ std::vector<std::string> renameBuiltInVariables(std::vector<std::string> &progra
 }
 
 /**
- *  Add in library functions (like division/modulo/abs/memset/memget/nextInt/printInt/printSpace
+ *  Add in library functions (like division/modulo/memset/memget/nextInt/printInt/printSpace)
  *  Question mark about nextInt/printInt/printSpace
  */
 std::vector<std::string> addLibraryFunctions(std::vector<std::string> &program) {
@@ -1284,85 +819,37 @@ std::vector<std::string> forToWhile(std::vector<std::string> &program) {
  * Convert else-if statements to just if + else statements
  */
 std::vector<std::string> convertElif(std::vector<std::string> &program) {
-	std::vector<std::string> ans;
-
-	std::string letters;
+	std::vector<std::string> allWords;
 	for(size_t i = 0; i < program.size(); ++i) {
-		for(size_t j = 0; j < program[i].size(); ++j) {
-			letters.push_back(program[i][j]);
-		}
-		letters.push_back('\n');
+		std::vector<std::string> words = getWords(program[i]);
+		allWords.insert(allWords.end(), words.begin(), words.end());
 	}
-	
-	std::vector<std::string> words;
 
-	int startSearch = findNonBlank(letters, 0);
-	while(startSearch < letters.size()) {
-		std::string word = getNonBlankWord(letters, startSearch);
-		words.push_back(word);
+	for(size_t i = 0; i < allWords.size(); ++i) {
+		if(i + 1 < allWords.size() && allWords[i] == "else" && allWords[i + 1] == "if") {
+			// every else-if, put a open brace between else + if, and a close brace after the last close brace of entire if-elseif-else statement
+			int openBrace = findNext(allWords, "{", i + 1);
+			int closeBrace = findOpposite(allWords, openBrace);
 
-		startSearch = findBlank(letters, startSearch);
-		startSearch = findNonBlank(letters, startSearch);	
-	}
-	
-	std::vector<std::string> words2;
-	
-	bool hasChanged = true;
-
-	while(hasChanged) {
-		hasChanged = false;
-
-		int startSearch = 0;
-		while(startSearch < words.size()) {	
-			std::string word = words[startSearch];
-			if(word != "else") {
-				words2.push_back(word);
-				++startSearch;
-				continue;
+			while(closeBrace + 1 < allWords.size() && allWords[closeBrace + 1] == "else") {
+				openBrace = findNext(allWords, "{", closeBrace + 1);
+				closeBrace = findOpposite(allWords, openBrace);
 			}
 
-			int numClose = 0;
+			int lastBrace = closeBrace;
 
-			while(words[startSearch] == "else") {
-				bool b = (startSearch + 1 < words.size() && words[startSearch + 1] == "if");
-
-				int openBrace = findNext(words, "{", startSearch);
-				int closeBrace = findOpposite(words, openBrace);
-
-				words2.push_back("else");
-				
-				if(b) {
-					words2.push_back("{");		// now "else {" instead of "else if"
-					++numClose;
-					hasChanged = true;
-				}
-
-				// now put in everything from "if(...) {...}"
-
-				++startSearch;			// now move from "else" to "if" (if "else if"), otherwise move from "else" to "{"
-				while(startSearch <= closeBrace) {
-					words2.push_back(words[startSearch]);
-					++startSearch;
-				}
-			}
-			
-			for(int i = 0; i < numClose; ++i) {
-				words2.push_back("}");
-			}
-		}
-
-		words = words2;
-		words2.clear();
-	}
-	
-	for(size_t i = 0; i < words.size(); ++i) {
-		std::string word = words[i];
-		ans.push_back(word);
-		if(i + 1 < words.size()) {
-			ans.push_back(" ");
+			allWords.insert(allWords.begin() + lastBrace + 1, "}");
+			allWords.insert(allWords.begin() + i + 1, "{");
 		}
 	}
-	
+
+	std::string tempLine;
+	for(size_t i = 0; i < allWords.size(); ++i) {
+		tempLine.append(allWords[i]);
+		tempLine.append(" ");
+	}
+
+	std::vector<std::string> ans {tempLine};
 	return ans;
 }
 
@@ -1451,10 +938,49 @@ std::vector<std::string> voidReturns(std::vector<std::string> &program) {
 }
 
 /**
+ * Add parenthesis around what is returned. Like return x; -> return (x);
+ * Necessary to prevent some incorrect stuff with shunting-yard, sth like return (sth) || (sth2)
+ */
+std::vector<std::string> parenthesisReturn(std::vector<std::string> &program) {
+	std::vector<std::string> allWords;
+	for(size_t i = 0; i < program.size(); ++i) {
+		std::vector<std::string> words = getWords(program[i]);
+		allWords.insert(allWords.end(), words.begin(), words.end());
+	}
+
+	std::vector<std::string> allWords2;
+	for(size_t i = 0; i < allWords.size(); ++i) {
+		if(allWords[i] == "return" && allWords[i + 1] != ";") {
+			allWords2.push_back("return");
+			allWords2.push_back("(");
+			size_t j;
+			for(j = i + 1; allWords[j] != ";"; ++j) {
+				allWords2.push_back(allWords[j]);
+			}
+
+			allWords2.push_back(")");
+			
+			i = j - 1;
+		}
+		else {
+			allWords2.push_back(allWords[i]);
+		}
+	}
+
+	std::string tempLine;
+	for(size_t i = 0; i < allWords2.size(); ++i) {
+		tempLine.append(allWords2[i]);
+		tempLine.append(" ");
+	}
+
+	std::vector<std::string> ans {tempLine};
+	return ans;
+}
+
+/**
  * Change int x = 5; -> int x; x = 5;
  * and int x; -> int x; -> x = 0;
  */
-
 std::vector<std::string> assignDefaultToDeclaration(std::vector<std::string> &program) {
 	std::vector<std::vector<std::string> > allWords;
 
@@ -1869,6 +1395,10 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 		numParams[std::get<0>(func)] = std::get<1>(func).size();
 	}
 
+	// these aren't really functions per-se, but need to account for them when simplifying up expressions
+	//numParams["if"] = 1;
+	//numParams["return"] = 1;
+
 	// check what kind of line it is
 	
 	// empty line
@@ -1986,7 +1516,7 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 	}
 	*/
 
-	// funcion call?
+	// function call?
 	// regular assignment? EDIT: nah, can have special assignment
 	// while loops / if statements...?
 
@@ -1998,7 +1528,6 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 
 	std::vector<std::string> postfix = shuntingYard(words);
 
-	/*
 	std::cout << "orig: " << std::endl;
 	for(std::string word : words) {
 		std::cout << word << " ";
@@ -2010,7 +1539,6 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 		std::cout << word << " ";
 	}
 	std::cout << std::endl << std::endl;
-	*/
 
 	int numOp = 0;
 	for(size_t i = 0; i < postfix.size(); ++i) {
@@ -2087,7 +1615,7 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 		// let postfix = "temp3 if"
 		std::string lastWord = postfix[postfix.size() - 1];
 		postfix.clear();
-		postfix.push_back(tempVar + " " + lastWord); 	// the ; or { is handled below
+		postfix.push_back(tempVar + " " + lastWord); 	// the ; or openCurly is handled below
 	}
 
 	std::string subexpression;
@@ -2105,7 +1633,106 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 	
 	ans.push_back(subexpression);
 
-	return ans;
+	// EDIT: add short-circuiting here. Change && and || expressions to if statements
+	// Change here because argument came from one line of source code.
+	
+	std::vector<std::string> ans2;
+	for(size_t i = 0; i < ans.size(); ++i) {
+		std::vector<std::string> words = getWords(ans[i]);
+		bool containsOr = false;
+		bool containsAnd = false;
+		int opIndex = -1;
+		for(size_t j = 0; j < words.size(); ++j) {
+			// only && and ||; not &= or |=: 
+			/* bool f() { print("Hi"); return true;}
+			 * bool b = false;
+			 * b &= f();     <- here f is called and prints
+			 * b = (b && f()); <- here f is not called due to short-circuiting
+			 */
+			// aka no need to worry about &= and |=, which are expanded later
+			if(words[j] == "&&") {
+				containsAnd = true;
+				opIndex = (int) j;
+			}
+			else if(words[j] == "||") {
+				containsOr = true;
+				opIndex = (int) j;
+			}
+		}
+
+
+		if(!(containsAnd || containsOr)) {
+			ans2.push_back(ans[i]);
+		}
+		else {
+			// && and || are for booleans only: will not have MEM[0] as argument
+			// looks like "arg1 arg2 && = arg3 ; "
+			std::string arg1 = words[opIndex - 2];
+			std::string arg2 = words[opIndex - 1];
+			std::string arg3 = words[opIndex + 2];	
+			
+			// holds lines where arg2 was defined; will put in if statement. Originally in reverse order
+			std::vector<std::string> arg2Lines;
+
+			// find last occurrence of arg1 (to find lines where arg2 is defined to put in if statement)
+			bool prevLineContainsArg1 = false;
+			std::vector<std::string> prevWords = getWords(ans2[ans2.size() - 1]);
+			for(size_t j = 0; j < prevWords.size(); ++j) {
+				if(prevWords[j] == arg1) {
+					prevLineContainsArg1 = true;
+					break;
+				}
+			}
+
+			// while prev line doesn't mention arg1, decrease: this prev line must be part of arg2
+			while(!prevLineContainsArg1) {
+				prevLineContainsArg1 = false;
+				std::string arg2Line = ans2[ans2.size() - 1];
+				ans2.pop_back();
+				arg2Lines.push_back(arg2Line);
+
+				prevWords = getWords(ans2[ans2.size() - 1]);
+				for(size_t j = 0; j < prevWords.size(); ++j) {
+					if(prevWords[j] == arg1) {
+						prevLineContainsArg1 = true;
+						break;
+					}
+				}
+			}
+
+			std::reverse(arg2Lines.begin(), arg2Lines.end());
+
+			// from Wikipedia article on "Short-circuit evaluation"
+			// arg1 && arg2 -> if arg1 { all arg2Lines; arg3 arg2 = ; } else { arg3 arg1 = ; }
+			// arg1 || arg2 -> if arg1 { arg3 arg1 = ; } else { all arg2Lines; arg3 arg2 = ; }
+			
+			ans2.push_back(arg1 + " if { ");
+			if(containsAnd) {
+				for(size_t j = 0; j < arg2Lines.size(); ++j) {
+					ans2.push_back(arg2Lines[j]);
+				}
+
+				ans2.push_back(arg3 + " " + arg2 + " = ; ");
+				ans2.push_back(" } ");
+				ans2.push_back("else { ");
+				ans2.push_back(arg3 + " " + arg1 + " = ; ");
+				ans2.push_back(" } ");
+			}
+			else {
+				// containsOr
+				ans2.push_back(arg3 + " " + arg1 + " = ; ");
+				ans2.push_back(" } ");
+				ans2.push_back("else { ");
+				for(size_t j = 0; j < arg2Lines.size(); ++j) {
+					ans2.push_back(arg2Lines[j]);
+				}
+				ans2.push_back(arg3 + " " + arg2 + " = ; ");
+				ans2.push_back(" } ");
+			}
+		}
+	}
+	
+	return ans2;
 }
 
 /**
@@ -2128,12 +1755,12 @@ std::vector<std::string> simplifyExpressions(std::vector<std::string> &program) 
 		std::string line = program[i];
 		std::vector<std::string> lines = simplifyLine(line, funcs);
 
-		//std::cout << "line = " << line << std::endl;
+		std::cout << "line = " << line << std::endl;
 		for(size_t j = 0; j < lines.size(); ++j) {
 			ans.push_back(lines[j]);
-		//std::cout << ": " << lines[j] << std::endl;
+		std::cout << ": " << lines[j] << std::endl;
 		}
-		//std::cout << std::endl;
+		std::cout << std::endl;
 	}
 
 	std::vector<std::string> ans2;
@@ -2240,6 +1867,47 @@ std::vector<std::string> convertSpecialAssignment(std::vector<std::string> &prog
 	ans2.push_back(line);
 
 	return ans2;
+}
+
+/**
+ * a && b:  if a is false, then result is false
+ * a || b:  if a is true, then result is true
+ * avoid situations like "if(b != 0 && a / b > 0)" to avoid dividing by 0
+ *
+ * What is the difference between
+ * bool b1 = false;
+ * bool b2 = expensiveFunc();
+ * bool b3 = b1 && b2;
+ * vs
+ * bool b3 = false && expensiveFunc()
+ * ?
+ */
+std::vector<std::string> addShortCircuiting(std::vector<std::string> &program) {
+	// whenever find temp1 temp2 && = temp3, find last line where temp1 is used. add if statement (in postfix notation)
+	std::vector<std::vector<std::string> > allWords;
+	for(size_t i = 0; i < program.size(); ++i) {
+		std::vector<std::string> words = getWords(program[i]);
+		
+		bool containsAnd = false;
+		bool containsOr = false;
+		for(size_t j = 0; j < words.size(); ++j) {
+			if(words[j] == "&&") {
+				containsAnd = true;	
+			}
+			else if(words[j] == "||") {
+				containsOr = true;
+			}
+		}
+
+		if(!(containsAnd || containsOr)) {
+			allWords.push_back(words);
+			continue;
+		}
+
+
+	}
+
+	return program;
 }
 
 /**
@@ -2832,7 +2500,7 @@ std::vector<std::string> pushAndPop(std::vector<std::string> &program) {
  * Convert variable names, like parameters and !VAR_TEMP_temp5, into tape indices: !TAPE_tape0, !TAPE_tape1,...
  * as referenced by the "declare" line in each function
  */
-std::vector<std::string> remapVariableNames(std::vector<std::string> &program) {
+std::vector<std::string> remapVariableNamesToTapes(std::vector<std::string> &program) {
 	std::vector<std::string> allWords;
 	for(size_t i = 0; i < program.size(); ++i) {
 		std::vector<std::string> words = getWords(program[i]);
@@ -3050,7 +2718,6 @@ std::vector<std::string> funcToJump(std::vector<std::string> &program, std::vect
 	return program;
 }
 
-
 /**
  * Convert if/else/call/while loops into jump statements / line numbers
  * Fill in empty lines with "nop" : no-ops aka no-operations aka do nothing
@@ -3161,26 +2828,6 @@ std::vector<std::string> addJumpsAndLineNumbers(std::vector<std::string> &progra
 	// end of while loop closing brace gets translated to two lines (jump and nop), so add nop. 
 	// all other conversions don't change number of lines. add in nop so translations later in 
 	// this function aren't as painful
-	
-	/*
-	for(size_t i = 0; i < allWords.size(); ++i) {
-		if(allWords[i] == "while") {
-			int openBrace = findNext(allWords, "{", i);
-			int closeBrace = findOpposite(allWords, openBrace);
-//uhhhhhhhhhhhhhhhh what about nested TODO 			
-			for(size_t j = i; j <= closeBrace; ++j) {
-				allWords2.push_back(allWords[j]);
-			}	
-			allWords2.push_back("nop");
-			allWords2.push_back(";");
-
-			i = closeBrace;
-		}
-		else {
-			allWords2.push_back(allWords[i]);
-		}
-	}
-	*/
 	
 	// allWords2 first gets filled in words backwards
 	for(int i = allWords.size() - 1; i >= 0; --i) {
@@ -3303,6 +2950,9 @@ std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
 
 	modifiedProgram = voidReturns(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
+ 
+	modifiedProgram = parenthesisReturn(modifiedProgram);
+	modifiedProgram = formatProgram(modifiedProgram);
 
 	modifiedProgram = assignDefaultToDeclaration(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
@@ -3312,10 +2962,6 @@ std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
 
 	modifiedProgram = convertSpecialAssignment(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram); 
-
-	std::cout << "Point Z" << std::endl;
-	printProgram(modifiedProgram);
-	std::cout << "End point Z" << std::endl;
 
 	modifiedProgram = replaceHardOps(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
@@ -3334,30 +2980,15 @@ std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
 
 	modifiedProgram = explicitReturn(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
-	
-	std::cout << "Point A" << std::endl;
-	printProgram(modifiedProgram);
-	std::cout << "End point A" << std::endl;
 
 	modifiedProgram = pushAndPop(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
 
-	std::cout << "after push and pop" << std::endl;
-
-	std::cout << "Point B" << std::endl;
-	printProgram(modifiedProgram);
-	std::cout << "End point B" << std::endl;
-	
-
-	modifiedProgram = remapVariableNames(modifiedProgram);
+	modifiedProgram = remapVariableNamesToTapes(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
-
-	std::cout << "After mapping vairables to tape" << std::endl;
 
 	modifiedProgram = addJumpsAndLineNumbers(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
-
-	std::cout << "DONE" << std::endl;
 
 	return modifiedProgram;
 }

@@ -25,8 +25,8 @@ tape.o: ../tm_definition/tape.cpp ../tm_definition/tape.h
 	$(CC) $(CFLAGS) -c ../tm_definition/tape.cpp
 
 # for debugging purposes
-unit2: unit2.cpp unit2.h
-	$(CC) $(CFLAGS) unit2.cpp
+unit2: unit2.cpp unit2.h utils.cpp utils.h
+	$(CC) $(CFLAGS) unit2.cpp utils.cpp
 
 clean:
 	$(RM) a.out *.o
