@@ -401,6 +401,7 @@ std::vector<std::string> getWords(std::string &letters)  {
 		if(startSearch < 0 || startSearch >= letters.size()) {
 			break;
 		}
+		
 		startSearch = findNonBlank(letters, startSearch);
 	}
  

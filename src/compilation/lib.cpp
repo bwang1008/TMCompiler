@@ -11,6 +11,17 @@
 // int basic_xor(int x, int y): return x ^ y	: x,y must both be non-zero
 // int basic_eq(int x, int y): return x == y    : x,y must both be positive
 // int basic_lt(int x, int y): return x < y		: x,y must both be positive
+//
+// int getMemBitIndex(): MEM represented as bits. What index is head at?
+// void setMemBitIndex(int x): set the head of MEM_bits
+// void moveMemHeadRight(): move head of MEM_bits right
+// void moveMemHeadLeft(): move head of MEM_bits left
+// void setMemBitZero(): set tape cell at head of MEM_bits to be 0
+// void setMemBitOne(): set tape cell at head of MEM_bits to be 1
+// void setMemBitBlank(): set tape cell at head of MEM_bits to be blank
+// bool memBitIsZero(): check if tape cell at head of MEM_bits is 0
+// bool memBitIsOne(): check if tape cell at head of MEM_bits is 1
+// bool memBitIsBlank(): check if tape cell at head of MEM_bits is blank
 
 // unlike !,&&,|| however, these above are functions: need to manually pop off
 // from parameters stack when processing
@@ -286,7 +297,8 @@ bool neq(int x, int y) {
 }
 
 // return type of xor can be bool or int, but doesn't really matter to a tape
-int xor(int x, int y) {
+// EDIT: apparently "xor" is a keyword in C++; have to use sth else ("eor")
+int eor(int x, int y) {
 	if(isZero(x)) {
 		return y;
 	}
@@ -304,10 +316,122 @@ int xor(int x, int y) {
 
 // actually just memset, memget: printInt, printSpace, nextInt can be implemented in Turing Machine
 
+/**
+ * Add val into MEM[index]. As function of bits, to set bit y of index x, set bits[(x+y)^2 + y]
+ * from cstheory.stackexchange.com/questions/18688/a-small-c-like-language-that-turing-machines-can-simulate
+ * represent 0 as 0, 11 (8 + 3) as 01101 (pos and 1 + 2 + 8), and -6 as 1011 (neg and 2 + 4)
+ */
 void memset(int index, int val) {
-	
+	int currBitIndex = getMemBitIndex();
+
+	bool handledSign = false;
+	int valIndex = 0;
+	int V = val;
+
+	while(!isZero(V) || !handledSign) {
+		// function above: (x+y)^2 + y
+		int desiredBitIndex = (index + valIndex) * (index + valIndex) + valIndex;
+
+		while(currBitIndex > desiredBitIndex) {
+			currBitIndex -= 1;
+			moveMemHeadLeft();
+		}
+		while(currBitIndex < desiredBitIndex) {
+			currBitIndex += 1;
+			moveMemHeadRight();
+		}
+
+		if(!handledSign) {
+			if(isNeg(V)) {
+				setMemBitOne();
+				V = -V;
+			}
+			else {
+				setMemBitZero();
+			}
+
+			handledSign = true;
+		}
+		else {
+			int V2 = V / 2;
+			int bit = V - (2 * V2);
+			if(bit == 1) {
+				setMemBitOne();
+			}
+			else {
+				setMemBitZero();
+			}
+
+			V = V2;
+		}
+		
+		valIndex += 1;
+	}
+
+	// must clear out the next tape cell by making it blank
+	int desiredBitIndex = (index + valIndex) * (index + valIndex) + valIndex;
+	while(currBitIndex < desiredBitIndex) {
+		currBitIndex += 1;
+		moveMemHeadRight();
+	}
+
+	setMemBitBlank();
+
+	setMemBitIndex(currBitIndex);
 }
 
 int memget(int index) {
-	return 0;
+	int ans = 0;
+	int currBitIndex = getMemBitIndex();
+	int desiredBitIndex = index * index;
+
+	while(currBitIndex > desiredBitIndex) {
+		currBitIndex -= 1;
+		moveMemHeadLeft();
+	}
+	while(currBitIndex < desiredBitIndex) {
+		currBitIndex += 1;
+		moveMemHeadRight();
+	}
+	
+	int valIndex = 0;
+	bool shouldBeNegative = false;
+	int pow2 = 0;
+	while(!memBitIsBlank()) {
+		// first bit encountered is the sign bit
+		if(isZero(valIndex)) {
+			// 1 for negative, 0 for non-negative
+			if(memBitIsOne()) {
+				shouldBeNegative = true;	
+			}
+		}
+		else {
+			// goes from 1,2,4,8,... increasing. Little-endian
+			if(memBitIsOne()) {
+				ans += pow2;
+			}
+		}
+
+		valIndex += 1;
+		if(isZero(pow2)) {
+			pow2 = 1;
+		}
+		else {
+			pow2 += pow2;
+		}
+
+		desiredBitIndex = (index + valIndex) * (index + valIndex) + valIndex;
+		while(currBitIndex < desiredBitIndex) {
+			currBitIndex += 1;
+			moveMemHeadRight();
+		}
+	}
+
+	if(shouldBeNegative) {
+		ans = -ans;
+	}
+
+	setMemBitIndex(currBitIndex);
+
+	return ans;
 }

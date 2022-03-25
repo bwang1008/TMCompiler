@@ -536,7 +536,7 @@ std::vector<std::string> renameBuiltInVariables(std::vector<std::string> &progra
 	std::string varPrefix = "!VAR_LIB_";
 	std::string funcPrefix = "!FUNC_LIB_";
 
-	std::unordered_set<std::string> reservedForTM {"nextInt", "printInt", "printSpace", "isZero", "isNeg", "isPos", "basic_add", "basic_sub", "basic_xor", "basic_eq", "basic_lt"};
+	std::unordered_set<std::string> reservedForTM {"nextInt", "printInt", "printSpace", "isZero", "isNeg", "isPos", "basic_add", "basic_sub", "basic_xor", "basic_eq", "basic_lt", "getMemBitIndex", "setMemBitIndex", "moveMemHeadRight", "moveMemHeadLeft", "setMemBitZero", "setMemBitOne", "setMemBitBlank", "memBitIsZero", "memBitIsOne", "memBitIsBlank"};
 
 	std::vector<std::string> words;
 	
@@ -1259,6 +1259,17 @@ std::vector<std::tuple<std::string, std::vector<std::string>, std::string> > get
 	funcs.push_back(std::make_tuple("!FUNC_LIB_basic_eq", std::vector<std::string> {"int, int"}, "int"));
 	funcs.push_back(std::make_tuple("!FUNC_LIB_basic_lt", std::vector<std::string> {"int, int"}, "int"));
 	
+	funcs.push_back(std::make_tuple("!FUNC_LIB_getMemBitIndex", std::vector<std::string>(), "int"));
+	funcs.push_back(std::make_tuple("!FUNC_LIB_setMemBitIndex", std::vector<std::string> {"int"}, "void"));
+	funcs.push_back(std::make_tuple("!FUNC_LIB_moveMemHeadRight", std::vector<std::string>(), "void"));
+	funcs.push_back(std::make_tuple("!FUNC_LIB_moveMemHeadLeft", std::vector<std::string>(), "void"));
+	funcs.push_back(std::make_tuple("!FUNC_LIB_setMemBitZero", std::vector<std::string>(), "void"));
+	funcs.push_back(std::make_tuple("!FUNC_LIB_setMemBitOne", std::vector<std::string>(), "void"));
+	funcs.push_back(std::make_tuple("!FUNC_LIB_setMemBitBlank", std::vector<std::string>(), "void"));
+	funcs.push_back(std::make_tuple("!FUNC_LIB_memBitIsZero", std::vector<std::string>(), "bool"));
+	funcs.push_back(std::make_tuple("!FUNC_LIB_memBitIsOne", std::vector<std::string>(), "bool"));
+	funcs.push_back(std::make_tuple("!FUNC_LIB_memBitIsBlank", std::vector<std::string>(), "bool"));
+
 	std::unordered_set<std::string> validTypes {"void", "int", "bool"};
 
 	for(size_t i = 0; i < program.size(); ++i) {
@@ -1528,6 +1539,7 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 
 	std::vector<std::string> postfix = shuntingYard(words);
 
+	/*
 	std::cout << "orig: " << std::endl;
 	for(std::string word : words) {
 		std::cout << word << " ";
@@ -1539,6 +1551,7 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 		std::cout << word << " ";
 	}
 	std::cout << std::endl << std::endl;
+	*/
 
 	int numOp = 0;
 	for(size_t i = 0; i < postfix.size(); ++i) {
@@ -1755,12 +1768,12 @@ std::vector<std::string> simplifyExpressions(std::vector<std::string> &program) 
 		std::string line = program[i];
 		std::vector<std::string> lines = simplifyLine(line, funcs);
 
-		std::cout << "line = " << line << std::endl;
+		//std::cout << "line = " << line << std::endl;
 		for(size_t j = 0; j < lines.size(); ++j) {
 			ans.push_back(lines[j]);
-		std::cout << ": " << lines[j] << std::endl;
+		//std::cout << ": " << lines[j] << std::endl;
 		}
-		std::cout << std::endl;
+		//std::cout << std::endl;
 	}
 
 	std::vector<std::string> ans2;
@@ -1919,7 +1932,7 @@ std::vector<std::string> addShortCircuiting(std::vector<std::string> &program) {
  */
 std::vector<std::string> replaceHardOps(std::vector<std::string> &program) {
 	// only easy operators are || and &&
-	std::unordered_map<std::string, std::string> rename {{"+", "add"}, {"-", "sub"}, {"*", "mul"}, {"/", "div"}, {"%", "mod"}, {"u-", "neg"}, {"<", "lt"}, {"<=", "leq"}, {">", "gt"}, {">=", "geq"}, {"==", "eq"}, {"!=", "neq"}, {"^", "xor"}};
+	std::unordered_map<std::string, std::string> rename {{"+", "add"}, {"-", "sub"}, {"*", "mul"}, {"/", "div"}, {"%", "mod"}, {"u-", "neg"}, {"<", "lt"}, {"<=", "leq"}, {">", "gt"}, {">=", "geq"}, {"==", "eq"}, {"!=", "neq"}, {"^", "eor"}};
 	std::string funcPrefix = "!FUNC_LIB_";
 
 	std::string tempLine;

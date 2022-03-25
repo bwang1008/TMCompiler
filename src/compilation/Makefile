@@ -28,5 +28,9 @@ tape.o: ../tm_definition/tape.cpp ../tm_definition/tape.h
 unit2: unit2.cpp unit2.h utils.cpp utils.h
 	$(CC) $(CFLAGS) unit2.cpp utils.cpp
 
+# also for debugging
+assemblySimulator: assemblyRunner.cpp utils.cpp utils.h
+	$(CC) $(CFLAGS) assemblyRunner.cpp utils.cpp
+
 clean:
 	$(RM) a.out *.o
