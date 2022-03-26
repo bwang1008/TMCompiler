@@ -11,6 +11,7 @@
 // int basic_xor(int x, int y): return x ^ y	: x,y must both be non-zero
 // int basic_eq(int x, int y): return x == y    : x,y must both be positive
 // int basic_lt(int x, int y): return x < y		: x,y must both be positive
+// int basic_neg(int x): return -x				: x must be non-zero
 //
 // int getMemBitIndex(): MEM represented as bits. What index is head at?
 // void setMemBitIndex(int x): set the head of MEM_bits
@@ -135,7 +136,7 @@ int mul(int x, int y) {
 	int ans = 0;
 
 	int y0 = y;
-	while(y0 > y) {
+	while(y0 > 0) {
 		int y1 = 1;
 		int y2 = 2;
 		int val1 = x;
@@ -213,7 +214,8 @@ int neg(int x) {
 		return 0;
 	}
 
-	return sub(0, x);
+	// can't use sub cuz sub uses neg
+	return basic_neg(x);
 }
 
 bool lt(int x, int y) {

@@ -1,4 +1,4 @@
-!TAPE_tape0 5 = ;
+!TAPE_tape0 0 = ;
 push !TAPE_tape0 !TAPE_PARAMS ;
 call !FUNC_LIB_isZero ; 
 return ;

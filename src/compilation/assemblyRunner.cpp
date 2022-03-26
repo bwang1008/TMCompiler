@@ -42,11 +42,29 @@ void simulateAssembly(std::vector<std::string> &program) {
 
 	int rax = 0;
 
-	std::vector<std::vector<int> > varTapes(numTapes, std::vector<int>{0});
+	std::vector<std::vector<int> > varTapes(numTapes, std::vector<int>(1, 0));
 
 	std::cout << "STARTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT\n\n\n" << std::endl;
 
 	while(true) {
+		std::cout << "\nWe just concluded the prev step. Summary:" << std::endl;
+		std::cout << "params = [";
+		for(size_t i = 0; i < paramStack.size(); ++i) {
+			std::cout << paramStack[i];
+			if(i + 1 < paramStack.size()) {
+				std::cout << ", ";
+			}
+		}
+		std::cout << "]" << std::endl;
+		for(size_t i = 0; i < varTapes.size(); ++i) {
+			std::cout << "tape " << i << ": ";
+			for(size_t j = 0; j < varTapes[i].size(); ++j) {
+				std::cout << varTapes[i][j] << " ";
+			}
+			std::cout << std::endl;
+		}
+		std::cout << "rax: " << rax << std::endl;
+
 		std::cout << "\n\n\n";	
 		std::cout << "IP = " << ip << std::endl;
 
@@ -102,6 +120,11 @@ void simulateAssembly(std::vector<std::string> &program) {
 			}
 		}
 		else if(words[0] == "call" && words[1].substr(0, 10) == "!FUNC_LIB_") {
+			// call implicitly pushes stack frames to varTapes
+			for(size_t i = 0; i < varTapes.size(); ++i) {
+				varTapes[i].push_back(0);
+			}
+
 			std::string func = words[1].substr(10, words[1].size() - 10); // cuz "!FUNC_LIB_isZero"
 			if(func == "isZero") {
 				int p1 = paramStack.back();
@@ -164,6 +187,11 @@ void simulateAssembly(std::vector<std::string> &program) {
 
 				rax = (p1 < p2) ? 1 : 0;
 			}
+			else if(func == "basic_neg") {
+				int p1 = paramStack.back();
+				paramStack.pop_back();
+				rax = -p1;
+			}
 			else if(func == "getMemBitIndex") {
 				rax = bitIndex;
 			}
@@ -203,6 +231,7 @@ void simulateAssembly(std::vector<std::string> &program) {
 				int val;
 				std::cin >> val;
 				rax = val;
+				std::cout << "You chose: " << val << std::endl;
 			}
 			else if(func == "printSpace") {
 				std::cout << " ";
@@ -213,7 +242,7 @@ void simulateAssembly(std::vector<std::string> &program) {
 				std::cout << p1;
 			}
 
-			// must pop off stack frames
+			// must pop off stack frames, since these functions implicitly have a return
 			for(size_t i = 0; i < varTapes.size(); ++i) {
 				varTapes[i].pop_back();
 			}
@@ -257,7 +286,7 @@ void simulateAssembly(std::vector<std::string> &program) {
 		}
 		else if(words[0] == "return") {
 			for(size_t i = 0; i < varTapes.size(); ++i) {
-				varTapes.pop_back();
+				varTapes[i].pop_back();
 			}
 
 			// pop ipStack last into ip
@@ -365,7 +394,7 @@ void simulateAssembly(std::vector<std::string> &program) {
 
 
 int main() {
-	std::string fileName = "assembly2.txt";
+	std::string fileName = "assembly.txt";
 	std::ifstream file(fileName);
 
 	std::vector<std::string> assembly;

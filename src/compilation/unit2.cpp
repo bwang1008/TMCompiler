@@ -536,7 +536,7 @@ std::vector<std::string> renameBuiltInVariables(std::vector<std::string> &progra
 	std::string varPrefix = "!VAR_LIB_";
 	std::string funcPrefix = "!FUNC_LIB_";
 
-	std::unordered_set<std::string> reservedForTM {"nextInt", "printInt", "printSpace", "isZero", "isNeg", "isPos", "basic_add", "basic_sub", "basic_xor", "basic_eq", "basic_lt", "getMemBitIndex", "setMemBitIndex", "moveMemHeadRight", "moveMemHeadLeft", "setMemBitZero", "setMemBitOne", "setMemBitBlank", "memBitIsZero", "memBitIsOne", "memBitIsBlank"};
+	std::unordered_set<std::string> reservedForTM {"nextInt", "printInt", "printSpace", "isZero", "isNeg", "isPos", "basic_add", "basic_sub", "basic_xor", "basic_eq", "basic_lt", "basic_neg", "getMemBitIndex", "setMemBitIndex", "moveMemHeadRight", "moveMemHeadLeft", "setMemBitZero", "setMemBitOne", "setMemBitBlank", "memBitIsZero", "memBitIsOne", "memBitIsBlank"};
 
 	std::vector<std::string> words;
 	
@@ -1258,6 +1258,7 @@ std::vector<std::tuple<std::string, std::vector<std::string>, std::string> > get
 	funcs.push_back(std::make_tuple("!FUNC_LIB_basic_xor", std::vector<std::string> {"int, int"}, "int"));
 	funcs.push_back(std::make_tuple("!FUNC_LIB_basic_eq", std::vector<std::string> {"int, int"}, "int"));
 	funcs.push_back(std::make_tuple("!FUNC_LIB_basic_lt", std::vector<std::string> {"int, int"}, "int"));
+	funcs.push_back(std::make_tuple("!FUNC_LIB_basic_neg", std::vector<std::string> {"int"}, "int"));
 	
 	funcs.push_back(std::make_tuple("!FUNC_LIB_getMemBitIndex", std::vector<std::string>(), "int"));
 	funcs.push_back(std::make_tuple("!FUNC_LIB_setMemBitIndex", std::vector<std::string> {"int"}, "void"));
@@ -1539,7 +1540,6 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 
 	std::vector<std::string> postfix = shuntingYard(words);
 
-	/*
 	std::cout << "orig: " << std::endl;
 	for(std::string word : words) {
 		std::cout << word << " ";
@@ -1551,7 +1551,6 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 		std::cout << word << " ";
 	}
 	std::cout << std::endl << std::endl;
-	*/
 
 	int numOp = 0;
 	for(size_t i = 0; i < postfix.size(); ++i) {
@@ -1572,6 +1571,10 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 		--numOp;
 
 		int numParam = numParams[postfix[op]];
+
+		if(postfix.back() == "return") {
+			std::cout << "numParam of " << postfix[op] << " = " << numParam << std::endl;
+		}
 
 		int countParam = 0;
 		int paramIndex = op;
@@ -1609,6 +1612,14 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 			
 		postfix.erase(postfix.begin() + paramIndex, postfix.begin() + op + 1);
 		postfix.insert(postfix.begin() + paramIndex, tempVar);
+
+		if(postfix.back() == "return") {
+			std::cout << "now postfix = ";
+			for(size_t t = 0; t < postfix.size(); ++t) {
+				std::cout << postfix[t] << " ";
+			}
+			std::cout << std::endl;
+		}
 	}
 
 	// 1 operator left
@@ -1768,12 +1779,12 @@ std::vector<std::string> simplifyExpressions(std::vector<std::string> &program) 
 		std::string line = program[i];
 		std::vector<std::string> lines = simplifyLine(line, funcs);
 
-		//std::cout << "line = " << line << std::endl;
+		std::cout << "line = " << line << std::endl;
 		for(size_t j = 0; j < lines.size(); ++j) {
 			ans.push_back(lines[j]);
-		//std::cout << ": " << lines[j] << std::endl;
+		std::cout << ": " << lines[j] << std::endl;
 		}
-		//std::cout << std::endl;
+		std::cout << std::endl;
 	}
 
 	std::vector<std::string> ans2;
@@ -2887,7 +2898,9 @@ std::vector<std::string> addJumpsAndLineNumbers(std::vector<std::string> &progra
 
 		if(word == ";" || word == "{" || word == "}") {
 			++lineNum;
-			wordLines[i + 1] = 1 + wordLines[i]; 
+			if(i + 1 < allWords2.size()) {
+				wordLines[i + 1] = 1 + wordLines[i]; 
+			}
 			continue;
 		}
 	}
@@ -2938,6 +2951,8 @@ std::vector<std::string> addJumpsAndLineNumbers(std::vector<std::string> &progra
 
 	ans.push_back(tempLine);
 
+	std::cout << "Done with jumps" << std::endl;
+
 	return ans;
 }
 
@@ -2970,8 +2985,16 @@ std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
 	modifiedProgram = assignDefaultToDeclaration(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
 
+	std::cout << "After assignDefaultToDeclaration, " << std::endl;
+	printProgram(modifiedProgram);
+	std::cout << std::endl;
+
 	modifiedProgram = simplifyExpressions(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
+
+	std::cout << "After simplifyExpressions, " << std::endl;
+	printProgram(modifiedProgram);
+	std::cout << std::endl;
 
 	modifiedProgram = convertSpecialAssignment(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram); 
@@ -2981,6 +3004,10 @@ std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
 
 	modifiedProgram = paramsToTemp(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
+
+	std::cout << "After paramsToTemp, " << std::endl;
+	printProgram(modifiedProgram);
+	std::cout << std::endl;
 
 	modifiedProgram = convertMemoryAccess(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
@@ -2994,12 +3021,16 @@ std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
 	modifiedProgram = explicitReturn(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
 
+	std::cout << "After explicitReturn, " << std::endl;
+	printProgram(modifiedProgram);
+	std::cout << std::endl;
+
 	modifiedProgram = pushAndPop(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
 
 	modifiedProgram = remapVariableNamesToTapes(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
-
+	
 	modifiedProgram = addJumpsAndLineNumbers(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
 
