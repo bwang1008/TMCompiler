@@ -1625,6 +1625,8 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 			subexpression.append(" ");
 		}
 		subexpression.append("= " + tempVar + " ; ");
+		
+		ans.push_back("bool " + tempVar + " ; ");	// declare tempVar
 		ans.push_back(subexpression);
 
 		// let postfix = "temp3 if"
@@ -3005,7 +3007,7 @@ std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
 
 	modifiedProgram = remapVariableNamesToTapes(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
-	
+
 	modifiedProgram = addJumpsAndLineNumbers(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
 
