@@ -2639,7 +2639,7 @@ std::vector<std::string> whileToJump(std::vector<std::string> &program, std::vec
 			braces2[closeBrace] = openBrace;	
 		}
 		else if(allWords[i] == "}" && braces2.find(i) != braces2.end()) {
-			// if this is a closing brace matching an active while loop, close it (by popp ing from active stack)
+			// if this is a closing brace matching an active while loop, close it (by popping from active stack)
 			openWhile.pop_back();
 		}
 		else if(allWords[i] == "break") {
@@ -2667,8 +2667,8 @@ std::vector<std::string> whileToJump(std::vector<std::string> &program, std::vec
 	// we have converted the break + continues
 	// now change the while loop + open brace line and the closing brace line
 	for(std::unordered_map<int, int>::iterator it = braces.begin(); it != braces.end(); ++it) {
-		int closeBrace = it->first;
-		int openBrace = it->second;
+		int openBrace = it->first;
+		int closeBrace = it->second;
 		
 		int openLine = wordLines[openBrace];
 		int closeLine = wordLines[closeBrace];
@@ -3005,6 +3005,10 @@ std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
 	modifiedProgram = pushAndPop(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
 
+	std::cout << "After pushAndPop, " << std::endl;
+	printProgram(modifiedProgram);
+	std::cout << std::endl;
+
 	modifiedProgram = remapVariableNamesToTapes(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
 
@@ -3044,6 +3048,22 @@ int main() {
 	std::vector<std::string> transformedProgram = sourceToAssembly(program);
 	//printPrettyProgram(transformedProgram);
 	printProgram(transformedProgram);
+
+	bool writeAssemblyToFile = true;
+	if(writeAssemblyToFile) {
+		std::string outFileName = "assembly.txt";
+		std::ofstream outFile(outFileName);
+
+		if(outFile.is_open()) {
+			for(size_t i = 0; i < transformedProgram.size(); ++i) {
+				outFile << transformedProgram[i] << std::endl;
+			}
+			outFile.close();
+		}
+		else {
+			std::cout << "Unable to open writing file " << outFileName << std::endl;
+		}
+	}
 
 	return 0;
 }

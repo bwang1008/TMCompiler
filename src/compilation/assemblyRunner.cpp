@@ -44,9 +44,8 @@ void simulateAssembly(std::vector<std::string> &program) {
 
 	std::vector<std::vector<int> > varTapes(numTapes, std::vector<int>(1, 0));
 
-	std::cout << "STARTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT\n\n\n" << std::endl;
-
 	while(true) {
+		/*
 		std::cout << "\nWe just concluded the prev step. Summary:" << std::endl;
 		std::cout << "params = [";
 		for(size_t i = 0; i < paramStack.size(); ++i) {
@@ -66,6 +65,7 @@ void simulateAssembly(std::vector<std::string> &program) {
 		std::cout << "rax: " << rax << std::endl;
 
 		std::cout << "\n\n\n";	
+		*/
 		std::cout << "IP = " << ip << std::endl;
 
 		if(ip == -1) {
@@ -75,7 +75,6 @@ void simulateAssembly(std::vector<std::string> &program) {
 		std::cout << "line = " << program[ip] << std::endl;
 
 		std::vector<std::string> words = getWords(program[ip]);
-		std::cout << "doing " << program[ip] << std::endl;
 
 		if(words[0] == "nop") {
 
@@ -250,7 +249,7 @@ void simulateAssembly(std::vector<std::string> &program) {
 		}
 		else if(words[0] == "call") {
 			// must be an integer!
-			std::cout << "Must be an integer? check : " << words[1] << std::endl;
+			//std::cout << "Must be an integer? check : " << words[1] << std::endl;
 			int lineNum = std::stoi(words[1]);
 
 			// push stack frames to varTapes
@@ -276,7 +275,7 @@ void simulateAssembly(std::vector<std::string> &program) {
 				val = rax;
 			}
 
-			std::cout << "jf to " << words[2] << std::endl;
+			//std::cout << "jf to " << words[2] << std::endl;
 			int dest = std::stoi(words[2]);
 
 			if(val == 0) {
@@ -341,13 +340,13 @@ void simulateAssembly(std::vector<std::string> &program) {
 				p2 = 0;
 			}
 			else {
-				std::cout << "assignment... num ? " << words[1] << std::endl;
+				//std::cout << "assignment... num ? " << words[1] << std::endl;
 				p2 = std::stoi(words[1]);
 			}
 
 			if(words[0].substr(0, 10) == "!TAPE_tape") {
 				int t = getTapeNum(words[0]);
-				std::cout << "yea t here = " << t << " with tapes size = " << std::endl;
+				//std::cout << "yea t here = " << t << " with tapes size = " << std::endl;
 				varTapes[t][varTapes[t].size() - 1] = p2;
 			}
 			else if(words[0] == "!TAPE_RAX") {
