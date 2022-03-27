@@ -1,9 +1,9 @@
-#include "constants.hpp"
-#include "tape.hpp"
-#include "transition.hpp"
+#include "constants.h"
+#include "tape.h"
+#include "transition.h"
 
-#include "single_tape_turing_machine.hpp"
-#include "multi_tape_turing_machine.hpp"
+#include "single_tape_turing_machine.h"
+#include "multi_tape_turing_machine.h"
 
 #include <iostream>
 #include <string>

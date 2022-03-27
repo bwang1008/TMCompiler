@@ -9,6 +9,8 @@
 #include <vector>
 #include <string>
 
+int DEBUG = 1;
+
 int getTapeNum(std::string s) {
 	return std::stoi(s.substr(10, s.size() - 10));
 }
@@ -44,29 +46,32 @@ void simulateAssembly(std::vector<std::string> &program) {
 
 	std::vector<std::vector<int> > varTapes(numTapes, std::vector<int>(1, 0));
 
-	while(true) {
-		/*
-		std::cout << "\nWe just concluded the prev step. Summary:" << std::endl;
-		std::cout << "params = [";
-		for(size_t i = 0; i < paramStack.size(); ++i) {
-			std::cout << paramStack[i];
-			if(i + 1 < paramStack.size()) {
-				std::cout << ", ";
-			}
-		}
-		std::cout << "]" << std::endl;
-		for(size_t i = 0; i < varTapes.size(); ++i) {
-			std::cout << "tape " << i << ": ";
-			for(size_t j = 0; j < varTapes[i].size(); ++j) {
-				std::cout << varTapes[i][j] << " ";
-			}
-			std::cout << std::endl;
-		}
-		std::cout << "rax: " << rax << std::endl;
+	int numSteps = 0;
 
-		std::cout << "\n\n\n";	
-		*/
+	while(true) {
+		if(DEBUG == 1) {
+			std::cout << "\nWe just concluded the prev step. Summary:" << std::endl;
+			std::cout << "params = [";
+			for(size_t i = 0; i < paramStack.size(); ++i) {
+				std::cout << paramStack[i];
+				if(i + 1 < paramStack.size()) {
+					std::cout << ", ";
+				}
+			}
+			std::cout << "]" << std::endl;
+			for(size_t i = 0; i < varTapes.size(); ++i) {
+				std::cout << "tape " << i << ": ";
+				for(size_t j = 0; j < varTapes[i].size(); ++j) {
+					std::cout << varTapes[i][j] << " ";
+				}
+				std::cout << std::endl;
+			}
+			std::cout << "rax: " << rax << std::endl;
+
+			std::cout << "\n\n\n";	
+		}
 		std::cout << "IP = " << ip << std::endl;
+		numSteps++;
 
 		if(ip == -1) {
 			break;
@@ -201,7 +206,7 @@ void simulateAssembly(std::vector<std::string> &program) {
 			else if(func == "moveMemHeadRight") {
 				bitHead++;
 				if(bitHead == bits.size()) {
-					bits.push_back(0);
+					bits.push_back(2);
 				}
 			}
 			else if(func == "moveMemHeadLeft") {
@@ -389,6 +394,7 @@ void simulateAssembly(std::vector<std::string> &program) {
 	std::cout << std::endl;
 
 	std::cout << "rax = " << rax << std::endl;
+	std::cout << "numSteps = " << numSteps << std::endl;
 }
 
 

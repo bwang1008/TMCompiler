@@ -1,5 +1,5 @@
-#include "constants.hpp"
-#include "tape.hpp"
+#include "constants.h"
+#include "tape.h"
 
 #include <algorithm>		// max
 #include <string>			// string

@@ -1,4 +1,4 @@
-#include "transition.hpp"
+#include "transition.h"
 
 #include <string>		// std::string
 #include <utility>		// std::move

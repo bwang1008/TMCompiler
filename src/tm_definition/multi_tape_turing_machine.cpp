@@ -1,5 +1,5 @@
-#include "constants.hpp"
-#include "multi_tape_turing_machine.hpp"
+#include "constants.h"
+#include "multi_tape_turing_machine.h"
 
 #include <algorithm>		// std::sort
 #include <iostream>			// std::cout, std::endl

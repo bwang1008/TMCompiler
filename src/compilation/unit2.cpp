@@ -1650,6 +1650,14 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 	
 	ans.push_back(subexpression);
 
+	/*
+	std::cout << "before adding short-circuiting:" << std::endl;
+	for(size_t i = 0; i < ans.size(); ++i) {
+		std::cout << ans[i] << std::endl;
+	}
+	std::cout << std::endl;
+	*/
+
 	// EDIT: add short-circuiting here. Change && and || expressions to if statements
 	// Change here because argument came from one line of source code.
 	
@@ -1705,10 +1713,18 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 			while(!prevLineContainsArg1) {
 				prevLineContainsArg1 = false;
 				std::string arg2Line = ans2[ans2.size() - 1];
+				
+				// edit: if multiple occurences of short-circuiting, like if(true || false && false), 
+				// shouldn't include a closing brace as part of arg2Line
+				std::vector<std::string> tempWords = getWords(arg2Line);
+				if(tempWords[0] == "}") {
+					break;
+				}
+
 				ans2.pop_back();
 				arg2Lines.push_back(arg2Line);
-
 				prevWords = getWords(ans2[ans2.size() - 1]);
+
 				for(size_t j = 0; j < prevWords.size(); ++j) {
 					if(prevWords[j] == arg1) {
 						prevLineContainsArg1 = true;
@@ -2593,6 +2609,10 @@ std::vector<std::string> ifElseToJump(std::vector<std::string> &program, std::ve
 				int lineNum2 = wordLines[closeBrace];
 				program[lineNum1] = "jf " + allWords[i] + " " + std::to_string(lineNum2) + " ; ";
 
+				if(lineNum2 == 308) {
+					std::cout << "opt1" << std::endl;
+				}
+
 				// change "}" into "nop"
 				program[lineNum2] = "nop ; ";
 			}
@@ -2606,6 +2626,10 @@ std::vector<std::string> ifElseToJump(std::vector<std::string> &program, std::ve
 				int lineNum2 = wordLines[closeBrace];
 				int lineNum3 = wordLines[elseIndex];
 				int lineNum4 = wordLines[closeBrace2];
+
+				if(lineNum3 == 308) {
+					std::cout << "opt2" << std::endl;
+				}
 
 				program[lineNum1] = "jf " + allWords[i] + " " + std::to_string(lineNum3) + " ; ";
 				program[lineNum2] = "jmp " + std::to_string(lineNum4) + " ; ";
@@ -2971,7 +2995,7 @@ std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
 
 	modifiedProgram = voidReturns(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
- 
+
 	modifiedProgram = parenthesisReturn(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
 
@@ -3004,10 +3028,6 @@ std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
 
 	modifiedProgram = pushAndPop(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
-
-	std::cout << "After pushAndPop, " << std::endl;
-	printProgram(modifiedProgram);
-	std::cout << std::endl;
 
 	modifiedProgram = remapVariableNamesToTapes(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);

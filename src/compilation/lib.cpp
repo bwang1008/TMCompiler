@@ -321,6 +321,12 @@ int eor(int x, int y) {
 /**
  * Add val into MEM[index]. As function of bits, to set bit y of index x, set bits[(x+y)^2 + y]
  * from cstheory.stackexchange.com/questions/18688/a-small-c-like-language-that-turing-machines-can-simulate
+ * EDIT: use diagonalization trick: 
+ * 0136
+ * 247
+ * 58
+ * 9
+ * So row r and col c corresponds to 1d index of (r+c)*(r+c+1)/2 + r
  * represent 0 as 0, 11 (8 + 3) as 01101 (pos and 1 + 2 + 8), and -6 as 1011 (neg and 2 + 4)
  */
 void memset(int index, int val) {
@@ -332,7 +338,7 @@ void memset(int index, int val) {
 
 	while(!isZero(V) || !handledSign) {
 		// function above: (x+y)^2 + y
-		int desiredBitIndex = (index + valIndex) * (index + valIndex) + valIndex;
+		int desiredBitIndex = ((index + valIndex) * (index + valIndex + 1)) / 2 + index;
 
 		while(currBitIndex > desiredBitIndex) {
 			currBitIndex -= 1;
@@ -371,7 +377,7 @@ void memset(int index, int val) {
 	}
 
 	// must clear out the next tape cell by making it blank
-	int desiredBitIndex = (index + valIndex) * (index + valIndex) + valIndex;
+	int desiredBitIndex = ((index + valIndex) * (index + valIndex + 1)) / 2 + index;
 	while(currBitIndex < desiredBitIndex) {
 		currBitIndex += 1;
 		moveMemHeadRight();
@@ -385,7 +391,9 @@ void memset(int index, int val) {
 int memget(int index) {
 	int ans = 0;
 	int currBitIndex = getMemBitIndex();
-	int desiredBitIndex = index * index;
+	int desiredBitIndex = (index * (index + 1)) / 2 + index;
+
+	printInt(desiredBitIndex);
 
 	while(currBitIndex > desiredBitIndex) {
 		currBitIndex -= 1;
@@ -422,7 +430,7 @@ int memget(int index) {
 			pow2 += pow2;
 		}
 
-		desiredBitIndex = (index + valIndex) * (index + valIndex) + valIndex;
+		desiredBitIndex = ((index + valIndex) * (index + valIndex + 1)) / 2 + index;
 		while(currBitIndex < desiredBitIndex) {
 			currBitIndex += 1;
 			moveMemHeadRight();
