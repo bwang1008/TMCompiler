@@ -18,8 +18,8 @@ int linear(int a, int b, int c) {
 int main() {
 	//int x = nextInt();
 	//int y = nextInt();
-	//int z = MEM[2] + 1;
-	
+	//int z = MEM[2] + 7;
+
 	/*
 	int x = 2;
 	printInt(x);
@@ -37,11 +37,19 @@ int main() {
 	int z = d;
 	*/
 
-	/*
-	MEM[3] = MEM[1] - 1;
-	MEM[MEM[2] += 3] += MEM[5];
-	MEM[5] = MEM[3];
+	
+	//MEM[3] = MEM[1] - 1;
+	//MEM[MEM[2] += 3] += MEM[5];
+	//MEM[5] = MEM[3];
 
+	//printInt(MEM[3]);
+	//printSpace();
+	//printInt(MEM[2]);
+	//printSpace();
+	//printInt(MEM[5]);
+	//printSpace();
+
+	/*
 	for(int i = 0; i < 5; i += 1) {
 		if(i % 3 == 0) {
 			continue;
@@ -82,9 +90,6 @@ int main() {
 	//int w;
 	//w = x = y = 18;
 	
-	//int x = 5;
-	//int y = 2;
-
 	/*
 	if(true && false || x > y) {
 		return -5;
@@ -92,11 +97,12 @@ int main() {
 
 	//int w = 5;
 
-	return w - x*y;
+	return 7;
 	*/
 
-	int x = nextInt();
-	int y = nextInt();
-	
-	return x*y;
+	//MEM[3] = 5;
+	//printInt(-1);
+	//printInt(5);
+	//printInt(9);
+	return MEM[3];
 }

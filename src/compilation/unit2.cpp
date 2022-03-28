@@ -1615,24 +1615,35 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 
 	// 1 operator left
 	
-	// careful: could be "temp1 temp2 && if" or "temp1 temp2 - return" (but don't count sth like "temp return"
-	if(postfix.size() > 2 && (postfix[postfix.size() - 1] == "if" || postfix[postfix.size() - 1] == "return")) {
-		std::string tempVar = createTemp();
-		// create first expression: "temp1 temp2 && = temp3"
-		std::string subexpression;
-		for(size_t i = 0; i < postfix.size() - 1; ++i) {
-			subexpression.append(postfix[i]);
-			subexpression.append(" ");
-		}
-		subexpression.append("= " + tempVar + " ; ");
-		
-		ans.push_back("bool " + tempVar + " ; ");	// declare tempVar
-		ans.push_back(subexpression);
+	// careful: could be "temp1 temp2 && if" or "temp1 temp2 - return" (but don't count sth like "temp return" (no ; cuz handled later)
+	if(postfix[postfix.size() - 1] == "if" || postfix[postfix.size() - 1] == "return") {
+		if(postfix.size() > 2) {
+			std::string tempVar = createTemp();
+			// create first expression: "temp1 temp2 && = temp3"
+			std::string subexpression;
+			for(size_t i = 0; i < postfix.size() - 1; ++i) {
+				subexpression.append(postfix[i]);
+				subexpression.append(" ");
+			}
+			subexpression.append("= " + tempVar + " ; ");
+			
+			ans.push_back("bool " + tempVar + " ; ");	// declare tempVar
+			ans.push_back(subexpression);
 
-		// let postfix = "temp3 if"
-		std::string lastWord = postfix[postfix.size() - 1];
-		postfix.clear();
-		postfix.push_back(tempVar + " " + lastWord); 	// the ; or openCurly is handled below
+			// let postfix = "temp3 if"
+			std::string lastWord = postfix[postfix.size() - 1];
+			postfix.clear();
+			postfix.push_back(tempVar + " " + lastWord); 	// the ; or openCurly is handled below
+		}
+		else if(postfix.size() == 2 && postfix[0].substr(0, 5) == "!FUNC") {
+			// or "!FUNC_... if" : could be a function with no arguments
+			std::string tempVar = createTemp();
+			std::string funcName = postfix[0];
+			// declare temp variable, call no argument function and assign to temp, then if on that
+			ans.push_back("bool " + tempVar + " ; ");
+			ans.push_back(funcName + " = " + tempVar + " ; ");	// format of funcs with variables: x f = y ;  (meaning y is assigned value of f(x))
+			postfix[0] = tempVar;
+		}
 	}
 
 	std::string subexpression;
@@ -1788,12 +1799,12 @@ std::vector<std::string> simplifyExpressions(std::vector<std::string> &program) 
 		std::string line = program[i];
 		std::vector<std::string> lines = simplifyLine(line, funcs);
 
-		//std::cout << "line = " << line << std::endl;
+		std::cout << "line = " << line << std::endl;
 		for(size_t j = 0; j < lines.size(); ++j) {
 			ans.push_back(lines[j]);
-		//std::cout << ": " << lines[j] << std::endl;
+		std::cout << ": " << lines[j] << std::endl;
 		}
-		//std::cout << std::endl;
+		std::cout << std::endl;
 	}
 
 	std::vector<std::string> ans2;
@@ -2014,7 +2025,7 @@ std::vector<std::string> paramsToTemp(std::vector<std::string> &program) {
 			ans.push_back(line);
 
 			// is it simple declaration?
-			std::unordered_set<std::string> validTypes {"int", "bool"};
+			std::unordered_set<std::string> validTypes {"int", "bool", "void"};
 			if(validTypes.find(words[0]) != validTypes.end()) {
 				std::string varName = words[1];
 				varType[varName] = words[0];
@@ -2139,48 +2150,112 @@ std::vector<std::string> convertMemoryAccess(std::vector<std::string> &program) 
 		}
 	}
 
+	// now, remove MEM from function parameters: aka simplify 0 MEM 1 MEM g   (meaning g(MEM[0], MEM[1]))
+	// only applies if the function is not assignment (=)
 	std::vector<std::string> ans2;
+	std::vector<std::tuple<std::string, std::vector<std::string>, std::string> > funcs = getFunctions(program);
+
+	std::unordered_set<std::string> funcNames;
+	for(size_t i = 0; i < funcs.size(); ++i) {
+		std::tuple<std::string, std::vector<std::string>, std::string> func = funcs[i];
+		funcNames.insert(std::get<0>(func));
+	}
 
 	for(size_t i = 0; i < ans.size(); ++i) {
 		std::vector<std::string> words = getWords(ans[i]);
+		int funcIndex = -1;
+		for(size_t j = 0; j < words.size(); ++j) {
+			std::string word = words[j];
+			if(word != "=" && funcNames.find(word) != funcNames.end()) {
+				funcIndex = (int) j;
+				break;
+			}
+		}
 
-		if(words.size() > 4 && words[1] == "!VAR_LIB_MEM" && words[3] == "!VAR_LIB_MEM" && words[4] == "=") {
+		if(funcIndex == -1) {
+			ans2.push_back(ans[i]);
+			continue;
+		}
+
+		// replace every parameter of the form "x MEM ... func" with a) "int temp; temp x MEM = ; temp... func" 
+		for(int j = 0; j < funcIndex; ++j) {
+			if(words[j] == "!VAR_LIB_MEM") {
+				std::string index = words[j - 1];
+
+				std::string tempVar = createTemp();
+				ans2.push_back("int " + tempVar + " ; ");
+				ans2.push_back(tempVar + " " + index + " !VAR_LIB_MEM = ; ");
+
+				words[j - 1] = tempVar;
+				words.erase(words.begin() + j);
+
+				funcIndex--;
+				j--;
+			}
+		}
+
+		std::string tempLine;
+		for(size_t j = 0; j < words.size(); ++j) {
+			tempLine.append(words[j]);
+			tempLine.append(" ");
+		}
+		ans2.push_back(tempLine);
+	}
+
+
+	std::vector<std::string> ans3;
+
+	for(size_t i = 0; i < ans2.size(); ++i) {
+		std::vector<std::string> words = getWords(ans2[i]);
+
+		// 0 MEM x = -> !VAR_LIB_MEM[0] = x -> !FUNC_LIB_memset(0, x)  -> 0 x !FUNC_LIB_memset
+		if(words.size() == 6 && words[1] == "!VAR_LIB_MEM" && words[3] == "!VAR_LIB_MEM" && words[4] == "=") {
 			// case where sth like "MEM[0] = MEM[1];" 
 			std::string tempVar = createTemp();
 			std::string A = words[0];
 			std::string B = words[2];
 
-			ans2.push_back("int " + tempVar + " ; ");
-			ans2.push_back(B + " " + "!FUNC_LIB_memget = " + tempVar + " ; ");
-			ans2.push_back(A + " " + tempVar + " !FUNC_LIB_memset ; ");
+			ans3.push_back("int " + tempVar + " ; ");
+			ans3.push_back(B + " " + "!FUNC_LIB_memget = " + tempVar + " ; ");
+			ans3.push_back(A + " " + tempVar + " !FUNC_LIB_memset ; ");
 		}
-		else if(words.size() > 3 && words[2] == "!VAR_LIB_MEM" && words[3] == "=") {
+		else if(words.size() == 5 && words[2] == "!VAR_LIB_MEM" && words[3] == "=") {
+			// var index MEM = ;
 			std::string A = words[0];
 			std::string B = words[1];
-			ans2.push_back(B + " " + "!FUNC_LIB_memget = " + A + " ; ");
+			ans3.push_back(B + " " + "!FUNC_LIB_memget = " + A + " ; ");
 		}
-		else if(words.size() > 3 && words[1] == "!VAR_LIB_MEM" && words[3] == "=") {
+		else if(words.size() == 5 && words[1] == "!VAR_LIB_MEM" && words[3] == "=") {
+			// index MEM var = ;
 			std::string A = words[0];
 			std::string B = words[2];
-			ans2.push_back(A + " " + B + " " + "!FUNC_LIB_memset ; ");
+			ans3.push_back(A + " " + B + " " + "!FUNC_LIB_memset ; ");
+		}
+		else if(words.size() == 5 && words[1] == "!VAR_LIB_MEM" && words[2] == "=") {
+			// equal sign might be flipped: 
+			// index MEM = var ; (meaning assign MEM[index] to var) -> var index memget = ;, just like above 
+			std::string A = words[0];
+			std::string B = words[3];
+			//ans3.push_back(B + " " + A + " !FUNC_LIB_memget = ; ");
+			ans3.push_back(A + " !FUNC_LIB_memget = " + B + " ; ");
 		}
 		else {
-			ans2.push_back(ans[i]);
+			ans3.push_back(ans2[i]);
 		}
 	}
-	
-	std::vector<std::string> ans3;
+
+	std::vector<std::string> ans4;
 	std::string tempLine;
-	for(size_t i = 0; i < ans2.size(); ++i) {
-		std::vector<std::string> words = getWords(ans2[i]);
+	for(size_t i = 0; i < ans3.size(); ++i) {
+		std::vector<std::string> words = getWords(ans3[i]);
 		for(size_t j = 0; j < words.size(); ++j) {
 			tempLine.append(words[j]);
 			tempLine.append(" ");
 		}
 	}
 
-	ans3.push_back(tempLine);
-	return ans3;
+	ans4.push_back(tempLine);
+	return ans4;
 }
 
 /**
@@ -2732,6 +2807,8 @@ std::vector<std::string> funcToJump(std::vector<std::string> &program, std::vect
 	for(std::unordered_map<std::string, int>::iterator it = funcLines.begin(); it != funcLines.end(); ++it) {
 		int funcLine = it->second;
 		program[funcLine] = "nop ; ";
+
+		std::cout << "func " << it->first << " on line " << funcLine << std::endl;
 	}
 
 	// replace each closing brace with "nop" : the only remaining closing braces were from function declarations
@@ -3005,6 +3082,10 @@ std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
 	modifiedProgram = simplifyExpressions(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
 
+	std::cout << "after simplifyExpressions" << std::endl;
+	printProgram(modifiedProgram);
+	std::cout << std::endl;
+
 	modifiedProgram = convertSpecialAssignment(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram); 
 
@@ -3014,8 +3095,16 @@ std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
 	modifiedProgram = paramsToTemp(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
 
+	std::cout << "after paramsToTemp" << std::endl;
+	printProgram(modifiedProgram);
+	std::cout << std::endl;
+
 	modifiedProgram = convertMemoryAccess(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
+
+	std::cout << "after convertMemoryAccess" << std::endl;
+	printProgram(modifiedProgram);
+	std::cout << std::endl;
 
 	modifiedProgram = reduceTemps(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
@@ -3025,6 +3114,10 @@ std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
 
 	modifiedProgram = explicitReturn(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
+
+	std::cout << "after explicitReturn" << std::endl;
+	printProgram(modifiedProgram);
+	std::cout << std::endl;
 
 	modifiedProgram = pushAndPop(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);

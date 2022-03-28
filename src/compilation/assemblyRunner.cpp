@@ -9,7 +9,7 @@
 #include <vector>
 #include <string>
 
-int DEBUG = 1;
+int DEBUG = 0;
 
 int getTapeNum(std::string s) {
 	return std::stoi(s.substr(10, s.size() - 10));
@@ -40,7 +40,17 @@ void simulateAssembly(std::vector<std::string> &program) {
 
 	int bitIndex = 0;
 	int bitHead = 0;
-	std::vector<int> bits {0};
+	//std::vector<int> bits {2};
+
+	// just for debugging: set MEM[2] = 5:     bits[9] = 0, bits[13] = 1, bits[18] = 0, bits[24] = 1
+	std::vector<int> bits;
+	for(size_t i = 0; i < 39; ++i) {
+		bits.push_back(2);	
+	}
+	bits[9] = 0;
+	bits[13] = 1;
+	bits[18] = 0;
+	bits[24] = 1;
 
 	int rax = 0;
 
@@ -70,14 +80,14 @@ void simulateAssembly(std::vector<std::string> &program) {
 
 			std::cout << "\n\n\n";	
 		}
-		std::cout << "IP = " << ip << std::endl;
+		//std::cout << "IP = " << ip << std::endl;
 		numSteps++;
 
 		if(ip == -1) {
 			break;
 		}
 
-		std::cout << "line = " << program[ip] << std::endl;
+		//std::cout << "line = " << program[ip] << std::endl;
 
 		std::vector<std::string> words = getWords(program[ip]);
 
@@ -238,12 +248,12 @@ void simulateAssembly(std::vector<std::string> &program) {
 				std::cout << "You chose: " << val << std::endl;
 			}
 			else if(func == "printSpace") {
-				std::cout << " ";
+				std::cout << std::endl;
 			}
 			else if(func == "printInt") {
 				int p1 = paramStack.back();
 				paramStack.pop_back();
-				std::cout << p1;
+				std::cout << "printInt: " << p1 << std::endl;
 			}
 
 			// must pop off stack frames, since these functions implicitly have a return
