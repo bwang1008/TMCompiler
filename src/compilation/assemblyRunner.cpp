@@ -40,8 +40,9 @@ void simulateAssembly(std::vector<std::string> &program) {
 
 	int bitIndex = 0;
 	int bitHead = 0;
-	//std::vector<int> bits {2};
+	std::vector<int> bits {2};
 
+	/*
 	// just for debugging: set MEM[2] = 5:     bits[9] = 0, bits[13] = 1, bits[18] = 0, bits[24] = 1
 	std::vector<int> bits;
 	for(size_t i = 0; i < 39; ++i) {
@@ -51,6 +52,7 @@ void simulateAssembly(std::vector<std::string> &program) {
 	bits[13] = 1;
 	bits[18] = 0;
 	bits[24] = 1;
+	*/
 
 	int rax = 0;
 
@@ -211,6 +213,7 @@ void simulateAssembly(std::vector<std::string> &program) {
 			}
 			else if(func == "setMemBitIndex") {
 				int p1 = paramStack.back();
+				paramStack.pop_back();
 				bitIndex = p1;
 			}
 			else if(func == "moveMemHeadRight") {

@@ -1,44 +1,19 @@
 numTapes = 15
-printInt: 9
-printInt: 413
-printInt: -413
-printInt: 100
-printInt: 13
-printInt: -100
-printInt: 423
-printInt: -423
-printInt: 37
-printInt: 1
-printInt: -37
-printInt: 100
-printInt: 18
-printInt: -100
-printInt: 423
-printInt: -423
-printInt: 8999
-assemblyRunner here: bitHead = 18 and bits[18] = 0
-printInt: 9000
-printInt: -9001
-printInt: -9002
-printInt: -8999
-printInt: 100
-printInt: 24
-printInt: -100
-printInt: 423
-printInt: -423
-printInt: 37
-printInt: 5
-printInt: -37
-printInt: 100
-printInt: 31
-printInt: -100
+printInt: 0
+
+printInt: 3
+
+printInt: 6
+
+printInt: 7
+
 NumTapes = 15
 ip = -1
 ipStack: 
 bitIndex = 31
 bitHead = 31
-bits: _________0___1____0_____1______________
-paramStack: 31 
-rax = 5
-numSteps = 272617
+bits: _____0__10__10____1_0___1_1______1_______1_________
+paramStack: 
+rax = 6
+numSteps = 2829887
 DONE

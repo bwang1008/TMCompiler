@@ -34,12 +34,20 @@ int main() {
 	*/
 
 	
-	//MEM[3] = MEM[1] - 1;
-	//MEM[MEM[2] += 3] += MEM[5];
+	MEM[3] = MEM[1] - 1;
+	MEM[5] = 7;
+	MEM[MEM[2] += 3] += MEM[5];
 	//MEM[5] = MEM[3];
 
-	//printInt(MEM[3]);
-	//printSpace();
+	printInt(MEM[1]);
+	printSpace();
+	printInt(MEM[2]);
+	printSpace();
+	printInt(MEM[3]);
+	printSpace();
+	printInt(MEM[5]);
+	printSpace();
+	
 	//printInt(MEM[2]);
 	//printSpace();
 	//printInt(MEM[5]);
@@ -95,10 +103,5 @@ int main() {
 
 	return 7;
 	*/
-
-	//MEM[3] = 5;
-	//printInt(-1);
-	//printInt(5);
-	//printInt(9);
 	return MEM[3];
 }

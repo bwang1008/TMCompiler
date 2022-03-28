@@ -393,7 +393,7 @@ int memget(int index) {
 	int currBitIndex = getMemBitIndex();
 	int desiredBitIndex = (index * (index + 1)) / 2 + index;
 
-	printInt(desiredBitIndex);
+	//printInt(desiredBitIndex);
 
 	while(currBitIndex > desiredBitIndex) {
 		currBitIndex -= 1;
@@ -410,46 +410,15 @@ int memget(int index) {
 	while(!memBitIsBlank()) {
 		// first bit encountered is the sign bit
 		if(isZero(valIndex)) {
-			printInt(413);
-			printInt(-413);
 			// 1 for negative, 0 for non-negative
 			if(memBitIsOne()) {
-				printInt(417);
-				printInt(-417);
 				shouldBeNegative = true;	
 			}
 		}
 		else {
-			printInt(423);
-			printInt(-423);
 			// goes from 1,2,4,8,... increasing. Little-endian
 			if(memBitIsOne()) {
 				ans += pow2;
-				printInt(37);
-				printInt(ans);
-				printInt(-37);
-			}
-			else {
-				printInt(8999);
-				if(memBitIsZero()) {
-					printInt(9000);
-				}
-				else {
-					printInt(-9000);
-				}
-				if(memBitIsOne()) {
-					printInt(9001);
-				}
-				else {
-					printInt(-9001);
-				}
-				if(memBitIsBlank()) {
-					printInt(9002);
-				}
-				else {
-					printInt(-9002);
-				}
-				printInt(-8999);
 			}
 		}
 
@@ -462,9 +431,6 @@ int memget(int index) {
 		}
 
 		desiredBitIndex = ((index + valIndex) * (index + valIndex + 1)) / 2 + index;
-		printInt(100);
-		printInt(desiredBitIndex);
-		printInt(-100);
 		while(currBitIndex < desiredBitIndex) {
 			currBitIndex += 1;
 			moveMemHeadRight();
