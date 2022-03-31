@@ -9,7 +9,7 @@ only allowed types are int and bool
 An important difference to standard C++, is here we don't have boolean short-circuiting
 */
 
-#define SINGLE_FILE 1
+#define SINGLE_FILE 0
 
 #include "unit2.h"
 #include "utils.h"			// helper functions; basic algorithms
@@ -1799,12 +1799,12 @@ std::vector<std::string> simplifyExpressions(std::vector<std::string> &program) 
 		std::string line = program[i];
 		std::vector<std::string> lines = simplifyLine(line, funcs);
 
-		std::cout << "line = " << line << std::endl;
+		//std::cout << "line = " << line << std::endl;
 		for(size_t j = 0; j < lines.size(); ++j) {
 			ans.push_back(lines[j]);
-		std::cout << ": " << lines[j] << std::endl;
+		//std::cout << ": " << lines[j] << std::endl;
 		}
-		std::cout << std::endl;
+		//std::cout << std::endl;
 	}
 
 	std::vector<std::string> ans2;
@@ -3082,10 +3082,6 @@ std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
 	modifiedProgram = simplifyExpressions(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
 
-	std::cout << "after simplifyExpressions" << std::endl;
-	printProgram(modifiedProgram);
-	std::cout << std::endl;
-
 	modifiedProgram = convertSpecialAssignment(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram); 
 
@@ -3095,16 +3091,8 @@ std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
 	modifiedProgram = paramsToTemp(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
 
-	std::cout << "after paramsToTemp" << std::endl;
-	printProgram(modifiedProgram);
-	std::cout << std::endl;
-
 	modifiedProgram = convertMemoryAccess(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
-
-	std::cout << "after convertMemoryAccess" << std::endl;
-	printProgram(modifiedProgram);
-	std::cout << std::endl;
 
 	modifiedProgram = reduceTemps(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
@@ -3114,10 +3102,6 @@ std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
 
 	modifiedProgram = explicitReturn(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
-
-	std::cout << "after explicitReturn" << std::endl;
-	printProgram(modifiedProgram);
-	std::cout << std::endl;
 
 	modifiedProgram = pushAndPop(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);

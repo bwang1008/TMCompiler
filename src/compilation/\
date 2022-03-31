@@ -1,0 +1,47 @@
+#include "unit1.h"
+#include "multi_tape_builder.h"
+#include "utils.h"
+#include "../tm_definition/transition.h"
+#include "../tm_definition/multi_tape_turing_machine.h"
+
+void initialize() {
+
+}
+
+MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(std::vector<std::string> &assembly) {
+	// get number of "sideways" tapes for ip
+	int p = 1;
+	int s = (int) assembly.size() - 1;
+	while(s > 1) {
+		++p;
+		s /= 2;
+	}
+	if(p < 2) {
+		p = 2;
+	}
+
+	int numVars = 0;
+	for(size_t i = 0; i < assembly.size(); ++i+) {
+		std::vector<std::string> words = getWords(assembly[i]);
+	}
+
+	std::vector<std::pair<std::string, int> > tapeCounts;
+	
+	tapeCounts.push_back(std::make_pair("input", 1));
+	tapeCounts.push_back(std::make_pair("output", 1));
+	tapeCounts.push_back(std::make_pair("ipStack", 1));
+	tapeCounts.push_back(std::make_pair("ip", 1));
+	tapeCounts.push_back(std::make_pair("ipSideways", p));
+	tapeCounts.push_back(std::make_pair("paramStack", 1));
+	tapeCounts.push_back(std::make_pair("bitIndex", 1));
+	tapeCounts.push_back(std::make_pair("bits", 1));
+	tapeCounts.push_back(std::make_pair("variables", numVar));
+	tapeCounts.push_back(std::make_pair("rax", 1));
+
+	/*
+	std::vector<Transition> transitions;
+	transitions.emplace_back(1, "what", 1, "lmao", std::vector<int> {0, 0, 0});
+	MultiTapeTuringMachine mttm(3, 5, 0, 1, transitions);
+	return mttm;
+	*/
+}
