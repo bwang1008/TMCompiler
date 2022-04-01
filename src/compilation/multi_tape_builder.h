@@ -11,7 +11,7 @@
 
 class MultiTapeBuilder {
 	public:
-		MultiTapeBuilder(std::vector<std::pair<std::string, int> > &tapeCounts);
+		MultiTapeBuilder(std::vector<std::pair<std::string, int> > &tapeCounts, size_t programSize, size_t numVars);
 
 		int newNode(std::string &name = "");
 		int node(std::string &name);
@@ -24,6 +24,7 @@ class MultiTapeBuilder {
 		int Q;
 		int T;
 		size_t ipSize;
+		size_t numVars;
 		std::vector<Transition> transitions;
 		std::unordered_map<std::string, int> tapeIndices;
 		std::unordered_map<std::string, int> nodeIndices;

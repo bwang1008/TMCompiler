@@ -2,7 +2,7 @@
 #include "../tm_definition/transition.h"
 #include "../tm_definition/constants.h"
 
-MultiTapeBuilder::MultiTapeBuilder(std::vector<std::pair<std::string, int> > &tapeCounts, size_t programSize) {
+MultiTapeBuilder::MultiTapeBuilder(std::vector<std::pair<std::string, int> > &tapeCounts, size_t ipSize, size_t numVars) {
 	int numTapes = 0;
 	for(size_t i = 0; i < tapeCounts.size(); ++i) {
 		std::pair<std::string, int> p = tapeCounts[i];
@@ -16,17 +16,8 @@ MultiTapeBuilder::MultiTapeBuilder(std::vector<std::pair<std::string, int> > &ta
 	this.T = numTapes;
 	this.Q = 0;
 
-	this.ipSize = 1;
-	int s = ((int) programSize) - 1;	
-	while(s > 1) {
-		++this.ipSize;
-		s /= 2;
-	}
-	if(this.ipSize < 2) {
-		this.ipSize = 2;
-	}
-	
 	this.ipSize = ipSize;
+	this.numVars = numVars;
 }
 
 int MultiTapeBuilder::newNode(std::string &name) {
