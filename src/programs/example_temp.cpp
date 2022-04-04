@@ -7,12 +7,29 @@ void what(int x) {
 }
 
 // simulate transformation
-int linear(int a, int b, int c) {
-	int temp = a * b / c;
-	
-	int x = a - -1;	
+int linear(int a, int b, int x) {
+	int temp = a * x + b;
 	
 	return temp;
+}
+
+void genPrimes(int N) {
+	for(int i = 2; i <= N; i += 1) {
+		if(MEM[i] == 1) {
+			continue;
+		}
+
+		for(int j = i*i; j <= N; j += i) {
+			MEM[j] = 1;
+		}
+	}
+
+	for(int i = 2; i <= N; i += 1) {
+		if(MEM[i] == 0) {
+			printInt(i);
+			printSpace();
+		}
+	}
 }
 
 int main() {
@@ -37,7 +54,7 @@ int main() {
 	int z = d;
 	*/
 
-	
+	/*
 	MEM[3] = MEM[1] - 1;
 	MEM[5] = 7;
 	MEM[MEM[2] += 3] += MEM[5];
@@ -51,6 +68,7 @@ int main() {
 	printSpace();
 	printInt(MEM[5]);
 	printSpace();
+	*/
 	
 	//printInt(MEM[2]);
 	//printSpace();
@@ -107,5 +125,7 @@ int main() {
 
 	return 7;
 	*/
-	return MEM[3];
+
+	genPrimes(25);
+	return 0;
 }

@@ -1,6 +1,12 @@
+#include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "multi_tape_builder.h"
 #include "../tm_definition/transition.h"
 #include "../tm_definition/constants.h"
+#include "../tm_definition/multi_tape_turing_machine.h"
 
 MultiTapeBuilder::MultiTapeBuilder(std::vector<std::pair<std::string, int> > &tapeCounts, size_t ipSize, size_t numVars) {
 	int numTapes = 0;
@@ -9,49 +15,56 @@ MultiTapeBuilder::MultiTapeBuilder(std::vector<std::pair<std::string, int> > &ta
 		std::string tapeName = p.first;
 		int count = p.second;
 
-		this.tapeIndices[tapeName] = numTapes;
+		this->tapeIndices[tapeName] = numTapes;
 		numTapes += count;
 	}
 	
-	this.T = numTapes;
-	this.Q = 0;
+	this->T = numTapes;
+	this->Q = 0;
 
-	this.ipSize = ipSize;
-	this.numVars = numVars;
+	this->ipSize = ipSize;
+	this->numVars = numVars;
 }
 
-int MultiTapeBuilder::newNode(std::string &name) {
-	int numNodes = this.Q;
+int MultiTapeBuilder::newNode() {
+	int numNodes = this->Q;
+	++Q;
+
+	return numNodes;
+}
+
+int MultiTapeBuilder::newNode(const std::string &name) {
+	int numNodes = this->Q;
 	++Q;
 
 	if(name.size() != 0) {
-		this.nodeIndices[name] = numNodes;
+		this->nodeIndices[name] = numNodes;
 	}
 
 	return numNodes;
 }
 
-int MultiTapeBuilder::node(std::string &name) {
-	if(this.nodeIndices.find(name) != this.nodeIndices.end()) {
+int MultiTapeBuilder::node(const std::string &name) const {
+	if(this->nodeIndices.find(name) != this->nodeIndices.end()) {
 		std::cout << "Node " << name << " not found" << std::endl;
 		return -1;
 	}
 	
-	return this.nodeIndices[name];
+	return this->nodeIndices.at(name);
 }
 
-int MultiTapeBuilder::tapeIndices(std::string &tapeName) {
-	if(this.tapeIndices.find(tapeName) != this.tapeIndices.end()) {
+int MultiTapeBuilder::tapeIndex(const std::string &tapeName) const {
+	if(this->tapeIndices.find(tapeName) != this->tapeIndices.end()) {
 		std::cout << "Node " << tapeName << " not found" << std::endl;
 		return -1;
 	}
 
-	return this.tapeIndices[tapeName];
+	return this->tapeIndices.at(tapeName);
 }
 
-void MultiTapeBuilder::addTransition(int fromState, int toState, std::vector<std::pair<int, std::string> > &reads, std::vector<std::vector<std::pair<int, std::string> > &writes, std::vector<std::pair<int, int> > &shifts) {
-	std::vector<std::string> tapeRead(this.T, ".");
-	std::vector<std::string> tapeWrite(this.T, ".");
+void MultiTapeBuilder::addTransition(int fromState, int toState, std::vector<std::pair<int, std::string> > &reads, std::vector<std::pair<int, std::string> > &writes, std::vector<std::pair<int, int> > &shifts) {
+	std::vector<std::string> tapeRead(this->T, ".");
+	std::vector<std::string> tapeWrite(this->T, ".");
 
 	for(size_t i = 0; i < reads.size(); ++i) {
 		std::pair<int, std::string> p = reads[i];
@@ -71,14 +84,14 @@ void MultiTapeBuilder::addTransition(int fromState, int toState, std::vector<std
 	std::string allWriteRules;
 	
 	for(size_t i = 0; i < tapeRead.size(); ++i) {
-		allReadRules.push_back(tapeRead[i]);
+		allReadRules.append(tapeRead[i]);
 	}
 
 	for(size_t i = 0; i < tapeWrite.size(); ++i) {
-		allWriteRules.push_back(tapeWrite[i]);
+		allWriteRules.append(tapeWrite[i]);
 	}
 	
-	std::vector<int> allShifts(this.T, Constants::Shift::none);
+	std::vector<int> allShifts(this->T, Constants::Shift::none);
 	for(size_t i = 0; i < shifts.size(); ++i) {
 		std::pair<int, int> p = shifts[i];
 		int index = p.first;
@@ -98,7 +111,7 @@ void MultiTapeBuilder::addTransition(int fromState, int toState, std::vector<std
 	transitions.emplace_back(fromState, allReadRules, toState, allWriteRules, allShifts);
 }
 
-void MultiTapeBuilder::add1TapeTransition(int fromState, int toState, int tapeIndex, std::string &read, std:string &write, int shift) {
+void MultiTapeBuilder::add1TapeTransition(int fromState, int toState, int tapeIndex, const std::string &read, const std::string &write, int shift) {
 	std::vector<std::pair<int, std::string> > reads;
 	std::vector<std::pair<int, std::string> > writes;
 	std::vector<std::pair<int, int> > shifts;
@@ -109,4 +122,9 @@ void MultiTapeBuilder::add1TapeTransition(int fromState, int toState, int tapeIn
 
 	addTransition(fromState, toState, reads, writes, shifts);
 
+}
+
+
+MultiTapeTuringMachine MultiTapeBuilder::generateMTTM(const int initialState, const int haltState) const {
+	return MultiTapeTuringMachine(this->Q, this->T, initialState, haltState, this->transitions);
 }

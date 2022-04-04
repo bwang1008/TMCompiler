@@ -32,7 +32,6 @@ private:
 	std::vector<Transition> transitions;
 
 	Transition findTransition(const int state, const std::vector<char> &symbols) const;
-	
 };
 
 #endif
