@@ -1320,10 +1320,160 @@ void handleBasicEq(MultiTapeBuilder &builder, int startNode, int endNode) {
 	std::vector<std::pair<int, int> > shifts;
 	
 	// ok now back where we started from. now check for equality!
+
+	// when have written ans, but tape0 and tape1 heads need to go back left
+	int moveBackLeft = builder.newNode();
+
+	// have to do all 9 cases for reading "0","1",or "_" on both tapes
+	// if current bits same, move on. otherwise, right a 0 in rax,
+	// and go to moveBackLeft
+	
+	std::vector<std::string> symbols {"0", "1", "_"};
+	
+	for(size_t i = 0; i < symbols.size(); ++i) {
+		for(size_t j = 0; j < symbols.size(); ++j) {
+			std::string s1 = symbols[i];
+			std::string s2 = symbols[j];
+
+			reads.emplace_back(tape0, s1);
+			reads.emplace_back(tape1, s2);
+
+			if(s1 == "_" && s2 == "_") {
+				// if you made it here, all bits same. is equal!
+				writes.emplace_back(tapeRax, "1");
+				shifts.emplace_back(tape0, -1);
+				shifts.emplace_back(tape1, -1);
+
+				builder.addTransition(q3, moveBackLeft, reads, writes, shifts);
+			}
+			else if(s1 == s2) {
+				// these two bits are the same, continue on
+				shifts.emplace_back(tape0, 1);
+				shifts.emplace_back(tape1, 1);
+
+				builder.addTransition(q3, q3, reads, writes, shifts);
+			}
+			else {
+				// these two bits are not the same... not equal!
+				// since both values positive, won't shift out of bounds
+				writes.emplace_back(tapeRax, "0");
+				shifts.emplace_back(tape0, -1);
+				shifts.emplace_back(tape1, -1);
+
+				builder.addTransition(q3, moveBackLeft, reads, writes, shifts);
+			}
+
+			reads.clear();
+			writes.clear();
+			shifts.clear();
+		}
+	}
+	
+	// moveBackLeft: while see [01] on both tapes, go back left
+	reads.emplace_back(tape0, "[01]");
+	reads.emplace_back(tape1, "[01]");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tape1, -1);
+	
+	builder.addTransition(moveBackLeft, moveBackLeft, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// moveBackLeft: when see _ on both tapes, go back right to original spot
+	reads.emplace_back(tape0, "_");
+	reads.emplace_back(tape1, "_");
 	shifts.emplace_back(tape0, 1);
 	shifts.emplace_back(tape1, 1);
-	shifts.emplace_back(tapeRax, 1);
+	
+	builder.addTransition(moveBackLeft, endNode, reads, writes, shifts);
+}
 
+/**
+ * handle assembly code of doing (A < B)
+ * where A is first value popped, B is second value popped
+ * can assume both have no leading 0's, and both positive
+ */
+void handleBasicLt(MultiTapeBuilder &builder, int startNode, int endNode) {
+	int q0 = builder.newNode();
+	int q1 = builder.newNode();
+	int q2 = builder.newNode();
+	int q3 = builder.newNode();
+
+	int tapeStack = builder.tapeIndex("paramStack");
+	int tape0 = builder.tapeIndex("variables");
+	int tape1 = tape0 + 1;
+	int tapeRax = builder.tapeIndex("rax");
+
+	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
+	popOffTop(builder, tapeStack, q0, q1);
+	copyBetweenTapes(builder, tapeStack, tape0 + 1, q1, q2);
+	popOffTop(builder, tapeStack, q2, q3);
+
+	std::vector<std::pair<int, std::string> > reads;
+	std::vector<std::pair<int, std::string> > writes;
+	std::vector<std::pair<int, int> > shifts;
+	
+	// pad end of shorter number with 0's
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+
+	reads.emplace_back(tape0, "[01]");
+	reads.emplace_back(tape1, "[01]");
+
+	builder.addTransition(q3, q3, reads, writes, shifts);
+	reads.clear();
+	
+	reads.emplace_back(tape0, "[01]");
+	reads.emplace_back(tape1, "_");
+	writes.emplace_back(tape1, "0");
+	
+	builder.addTransition(q3, q3, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+
+	reads.emplace_back(tape0, "_");
+	reads.emplace_back(tape1, "[01]");
+	writes.emplace_back(tape0, "0");
+
+	builder.addTransition(q3, q3, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+	
+	// q3: if see _ and _, end. start going back left.
+	int q4 = builder.newNode();
+
+	reads.emplace_back(tape0, "_");
+	reads.emplace_back(tape1, "_");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tape1, -1);
+
+	builder.addTransition(q3, q4, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+
+	reads.emplace_back(tape0, "[01]");
+	reads.emplace_back(tape1, "[01]");
+	
+	builder.addTransition(q4, q4, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	int q5 = builder.newNode();
+	reads.emplace_back(tape0, "_");
+	reads.emplace_back(tape1, "_");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+
+	builder.addTransition(q4, q5, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+	
+	// ok now back where we started from. now do less-than!
+	
 }
 
 
