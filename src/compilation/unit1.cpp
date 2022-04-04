@@ -1130,7 +1130,7 @@ void handleBasicXor(MultiTapeBuilder &builder, int startNode, int endNode) {
 	std::vector<std::pair<int, std::string> > reads;
 	std::vector<std::pair<int, std::string> > writes;
 	std::vector<std::pair<int, int> > shifts;
-
+	
 	// pad end of shorter number with 0's
 	shifts.emplace_back(tape0, 1);
 	shifts.emplace_back(tape1, 1);
@@ -1157,10 +1157,175 @@ void handleBasicXor(MultiTapeBuilder &builder, int startNode, int endNode) {
 	reads.clear();
 	writes.clear();
 	shifts.clear();
-
-	// ok now do bit-wise xor!
 	
+	// q3: if see _ and _, end. start going back left.
+	int q4 = builder.newNode();
+
+	reads.emplace_back(tape0, "_");
+	reads.emplace_back(tape1, "_");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tape1, -1);
+
+	builder.addTransition(q3, q4, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+
+	reads.emplace_back(tape0, "[01]");
+	reads.emplace_back(tape1, "[01]");
+	
+	builder.addTransition(q4, q4, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	int q5 = builder.newNode();
+	reads.emplace_back(tape0, "_");
+	reads.emplace_back(tape1, "_");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+
+	builder.addTransition(q4, q5, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+	
+	// ok now back where we started from. now do bit-wise xor!
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	// if see 0 and 0, write a 0
+	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape1, "0");
+	writes.emplace_back(tapeRax, "0");
+	builder.addTransition(q5, q5, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	
+	// if see 0 and 1, write a 1
+	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape1, "1");
+	writes.emplace_back(tapeRax, "1");
+	builder.addTransition(q5, q5, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	
+	// if see 1 and 0, write a 1
+	reads.emplace_back(tape0, "1");
+	reads.emplace_back(tape1, "0");
+	writes.emplace_back(tapeRax, "1");
+	builder.addTransition(q5, q5, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	
+	// if see 1 and 1, write a 0
+	reads.emplace_back(tape0, "1");
+	reads.emplace_back(tape1, "1");
+	writes.emplace_back(tapeRax, "0");
+	builder.addTransition(q5, q5, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+
+	shifts.clear();
+	// if see _ and _, write a _, and move left
+	int q6 = builder.newNode();
+
+	reads.emplace_back(tape0, "_");
+	reads.emplace_back(tape1, "_");
+	writes.emplace_back(tapeRax, "_"); // to delimit answer
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tape1, -1);
+	shifts.emplace_back(tapeRax, -1);
+
+	builder.addTransition(q5, q6, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+		
+	// now move back left. also turn trailing 0's on the right into blanks
+	// this time tho, answer could be just 0...
+	int encountered1 = builder.newNode();
+	int penultimateNode = builder.newNode();
+
+	// while see both 0/1, and haven't encountered 1 in tapeRax, replace 0 with _
+	reads.emplace_back(tape0, "[01]");
+	reads.emplace_back(tape1, "[01]");
+	reads.emplace_back(tapeRax, "0");
+	writes.emplace_back(tapeRax, "_");
+		
+	builder.addTransition(q6, q6, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+	
+	// if see 1 in tapeRax tho, go to state encountered1
+	reads.emplace_back(tape0, "[01]");
+	reads.emplace_back(tape1, "[01]");
+	reads.emplace_back(tapeRax, "1");
+		
+	builder.addTransition(q6, encountered1, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+
+	// encountered1: while both see 0/1, go left
+	reads.emplace_back(tape0, "[01]");
+	reads.emplace_back(tape1, "[01]");
+		
+	builder.addTransition(encountered1, encountered1, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	
+	// if q6 or encountered1 sees _ and _, go to node penultimateNode
+	shifts.clear();
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	reads.emplace_back(tape0, "_");
+	reads.emplace_back(tape1, "_");
+	
+	builder.addTransition(q6, penultimateNode, reads, writes, shifts);
+	builder.addTransition(encountered1, penultimateNode, reads, writes, shifts);
+	
+	// now all heads in original spot. one last thing tho:
+	// what if tapeRax head currently shows blank, cuz we removed leading 0's?
+	// write a 0!
+	// (otherwise don't write)
+	builder.add1TapeTransition(penultimateNode, endNode, tapeRax, "_", "0", 0);
+	builder.add1TapeTransition(penultimateNode, endNode, tapeRax, "[01]", ".", 0);
 }
+
+/**
+ * handle assembly code of doing (A == B)
+ * where A is first value popped, B is second value popped
+ * can assume both have no leading 0's, and both positive
+ */
+void handleBasicEq(MultiTapeBuilder &builder, int startNode, int endNode) {
+	int q0 = builder.newNode();
+	int q1 = builder.newNode();
+	int q2 = builder.newNode();
+	int q3 = builder.newNode();
+
+	int tapeStack = builder.tapeIndex("paramStack");
+	int tape0 = builder.tapeIndex("variables");
+	int tape1 = tape0 + 1;
+	int tapeRax = builder.tapeIndex("rax");
+
+	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
+	popOffTop(builder, tapeStack, q0, q1);
+	copyBetweenTapes(builder, tapeStack, tape0 + 1, q1, q2);
+	popOffTop(builder, tapeStack, q2, q3);
+
+	std::vector<std::pair<int, std::string> > reads;
+	std::vector<std::pair<int, std::string> > writes;
+	std::vector<std::pair<int, int> > shifts;
+	
+	// ok now back where we started from. now check for equality!
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+}
+
 
 MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(std::vector<std::string> &assembly) {
 	int numVars = countTapeVariables(assembly);
