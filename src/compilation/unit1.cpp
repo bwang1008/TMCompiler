@@ -1567,6 +1567,31 @@ void handleBasicNeg(MultiTapeBuilder &builder, int startNode, int endNode) {
 	copyBetweenTapes(builder, tape0, tapeRax, q2, endNode);
 }
 
+/**
+ * handle assembly code of putting tape bitIndex value into rax
+ */
+void handleGetMemBitIndex(MultiTapeBuilder &builder, int startNode, int endNode) {
+	int tapeBitIndex = builder.tapeIndex("bitIndex");
+	int tapeRax = builder.tapeIndex("rax");
+
+	copyBetweenTapes(builder, tapeBitIndex, tapeRax, startNode, endNode);
+}
+
+/**
+ * handle assembly code of putting a value into tape bitIndex
+ */
+void handleSetMemBitIndex(MultiTapeBuilder &builder, int startNode, int endNode) {
+	int q0 = builder.newNode();
+
+	int tapeStack = builder.tapeIndex("paramStack");
+	int tapeBitIndex = builder.tapeIndex("bitIndex");
+	int tapeRax = builder.tapeIndex("rax");
+
+	copyBetweenTapes(builder, tapeStack, tapeBitIndex, startNode, q0);
+	popOffTop(builder, tapeStack, q0, endNode);
+}
+
+
 MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(std::vector<std::string> &assembly) {
 	int numVars = countTapeVariables(assembly);
 
