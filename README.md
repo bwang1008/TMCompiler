@@ -13,16 +13,16 @@ to the most significant bit follow from left to right.
 Generated Turing Machine will have 3 symbols: 0, 1, and space ( _ )
 
 Number of tapes:
-1 for INPUT
-1 for OUTPUT
-1 for Instruction Pointer stack
-1 for Instrution Pointer
-num bits in Instruction Pointer in 2's complement
-1 for MEM: Integer Array
-1 for Index of MEM
-1 for Variable Stack for parameters
-V for each declared variable, where V = max number of declared variables (including temp variables and parameters) across all functions
-1 for return values
+1 for INPUT  
+1 for OUTPUT  
+1 for Instruction Pointer stack  
+1 for Instrution Pointer  
+num bits in Instruction Pointer in 2's complement  
+1 for MEM: Integer Array  
+1 for Index of MEM  
+1 for Variable Stack for parameters  
+V for each declared variable, where V = max number of declared variables (including temp variables and parameters) across all functions  
+1 for return values  
 
 Current features:
 Conversion from source C++ code into assembly code.
