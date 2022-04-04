@@ -1420,7 +1420,8 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(std::vector<std::string>
 	return builder.generateMTTM(builder.node("start"), builder.node("end"));
 }
 
+// just a placeholder
 int main() {
-	std::cout << "Hello!" << std::endl;
+	std::cout << "Hello, World!" << std::endl;
 }
 
