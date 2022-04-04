@@ -1441,7 +1441,7 @@ void handleBasicLt(MultiTapeBuilder &builder, int startNode, int endNode) {
 	writes.clear();
 	shifts.clear();
 	
-	// q3: if see _ and _, end. start going back left.
+	// q3: if see _ and _, end going right. Then do comparisons!
 	int q4 = builder.newNode();
 
 	reads.emplace_back(tape0, "_");
@@ -1452,28 +1452,90 @@ void handleBasicLt(MultiTapeBuilder &builder, int startNode, int endNode) {
 	builder.addTransition(q3, q4, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
+	shifts.clear();
 
-	reads.emplace_back(tape0, "[01]");
-	reads.emplace_back(tape1, "[01]");
+	// ok now back where we started from. now do less-than!
+	// starting from right side: that's where significant bits are
+	// so start comparison here
 	
+	// node to signal when to start moving both tape heads back left
+	int moveBackLeft = builder.newNode();
+
+	// read 0 and 0: keep going left
+	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape1, "0");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tape1, -1);
+
 	builder.addTransition(q4, q4, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 	shifts.clear();
 
-	int q5 = builder.newNode();
+	// read 0 and 1: A < B, so write 1 to rax. Go to moveBackLeft
+	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape1, "1");
+	writes.emplace_back(tapeRax, "1");
+
+	builder.addTransition(q4, moveBackLeft, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+	
+	// read 1 and 0: A > B, so write 0 to rax. Go to moveBackLeft
+	reads.emplace_back(tape0, "1");
+	reads.emplace_back(tape1, "0");
+	writes.emplace_back(tapeRax, "0");
+
+	builder.addTransition(q4, moveBackLeft, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// read 1 and 1: keep going left
+	reads.emplace_back(tape0, "1");
+	reads.emplace_back(tape1, "1");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tape1, -1);
+
+	builder.addTransition(q4, q4, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// read _ and _: well A == B. Write 0 to rax, go to endNode
+	reads.emplace_back(tape0, "_");
+	reads.emplace_back(tape1, "_");
+	writes.emplace_back(tapeRax, "0");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+
+	builder.addTransition(q4, endNode, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// moveBackLeft: while reading [01] on both tapes, move left
+	reads.emplace_back(tape0, "[01]");
+	reads.emplace_back(tape1, "[01]");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tape1, -1);
+	
+	builder.addTransition(moveBackLeft, moveBackLeft, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// when go to far left, move back right 1
 	reads.emplace_back(tape0, "_");
 	reads.emplace_back(tape1, "_");
 	shifts.emplace_back(tape0, 1);
 	shifts.emplace_back(tape1, 1);
 
-	builder.addTransition(q4, q5, reads, writes, shifts);
+	builder.addTransition(moveBackLeft, endNode, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 	shifts.clear();
-	
-	// ok now back where we started from. now do less-than!
-	
 }
 
 
