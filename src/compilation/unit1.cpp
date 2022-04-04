@@ -1538,6 +1538,34 @@ void handleBasicLt(MultiTapeBuilder &builder, int startNode, int endNode) {
 	shifts.clear();
 }
 
+/**
+ * handle assembly code of doing (-x)
+ * where x is value popped from paramStack
+ * Can assume x is non-zero
+ */
+void handleBasicNeg(MultiTapeBuilder &builder, int startNode, int endNode) {
+	int q0 = builder.newNode();
+	int q1 = builder.newNode();
+
+	int tapeStack = builder.tapeIndex("paramStack");
+	int tape0 = builder.tapeIndex("variables");
+	int tapeRax = builder.tapeIndex("rax");
+
+	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
+	popOffTop(builder, tapeStack, q0, q1);
+
+	std::vector<std::pair<int, std::string> > reads;
+	std::vector<std::pair<int, std::string> > writes;
+	std::vector<std::pair<int, int> > shifts;
+	
+	// ok now back where we started from. now flip sign bit
+	// sign bit is the cell the head is currently on!
+	int q2 = builder.newNode();
+	builder.add1TapeTransition(q1, q2, tape0, "0", "1", 0);
+	builder.add1TapeTransition(q1, q2, tape0, "1", "0", 0);
+
+	copyBetweenTapes(builder, tape0, tapeRax, q2, endNode);
+}
 
 MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(std::vector<std::string> &assembly) {
 	int numVars = countTapeVariables(assembly);
