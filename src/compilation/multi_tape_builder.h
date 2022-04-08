@@ -21,8 +21,8 @@ class MultiTapeBuilder {
 		int newNode(const std::string &name);
 		int node(const std::string &name) const;
 		int tapeIndex(const std::string &tapeName) const;
-		void addTransition(int fromState, int toState, std::vector<std::pair<int, std::string> > &reads, std::vector<std::pair<int, std::string> > &writes, std::vector<std::pair<int, int> > &shifts);
-		void add1TapeTransition(int fromState, int toState, int tapeIndex, const std::string &read, const std::string &write, int shift);
+		void addTransition(const int fromState, const int toState, const std::vector<std::pair<int, std::string> > &reads, const std::vector<std::pair<int, std::string> > &writes, const std::vector<std::pair<int, int> > &shifts);
+		void add1TapeTransition(const int fromState, const int toState, const int tapeIndex, const std::string &read, const std::string &write, const int shift);
 		MultiTapeTuringMachine generateMTTM(const int initialState, const int haltState) const;
 
 

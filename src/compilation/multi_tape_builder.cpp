@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 #include <string>
 #include <utility>
 #include <vector>
@@ -27,27 +28,24 @@ MultiTapeBuilder::MultiTapeBuilder(std::vector<std::pair<std::string, int> > &ta
 }
 
 int MultiTapeBuilder::newNode() {
-	int numNodes = this->Q;
+	const int numNodes = this->Q;
 	++Q;
 
 	return numNodes;
 }
 
 int MultiTapeBuilder::newNode(const std::string &name) {
-	int numNodes = this->Q;
+	const int numNodes = this->Q;
 	++Q;
 
-	if(name.size() != 0) {
-		this->nodeIndices[name] = numNodes;
-	}
+	this->nodeIndices[name] = numNodes;
 
 	return numNodes;
 }
 
 int MultiTapeBuilder::node(const std::string &name) const {
 	if(this->nodeIndices.find(name) != this->nodeIndices.end()) {
-		std::cout << "Node " << name << " not found" << std::endl;
-		return -1;
+		throw std::invalid_argument("Node " + name + " not found");
 	}
 	
 	return this->nodeIndices.at(name);
@@ -55,28 +53,27 @@ int MultiTapeBuilder::node(const std::string &name) const {
 
 int MultiTapeBuilder::tapeIndex(const std::string &tapeName) const {
 	if(this->tapeIndices.find(tapeName) != this->tapeIndices.end()) {
-		std::cout << "Node " << tapeName << " not found" << std::endl;
-		return -1;
+		throw std::invalid_argument("Node " + tapeName + " not found");
 	}
 
 	return this->tapeIndices.at(tapeName);
 }
 
-void MultiTapeBuilder::addTransition(int fromState, int toState, std::vector<std::pair<int, std::string> > &reads, std::vector<std::pair<int, std::string> > &writes, std::vector<std::pair<int, int> > &shifts) {
+void MultiTapeBuilder::addTransition(const int fromState, const int toState, const std::vector<std::pair<int, std::string> > &reads, const std::vector<std::pair<int, std::string> > &writes, const std::vector<std::pair<int, int> > &shifts) {
 	std::vector<std::string> tapeRead(this->T, ".");
 	std::vector<std::string> tapeWrite(this->T, ".");
 
 	for(size_t i = 0; i < reads.size(); ++i) {
-		std::pair<int, std::string> p = reads[i];
-		int tapeIndex = p.first;
-		std::string rule = p.second;
+		const std::pair<int, std::string> p = reads[i];
+		const int tapeIndex = p.first;
+		const std::string rule = p.second;
 		tapeRead[tapeIndex] = rule;
 	}
 
 	for(size_t i = 0; i < writes.size(); ++i) {
-		std::pair<int, std::string> p = writes[i];
-		int tapeIndex = p.first;
-		std::string rule = p.second;
+		const std::pair<int, std::string> p = writes[i];
+		const int tapeIndex = p.first;
+		const std::string rule = p.second;
 		tapeWrite[tapeIndex] = rule;
 	}
 
@@ -93,9 +90,9 @@ void MultiTapeBuilder::addTransition(int fromState, int toState, std::vector<std
 	
 	std::vector<int> allShifts(this->T, Constants::Shift::none);
 	for(size_t i = 0; i < shifts.size(); ++i) {
-		std::pair<int, int> p = shifts[i];
-		int index = p.first;
-		int shift = p.second;
+		const std::pair<int, int> p = shifts[i];
+		const int index = p.first;
+		const int shift = p.second;
 
 		if(shift == 0) {
 			allShifts[i] = Constants::Shift::none;
@@ -111,7 +108,7 @@ void MultiTapeBuilder::addTransition(int fromState, int toState, std::vector<std
 	transitions.emplace_back(fromState, allReadRules, toState, allWriteRules, allShifts);
 }
 
-void MultiTapeBuilder::add1TapeTransition(int fromState, int toState, int tapeIndex, const std::string &read, const std::string &write, int shift) {
+void MultiTapeBuilder::add1TapeTransition(const int fromState, const int toState, const int tapeIndex, const std::string &read, const std::string &write, const int shift) {
 	std::vector<std::pair<int, std::string> > reads;
 	std::vector<std::pair<int, std::string> > writes;
 	std::vector<std::pair<int, int> > shifts;
@@ -121,7 +118,6 @@ void MultiTapeBuilder::add1TapeTransition(int fromState, int toState, int tapeIn
 	shifts.emplace_back(tapeIndex, shift);
 
 	addTransition(fromState, toState, reads, writes, shifts);
-
 }
 
 

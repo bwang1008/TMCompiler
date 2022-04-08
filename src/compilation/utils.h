@@ -70,7 +70,7 @@ void printPrettyProgram(std::vector<std::string> &program, bool showLines = true
 
 std::string getLetters(std::vector<std::string> &program);
 
-std::vector<std::string> getWords(std::string &letters) ;
+std::vector<std::string> getWords(const std::string &letters) ;
 
 int checkCompilation(std::string &fileName);
 

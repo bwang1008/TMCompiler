@@ -389,7 +389,7 @@ std::string getLetters(std::vector<std::string> &program) {
 	return ans;
 }
 
-std::vector<std::string> getWords(std::string &letters)  {
+std::vector<std::string> getWords(const std::string &letters)  {
 	std::vector<std::string> words;
 	
 	int startSearch = findNonBlank(letters, 0);
