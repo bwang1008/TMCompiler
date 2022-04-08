@@ -1993,12 +1993,13 @@ void handleNot(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string
 	std::vector<std::pair<int, std::string> > writes;
 	std::vector<std::pair<int, int> > shifts;
 
-	int endNode = builder.node("before");
+	int penultimateNode = builder.newNode();
 
 	reads.emplace_back(argTape, "0");
 	writes.emplace_back(destTape, "1");
+	shifts.emplace_back(destTape, 1);
 	
-	builder.addTransition(q0, endNode, reads, writes, shifts);
+	builder.addTransition(q0, penultimateNode, reads, writes, shifts);
 
 	reads.clear();
 	writes.clear();
@@ -2006,12 +2007,18 @@ void handleNot(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string
 
 	reads.emplace_back(argTape, "1");
 	writes.emplace_back(destTape, "0");
+	shifts.emplace_back(destTape, 1);
 
-	builder.addTransition(q0, endNode, reads, writes, shifts);
+	builder.addTransition(q0, penultimateNode, reads, writes, shifts);
 
 	reads.clear();
 	writes.clear();
 	shifts.clear();
+
+	int endNode = builder.node("before");
+	
+	// once written answer to dest, write a blank after, then move back left
+	builder.add1TapeTransition(penultimateNode, endNode, destTape, ".", "_", -1);
 }
 
 /**
@@ -2031,13 +2038,14 @@ void handleAnd(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string
 	std::vector<std::pair<int, std::string> > writes;
 	std::vector<std::pair<int, int> > shifts;
 
-	int endNode = builder.node("before");
+	int penultimateNode = builder.newNode();
 
 	reads.emplace_back(arg1Tape, "0");
 	reads.emplace_back(arg2Tape, "0");
 	writes.emplace_back(destTape, "0");
+	shifts.emplace_back(destTape, 1);
 	
-	builder.addTransition(q0, endNode, reads, writes, shifts);
+	builder.addTransition(q0, penultimateNode, reads, writes, shifts);
 
 	reads.clear();
 	writes.clear();
@@ -2046,8 +2054,9 @@ void handleAnd(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string
 	reads.emplace_back(arg1Tape, "0");
 	reads.emplace_back(arg2Tape, "1");
 	writes.emplace_back(destTape, "0");
+	shifts.emplace_back(destTape, 1);
 	
-	builder.addTransition(q0, endNode, reads, writes, shifts);
+	builder.addTransition(q0, penultimateNode, reads, writes, shifts);
 
 	reads.clear();
 	writes.clear();
@@ -2056,8 +2065,9 @@ void handleAnd(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string
 	reads.emplace_back(arg1Tape, "1");
 	reads.emplace_back(arg2Tape, "0");
 	writes.emplace_back(destTape, "0");
+	shifts.emplace_back(destTape, 1);
 	
-	builder.addTransition(q0, endNode, reads, writes, shifts);
+	builder.addTransition(q0, penultimateNode, reads, writes, shifts);
 
 	reads.clear();
 	writes.clear();
@@ -2066,12 +2076,18 @@ void handleAnd(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string
 	reads.emplace_back(arg1Tape, "1");
 	reads.emplace_back(arg2Tape, "1");
 	writes.emplace_back(destTape, "1");
+	shifts.emplace_back(destTape, 1);
 	
-	builder.addTransition(q0, endNode, reads, writes, shifts);
+	builder.addTransition(q0, penultimateNode, reads, writes, shifts);
 
 	reads.clear();
 	writes.clear();
 	shifts.clear();
+
+	int endNode = builder.node("before");
+	
+	// once written answer to dest, write a blank after, then move back left
+	builder.add1TapeTransition(penultimateNode, endNode, destTape, ".", "_", -1);
 }
 
 /**
@@ -2091,13 +2107,14 @@ void handleOr(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string>
 	std::vector<std::pair<int, std::string> > writes;
 	std::vector<std::pair<int, int> > shifts;
 
-	int endNode = builder.node("before");
+	int penultimateNode = builder.newNode();
 
 	reads.emplace_back(arg1Tape, "0");
 	reads.emplace_back(arg2Tape, "0");
 	writes.emplace_back(destTape, "0");
+	shifts.emplace_back(destTape, 1);
 	
-	builder.addTransition(q0, endNode, reads, writes, shifts);
+	builder.addTransition(q0, penultimateNode, reads, writes, shifts);
 
 	reads.clear();
 	writes.clear();
@@ -2106,8 +2123,9 @@ void handleOr(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string>
 	reads.emplace_back(arg1Tape, "0");
 	reads.emplace_back(arg2Tape, "1");
 	writes.emplace_back(destTape, "1");
+	shifts.emplace_back(destTape, 1);
 	
-	builder.addTransition(q0, endNode, reads, writes, shifts);
+	builder.addTransition(q0, penultimateNode, reads, writes, shifts);
 
 	reads.clear();
 	writes.clear();
@@ -2116,8 +2134,9 @@ void handleOr(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string>
 	reads.emplace_back(arg1Tape, "1");
 	reads.emplace_back(arg2Tape, "0");
 	writes.emplace_back(destTape, "1");
+	shifts.emplace_back(destTape, 1);
 	
-	builder.addTransition(q0, endNode, reads, writes, shifts);
+	builder.addTransition(q0, penultimateNode, reads, writes, shifts);
 
 	reads.clear();
 	writes.clear();
@@ -2126,12 +2145,18 @@ void handleOr(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string>
 	reads.emplace_back(arg1Tape, "1");
 	reads.emplace_back(arg2Tape, "1");
 	writes.emplace_back(destTape, "1");
+	shifts.emplace_back(destTape, 1);
 	
-	builder.addTransition(q0, endNode, reads, writes, shifts);
+	builder.addTransition(q0, penultimateNode, reads, writes, shifts);
 
 	reads.clear();
 	writes.clear();
 	shifts.clear();
+
+	int endNode = builder.node("before");
+	
+	// once written answer to dest, write a blank after, then move back left
+	builder.add1TapeTransition(penultimateNode, endNode, destTape, ".", "_", -1);
 }
 
 /**

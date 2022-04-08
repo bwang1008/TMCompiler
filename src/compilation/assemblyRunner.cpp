@@ -328,7 +328,7 @@ void simulateAssembly(std::vector<std::string> &program) {
 			int t2 = getTapeNum(words[1]);
 			int val = t1 && t2;
 
-			int t3 = getTapeNum(words[3]);
+			int t3 = getTapeNum(words[4]);
 			size_t s = varTapes[t3].size();
 			
 			varTapes[t3][s - 1] = val;
@@ -339,7 +339,7 @@ void simulateAssembly(std::vector<std::string> &program) {
 			int t2 = getTapeNum(words[1]);
 			int val = t1 || t2;
 
-			int t3 = getTapeNum(words[3]);
+			int t3 = getTapeNum(words[4]);
 			size_t s = varTapes[t3].size();
 			
 			varTapes[t3][s - 1] = val;
