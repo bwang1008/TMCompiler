@@ -9,12 +9,61 @@
 #include "../tm_definition/constants.h"
 #include "../tm_definition/multi_tape_turing_machine.h"
 
-MultiTapeBuilder::MultiTapeBuilder(std::vector<std::pair<std::string, int> > &tapeCounts, size_t ipSize, size_t numVars) {
-	int numTapes = 0;
+
+/**
+ * Return number of distinct variables of form "!TAPE_tapeX" for some integer X
+ */
+int countTapeVariables(const std::vector<std::string> &assembly) {
+	size_t numVars = 0;
+
+	for(size_t i = 0; i < assembly.size(); ++i) {
+		const std::vector<std::string> words = getWords(assembly[i]);
+		for(size_t j = 0; j < words.size(); ++j) {
+			const std::string word = words[j];
+			if(word.substr(0, 10) == "!TAPE_tape") {
+				const size_t tapeIndex = parseTapeNum(word);
+				if(tapeIndex > numVars) {
+					numVars = tapeIndex;
+				}
+			}
+		}
+	}
+
+	return numVars + 1;
+}
+
+MultiTapeBuilder::MultiTapeBuilder(const std::vector<std::string> &assembly) {
+	this->numVars = countTapeVariables(assembly);
+
+	this->ipSize = 1;
+	int s = ((int) assembly.size()) - 1;	
+	while(s > 1) {
+		++this->ipSize;
+		s /= 2;
+	}
+	if(this->ipSize < 2) {
+		this->ipSize = 2;
+	}
+
+	// initialize tapes with names
+	std::vector<std::pair<std::string, size_t> > tapeCounts;
+	
+	tapeCounts.emplace_back("input", 1);
+	tapeCounts.emplace_back("output", 1);
+	tapeCounts.emplace_back("ipStack", 1);
+	tapeCounts.emplace_back("ip", 1);
+	tapeCounts.emplace_back("ipSideways", this->ipSize);
+	tapeCounts.emplace_back("paramStack", 1);
+	tapeCounts.emplace_back("bitIndex", 1);
+	tapeCounts.emplace_back("bits", 1);
+	tapeCounts.emplace_back("variables", this->numVars);
+	tapeCounts.emplace_back("rax", 1);
+
+	size_t numTapes = 0;
 	for(size_t i = 0; i < tapeCounts.size(); ++i) {
-		std::pair<std::string, int> p = tapeCounts[i];
+		std::pair<std::string, size_t> p = tapeCounts[i];
 		std::string tapeName = p.first;
-		int count = p.second;
+		size_t count = p.second;
 
 		this->tapeIndices[tapeName] = numTapes;
 		numTapes += count;
@@ -22,28 +71,28 @@ MultiTapeBuilder::MultiTapeBuilder(std::vector<std::pair<std::string, int> > &ta
 	
 	this->T = numTapes;
 	this->Q = 0;
-
-	this->ipSize = ipSize;
-	this->numVars = numVars;
 }
 
-int MultiTapeBuilder::newNode() {
-	const int numNodes = this->Q;
+size_t MultiTapeBuilder::newNode() {
+	const size_t numNodes = this->Q;
 	++Q;
 
 	return numNodes;
 }
 
-int MultiTapeBuilder::newNode(const std::string &name) {
-	const int numNodes = this->Q;
-	++Q;
+size_t MultiTapeBuilder::newNode(const std::string &name) {
+	if(this->nodeIndices.find(name) != this->nodeIndices.end()) {
+		throw std::invalid_argument("Node " + name + " already defined");
+	}
 
-	this->nodeIndices[name] = numNodes;
+	const size_t ans = this->newNode();
 
-	return numNodes;
+	this->nodeIndices[name] = ans;
+
+	return ans;
 }
 
-int MultiTapeBuilder::node(const std::string &name) const {
+size_t MultiTapeBuilder::node(const std::string &name) const {
 	if(this->nodeIndices.find(name) != this->nodeIndices.end()) {
 		throw std::invalid_argument("Node " + name + " not found");
 	}
@@ -51,9 +100,9 @@ int MultiTapeBuilder::node(const std::string &name) const {
 	return this->nodeIndices.at(name);
 }
 
-int MultiTapeBuilder::tapeIndex(const std::string &tapeName) const {
+size_t MultiTapeBuilder::tapeIndex(const std::string &tapeName) const {
 	if(this->tapeIndices.find(tapeName) != this->tapeIndices.end()) {
-		throw std::invalid_argument("Node " + tapeName + " not found");
+		throw std::invalid_argument("Tape " + tapeName + " not found");
 	}
 
 	return this->tapeIndices.at(tapeName);

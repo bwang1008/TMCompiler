@@ -52,7 +52,7 @@ bool isIntegerLiteral(const std::string &s) {
 	return true;
 }
 
-std::string getAlphaNumericWord(const std::string &s, int index) {
+std::string getAlphaNumericWord(const std::string &s, const int index) {
 	int left = index;
 	while(0 <= left && (('0' <= s[left] && s[left] <= '9') || ('a' <= s[left] && s[left] <= 'z') || ('A' <= s[left] && s[left] <= 'Z'))) {
 		--left;
@@ -66,7 +66,7 @@ std::string getAlphaNumericWord(const std::string &s, int index) {
 	return s.substr(1 + left, right - left - 1);
 }
 
-std::string getNonBlankWord(const std::string &s, int index) {
+std::string getNonBlankWord(const std::string &s, const int index) {
 	int left = index;
 	while(0 <= left && !std::isspace(s[left])) {
 		--left;
@@ -80,7 +80,7 @@ std::string getNonBlankWord(const std::string &s, int index) {
 	return s.substr(1 + left, right - left - 1);
 }
 
-std::string formSubstring(std::vector<char> &s, int start, int end) {
+std::string formSubstring(const std::vector<char> &s, const int start, const int end) {
 	std::string ans = "";
 	for(int i = start; i < end; ++i) {
 		ans.push_back(s[i]);
@@ -89,7 +89,7 @@ std::string formSubstring(std::vector<char> &s, int start, int end) {
 	return ans;
 }
 
-int findNext(std::string &s, char c, int start) {
+int findNext(const std::string &s, const char c, const int start) {
 	int index = start;
 	while(index < s.size() && s[index] != c) {
 		++index;	
@@ -102,12 +102,12 @@ int findNext(std::string &s, char c, int start) {
 	return index;
 }
 
-int findNext(std::vector<char> &s, char c, int start) {
-	std::string s2 = formSubstring(s, 0, s.size());
+int findNext(const std::vector<char> &s, const char c, const int start) {
+	const std::string s2 = formSubstring(s, 0, s.size());
 	return findNext(s2, c, start);
 }
 
-int findNext(std::vector<std::string> &words, const std::string &word, int start) {
+int findNext(const std::vector<std::string> &words, const std::string &word, const int start) {
 	int index = start;
 	while(index < words.size() && words[index] != word) {
 		++index;
@@ -120,7 +120,7 @@ int findNext(std::vector<std::string> &words, const std::string &word, int start
 	return index;
 }
 
-int findPrev(std::string &s, char c, int start) {
+int findPrev(const std::string &s, const char c, const int start) {
 	int index = start;
 	while(index >= 0 && s[index] != c) {
 		--index;
@@ -134,12 +134,12 @@ int findPrev(std::string &s, char c, int start) {
 	return index;
 }
 
-int findPrev(std::vector<char> &s, char c, int start) {
+int findPrev(const std::vector<char> &s, const char c, const int start) {
 	std::string s2 = formSubstring(s, 0, s.size());
 	return findPrev(s2, c, start);
 }
 
-int findNonBlank(std::vector<char> &s, int start) {
+int findNonBlank(const std::vector<char> &s, const int start) {
 	int index = start;
 	while(index < s.size() && std::isspace(s[index])) {
 		++index;
@@ -152,12 +152,12 @@ int findNonBlank(std::vector<char> &s, int start) {
 	return index;
 }
 
-int findNonBlank(std::string &s, int start) {
-	std::vector<char> v(s.begin(), s.end());
+int findNonBlank(const std::string &s, const int start) {
+	const std::vector<char> v(s.begin(), s.end());
 	return findNonBlank(v, start);
 }
 
-int findBlank(std::string &s, int start) {
+int findBlank(const std::string &s, const int start) {
 	int index = start;
 	while(index < s.size() && !std::isspace(s[index])) {
 		++index;
@@ -170,8 +170,8 @@ int findBlank(std::string &s, int start) {
 	return index;
 }
 
-int findOpposite(std::vector<char> &s, int index) {
-	char c = s[index];
+int findOpposite(const std::vector<char> &s, const int index) {
+	const char c = s[index];
 	char op = c;
 	bool findBack = false;
 
@@ -228,13 +228,13 @@ int findOpposite(std::vector<char> &s, int index) {
 	return -1;
 }
 
-int findOpposite(std::string &s, int index) {
-	std::vector<char> v(s.begin(), s.end());
+int findOpposite(const std::string &s, const int index) {
+	const std::vector<char> v(s.begin(), s.end());
 	return findOpposite(v, index);
 }
 
-int findOpposite(std::vector<std::string> &words, int index) {
-	std::string word = words[index];
+int findOpposite(const std::vector<std::string> &words, const int index) {
+	const std::string word = words[index];
 	std::string op = word;
 	bool findBack = false;
 
@@ -291,7 +291,7 @@ int findOpposite(std::vector<std::string> &words, int index) {
 	return -1;
 }
 
-int vimB(std::string &s, int index) {
+int vimB(const std::string &s, int index) {
 	if(s.size() == 0) {
 		return -1;
 	}
@@ -312,19 +312,19 @@ int vimB(std::string &s, int index) {
 	return index;
 }
 
-void addIndents(std::string &s, int numIndent) {
-	for(int i = 0; i < numIndent; ++i) {
+void addIndents(std::string &s, const size_t numIndent) {
+	for(size_t i = 0; i < numIndent; ++i) {
 		s.push_back('\t');
 	}
 }
 
-void printProgram(std::vector<std::string> &program, bool showLines) {
+void printProgram(const std::vector<std::string> &program, const bool showLines) {
 	if(program.size() == 0) {
 		std::cout << "Program is empty" << std::endl;
 		return;
 	}
 
-	size_t numDigits = std::to_string(program.size() - 1).size();
+	const size_t numDigits = std::to_string(program.size() - 1).size();
 	for(size_t i = 0; i < program.size(); ++i) {
 		if(showLines) {
 			std::cout << std::setw(numDigits) << i << ": ";
@@ -333,18 +333,18 @@ void printProgram(std::vector<std::string> &program, bool showLines) {
 	}
 }
 
-void printPrettyProgram(std::vector<std::string> &program, bool showLines) {
+void printPrettyProgram(const std::vector<std::string> &program, const bool showLines) {
 	if(program.size() == 0) {
 		std::cout << "Program is empty" << std::endl;
 	}
 
-	size_t numDigits = std::to_string(program.size() - 1).size();
+	const size_t numDigits = std::to_string(program.size() - 1).size();
 	for(size_t i = 0; i < program.size(); ++i) {
 		if(showLines) {
 			std::cout << std::setw(numDigits) << i << ": ";
 		}
 		
-		std::string line = program[i];
+		const std::string line = program[i];
 		
 		size_t start = 0;
 		while(start < line.size()) {
@@ -377,7 +377,7 @@ void printPrettyProgram(std::vector<std::string> &program, bool showLines) {
 	}
 }
 
-std::string getLetters(std::vector<std::string> &program) {
+std::string getLetters(const std::vector<std::string> &program) {
 	std::string ans;
 	for(size_t i = 0; i < program.size(); ++i) {
 		for(size_t j = 0; j < program[i].size(); ++j) {
@@ -394,7 +394,7 @@ std::vector<std::string> getWords(const std::string &letters)  {
 	
 	int startSearch = findNonBlank(letters, 0);
 	while(startSearch < letters.size()) {
-		std::string word = getNonBlankWord(letters, startSearch);
+		const std::string word = getNonBlankWord(letters, startSearch);
 		words.push_back(word);
 
 		startSearch = findBlank(letters, startSearch);
@@ -408,8 +408,21 @@ std::vector<std::string> getWords(const std::string &letters)  {
 	return words;
 }
 
-int checkCompilation(std::string &fileName) {
-	int periodIndex = findPrev(fileName, '.', fileName.size() - 1);
+/**
+ * Turns sth like "!TAPE_tape5" into 5
+ */
+size_t parseTapeNum(const std::string &word) {
+	if(word.size() < 10 || word.substr(0, 10) != "!TAPE_tape") {
+		throw std::invalid_argument("word must start with !TAPE_tape");
+	}
+
+	const std::string suffix = word.substr(10, word.size() - 10);
+
+	return std::stoi(suffix);
+}
+
+int checkCompilation(const std::string &fileName) {
+	const int periodIndex = findPrev(fileName, '.', fileName.size() - 1);
 
 	std::string prefix = "";
 
@@ -420,7 +433,7 @@ int checkCompilation(std::string &fileName) {
 		prefix = fileName.substr(0, periodIndex);
 	}
 
-	std::string tempFileName = prefix + "_temp.cpp";
+	const std::string tempFileName = prefix + "_temp.cpp";
 	
 	std::ofstream file;
 	file.open(tempFileName);
@@ -439,9 +452,9 @@ int checkCompilation(std::string &fileName) {
 	origFile.close();
 	file.close();
 
-	std::string command = std::string("g++ -fsyntax-only ") + tempFileName;
+	const std::string command = std::string("g++ -fsyntax-only ") + tempFileName;
 	std::cout << "Execute: " << command << std::endl;
-	int status = std::system(command.c_str());
+	const int status = std::system(command.c_str());
 
 	return status;
 }

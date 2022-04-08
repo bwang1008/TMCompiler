@@ -13,41 +13,6 @@
 #include "../tm_definition/multi_tape_turing_machine.h"
 
 /**
- * Turns sth like "!TAPE_tape5" into 5
- */
-int parseTapeNum(const std::string &word) {
-	if(word.size() < 10 || word.substr(0, 10) != "!TAPE_tape") {
-		throw std::invalid_argument("word must start with !TAPE_tape");
-	}
-
-	const std::string suffix = word.substr(10, word.size() - 10);
-
-	return std::stoi(suffix);
-}
-
-/**
- * Return number of distinct variables of form "!TAPE_tapeX" for some integer X
- */
-int countTapeVariables(const std::vector<std::string> &assembly) {
-	int numVars = 0;
-
-	for(size_t i = 0; i < assembly.size(); ++i) {
-		const std::vector<std::string> words = getWords(assembly[i]);
-		for(size_t j = 0; j < words.size(); ++j) {
-			const std::string word = words[j];
-			if(word.substr(0, 10) == "!TAPE_tape") {
-				const int tapeIndex = parseTapeNum(word);
-				if(tapeIndex > numVars) {
-					numVars = tapeIndex;
-				}
-			}
-		}
-	}
-
-	return numVars + 1;
-}
-
-/**
  * calculate biginteger / 2 (floor integer division)
  * assume val is positive
  */
@@ -2206,33 +2171,7 @@ void handleAssignmentIntegerLiteral(MultiTapeBuilder &builder, const size_t curr
 }
 
 MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::string> &assembly) {
-	const int numVars = countTapeVariables(assembly);
-
-	size_t ipSize = 1;
-	int s = ((int) assembly.size()) - 1;	
-	while(s > 1) {
-		++ipSize;
-		s /= 2;
-	}
-	if(ipSize < 2) {
-		ipSize = 2;
-	}
-
-	// initialize tapes with names
-	std::vector<std::pair<std::string, int> > tapeCounts;
-	
-	tapeCounts.emplace_back("input", 1);
-	tapeCounts.emplace_back("output", 1);
-	tapeCounts.emplace_back("ipStack", 1);
-	tapeCounts.emplace_back("ip", 1);
-	tapeCounts.emplace_back("ipSideways", ipSize);
-	tapeCounts.emplace_back("paramStack", 1);
-	tapeCounts.emplace_back("bitIndex", 1);
-	tapeCounts.emplace_back("bits", 1);
-	tapeCounts.emplace_back("variables", numVars);
-	tapeCounts.emplace_back("rax", 1);
-
-	MultiTapeBuilder builder(tapeCounts, ipSize, numVars);
+	MultiTapeBuilder builder(assembly);
 	
 	initialize(builder);
 

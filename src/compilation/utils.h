@@ -31,47 +31,48 @@ bool isBlankString(const std::string &s);
 
 bool isIntegerLiteral(const std::string &s);
 
-std::string getAlphaNumericWord(const std::string &s, int index);
+std::string getAlphaNumericWord(const std::string &s, const int index);
 
-std::string getNonBlankWord(const std::string &s, int index);
+std::string getNonBlankWord(const std::string &s, const int index);
 
+std::string formSubstring(const std::vector<char> &s, const int start, const int end);
 
-std::string formSubstring(std::vector<char> &s, int start, int end);
+int findNext(const std::string &s, const char c, const int start = 0);
 
-int findNext(std::string &s, char c, int start = 0);
+int findNext(const std::vector<char> &s, const char c, const int start = 0);
 
-int findNext(std::vector<char> &s, char c, int start = 0);
+int findNext(const std::vector<std::string> &words, const std::string &word, const int start = 0);
 
-int findNext(std::vector<std::string> &words, const std::string &word, int start = 0);
+int findPrev(const std::string &s, const char c, const int start = 0);
 
-int findPrev(std::string &s, char c, int start = 0);
+int findPrev(const std::vector<char> &s, const char c, const int start = 0);
 
-int findPrev(std::vector<char> &s, char c, int start = 0);
+int findNonBlank(const std::vector<char> &s, const int start = 0);
 
-int findNonBlank(std::vector<char> &s, int start = 0);
+int findNonBlank(const std::string &s, const int start = 0);
 
-int findNonBlank(std::string &s, int start = 0);
+int findBlank(const std::string &s, const int start = 0);
 
-int findBlank(std::string &s, int start = 0);
+int findOpposite(const std::vector<char> &s, const int index);
 
-int findOpposite(std::vector<char> &s, int index);
+int findOpposite(const std::string &s, const int index);
 
-int findOpposite(std::string &s, int index);
+int findOpposite(const std::vector<std::string> &words, const int index);
 
-int findOpposite(std::vector<std::string> &words, int index);
+int vimB(const std::string &s, int index);
 
-int vimB(std::string &s, int index);
+void addIndents(std::string &s, const size_t numIndent);
 
-void addIndents(std::string &s, int numIndent);
+void printProgram(const std::vector<std::string> &program, const bool showLines = true);
 
-void printProgram(std::vector<std::string> &program, bool showLines = true);
+void printPrettyProgram(const std::vector<std::string> &program, const bool showLines = true);
 
-void printPrettyProgram(std::vector<std::string> &program, bool showLines = true);
-
-std::string getLetters(std::vector<std::string> &program);
+std::string getLetters(const std::vector<std::string> &program);
 
 std::vector<std::string> getWords(const std::string &letters) ;
 
-int checkCompilation(std::string &fileName);
+size_t parseTapeNum(const std::string &word);
+
+int checkCompilation(const std::string &fileName);
 
 #endif
