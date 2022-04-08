@@ -779,7 +779,7 @@ void handleBasicAdd(MultiTapeBuilder &builder, const int startNode, const int en
 			}
 
 			for(size_t i = 0; i < nodes.size(); ++i) {
-				const int sum = ((int) i) + inherentValue[s1] + inherentValue[s2];	
+				const int sum = ((int) i) + inherentValue.at(s1) + inherentValue.at(s2);	
 
 				reads.emplace_back(tape0, s1);
 				reads.emplace_back(tape1, s2);
@@ -1517,9 +1517,9 @@ void handleBasicNeg(MultiTapeBuilder &builder, const int startNode, const int en
 /**
  * handle assembly code of putting tape bitIndex value into rax
  */
-void handleGetMemBitIndex(MultiTapeBuilder &builder, int startNode, int endNode) {
-	int tapeBitIndex = builder.tapeIndex("bitIndex");
-	int tapeRax = builder.tapeIndex("rax");
+void handleGetMemBitIndex(MultiTapeBuilder &builder, const int startNode, const int endNode) {
+	const int tapeBitIndex = builder.tapeIndex("bitIndex");
+	const int tapeRax = builder.tapeIndex("rax");
 
 	copyBetweenTapes(builder, tapeBitIndex, tapeRax, startNode, endNode);
 }
@@ -1527,12 +1527,12 @@ void handleGetMemBitIndex(MultiTapeBuilder &builder, int startNode, int endNode)
 /**
  * handle assembly code of putting a value into tape bitIndex
  */
-void handleSetMemBitIndex(MultiTapeBuilder &builder, int startNode, int endNode) {
-	int q0 = builder.newNode();
+void handleSetMemBitIndex(MultiTapeBuilder &builder, const int startNode, const int endNode) {
+	const int q0 = builder.newNode();
 
-	int tapeStack = builder.tapeIndex("paramStack");
-	int tapeBitIndex = builder.tapeIndex("bitIndex");
-	int tapeRax = builder.tapeIndex("rax");
+	const int tapeStack = builder.tapeIndex("paramStack");
+	const int tapeBitIndex = builder.tapeIndex("bitIndex");
+	const int tapeRax = builder.tapeIndex("rax");
 
 	copyBetweenTapes(builder, tapeStack, tapeBitIndex, startNode, q0);
 	popOffTop(builder, tapeStack, q0, endNode);
@@ -1541,125 +1541,149 @@ void handleSetMemBitIndex(MultiTapeBuilder &builder, int startNode, int endNode)
 /**
  * handle assembly code of moving head of tape "bits" right
  */
-void handleMoveMemHeadRight(MultiTapeBuilder &builder, int startNode, int endNode) {
+void handleMoveMemHeadRight(MultiTapeBuilder &builder, const int startNode, const int endNode) {
 	builder.add1TapeTransition(startNode, endNode, builder.tapeIndex("bitIndex"), ".", ".", 1);
 }
 
 /**
  * handle assembly code of moving head of tape "bits" left
  */
-void handleMoveMemHeadLeft(MultiTapeBuilder &builder, int startNode, int endNode) {
+void handleMoveMemHeadLeft(MultiTapeBuilder &builder, const int startNode, const int endNode) {
 	builder.add1TapeTransition(startNode, endNode, builder.tapeIndex("bitIndex"), ".", ".", -1);
 }
 
 /**
  * handle assembly code of moving head of setting bit of tape "bits" to 0
  */
-void handleSetMemBitZero(MultiTapeBuilder &builder, int startNode, int endNode) {
+void handleSetMemBitZero(MultiTapeBuilder &builder, const int startNode, const int endNode) {
 	builder.add1TapeTransition(startNode, endNode, builder.tapeIndex("bitIndex"), ".", "0", 0);
 }
 
 /**
  * handle assembly code of moving head of setting bit of tape "bits" to 1
  */
-void handleSetMemBitOne(MultiTapeBuilder &builder, int startNode, int endNode) {
+void handleSetMemBitOne(MultiTapeBuilder &builder, const int startNode, const int endNode) {
 	builder.add1TapeTransition(startNode, endNode, builder.tapeIndex("bitIndex"), ".", "1", 0);
 }
 
 /**
  * handle assembly code of moving head of setting bit of tape "bits" to blank
  */
-void handleSetMemBitBlank(MultiTapeBuilder &builder, int startNode, int endNode) {
+void handleSetMemBitBlank(MultiTapeBuilder &builder, const int startNode, const int endNode) {
 	builder.add1TapeTransition(startNode, endNode, builder.tapeIndex("bitIndex"), ".", "_", 0);
 }
 
 /**
  * handle assembly code of checking if bit at head of tape "bits" is 0
  */
-void handleMemBitIsZero(MultiTapeBuilder &builder, int startNode, int endNode) {
-	int tapeBitIndex = builder.tapeIndex("bitIndex");
-	int tapeRax = builder.tapeIndex("rax");
+void handleMemBitIsZero(MultiTapeBuilder &builder, const int startNode, const int endNode) {
+	const int tapeBitIndex = builder.tapeIndex("bitIndex");
+	const int tapeRax = builder.tapeIndex("rax");
 
 	std::vector<std::pair<int, std::string> > reads;
 	std::vector<std::pair<int, std::string> > writes;
 	std::vector<std::pair<int, int> > shifts;
 	
+	const int q = builder.newNode();
+
 	reads.emplace_back(tapeBitIndex, "0");
 	writes.emplace_back(tapeRax, "1");
+	shifts.emplace_back(tapeRax, 1);
 	
-	builder.addTransition(startNode, endNode, reads, writes, shifts);
-	reads.clear();
-	writes.clear();
-	
-	reads.emplace_back(tapeBitIndex, "[1_]");
-	writes.emplace_back(tapeRax, "0");
-	
-	builder.addTransition(startNode, endNode, reads, writes, shifts);
+	builder.addTransition(startNode, q, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 	shifts.clear();
+	
+	reads.emplace_back(tapeBitIndex, "[1_]");
+	writes.emplace_back(tapeRax, "0");
+	shifts.emplace_back(tapeRax, 1);
+	
+	builder.addTransition(startNode, q, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+	
+	// have shifted 1 right from original on tapeRax. Write a blank and move left
+	builder.add1TapeTransition(q, endNode, tapeRax, ".", "_", -1);
 }
 
 /**
  * handle assembly code of checking if bit at head of tape "bits" is 1
  */
-void handleMemBitIsOne(MultiTapeBuilder &builder, int startNode, int endNode) {
-	int tapeBitIndex = builder.tapeIndex("bitIndex");
-	int tapeRax = builder.tapeIndex("rax");
+void handleMemBitIsOne(MultiTapeBuilder &builder, const int startNode, const int endNode) {
+	const int tapeBitIndex = builder.tapeIndex("bitIndex");
+	const int tapeRax = builder.tapeIndex("rax");
 
 	std::vector<std::pair<int, std::string> > reads;
 	std::vector<std::pair<int, std::string> > writes;
 	std::vector<std::pair<int, int> > shifts;
 	
+	const int q = builder.newNode();
+
 	reads.emplace_back(tapeBitIndex, "1");
 	writes.emplace_back(tapeRax, "1");
+	shifts.emplace_back(tapeRax, 1);
 	
-	builder.addTransition(startNode, endNode, reads, writes, shifts);
-	reads.clear();
-	writes.clear();
-	
-	reads.emplace_back(tapeBitIndex, "[0_]");
-	writes.emplace_back(tapeRax, "0");
-	
-	builder.addTransition(startNode, endNode, reads, writes, shifts);
+	builder.addTransition(startNode, q, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 	shifts.clear();
+	
+	reads.emplace_back(tapeBitIndex, "[0_]");
+	writes.emplace_back(tapeRax, "0");
+	shifts.emplace_back(tapeRax, 1);
+	
+	builder.addTransition(startNode, q, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+	
+	// have moved right 1 from original on tapeRax. Write blank, then move left.
+	builder.add1TapeTransition(q, endNode, tapeRax, ".", "_", -1);
 }
 
 /**
  * handle assembly code of checking if bit at head of tape "bits" is bank
  */
-void handleMemBitIsBlank(MultiTapeBuilder &builder, int startNode, int endNode) {
-	int tapeBitIndex = builder.tapeIndex("bitIndex");
-	int tapeRax = builder.tapeIndex("rax");
+void handleMemBitIsBlank(MultiTapeBuilder &builder, const int startNode, const int endNode) {
+	const int tapeBitIndex = builder.tapeIndex("bitIndex");
+	const int tapeRax = builder.tapeIndex("rax");
 
 	std::vector<std::pair<int, std::string> > reads;
 	std::vector<std::pair<int, std::string> > writes;
 	std::vector<std::pair<int, int> > shifts;
 	
+	const int q = builder.newNode();
+
 	reads.emplace_back(tapeBitIndex, "_");
 	writes.emplace_back(tapeRax, "1");
+	shifts.emplace_back(tapeRax, 1);
 	
-	builder.addTransition(startNode, endNode, reads, writes, shifts);
-	reads.clear();
-	writes.clear();
-	
-	reads.emplace_back(tapeBitIndex, "[01]");
-	writes.emplace_back(tapeRax, "0");
-	
-	builder.addTransition(startNode, endNode, reads, writes, shifts);
+	builder.addTransition(startNode, q, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 	shifts.clear();
+	
+	reads.emplace_back(tapeBitIndex, "[01]");
+	writes.emplace_back(tapeRax, "0");
+	shifts.emplace_back(tapeRax, 1);
+	
+	builder.addTransition(startNode, q, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+	
+	// have moved 1 right from original on tapeRax. Write blank, then move left
+	builder.add1TapeTransition(q, endNode, tapeRax, ".", "_", -1);
 }
 
 /**
  * handle assembly code of getting next integer from input tape
  */
-void handleNextInt(MultiTapeBuilder &builder, int startNode, int endNode) {
-	int tapeInput = builder.tapeIndex("input");
-	int tapeRax = builder.tapeIndex("rax");
+void handleNextInt(MultiTapeBuilder &builder, const int startNode, const int endNode) {
+	const int tapeInput = builder.tapeIndex("input");
+	const int tapeRax = builder.tapeIndex("rax");
 
 	std::vector<std::pair<int, std::string> > reads;
 	std::vector<std::pair<int, std::string> > writes;
@@ -1691,7 +1715,7 @@ void handleNextInt(MultiTapeBuilder &builder, int startNode, int endNode) {
 	shifts.emplace_back(tapeInput, 1);
 	shifts.emplace_back(tapeRax, -1);
 
-	int q0 = builder.newNode();
+	const int q0 = builder.newNode();
 	builder.addTransition(startNode, q0, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
@@ -1705,19 +1729,19 @@ void handleNextInt(MultiTapeBuilder &builder, int startNode, int endNode) {
 /**
  * handle assembly code of printing a space
  */
-void handlePrintSpace(MultiTapeBuilder &builder, int startNode, int endNode) {
+void handlePrintSpace(MultiTapeBuilder &builder, const int startNode, const int endNode) {
 	builder.add1TapeTransition(startNode, endNode, builder.tapeIndex("output"), ".", "_", 1);
 }
 
 /**
  * handle assembly code of printing an int
  */
-void handlePrintInt(MultiTapeBuilder &builder, int startNode, int endNode) {
-	int q0 = builder.newNode();
-	int q1 = builder.newNode();
+void handlePrintInt(MultiTapeBuilder &builder, const int startNode, const int endNode) {
+	const int q0 = builder.newNode();
+	const int q1 = builder.newNode();
 
-	int tapeStack = builder.tapeIndex("paramStack");
-	int tapeOutput = builder.tapeIndex("output");
+	const int tapeStack = builder.tapeIndex("paramStack");
+	const int tapeOutput = builder.tapeIndex("output");
 
 	copyBetweenTapes(builder, tapeStack, tapeOutput, startNode, q0);
 	popOffTop(builder, tapeStack, q0, q1);
@@ -1729,24 +1753,24 @@ void handlePrintInt(MultiTapeBuilder &builder, int startNode, int endNode) {
 /**
  * handle assembly code of call to a line number
  */
-void handleCallNum(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string> &words) {
-	int lineNum = std::stoi(words[1]);
+void handleCallNum(MultiTapeBuilder &builder, const size_t currIP, const std::vector<std::string> &words) {
+	const int lineNum = std::stoi(words[1]);
 
-	int q0 = builder.newNode();
+	const int q0 = builder.newNode();
 	handleIPTransition(builder, currIP, builder.node("after"), q0);
 
 	int prevState = q0;
 	// then push new stack frames to all varTapes
 	for(size_t i = 0; i < builder.numVars; ++i) {
-		int tape = builder.tapeIndex("variables") + i;
-		int q = builder.newNode();
+		const int tape = builder.tapeIndex("variables") + i;
+		const int q = builder.newNode();
 		pushEmptyFrame(builder, tape, prevState, q);
 		prevState = q;
 	}
 
 	// store currIP into ipStack
-	int q1 = builder.newNode();
-	int q2 = builder.newNode();
+	const int q1 = builder.newNode();
+	const int q2 = builder.newNode();
 	pushEmptyFrame(builder, builder.tapeIndex("ipStack"), prevState, q1);
 	copyBetweenTapes(builder, builder.tapeIndex("ip"), builder.tapeIndex("ipStack"), q1, q2);
 	
@@ -1764,14 +1788,14 @@ void handleCallNum(MultiTapeBuilder &builder, size_t currIP, std::vector<std::st
 	prevState = q2;
 	int tapeIP = builder.tapeIndex("ip");
 	for(size_t i = 0; i < builder.ipSize; ++i) {
-		int q = builder.newNode();
+		const int q = builder.newNode();
 		builder.add1TapeTransition(prevState, q, tapeIP, ".", bits[i], 1);
 		prevState = q;
 	}
 	
 	// well now move head of ip tape back
 	for(size_t i = 0; i < builder.ipSize; ++i) {
-		int q = builder.newNode();
+		const int q = builder.newNode();
 		builder.add1TapeTransition(prevState, q, tapeIP, ".", ".", -1);
 		prevState = q;
 	}
@@ -1784,22 +1808,25 @@ void handleCallNum(MultiTapeBuilder &builder, size_t currIP, std::vector<std::st
  * handle assembly code of calling "jf <tape> <line#>": 
  * jump to line# if tape value is false (which is bit 0)
  */
-void handleJf(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string> &words) {
-	int q0 = builder.newNode();
+void handleJf(MultiTapeBuilder &builder, const size_t currIP, const std::vector<std::string> &words) {
+	const int q0 = builder.newNode();
 	handleIPTransition(builder, currIP, builder.node("after"), q0);
 
-	int valTape = builder.tapeIndex("variables");
+	int valTape;
 	if(words[1] == "!TAPE_RAX") {
 		valTape = builder.tapeIndex("rax");
 	}
 	else if(words[1].size() >= 10 && words[1].substr(0, 10) == "!TAPE_tape") {
 		valTape = builder.tapeIndex("variables") + parseTapeNum(words[1]);
 	}
+	else {
+		throw std::invalid_argument("Invalid line " + std::to_string(currIP));
+	}
 	
-	int lineNum = std::stoi(words[2]);
+	const int lineNum = std::stoi(words[2]);
 	
 	// q0: if read a 0, go to q1
-	int q1 = builder.newNode();
+	const int q1 = builder.newNode();
 	builder.add1TapeTransition(q0, q1, valTape, "0", ".", 0);
 	
 	// q0: if u read a 1 (or blank), go to node "before"
@@ -1820,16 +1847,16 @@ void handleJf(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string>
 		
 	// write bits into ip tape
 	int prevState = q1;
-	int tapeIP = builder.tapeIndex("ip");
+	const int tapeIP = builder.tapeIndex("ip");
 	for(size_t i = 0; i < builder.ipSize; ++i) {
-		int q = builder.newNode();
+		const int q = builder.newNode();
 		builder.add1TapeTransition(prevState, q, tapeIP, ".", bits[i], 1);
 		prevState = q;
 	}
 	
 	// well now move head of ip tape back
 	for(size_t i = 0; i < builder.ipSize; ++i) {
-		int q = builder.newNode();
+		const int q = builder.newNode();
 		builder.add1TapeTransition(prevState, q, tapeIP, ".", ".", -1);
 		prevState = q;
 	}
@@ -1841,25 +1868,25 @@ void handleJf(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string>
 /**
  * handle assembly code of calling return
  */
-void handleReturn(MultiTapeBuilder &builder, size_t currIP) {
+void handleReturn(MultiTapeBuilder &builder, const size_t currIP) {
 	// first transition by reading ip
-	int q0 = builder.newNode();
+	const int q0 = builder.newNode();
 	handleIPTransition(builder, currIP, builder.node("after"), q0);
 
 	int prevState = q0;
 
 	// pop off all the pushed stack frames
 	for(size_t i = 0; i < builder.numVars; ++i) {
-		int tape = builder.tapeIndex("variables") + i;
-		int q = builder.newNode();
+		const int tape = builder.tapeIndex("variables") + i;
+		const int q = builder.newNode();
 		popOffTop(builder, tape, prevState, q);
 		prevState = q;
 	}
 
 	// pop last value of ipStack into ip
-	int tapeIPStack = builder.tapeIndex("ipStack");
-	int tapeIP = builder.tapeIndex("ip");
-	int q1 = builder.newNode();
+	const int tapeIPStack = builder.tapeIndex("ipStack");
+	const int tapeIP = builder.tapeIndex("ip");
+	const int q1 = builder.newNode();
 
 	copyBetweenTapes(builder, tapeIPStack, tapeIP, prevState, q1);
 	popOffTop(builder, tapeIPStack, q1, builder.node("before"));
@@ -1870,20 +1897,20 @@ void handleReturn(MultiTapeBuilder &builder, size_t currIP) {
 /**
  * handle assembly code of not of a boolean
  */
-void handleNot(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string> words) {
+void handleNot(MultiTapeBuilder &builder, const size_t currIP, const std::vector<std::string> words) {
 	// arg ! = dest ; 
-	int argTape = parseTapeNum(words[0]);
-	int destTape = parseTapeNum(words[3]);
+	const int argTape = parseTapeNum(words[0]);
+	const int destTape = parseTapeNum(words[3]);
 
 	// first transition by reading ip
-	int q0 = builder.newNode();
+	const int q0 = builder.newNode();
 	handleIPTransition(builder, currIP, builder.node("after"), q0);
 
 	std::vector<std::pair<int, std::string> > reads;
 	std::vector<std::pair<int, std::string> > writes;
 	std::vector<std::pair<int, int> > shifts;
 
-	int penultimateNode = builder.newNode();
+	const int penultimateNode = builder.newNode();
 
 	reads.emplace_back(argTape, "0");
 	writes.emplace_back(destTape, "1");
@@ -1905,7 +1932,7 @@ void handleNot(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string
 	writes.clear();
 	shifts.clear();
 
-	int endNode = builder.node("before");
+	const int endNode = builder.node("before");
 	
 	// once written answer to dest, write a blank after, then move back left
 	builder.add1TapeTransition(penultimateNode, endNode, destTape, ".", "_", -1);
@@ -1914,21 +1941,21 @@ void handleNot(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string
 /**
  * handle assembly code of AND of 2 booleans
  */
-void handleAnd(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string> words) {
+void handleAnd(MultiTapeBuilder &builder, const size_t currIP, const std::vector<std::string> words) {
 	// arg1 arg2 && = dest ; 
-	int arg1Tape = parseTapeNum(words[0]);
-	int arg2Tape = parseTapeNum(words[1]);
-	int destTape = parseTapeNum(words[4]);
+	const int arg1Tape = parseTapeNum(words[0]);
+	const int arg2Tape = parseTapeNum(words[1]);
+	const int destTape = parseTapeNum(words[4]);
 
 	// first transition by reading ip
-	int q0 = builder.newNode();
+	const int q0 = builder.newNode();
 	handleIPTransition(builder, currIP, builder.node("after"), q0);
 
 	std::vector<std::pair<int, std::string> > reads;
 	std::vector<std::pair<int, std::string> > writes;
 	std::vector<std::pair<int, int> > shifts;
 
-	int penultimateNode = builder.newNode();
+	const int penultimateNode = builder.newNode();
 
 	reads.emplace_back(arg1Tape, "0");
 	reads.emplace_back(arg2Tape, "0");
@@ -1974,7 +2001,7 @@ void handleAnd(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string
 	writes.clear();
 	shifts.clear();
 
-	int endNode = builder.node("before");
+	const int endNode = builder.node("before");
 	
 	// once written answer to dest, write a blank after, then move back left
 	builder.add1TapeTransition(penultimateNode, endNode, destTape, ".", "_", -1);
@@ -1983,21 +2010,21 @@ void handleAnd(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string
 /**
  * handle assembly code of OR of 2 booleans
  */
-void handleOr(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string> &words) {
+void handleOr(MultiTapeBuilder &builder, const size_t currIP, const std::vector<std::string> &words) {
 	// arg1 arg2 && = dest ; 
-	int arg1Tape = parseTapeNum(words[0]);
-	int arg2Tape = parseTapeNum(words[1]);
-	int destTape = parseTapeNum(words[4]);
+	const int arg1Tape = parseTapeNum(words[0]);
+	const int arg2Tape = parseTapeNum(words[1]);
+	const int destTape = parseTapeNum(words[4]);
 
 	// first transition by reading ip
-	int q0 = builder.newNode();
+	const int q0 = builder.newNode();
 	handleIPTransition(builder, currIP, builder.node("after"), q0);
 
 	std::vector<std::pair<int, std::string> > reads;
 	std::vector<std::pair<int, std::string> > writes;
 	std::vector<std::pair<int, int> > shifts;
 
-	int penultimateNode = builder.newNode();
+	const int penultimateNode = builder.newNode();
 
 	reads.emplace_back(arg1Tape, "0");
 	reads.emplace_back(arg2Tape, "0");
@@ -2043,7 +2070,7 @@ void handleOr(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string>
 	writes.clear();
 	shifts.clear();
 
-	int endNode = builder.node("before");
+	const int endNode = builder.node("before");
 	
 	// once written answer to dest, write a blank after, then move back left
 	builder.add1TapeTransition(penultimateNode, endNode, destTape, ".", "_", -1);
@@ -2053,9 +2080,9 @@ void handleOr(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string>
  * handle assignment, but between 2 tapes. Like "tape1 tape2 = ;", 
  * meaning copy value of tape2 to tape1
  */
-void handleAssignmentBetweenTapes(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string> &words) {
+void handleAssignmentBetweenTapes(MultiTapeBuilder &builder, const size_t currIP, const std::vector<std::string> &words) {
 	// first transition by reading ip
-	int q0 = builder.newNode();
+	const int q0 = builder.newNode();
 	handleIPTransition(builder, currIP, builder.node("after"), q0);
 
 	int fromTape;
@@ -2065,6 +2092,9 @@ void handleAssignmentBetweenTapes(MultiTapeBuilder &builder, size_t currIP, std:
 	else if(words[1].size() >= 10 && words[1].substr(0, 10) == "!TAPE_tape") {
 		fromTape = builder.tapeIndex("variables") + parseTapeNum(words[1]);
 	}
+	else {
+		throw std::invalid_argument("Invalid line " + std::to_string(currIP));
+	}
 
 	int toTape;
 	if(words[0] == "!TAPE_RAX") {
@@ -2073,17 +2103,20 @@ void handleAssignmentBetweenTapes(MultiTapeBuilder &builder, size_t currIP, std:
 	else if(words[0].size() >= 10 && words[0].substr(0, 10) == "!TAPE_tape") {
 		toTape = builder.tapeIndex("variables") + parseTapeNum(words[0]);
 	}
+	else{
+		throw std::invalid_argument("Invalid line " + std::to_string(currIP));
+	}
 
-	int endNode = builder.node("before");
+	const int endNode = builder.node("before");
 	copyBetweenTapes(builder, fromTape, toTape, q0, endNode);
 }
 
 /**
  * handle assignment from "true" to a tape
  */
-void handleAssignmentTrue(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string> &words) {
+void handleAssignmentTrue(MultiTapeBuilder &builder, const size_t currIP, const std::vector<std::string> &words) {
 	// first transition by reading ip
-	int q0 = builder.newNode();
+	const int q0 = builder.newNode();
 	handleIPTransition(builder, currIP, builder.node("after"), q0);
 
 	int toTape;
@@ -2093,9 +2126,13 @@ void handleAssignmentTrue(MultiTapeBuilder &builder, size_t currIP, std::vector<
 	else if(words[0].size() >= 10 && words[0].substr(0, 10) == "!TAPE_tape") {
 		toTape = builder.tapeIndex("variables") + parseTapeNum(words[0]);
 	}
+	else {
+		throw std::invalid_argument("Invalid line " + std::to_string(currIP));
+	}
 
-	int q1 = builder.newNode();
-	int endNode = builder.node("before");
+	const int q1 = builder.newNode();
+	const int endNode = builder.node("before");
+
 	builder.add1TapeTransition(q0, q1, toTape, ".", "1", 1);
 	builder.add1TapeTransition(q1, endNode, toTape, ".", "_", -1);
 }
@@ -2103,9 +2140,9 @@ void handleAssignmentTrue(MultiTapeBuilder &builder, size_t currIP, std::vector<
 /**
  * handle assignment from "false" to a tape
  */
-void handleAssignmentFalse(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string> &words) {
+void handleAssignmentFalse(MultiTapeBuilder &builder, const size_t currIP, const std::vector<std::string> &words) {
 	// first transition by reading ip
-	int q0 = builder.newNode();
+	const int q0 = builder.newNode();
 	handleIPTransition(builder, currIP, builder.node("after"), q0);
 
 	int toTape;
@@ -2115,9 +2152,13 @@ void handleAssignmentFalse(MultiTapeBuilder &builder, size_t currIP, std::vector
 	else if(words[0].size() >= 10 && words[0].substr(0, 10) == "!TAPE_tape") {
 		toTape = builder.tapeIndex("variables") + parseTapeNum(words[0]);
 	}
+	else {
+		throw std::invalid_argument("Invalid line " + std::to_string(currIP));
+	}
 
-	int q1 = builder.newNode();
-	int endNode = builder.node("before");
+	const int q1 = builder.newNode();
+	const int endNode = builder.node("before");
+
 	builder.add1TapeTransition(q0, q1, toTape, ".", "0", 1);
 	builder.add1TapeTransition(q1, endNode, toTape, ".", "_", -1);
 }
@@ -2125,9 +2166,9 @@ void handleAssignmentFalse(MultiTapeBuilder &builder, size_t currIP, std::vector
 /**
  * handle assignment from integer literal to tape
  */
-void handleAssignmentIntegerLiteral(MultiTapeBuilder &builder, size_t currIP, std::vector<std::string> &words) {
+void handleAssignmentIntegerLiteral(MultiTapeBuilder &builder, const size_t currIP, const std::vector<std::string> &words) {
 	// first transition by reading ip
-	int q0 = builder.newNode();
+	const int q0 = builder.newNode();
 	handleIPTransition(builder, currIP, builder.node("after"), q0);
 
 	int toTape;
@@ -2137,23 +2178,26 @@ void handleAssignmentIntegerLiteral(MultiTapeBuilder &builder, size_t currIP, st
 	else if(words[0].size() >= 10 && words[0].substr(0, 10) == "!TAPE_tape") {
 		toTape = builder.tapeIndex("variables") + parseTapeNum(words[0]);
 	}
+	else {
+		throw std::invalid_argument("Invalid line " + std::to_string(currIP));
+	}
 	
-	std::string bits = convertIntegerToBits(words[1]);
+	const std::string bits = convertIntegerToBits(words[1]);
 	int prevState = q0;
 
 	for(size_t i = 0; i < bits.size(); ++i) {
-		int q = builder.newNode();
+		const int q = builder.newNode();
 		builder.add1TapeTransition(prevState, q, toTape, ".", std::to_string(bits[i]), 1);
 		prevState = q;
 	}
 
-	int q1 = builder.newNode();
+	const int q1 = builder.newNode();
 	builder.add1TapeTransition(prevState, q1, toTape, ".", "_", 0);
 	prevState = q1;
 
 	// move left
 	for(size_t i = 0; i < bits.size(); ++i) {
-		int q = builder.newNode();
+		const int q = builder.newNode();
 		builder.add1TapeTransition(prevState, q, toTape, ".", ".", -1);
 		prevState = q;
 	}
@@ -2161,8 +2205,8 @@ void handleAssignmentIntegerLiteral(MultiTapeBuilder &builder, size_t currIP, st
 	builder.add1TapeTransition(prevState, builder.node("before"), toTape, ".", ".", 0);
 }
 
-MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(std::vector<std::string> &assembly) {
-	int numVars = countTapeVariables(assembly);
+MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::string> &assembly) {
+	const int numVars = countTapeVariables(assembly);
 
 	size_t ipSize = 1;
 	int s = ((int) assembly.size()) - 1;	
@@ -2193,7 +2237,7 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(std::vector<std::string>
 	initialize(builder);
 
 	for(size_t i = 0; i < assembly.size(); ++i) {
-		std::vector<std::string> words = getWords(assembly[i]);
+		const std::vector<std::string> words = getWords(assembly[i]);
 		
 		if(words[0] == "nop") {
 			handleNop(builder, i);
@@ -2209,19 +2253,19 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(std::vector<std::string>
 		}
 		else if(words[0] == "call" && words[1].size() >= 10 && words[1].substr(0, 10) == "!FUNC_LIB_") {
 			// first transition by reading ip
-			int q0 = builder.newNode();
+			const int q0 = builder.newNode();
 			handleIPTransition(builder, i, builder.node("after"), q0);
 
 			int prevState = q0;
 			// then push new stack frames to all varTapes
 			for(size_t i = 0; i < builder.numVars; ++i) {
-				int tape = builder.tapeIndex("variables") + i;
-				int q = builder.newNode();
+				const int tape = builder.tapeIndex("variables") + i;
+				const int q = builder.newNode();
 				pushEmptyFrame(builder, tape, prevState, q);
 				prevState = q;
 			}
 
-			std::string func = words[1].substr(10, words[1].size() - 10);
+			const std::string func = words[1].substr(10, words[1].size() - 10);
 
 			int q1 = builder.newNode();
 			if(func == "isZero") {
@@ -2291,15 +2335,15 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(std::vector<std::string>
 				handlePrintInt(builder, prevState, q1);
 			}
 			else {
-				std::cout << "Unhandled request...";
+				throw std::invalid_argument("Invalid line " + std::to_string(i));
 			}
 			
 			prevState = q1;
 
 			// then pop off all the pushed stack frames
 			for(size_t i = 0; i < builder.numVars; ++i) {
-				int tape = builder.tapeIndex("variables") + i;
-				int q = builder.newNode();
+				const int tape = builder.tapeIndex("variables") + i;
+				const int q = builder.newNode();
 				popOffTop(builder, tape, prevState, q);
 				prevState = q;
 			}
