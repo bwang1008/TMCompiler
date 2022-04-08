@@ -322,6 +322,8 @@ void simulateAssembly(std::vector<std::string> &program) {
 		}
 		else if(words[2] == "&&") {
 			// arg1 arg2 && dest ;
+			// EDIT: nani?? should be
+			// arg1 arg2 && = dest ;
 			int t1 = getTapeNum(words[0]);
 			int t2 = getTapeNum(words[1]);
 			int val = t1 && t2;
