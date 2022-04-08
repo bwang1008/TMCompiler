@@ -1,10 +1,12 @@
+#include "multi_tape_builder.h"
+
 #include <iostream>
 #include <stdexcept>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "multi_tape_builder.h"
+#include "utils.h"
 #include "../tm_definition/transition.h"
 #include "../tm_definition/constants.h"
 #include "../tm_definition/multi_tape_turing_machine.h"
@@ -13,7 +15,7 @@
 /**
  * Return number of distinct variables of form "!TAPE_tapeX" for some integer X
  */
-int countTapeVariables(const std::vector<std::string> &assembly) {
+size_t countTapeVariables(const std::vector<std::string> &assembly) {
 	size_t numVars = 0;
 
 	for(size_t i = 0; i < assembly.size(); ++i) {
@@ -108,20 +110,20 @@ size_t MultiTapeBuilder::tapeIndex(const std::string &tapeName) const {
 	return this->tapeIndices.at(tapeName);
 }
 
-void MultiTapeBuilder::addTransition(const int fromState, const int toState, const std::vector<std::pair<int, std::string> > &reads, const std::vector<std::pair<int, std::string> > &writes, const std::vector<std::pair<int, int> > &shifts) {
+void MultiTapeBuilder::addTransition(const size_t fromState, const size_t toState, const std::vector<std::pair<size_t, std::string> > &reads, const std::vector<std::pair<size_t, std::string> > &writes, const std::vector<std::pair<size_t, int> > &shifts) {
 	std::vector<std::string> tapeRead(this->T, ".");
 	std::vector<std::string> tapeWrite(this->T, ".");
 
 	for(size_t i = 0; i < reads.size(); ++i) {
-		const std::pair<int, std::string> p = reads[i];
-		const int tapeIndex = p.first;
+		const std::pair<size_t, std::string> p = reads[i];
+		const size_t tapeIndex = p.first;
 		const std::string rule = p.second;
 		tapeRead[tapeIndex] = rule;
 	}
 
 	for(size_t i = 0; i < writes.size(); ++i) {
-		const std::pair<int, std::string> p = writes[i];
-		const int tapeIndex = p.first;
+		const std::pair<size_t, std::string> p = writes[i];
+		const size_t tapeIndex = p.first;
 		const std::string rule = p.second;
 		tapeWrite[tapeIndex] = rule;
 	}
@@ -139,8 +141,8 @@ void MultiTapeBuilder::addTransition(const int fromState, const int toState, con
 	
 	std::vector<int> allShifts(this->T, Constants::Shift::none);
 	for(size_t i = 0; i < shifts.size(); ++i) {
-		const std::pair<int, int> p = shifts[i];
-		const int index = p.first;
+		const std::pair<size_t, int> p = shifts[i];
+		const size_t index = p.first;
 		const int shift = p.second;
 
 		if(shift == 0) {
@@ -157,10 +159,10 @@ void MultiTapeBuilder::addTransition(const int fromState, const int toState, con
 	transitions.emplace_back(fromState, allReadRules, toState, allWriteRules, allShifts);
 }
 
-void MultiTapeBuilder::add1TapeTransition(const int fromState, const int toState, const int tapeIndex, const std::string &read, const std::string &write, const int shift) {
-	std::vector<std::pair<int, std::string> > reads;
-	std::vector<std::pair<int, std::string> > writes;
-	std::vector<std::pair<int, int> > shifts;
+void MultiTapeBuilder::add1TapeTransition(const size_t fromState, const size_t toState, const size_t tapeIndex, const std::string &read, const std::string &write, const int shift) {
+	std::vector<std::pair<size_t, std::string> > reads;
+	std::vector<std::pair<size_t, std::string> > writes;
+	std::vector<std::pair<size_t, int> > shifts;
 
 	reads.emplace_back(tapeIndex, read);
 	writes.emplace_back(tapeIndex, write);
@@ -170,6 +172,6 @@ void MultiTapeBuilder::add1TapeTransition(const int fromState, const int toState
 }
 
 
-MultiTapeTuringMachine MultiTapeBuilder::generateMTTM(const int initialState, const int haltState) const {
+MultiTapeTuringMachine MultiTapeBuilder::generateMTTM(const size_t initialState, const size_t haltState) const {
 	return MultiTapeTuringMachine(this->Q, this->T, initialState, haltState, this->transitions);
 }
