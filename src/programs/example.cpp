@@ -122,6 +122,18 @@ int main() {
 	return 7;
 	*/
 
+	/*
 	genPrimes(25);
-	return 0;
+
+	bool b = true;
+	bool c = (1 > 25);
+	b &= !c;
+	b |= c;
+	
+	c = b ^ b;
+	*/
+
+	int ans = 2 + 3;
+
+	return ans;
 }

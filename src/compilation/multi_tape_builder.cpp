@@ -95,7 +95,7 @@ size_t MultiTapeBuilder::newNode(const std::string &name) {
 }
 
 size_t MultiTapeBuilder::node(const std::string &name) const {
-	if(this->nodeIndices.find(name) != this->nodeIndices.end()) {
+	if(this->nodeIndices.find(name) == this->nodeIndices.end()) {
 		throw std::invalid_argument("Node " + name + " not found");
 	}
 	
@@ -103,7 +103,7 @@ size_t MultiTapeBuilder::node(const std::string &name) const {
 }
 
 size_t MultiTapeBuilder::tapeIndex(const std::string &tapeName) const {
-	if(this->tapeIndices.find(tapeName) != this->tapeIndices.end()) {
+	if(this->tapeIndices.find(tapeName) == this->tapeIndices.end()) {
 		throw std::invalid_argument("Tape " + tapeName + " not found");
 	}
 

@@ -9,7 +9,7 @@ only allowed types are int and bool
 An important difference to standard C++, is here we don't have boolean short-circuiting
 */
 
-#define SINGLE_FILE 0
+#define SINGLE_FILE 1
 
 #include "unit2.h"
 #include "utils.h"			// helper functions; basic algorithms

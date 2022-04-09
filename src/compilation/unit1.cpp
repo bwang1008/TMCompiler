@@ -1,10 +1,13 @@
 #include "unit1.h"
 
 #include <algorithm>		// std::reverse
-#include <stdexcept>
+#include <fstream>			// std::ifstream
+#include <iostream>			// std::cout
+#include <stdexcept>		// std::invalid_argument
+#include <string>			// std::string, std::stoi
+#include <tuple>			// std::tuple, std::get<>
 #include <unordered_map>	// std::unordered_map
 #include <utility>			// std::pair, std::make_pair
-#include <string>			// std::string, std::stoi
 #include <vector>			// std::vector
 
 #include "multi_tape_builder.h"
@@ -24,14 +27,14 @@ std::string divideIntegerBy2(const std::string &val) {
 		int digit = (val[i] - '0');
 		
 		if(digit < 0 || digit >= 10) {
-			throw std::invalid_argument(val + " not an integer");
+			throw std::invalid_argument("Val provided for divideIntegerBy2 not an integer: " + val);
 		}
 
 		if(carry) {
 			digit += 10;
 		}
 
-		ans.push_back(digit / 2);
+		ans.push_back('0' + (digit / 2));
 		carry = (digit % 2 == 1);
 	}
 
@@ -86,7 +89,7 @@ void addIncrementIP(MultiTapeBuilder &builder) {
 	// ip is in 2's complement
 	// worked out on paper
 	
-	const size_t q0 = builder.newNode("before");
+	const size_t q0 = builder.node("before");
 	const size_t q1 = builder.newNode();
 	const size_t q2 = builder.newNode();
 	const size_t q3 = builder.node("sideways");
@@ -1765,7 +1768,7 @@ void handleCallNum(MultiTapeBuilder &builder, const size_t currIP, const std::ve
 	}
 	
 	// now connect with node "sideways"
-	builder.add1TapeTransition(prevNode, builder.tapeIndex("sideways"), tapeIP, ".", ".", 0);
+	builder.add1TapeTransition(prevNode, builder.tapeIndex("ipSideways"), tapeIP, ".", ".", 0);
 }
 
 /**
@@ -1826,7 +1829,7 @@ void handleJf(MultiTapeBuilder &builder, const size_t currIP, const std::vector<
 	}
 	
 	// now connect with node "sideways"
-	builder.add1TapeTransition(prevNode, builder.tapeIndex("sideways"), tapeIP, ".", ".", 0);
+	builder.add1TapeTransition(prevNode, builder.tapeIndex("ipSideways"), tapeIP, ".", ".", 0);
 }
 
 /**
@@ -2174,6 +2177,8 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 	
 	initialize(builder);
 
+	std::cout << "Initialization complete" << std::endl;
+
 	for(size_t i = 0; i < assembly.size(); ++i) {
 		const std::vector<std::string> words = getWords(assembly[i]);
 		
@@ -2236,8 +2241,8 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 			else if(func == "getMemBitIndex") {
 				handleGetMemBitIndex(builder, prevNode, q1);
 			}
-			else if(func == "setMemBitBlank") {
-				handleSetMemBitBlank(builder, prevNode, q1);
+			else if(func == "setMemBitIndex") {
+				handleSetMemBitIndex(builder, prevNode, q1);
 			}
 			else if(func == "moveMemHeadRight") {
 				handleMoveMemHeadRight(builder, prevNode, q1);
@@ -2324,18 +2329,69 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 		}
 	}
 
-	/*
-	std::vector<Transition> transitions;
-	transitions.emplace_back(1, "what", 1, "lmao", std::vector<int> {0, 0, 0});
-	MultiTapeTuringMachine mttm(3, 5, 0, 1, transitions);
-	return mttm;
-	*/
+	std::cout << "Finished building" << std::endl;
+
+	std::cout << "ipSize = " << builder.ipSize << std::endl;
+	std::cout << "numVars = " << builder.numVars << std::endl;
+
+	std::cout << "tapes:" << std::endl;
+	std::vector<std::string> tapeNames {"input", "output", "ipStack", "ip", "ipSideways", "paramStack", "bitIndex", "bits", "variables", "rax"};
+	for(std::string s : tapeNames) {
+		size_t num = builder.tapeIndex(s);
+		std::cout << "tape " << s << " = " << num << std::endl;
+	}
 
 	return builder.generateMTTM(builder.node("start"), builder.node("end"));
 }
 
 // just a placeholder
 int main() {
-	std::cout << "Hello, World!" << std::endl;
+	const std::string fileName = "assembly.txt";
+	std::ifstream file(fileName);
+
+	if(!file.is_open()) {
+		std::cout << "Unable to open file " << fileName << std::endl;
+		return -1;
+	}
+
+	std::vector<std::string> assembly;
+	std::string line;
+	while(std::getline(file, line)) {
+		assembly.push_back(line);
+	}
+
+	std::cout << "Assembly file read" << std::endl;
+
+	MultiTapeTuringMachine mttm = assemblyToMultiTapeTuringMachine(assembly);
+	
+	std::cout << "Finished generating" << std::endl;
+
+	std::cout << "Begin simulating:" << std::endl;
+	
+	int numSteps = 0;
+	int limit = 1;
+	while(!mttm.halted() && numSteps < limit) {
+		mttm.step();
+
+
+		std::cout << "After step " << numSteps << std::endl;
+		mttm.displayTapes();
+
+		++numSteps;
+	}
+
+	/*
+	std::tuple<int, int> result = mttm.run();
+
+	int a = std::get<0>(result);
+	int b = std::get<1>(result);
+
+	std::cout << "Status: " << a << " :  if 0, ongoing, 1 then halted" << std::endl;
+	std::cout << "Num steps: " << b << std::endl;
+
+	mttm.displayTapes();
+	*/
+
+	return 0;
 }
 
