@@ -146,13 +146,13 @@ void MultiTapeBuilder::addTransition(const size_t fromState, const size_t toStat
 		const int shift = p.second;
 
 		if(shift == 0) {
-			allShifts[i] = Constants::Shift::none;
+			allShifts[index] = Constants::Shift::none;
 		}
 		else if(shift == -1) {
-			allShifts[i] = Constants::Shift::left;
+			allShifts[index] = Constants::Shift::left;
 		}
 		else if(shift == 1) {
-			allShifts[i] = Constants::Shift::right;
+			allShifts[index] = Constants::Shift::right;
 		}
 	}
 	

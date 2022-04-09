@@ -164,7 +164,7 @@ void addIncrementIP(MultiTapeBuilder &builder) {
  * should be called only once to construct
 */
 size_t addNeg2ToIpStack(MultiTapeBuilder &builder) {
-	const size_t ipStackTapeIndex = builder.tapeIndex("output");
+	const size_t ipStackTapeIndex = builder.tapeIndex("ipStack");
 
 	// for a given program, ipSize is constant
 	// so add a constant number of transitions to palce in -2
@@ -172,6 +172,7 @@ size_t addNeg2ToIpStack(MultiTapeBuilder &builder) {
 	size_t prevNode = builder.node("start");
 	for(size_t i = 0; i < builder.ipSize; ++i) {
 		const size_t toNode = builder.newNode();
+		std::cout << "newNode... = " << toNode << std::endl;
 		const int bit = (i == builder.ipSize - 1) ? 0 : 1;
 		builder.add1TapeTransition(prevNode, toNode, ipStackTapeIndex, ".", std::to_string(bit), 1);
 
@@ -184,6 +185,8 @@ size_t addNeg2ToIpStack(MultiTapeBuilder &builder) {
 		builder.add1TapeTransition(prevNode, toNode, ipStackTapeIndex, ".", ".", -1);
 		prevNode = toNode;
 	}
+
+	std::cout << "ok so addNeg2: last prevNode = " << prevNode << std::endl;
 	
 	return prevNode;
 }
@@ -2369,9 +2372,9 @@ int main() {
 	std::cout << "Begin simulating:" << std::endl;
 	
 	int numSteps = 0;
-	int limit = 1;
+	int limit = 2;
 	while(!mttm.halted() && numSteps < limit) {
-		mttm.step();
+		mttm.step(1);
 
 
 		std::cout << "After step " << numSteps << std::endl;
