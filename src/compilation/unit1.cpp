@@ -477,7 +477,7 @@ void handleJump(MultiTapeBuilder &builder, const size_t currIP, const std::vecto
 	// move head of ipTapeIndex back to start
 	for(size_t i = 0; i < builder.ipSize; ++i) {
 		const size_t q = builder.newNode();
-		const int shift = (i + 1 == builder.ipSize) ? 0 : -1;
+		const int shift = -1;
 		builder.add1TapeTransition(prevNode, q, ipTapeIndex, ".", ".", shift);
 		prevNode = q;
 	}
@@ -2378,7 +2378,7 @@ int main() {
 	std::cout << "Begin simulating:" << std::endl;
 	
 	int numSteps = 0;
-	int limit = 100;
+	int limit = 200;
 	while(!mttm.halted() && numSteps < limit) {
 		mttm.step(1);
 
