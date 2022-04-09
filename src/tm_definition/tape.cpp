@@ -113,8 +113,8 @@ int Tape::headPosition() const {
 }
 
 void Tape::display() const {
-	std::cout << this->earliestIndex << ": [";
-	for(int i = this->earliestIndex; i <= this->latestIndex; i++) {
+	std::cout << this->head << ": [";
+	for(int i = 0; i <= this->latestIndex; i++) {
 		char symbol = this->get(i);
 		std::cout << char(symbol);
 	}

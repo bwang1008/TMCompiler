@@ -133,7 +133,7 @@ void addIncrementIP(MultiTapeBuilder &builder) {
 
 			reads.emplace_back(ipTapeIndex, std::to_string(j));
 			writes.emplace_back(sidewaysTapeIndex + i, std::to_string(j));
-			shifts.emplace_back(sidewaysTapeIndex + i, 1);
+			//shifts.emplace_back(sidewaysTapeIndex + i, 1);
 
 			builder.addTransition(prevNode, toNode, reads, writes, shifts);
 		}
@@ -2372,7 +2372,7 @@ int main() {
 	std::cout << "Begin simulating:" << std::endl;
 	
 	int numSteps = 0;
-	int limit = 2;
+	int limit = 100;
 	while(!mttm.halted() && numSteps < limit) {
 		mttm.step(1);
 
