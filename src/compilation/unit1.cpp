@@ -16,6 +16,42 @@
 #include "../tm_definition/multi_tape_turing_machine.h"
 
 /**
+ * helper function: convert line number (non-negative)
+ * to format of ipSize bits: 0 for non-negative, then
+ * least-significant to most significant bits
+ */
+std::vector<std::string> lineNumToBits(const size_t lineNum, const size_t ipSize) {
+	std::vector<std::string> bits;
+	//bits.push_back("0");
+
+	size_t val = lineNum;
+
+	while(val > 0) {
+		if(val % 2 == 0) {
+			bits.push_back("0");
+		}
+		else {
+			bits.push_back("1");
+		}
+
+		val /= 2;
+	}
+
+	while(bits.size() < ipSize) {
+		bits.push_back("0");
+	}
+
+	std::reverse(bits.begin(), bits.end());
+
+	std::cout << "Set " << lineNum << " to ";
+	for(std::string s : bits) {
+		std::cout << s;
+	}
+	std::cout << std::endl;
+	return bits;
+}
+
+/**
  * calculate biginteger / 2 (floor integer division)
  * assume val is positive
  */
@@ -133,7 +169,7 @@ void addIncrementIP(MultiTapeBuilder &builder) {
 
 			reads.emplace_back(ipTapeIndex, std::to_string(j));
 			writes.emplace_back(sidewaysTapeIndex + i, std::to_string(j));
-			//shifts.emplace_back(sidewaysTapeIndex + i, 1);
+			shifts.emplace_back(ipTapeIndex, 1);
 
 			builder.addTransition(prevNode, toNode, reads, writes, shifts);
 		}
@@ -273,21 +309,14 @@ void initialize(MultiTapeBuilder &builder) {
 }
 
 /**
- * Add a transition from fromState to toNode if IP == currIP
+ * Add a transition from fromNode to toNode if IP == currIP
  */
-void handleIPTransition(MultiTapeBuilder &builder, const size_t currIP, const size_t fromState, const size_t toNode) {
+void handleIPTransition(MultiTapeBuilder &builder, const size_t currIP, const size_t fromNode, const size_t toNode) {
 	std::vector<std::pair<size_t, std::string> > reads;
 	std::vector<std::pair<size_t, std::string> > writes;
 	std::vector<std::pair<size_t, int> > shifts;
 
-	std::vector<std::string> bits;
-	size_t val = currIP;
-	for(size_t i = 0; i < builder.ipSize; ++i) {
-		bits.push_back(std::to_string(val % 2));
-		val /= 2;
-	}
-	
-	std::reverse(bits.begin(), bits.end());
+	std::vector<std::string> bits = lineNumToBits(currIP, builder.ipSize);
 	
 	const size_t sidewaysTapeIndex = builder.tapeIndex("ipSideways");
 	for(size_t i = 0; i < builder.ipSize; ++i) {
@@ -295,7 +324,7 @@ void handleIPTransition(MultiTapeBuilder &builder, const size_t currIP, const si
 	}
 
 	// no writes, no shifts, just read the sideways tapes
-	builder.addTransition(fromState, toNode, reads, writes, shifts);
+	builder.addTransition(fromNode, toNode, reads, writes, shifts);
 }
 
 /**
@@ -430,28 +459,19 @@ void handleNop(MultiTapeBuilder &builder, const size_t currIP) {
  */
 void handleJump(MultiTapeBuilder &builder, const size_t currIP, const std::vector<std::string> &words) {
 	const size_t q0 = builder.newNode();
+	std::cout << "for handleJump, when currIP = " << currIP << " q0 = " << q0 << std::endl;
 	handleIPTransition(builder, currIP, builder.node("after"), q0);
 	
 	size_t jumpLine = (size_t) std::stoi(words[1]);
 	
-	std::vector<int> bits;
-	while(jumpLine > 0) {
-		bits.push_back(jumpLine % 2);
-		jumpLine /= 2;
-	}
-	
-	while(bits.size() < builder.ipSize) {
-		bits.push_back(0);
-	}
-	
-	std::reverse(bits.begin(), bits.end());
+	std::vector<std::string> bits = lineNumToBits(jumpLine, builder.ipSize);
 
 	size_t prevNode = q0;
 	const size_t ipTapeIndex = builder.tapeIndex("ip");
 	for(size_t i = 0; i < builder.ipSize; ++i) {
 		const size_t q = builder.newNode();
-		builder.add1TapeTransition(prevNode, q, ipTapeIndex, ".", std::to_string(bits[i]), 1);
-		prevNode = q0;
+		builder.add1TapeTransition(prevNode, q, ipTapeIndex, ".", bits[i], 1);
+		prevNode = q;
 	}
 	
 	// move head of ipTapeIndex back to start
@@ -1745,14 +1765,7 @@ void handleCallNum(MultiTapeBuilder &builder, const size_t currIP, const std::ve
 	copyBetweenTapes(builder, builder.tapeIndex("ip"), builder.tapeIndex("ipStack"), q1, q2);
 	
 	// set new ip
-	std::vector<std::string> bits;
-	size_t val = currIP;
-	for(size_t i = 0; i < builder.ipSize; ++i) {
-		bits.push_back(std::to_string(val % 2));
-		val /= 2;
-	}
-	
-	std::reverse(bits.begin(), bits.end());
+	std::vector<std::string> bits = lineNumToBits(currIP, builder.ipSize);
 		
 	// write bits into ip tape
 	prevNode = q2;
@@ -1806,14 +1819,7 @@ void handleJf(MultiTapeBuilder &builder, const size_t currIP, const std::vector<
 	// aka we set ipTape to lineNum
 	
 	// set new ip
-	std::vector<std::string> bits;
-	size_t val = currIP;
-	for(size_t i = 0; i < builder.ipSize; ++i) {
-		bits.push_back(std::to_string(val % 2));
-		val /= 2;
-	}
-	
-	std::reverse(bits.begin(), bits.end());
+	std::vector<std::string> bits = lineNumToBits(currIP, builder.ipSize);
 		
 	// write bits into ip tape
 	size_t prevNode = q1;
