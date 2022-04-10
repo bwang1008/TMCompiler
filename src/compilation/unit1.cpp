@@ -104,7 +104,7 @@ std::string convertIntegerToBits(std::string val) {
 
 	while(val.size() != 1 || val[0] != '0') {
 		const int mod2 = ((val.back() - '0') % 2);
-		bits.push_back(mod2);
+		bits.push_back('0' + mod2);
 		val = divideIntegerBy2(val);
 	}
 
@@ -467,7 +467,6 @@ void handleNop(MultiTapeBuilder &builder, const size_t currIP) {
  */
 void handleJump(MultiTapeBuilder &builder, const size_t currIP, const std::vector<std::string> &words) {
 	const size_t q0 = builder.newNode();
-	std::cout << "for handleJump, when currIP = " << currIP << " q0 = " << q0 << std::endl;
 	handleIPTransition(builder, currIP, builder.node("after"), q0);
 	
 	size_t jumpLine = (size_t) std::stoi(words[1]);
@@ -2169,12 +2168,6 @@ void handleAssignmentIntegerLiteral(MultiTapeBuilder &builder, const size_t curr
 	const std::string bits = convertIntegerToBits(words[1]);
 	size_t prevNode = q0;
 
-	std::cout << "Converted from " << words[1] << " to ";
-	for(size_t i = 0; i < bits.size(); ++i) {
-		std::cout << bits[i];
-	}
-	std::cout << std::endl;
-
 	for(size_t i = 0; i < bits.size(); ++i) {
 		const size_t q = builder.newNode();
 		const std::string writeBit = std::string(1, bits[i]);
@@ -2354,7 +2347,6 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 			}
 			else {
 				// tape1 9001 = ; 
-				std::cout << "jah integer literal" << std::endl;
 				handleAssignmentIntegerLiteral(builder, i, words);
 			}
 		}

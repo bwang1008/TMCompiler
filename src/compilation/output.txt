@@ -391,11 +391,11 @@ for handleJump, when currIP = 358 q0 = 9835
 doing line 359: nop ; 
 doing line 360: !TAPE_tape10 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 361: !TAPE_tape4 !TAPE_tape10 = ; 
 doing line 362: !TAPE_tape10 2 = ; 
 jah integer literal
-Converted from 2 to 0
+Converted from 2 to 001
 doing line 363: !TAPE_tape5 !TAPE_tape10 = ; 
 doing line 364: !TAPE_tape6 !TAPE_tape0 = ; 
 doing line 365: !TAPE_tape10 !TAPE_tape0 = ; 
@@ -415,7 +415,7 @@ doing line 378: pop !TAPE_RAX !TAPE_tape7 ;
 doing line 379: !TAPE_tape7 ! = !TAPE_tape10 ; 
 doing line 380: jf !TAPE_tape10 382 ; 
 doing line 381: jmp 400 ; 
-for handleJump, when currIP = 381 q0 = 10088
+for handleJump, when currIP = 381 q0 = 10094
 doing line 382: nop ; 
 doing line 383: !TAPE_tape4 !TAPE_tape5 = ; 
 doing line 384: !TAPE_tape6 !TAPE_tape8 = ; 
@@ -434,7 +434,7 @@ doing line 396: call 1 ;
 doing line 397: pop !TAPE_RAX !TAPE_tape7 ; 
 doing line 398: !TAPE_tape8 !TAPE_tape7 = ; 
 doing line 399: jmp 372 ; 
-for handleJump, when currIP = 399 q0 = 10305
+for handleJump, when currIP = 399 q0 = 10311
 doing line 400: !TAPE_tape10 !TAPE_tape2 = ; 
 doing line 401: !TAPE_tape11 !TAPE_tape6 = ; 
 doing line 402: push !TAPE_tape11 !TAPE_PARAMS ; 
@@ -450,7 +450,7 @@ doing line 411: call 190 ;
 doing line 412: pop !TAPE_RAX !TAPE_tape7 ; 
 doing line 413: !TAPE_tape3 !TAPE_tape7 = ; 
 doing line 414: jmp 349 ; 
-for handleJump, when currIP = 414 q0 = 10518
+for handleJump, when currIP = 414 q0 = 10524
 doing line 415: jf !TAPE_tape9 420 ; 
 doing line 416: push !TAPE_tape2 !TAPE_PARAMS ; 
 doing line 417: call 604 ; 
@@ -492,7 +492,7 @@ doing line 446: call 620 ;
 doing line 447: pop !TAPE_RAX !TAPE_tape5 ; 
 doing line 448: !TAPE_tape6 !TAPE_tape5 = ; 
 doing line 449: jmp 452 ; 
-for handleJump, when currIP = 449 q0 = 11271
+for handleJump, when currIP = 449 q0 = 11277
 doing line 450: nop ; 
 doing line 451: !TAPE_tape6 !TAPE_tape2 = ; 
 doing line 452: nop ; 
@@ -571,7 +571,7 @@ doing line 518: pop !TAPE_RAX !TAPE_tape5 ;
 doing line 519: !TAPE_tape5 ! = !TAPE_tape6 ; 
 doing line 520: jf !TAPE_tape6 522 ; 
 doing line 521: jmp 577 ; 
-for handleJump, when currIP = 521 q0 = 12758
+for handleJump, when currIP = 521 q0 = 12764
 doing line 522: nop ; 
 doing line 523: !TAPE_tape6 0 = ; 
 jah integer literal
@@ -579,7 +579,7 @@ Converted from 0 to 0
 doing line 524: !TAPE_tape4 !TAPE_tape6 = ; 
 doing line 525: !TAPE_tape6 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 526: !TAPE_tape9 !TAPE_tape6 = ; 
 doing line 527: nop ; 
 doing line 528: !TAPE_tape6 !TAPE_tape8 = ; 
@@ -601,7 +601,7 @@ doing line 543: pop !TAPE_RAX !TAPE_tape5 ;
 doing line 544: !TAPE_tape5 ! = !TAPE_tape6 ; 
 doing line 545: jf !TAPE_tape6 547 ; 
 doing line 546: jmp 557 ; 
-for handleJump, when currIP = 546 q0 = 13095
+for handleJump, when currIP = 546 q0 = 13103
 doing line 547: nop ; 
 doing line 548: !TAPE_tape4 !TAPE_tape9 = ; 
 doing line 549: !TAPE_tape6 !TAPE_tape9 = ; 
@@ -612,7 +612,7 @@ doing line 553: call 1 ;
 doing line 554: pop !TAPE_RAX !TAPE_tape5 ; 
 doing line 555: !TAPE_tape9 !TAPE_tape5 = ; 
 doing line 556: jmp 527 ; 
-for handleJump, when currIP = 556 q0 = 13216
+for handleJump, when currIP = 556 q0 = 13224
 doing line 557: !TAPE_tape6 !TAPE_tape8 = ; 
 doing line 558: !TAPE_tape7 !TAPE_tape4 = ; 
 doing line 559: push !TAPE_tape7 !TAPE_PARAMS ; 
@@ -633,7 +633,7 @@ doing line 573: call 190 ;
 doing line 574: pop !TAPE_RAX !TAPE_tape7 ; 
 doing line 575: !TAPE_tape3 !TAPE_tape7 = ; 
 doing line 576: jmp 512 ; 
-for handleJump, when currIP = 576 q0 = 13519
+for handleJump, when currIP = 576 q0 = 13527
 doing line 577: !TAPE_RAX !TAPE_tape8 = ; 
 doing line 578: return ; 
 doing line 579: nop ; 
@@ -703,14 +703,14 @@ doing line 640: pop !TAPE_RAX !TAPE_tape2 ;
 doing line 641: !TAPE_RAX !TAPE_tape2 = ; 
 doing line 642: return ; 
 doing line 643: jmp 648 ; 
-for handleJump, when currIP = 643 q0 = 15314
+for handleJump, when currIP = 643 q0 = 15322
 doing line 644: nop ; 
 doing line 645: !TAPE_tape3 true = ; 
 doing line 646: !TAPE_RAX !TAPE_tape3 = ; 
 doing line 647: return ; 
 doing line 648: nop ; 
 doing line 649: jmp 708 ; 
-for handleJump, when currIP = 649 q0 = 15441
+for handleJump, when currIP = 649 q0 = 15449
 doing line 650: nop ; 
 doing line 651: push !TAPE_tape0 !TAPE_PARAMS ; 
 doing line 652: call !FUNC_LIB_isZero ; 
@@ -724,7 +724,7 @@ doing line 659: !TAPE_tape3 false = ;
 doing line 660: !TAPE_RAX !TAPE_tape3 = ; 
 doing line 661: return ; 
 doing line 662: jmp 677 ; 
-for handleJump, when currIP = 662 q0 = 15929
+for handleJump, when currIP = 662 q0 = 15937
 doing line 663: nop ; 
 doing line 664: push !TAPE_tape1 !TAPE_PARAMS ; 
 doing line 665: call !FUNC_LIB_isZero ; 
@@ -734,7 +734,7 @@ doing line 668: !TAPE_tape3 false = ;
 doing line 669: !TAPE_RAX !TAPE_tape3 = ; 
 doing line 670: return ; 
 doing line 671: jmp 676 ; 
-for handleJump, when currIP = 671 q0 = 16237
+for handleJump, when currIP = 671 q0 = 16245
 doing line 672: nop ; 
 doing line 673: !TAPE_tape3 true = ; 
 doing line 674: !TAPE_RAX !TAPE_tape3 = ; 
@@ -742,7 +742,7 @@ doing line 675: return ;
 doing line 676: nop ; 
 doing line 677: nop ; 
 doing line 678: jmp 707 ; 
-for handleJump, when currIP = 678 q0 = 16364
+for handleJump, when currIP = 678 q0 = 16372
 doing line 679: nop ; 
 doing line 680: push !TAPE_tape1 !TAPE_PARAMS ; 
 doing line 681: call !FUNC_LIB_isNeg ; 
@@ -750,7 +750,7 @@ doing line 682: pop !TAPE_RAX !TAPE_tape3 ;
 doing line 683: jf !TAPE_tape3 686 ; 
 doing line 684: !TAPE_tape4 !TAPE_tape3 = ; 
 doing line 685: jmp 691 ; 
-for handleJump, when currIP = 685 q0 = 16571
+for handleJump, when currIP = 685 q0 = 16579
 doing line 686: nop ; 
 doing line 687: push !TAPE_tape1 !TAPE_PARAMS ; 
 doing line 688: call !FUNC_LIB_isZero ; 
@@ -762,7 +762,7 @@ doing line 693: !TAPE_tape3 false = ;
 doing line 694: !TAPE_RAX !TAPE_tape3 = ; 
 doing line 695: return ; 
 doing line 696: jmp 706 ; 
-for handleJump, when currIP = 696 q0 = 16881
+for handleJump, when currIP = 696 q0 = 16889
 doing line 697: nop ; 
 doing line 698: !TAPE_tape3 !TAPE_tape0 = ; 
 doing line 699: !TAPE_tape4 !TAPE_tape1 = ; 
@@ -788,7 +788,7 @@ doing line 718: pop !TAPE_RAX !TAPE_tape4 ;
 doing line 719: jf !TAPE_tape4 722 ; 
 doing line 720: !TAPE_tape5 !TAPE_tape4 = ; 
 doing line 721: jmp 730 ; 
-for handleJump, when currIP = 721 q0 = 17314
+for handleJump, when currIP = 721 q0 = 17322
 doing line 722: nop ; 
 doing line 723: !TAPE_tape3 !TAPE_tape0 = ; 
 doing line 724: !TAPE_tape4 !TAPE_tape1 = ; 
@@ -846,7 +846,7 @@ doing line 775: !TAPE_tape4 false = ;
 doing line 776: !TAPE_RAX !TAPE_tape4 = ; 
 doing line 777: return ; 
 doing line 778: jmp 823 ; 
-for handleJump, when currIP = 778 q0 = 18535
+for handleJump, when currIP = 778 q0 = 18543
 doing line 779: nop ; 
 doing line 780: push !TAPE_tape0 !TAPE_PARAMS ; 
 doing line 781: call !FUNC_LIB_isNeg ; 
@@ -873,7 +873,7 @@ doing line 801: !TAPE_tape4 false = ;
 doing line 802: !TAPE_RAX !TAPE_tape4 = ; 
 doing line 803: return ; 
 doing line 804: jmp 822 ; 
-for handleJump, when currIP = 804 q0 = 19455
+for handleJump, when currIP = 804 q0 = 19463
 doing line 805: nop ; 
 doing line 806: push !TAPE_tape1 !TAPE_PARAMS ; 
 doing line 807: call !FUNC_LIB_isPos ; 
@@ -954,7 +954,7 @@ doing line 879: !TAPE_tape4 ! = !TAPE_tape8 ;
 doing line 880: jf !TAPE_tape8 883 ; 
 doing line 881: !TAPE_tape4 !TAPE_tape8 = ; 
 doing line 882: jmp 886 ; 
-for handleJump, when currIP = 882 q0 = 21453
+for handleJump, when currIP = 882 q0 = 21461
 doing line 883: nop ; 
 doing line 884: !TAPE_tape2 ! = !TAPE_tape8 ; 
 doing line 885: !TAPE_tape4 !TAPE_tape8 = ; 
@@ -962,14 +962,14 @@ doing line 886: nop ;
 doing line 887: !TAPE_tape4 ! = !TAPE_tape8 ; 
 doing line 888: jf !TAPE_tape8 890 ; 
 doing line 889: jmp 1023 ; 
-for handleJump, when currIP = 889 q0 = 21510
+for handleJump, when currIP = 889 q0 = 21518
 doing line 890: nop ; 
 doing line 891: !TAPE_tape4 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 892: !TAPE_tape8 2 = ; 
 jah integer literal
-Converted from 2 to 0
+Converted from 2 to 001
 doing line 893: !TAPE_tape6 !TAPE_tape0 = ; 
 doing line 894: !TAPE_tape3 !TAPE_tape7 = ; 
 doing line 895: push !TAPE_tape3 !TAPE_PARAMS ; 
@@ -1010,11 +1010,11 @@ doing line 929: pop !TAPE_RAX !TAPE_tape6 ;
 doing line 930: !TAPE_tape6 ! = !TAPE_tape4 ; 
 doing line 931: jf !TAPE_tape4 933 ; 
 doing line 932: jmp 943 ; 
-for handleJump, when currIP = 932 q0 = 22203
+for handleJump, when currIP = 932 q0 = 22217
 doing line 933: nop ; 
 doing line 934: !TAPE_tape4 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 935: !TAPE_tape8 !TAPE_tape11 = ; 
 doing line 936: push !TAPE_tape4 !TAPE_PARAMS ; 
 doing line 937: push !TAPE_tape8 !TAPE_PARAMS ; 
@@ -1023,7 +1023,7 @@ doing line 939: pop !TAPE_RAX !TAPE_tape6 ;
 doing line 940: !TAPE_tape11 !TAPE_tape6 = ; 
 doing line 941: call !FUNC_LIB_moveMemHeadLeft ; 
 doing line 942: jmp 923 ; 
-for handleJump, when currIP = 942 q0 = 22461
+for handleJump, when currIP = 942 q0 = 22477
 doing line 943: nop ; 
 doing line 944: !TAPE_tape4 !TAPE_tape11 = ; 
 doing line 945: !TAPE_tape8 !TAPE_tape10 = ; 
@@ -1034,11 +1034,11 @@ doing line 949: pop !TAPE_RAX !TAPE_tape6 ;
 doing line 950: !TAPE_tape6 ! = !TAPE_tape4 ; 
 doing line 951: jf !TAPE_tape4 953 ; 
 doing line 952: jmp 963 ; 
-for handleJump, when currIP = 952 q0 = 22606
+for handleJump, when currIP = 952 q0 = 22622
 doing line 953: nop ; 
 doing line 954: !TAPE_tape4 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 955: !TAPE_tape8 !TAPE_tape11 = ; 
 doing line 956: push !TAPE_tape4 !TAPE_PARAMS ; 
 doing line 957: push !TAPE_tape8 !TAPE_PARAMS ; 
@@ -1047,7 +1047,7 @@ doing line 959: pop !TAPE_RAX !TAPE_tape6 ;
 doing line 960: !TAPE_tape11 !TAPE_tape6 = ; 
 doing line 961: call !FUNC_LIB_moveMemHeadRight ; 
 doing line 962: jmp 943 ; 
-for handleJump, when currIP = 962 q0 = 22864
+for handleJump, when currIP = 962 q0 = 22882
 doing line 963: !TAPE_tape2 ! = !TAPE_tape4 ; 
 doing line 964: jf !TAPE_tape4 981 ; 
 doing line 965: push !TAPE_tape14 !TAPE_PARAMS ; 
@@ -1060,18 +1060,18 @@ doing line 971: call 604 ;
 doing line 972: pop !TAPE_RAX !TAPE_tape4 ; 
 doing line 973: !TAPE_tape14 !TAPE_tape4 = ; 
 doing line 974: jmp 977 ; 
-for handleJump, when currIP = 974 q0 = 23319
+for handleJump, when currIP = 974 q0 = 23337
 doing line 975: nop ; 
 doing line 976: call !FUNC_LIB_setMemBitZero ; 
 doing line 977: nop ; 
 doing line 978: !TAPE_tape4 true = ; 
 doing line 979: !TAPE_tape2 !TAPE_tape4 = ; 
 doing line 980: jmp 1014 ; 
-for handleJump, when currIP = 980 q0 = 23485
+for handleJump, when currIP = 980 q0 = 23503
 doing line 981: nop ; 
 doing line 982: !TAPE_tape4 2 = ; 
 jah integer literal
-Converted from 2 to 0
+Converted from 2 to 001
 doing line 983: !TAPE_tape8 !TAPE_tape14 = ; 
 doing line 984: push !TAPE_tape4 !TAPE_PARAMS ; 
 doing line 985: push !TAPE_tape8 !TAPE_PARAMS ; 
@@ -1080,7 +1080,7 @@ doing line 987: pop !TAPE_RAX !TAPE_tape6 ;
 doing line 988: !TAPE_tape5 !TAPE_tape6 = ; 
 doing line 989: !TAPE_tape4 2 = ; 
 jah integer literal
-Converted from 2 to 0
+Converted from 2 to 001
 doing line 990: !TAPE_tape8 !TAPE_tape5 = ; 
 doing line 991: push !TAPE_tape8 !TAPE_PARAMS ; 
 doing line 992: push !TAPE_tape4 !TAPE_PARAMS ; 
@@ -1094,7 +1094,7 @@ doing line 999: pop !TAPE_RAX !TAPE_tape8 ;
 doing line 1000: !TAPE_tape13 !TAPE_tape8 = ; 
 doing line 1001: !TAPE_tape4 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 1002: !TAPE_tape8 !TAPE_tape13 = ; 
 doing line 1003: push !TAPE_tape4 !TAPE_PARAMS ; 
 doing line 1004: push !TAPE_tape8 !TAPE_PARAMS ; 
@@ -1103,7 +1103,7 @@ doing line 1006: pop !TAPE_RAX !TAPE_tape6 ;
 doing line 1007: jf !TAPE_tape6 1010 ; 
 doing line 1008: call !FUNC_LIB_setMemBitOne ; 
 doing line 1009: jmp 1012 ; 
-for handleJump, when currIP = 1009 q0 = 24049
+for handleJump, when currIP = 1009 q0 = 24077
 doing line 1010: nop ; 
 doing line 1011: call !FUNC_LIB_setMemBitZero ; 
 doing line 1012: nop ; 
@@ -1111,7 +1111,7 @@ doing line 1013: !TAPE_tape14 !TAPE_tape5 = ;
 doing line 1014: nop ; 
 doing line 1015: !TAPE_tape4 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 1016: !TAPE_tape8 !TAPE_tape7 = ; 
 doing line 1017: push !TAPE_tape4 !TAPE_PARAMS ; 
 doing line 1018: push !TAPE_tape8 !TAPE_PARAMS ; 
@@ -1119,13 +1119,13 @@ doing line 1019: call 1 ;
 doing line 1020: pop !TAPE_RAX !TAPE_tape6 ; 
 doing line 1021: !TAPE_tape7 !TAPE_tape6 = ; 
 doing line 1022: jmp 875 ; 
-for handleJump, when currIP = 1022 q0 = 24309
+for handleJump, when currIP = 1022 q0 = 24339
 doing line 1023: !TAPE_tape4 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 1024: !TAPE_tape8 2 = ; 
 jah integer literal
-Converted from 2 to 0
+Converted from 2 to 001
 doing line 1025: !TAPE_tape6 !TAPE_tape0 = ; 
 doing line 1026: !TAPE_tape3 !TAPE_tape7 = ; 
 doing line 1027: push !TAPE_tape3 !TAPE_PARAMS ; 
@@ -1166,11 +1166,11 @@ doing line 1061: pop !TAPE_RAX !TAPE_tape6 ;
 doing line 1062: !TAPE_tape6 ! = !TAPE_tape4 ; 
 doing line 1063: jf !TAPE_tape4 1065 ; 
 doing line 1064: jmp 1075 ; 
-for handleJump, when currIP = 1064 q0 = 25002
+for handleJump, when currIP = 1064 q0 = 25038
 doing line 1065: nop ; 
 doing line 1066: !TAPE_tape4 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 1067: !TAPE_tape8 !TAPE_tape11 = ; 
 doing line 1068: push !TAPE_tape4 !TAPE_PARAMS ; 
 doing line 1069: push !TAPE_tape8 !TAPE_PARAMS ; 
@@ -1179,7 +1179,7 @@ doing line 1071: pop !TAPE_RAX !TAPE_tape6 ;
 doing line 1072: !TAPE_tape11 !TAPE_tape6 = ; 
 doing line 1073: call !FUNC_LIB_moveMemHeadRight ; 
 doing line 1074: jmp 1055 ; 
-for handleJump, when currIP = 1074 q0 = 25260
+for handleJump, when currIP = 1074 q0 = 25298
 doing line 1075: call !FUNC_LIB_setMemBitBlank ; 
 doing line 1076: push !TAPE_tape11 !TAPE_PARAMS ; 
 doing line 1077: call !FUNC_LIB_setMemBitIndex ; 
@@ -1196,10 +1196,10 @@ doing line 1085: pop !TAPE_RAX !TAPE_tape3 ;
 doing line 1086: !TAPE_tape4 !TAPE_tape3 = ; 
 doing line 1087: !TAPE_tape3 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 1088: !TAPE_tape9 2 = ; 
 jah integer literal
-Converted from 2 to 0
+Converted from 2 to 001
 doing line 1089: !TAPE_tape6 !TAPE_tape0 = ; 
 doing line 1090: push !TAPE_tape3 !TAPE_PARAMS ; 
 doing line 1091: push !TAPE_tape6 !TAPE_PARAMS ; 
@@ -1230,11 +1230,11 @@ doing line 1115: pop !TAPE_RAX !TAPE_tape6 ;
 doing line 1116: !TAPE_tape6 ! = !TAPE_tape3 ; 
 doing line 1117: jf !TAPE_tape3 1119 ; 
 doing line 1118: jmp 1129 ; 
-for handleJump, when currIP = 1118 q0 = 26314
+for handleJump, when currIP = 1118 q0 = 26358
 doing line 1119: nop ; 
 doing line 1120: !TAPE_tape3 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 1121: !TAPE_tape9 !TAPE_tape4 = ; 
 doing line 1122: push !TAPE_tape3 !TAPE_PARAMS ; 
 doing line 1123: push !TAPE_tape9 !TAPE_PARAMS ; 
@@ -1243,7 +1243,7 @@ doing line 1125: pop !TAPE_RAX !TAPE_tape6 ;
 doing line 1126: !TAPE_tape4 !TAPE_tape6 = ; 
 doing line 1127: call !FUNC_LIB_moveMemHeadLeft ; 
 doing line 1128: jmp 1109 ; 
-for handleJump, when currIP = 1128 q0 = 26572
+for handleJump, when currIP = 1128 q0 = 26618
 doing line 1129: nop ; 
 doing line 1130: !TAPE_tape3 !TAPE_tape4 = ; 
 doing line 1131: !TAPE_tape9 !TAPE_tape12 = ; 
@@ -1254,11 +1254,11 @@ doing line 1135: pop !TAPE_RAX !TAPE_tape6 ;
 doing line 1136: !TAPE_tape6 ! = !TAPE_tape3 ; 
 doing line 1137: jf !TAPE_tape3 1139 ; 
 doing line 1138: jmp 1149 ; 
-for handleJump, when currIP = 1138 q0 = 26717
+for handleJump, when currIP = 1138 q0 = 26763
 doing line 1139: nop ; 
 doing line 1140: !TAPE_tape3 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 1141: !TAPE_tape9 !TAPE_tape4 = ; 
 doing line 1142: push !TAPE_tape3 !TAPE_PARAMS ; 
 doing line 1143: push !TAPE_tape9 !TAPE_PARAMS ; 
@@ -1267,7 +1267,7 @@ doing line 1145: pop !TAPE_RAX !TAPE_tape6 ;
 doing line 1146: !TAPE_tape4 !TAPE_tape6 = ; 
 doing line 1147: call !FUNC_LIB_moveMemHeadRight ; 
 doing line 1148: jmp 1129 ; 
-for handleJump, when currIP = 1148 q0 = 26975
+for handleJump, when currIP = 1148 q0 = 27023
 doing line 1149: !TAPE_tape3 0 = ; 
 jah integer literal
 Converted from 0 to 0
@@ -1285,7 +1285,7 @@ doing line 1158: !TAPE_tape3 ! = !TAPE_tape9 ;
 doing line 1159: !TAPE_tape9 ! = !TAPE_tape3 ; 
 doing line 1160: jf !TAPE_tape3 1162 ; 
 doing line 1161: jmp 1263 ; 
-for handleJump, when currIP = 1161 q0 = 27187
+for handleJump, when currIP = 1161 q0 = 27235
 doing line 1162: nop ; 
 doing line 1163: push !TAPE_tape11 !TAPE_PARAMS ; 
 doing line 1164: call !FUNC_LIB_isZero ; 
@@ -1298,7 +1298,7 @@ doing line 1170: !TAPE_tape3 true = ;
 doing line 1171: !TAPE_tape8 !TAPE_tape3 = ; 
 doing line 1172: nop ; 
 doing line 1173: jmp 1186 ; 
-for handleJump, when currIP = 1173 q0 = 27564
+for handleJump, when currIP = 1173 q0 = 27612
 doing line 1174: nop ; 
 doing line 1175: call !FUNC_LIB_memBitIsOne ; 
 doing line 1176: pop !TAPE_RAX !TAPE_tape3 ; 
@@ -1314,7 +1314,7 @@ doing line 1185: nop ;
 doing line 1186: nop ; 
 doing line 1187: !TAPE_tape3 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 1188: !TAPE_tape9 !TAPE_tape11 = ; 
 doing line 1189: push !TAPE_tape3 !TAPE_PARAMS ; 
 doing line 1190: push !TAPE_tape9 !TAPE_PARAMS ; 
@@ -1327,10 +1327,10 @@ doing line 1196: pop !TAPE_RAX !TAPE_tape3 ;
 doing line 1197: jf !TAPE_tape3 1201 ; 
 doing line 1198: !TAPE_tape3 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 1199: !TAPE_tape7 !TAPE_tape3 = ; 
 doing line 1200: jmp 1209 ; 
-for handleJump, when currIP = 1200 q0 = 28133
+for handleJump, when currIP = 1200 q0 = 28185
 doing line 1201: nop ; 
 doing line 1202: !TAPE_tape3 !TAPE_tape7 = ; 
 doing line 1203: !TAPE_tape9 !TAPE_tape7 = ; 
@@ -1342,10 +1342,10 @@ doing line 1208: !TAPE_tape7 !TAPE_tape6 = ;
 doing line 1209: nop ; 
 doing line 1210: !TAPE_tape3 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 1211: !TAPE_tape9 2 = ; 
 jah integer literal
-Converted from 2 to 0
+Converted from 2 to 001
 doing line 1212: !TAPE_tape6 !TAPE_tape0 = ; 
 doing line 1213: !TAPE_tape2 !TAPE_tape11 = ; 
 doing line 1214: push !TAPE_tape2 !TAPE_PARAMS ; 
@@ -1386,11 +1386,11 @@ doing line 1248: pop !TAPE_RAX !TAPE_tape6 ;
 doing line 1249: !TAPE_tape6 ! = !TAPE_tape3 ; 
 doing line 1250: jf !TAPE_tape3 1252 ; 
 doing line 1251: jmp 1262 ; 
-for handleJump, when currIP = 1251 q0 = 28920
+for handleJump, when currIP = 1251 q0 = 28978
 doing line 1252: nop ; 
 doing line 1253: !TAPE_tape3 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 1254: !TAPE_tape9 !TAPE_tape4 = ; 
 doing line 1255: push !TAPE_tape3 !TAPE_PARAMS ; 
 doing line 1256: push !TAPE_tape9 !TAPE_PARAMS ; 
@@ -1399,9 +1399,9 @@ doing line 1258: pop !TAPE_RAX !TAPE_tape6 ;
 doing line 1259: !TAPE_tape4 !TAPE_tape6 = ; 
 doing line 1260: call !FUNC_LIB_moveMemHeadRight ; 
 doing line 1261: jmp 1242 ; 
-for handleJump, when currIP = 1261 q0 = 29178
+for handleJump, when currIP = 1261 q0 = 29238
 doing line 1262: jmp 1155 ; 
-for handleJump, when currIP = 1262 q0 = 29203
+for handleJump, when currIP = 1262 q0 = 29263
 doing line 1263: jf !TAPE_tape8 1268 ; 
 doing line 1264: push !TAPE_tape1 !TAPE_PARAMS ; 
 doing line 1265: call 604 ; 
@@ -1440,7 +1440,7 @@ doing line 1297: nop ;
 doing line 1298: pop !TAPE_PARAMS !TAPE_tape0 ; 
 doing line 1299: !TAPE_tape4 2 = ; 
 jah integer literal
-Converted from 2 to 0
+Converted from 2 to 001
 doing line 1300: !TAPE_tape5 !TAPE_tape4 = ; 
 doing line 1301: nop ; 
 doing line 1302: !TAPE_tape4 !TAPE_tape5 = ; 
@@ -1452,11 +1452,11 @@ doing line 1307: pop !TAPE_RAX !TAPE_tape2 ;
 doing line 1308: !TAPE_tape2 ! = !TAPE_tape4 ; 
 doing line 1309: jf !TAPE_tape4 1311 ; 
 doing line 1310: jmp 1368 ; 
-for handleJump, when currIP = 1310 q0 = 30136
+for handleJump, when currIP = 1310 q0 = 30200
 doing line 1311: nop ; 
 doing line 1312: !TAPE_tape4 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 1313: push !TAPE_tape5 !TAPE_PARAMS ; 
 doing line 1314: call 1080 ; 
 doing line 1315: pop !TAPE_RAX !TAPE_tape3 ; 
@@ -1467,7 +1467,7 @@ doing line 1319: pop !TAPE_RAX !TAPE_tape2 ;
 doing line 1320: jf !TAPE_tape2 1329 ; 
 doing line 1321: !TAPE_tape4 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 1322: !TAPE_tape3 !TAPE_tape5 = ; 
 doing line 1323: push !TAPE_tape4 !TAPE_PARAMS ; 
 doing line 1324: push !TAPE_tape3 !TAPE_PARAMS ; 
@@ -1475,7 +1475,7 @@ doing line 1325: call 1 ;
 doing line 1326: pop !TAPE_RAX !TAPE_tape2 ; 
 doing line 1327: !TAPE_tape5 !TAPE_tape2 = ; 
 doing line 1328: jmp 1301 ; 
-for handleJump, when currIP = 1328 q0 = 30458
+for handleJump, when currIP = 1328 q0 = 30526
 doing line 1329: nop ; 
 doing line 1330: !TAPE_tape4 !TAPE_tape5 = ; 
 doing line 1331: !TAPE_tape3 !TAPE_tape5 = ; 
@@ -1494,11 +1494,11 @@ doing line 1343: pop !TAPE_RAX !TAPE_tape2 ;
 doing line 1344: !TAPE_tape2 ! = !TAPE_tape4 ; 
 doing line 1345: jf !TAPE_tape4 1347 ; 
 doing line 1346: jmp 1360 ; 
-for handleJump, when currIP = 1346 q0 = 30697
+for handleJump, when currIP = 1346 q0 = 30765
 doing line 1347: nop ; 
 doing line 1348: !TAPE_tape4 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 1349: push !TAPE_tape4 !TAPE_PARAMS ; 
 doing line 1350: push !TAPE_tape1 !TAPE_PARAMS ; 
 doing line 1351: call 864 ; 
@@ -1510,10 +1510,10 @@ doing line 1356: call 1 ;
 doing line 1357: pop !TAPE_RAX !TAPE_tape2 ; 
 doing line 1358: !TAPE_tape1 !TAPE_tape2 = ; 
 doing line 1359: jmp 1337 ; 
-for handleJump, when currIP = 1359 q0 = 30905
+for handleJump, when currIP = 1359 q0 = 30975
 doing line 1360: !TAPE_tape4 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 1361: !TAPE_tape3 !TAPE_tape5 = ; 
 doing line 1362: push !TAPE_tape4 !TAPE_PARAMS ; 
 doing line 1363: push !TAPE_tape3 !TAPE_PARAMS ; 
@@ -1521,10 +1521,10 @@ doing line 1364: call 1 ;
 doing line 1365: pop !TAPE_RAX !TAPE_tape2 ; 
 doing line 1366: !TAPE_tape5 !TAPE_tape2 = ; 
 doing line 1367: jmp 1301 ; 
-for handleJump, when currIP = 1367 q0 = 31026
+for handleJump, when currIP = 1367 q0 = 31098
 doing line 1368: !TAPE_tape4 2 = ; 
 jah integer literal
-Converted from 2 to 0
+Converted from 2 to 001
 doing line 1369: !TAPE_tape5 !TAPE_tape4 = ; 
 doing line 1370: nop ; 
 doing line 1371: !TAPE_tape4 !TAPE_tape5 = ; 
@@ -1536,7 +1536,7 @@ doing line 1376: pop !TAPE_RAX !TAPE_tape2 ;
 doing line 1377: !TAPE_tape2 ! = !TAPE_tape4 ; 
 doing line 1378: jf !TAPE_tape4 1380 ; 
 doing line 1379: jmp 1402 ; 
-for handleJump, when currIP = 1379 q0 = 31177
+for handleJump, when currIP = 1379 q0 = 31253
 doing line 1380: nop ; 
 doing line 1381: !TAPE_tape4 0 = ; 
 jah integer literal
@@ -1555,7 +1555,7 @@ doing line 1392: call !FUNC_LIB_printSpace ;
 doing line 1393: nop ; 
 doing line 1394: !TAPE_tape4 1 = ; 
 jah integer literal
-Converted from 1 to 0
+Converted from 1 to 01
 doing line 1395: !TAPE_tape3 !TAPE_tape5 = ; 
 doing line 1396: push !TAPE_tape4 !TAPE_PARAMS ; 
 doing line 1397: push !TAPE_tape3 !TAPE_PARAMS ; 
@@ -1563,16 +1563,16 @@ doing line 1398: call 1 ;
 doing line 1399: pop !TAPE_RAX !TAPE_tape2 ; 
 doing line 1400: !TAPE_tape5 !TAPE_tape2 = ; 
 doing line 1401: jmp 1370 ; 
-for handleJump, when currIP = 1401 q0 = 31786
+for handleJump, when currIP = 1401 q0 = 31864
 doing line 1402: return ; 
 doing line 1403: nop ; 
 doing line 1404: nop ; 
 doing line 1405: !TAPE_tape2 2 = ; 
 jah integer literal
-Converted from 2 to 0
+Converted from 2 to 001
 doing line 1406: !TAPE_tape1 3 = ; 
 jah integer literal
-Converted from 3 to 0
+Converted from 3 to 011
 doing line 1407: push !TAPE_tape1 !TAPE_PARAMS ; 
 doing line 1408: push !TAPE_tape2 !TAPE_PARAMS ; 
 doing line 1409: call 1 ; 
@@ -8257,7 +8257,7 @@ Tape 31: 0: []
 Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
-Transition from (q3, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31909, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Transition from (q3, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31987, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 After step 180
 Tape 0: 0: []
 Tape 1: 0: []
@@ -8294,7 +8294,7 @@ Tape 31: 0: []
 Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
-Transition from (q31909, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31910, .....................0............., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Transition from (q31987, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31988, .....................0............., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 After step 181
 Tape 0: 0: []
 Tape 1: 0: []
@@ -8331,7 +8331,7 @@ Tape 31: 0: []
 Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
-Transition from (q31910, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31911, ....................._............., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Transition from (q31988, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31989, .....................0............., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 After step 182
 Tape 0: 0: []
 Tape 1: 0: []
@@ -8354,7 +8354,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 1: [0]
+Tape 21: 2: [00]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8368,7 +8368,7 @@ Tape 31: 0: []
 Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
-Transition from (q31911, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31912, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Transition from (q31989, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31990, .....................1............., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 After step 183
 Tape 0: 0: []
 Tape 1: 0: []
@@ -8391,7 +8391,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 3: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8405,7 +8405,7 @@ Tape 31: 0: []
 Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
-Transition from (q31912, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Transition from (q31990, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31991, ....................._............., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 After step 184
 Tape 0: 0: []
 Tape 1: 0: []
@@ -8428,7 +8428,155 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 3: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q31991, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31992, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 185
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 0: [010101111101]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [0]
+Tape 15: 0: [1]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: []
+Tape 21: 2: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q31992, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 1, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31993, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 186
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 0: [010101111101]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [0]
+Tape 15: 0: [1]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: []
+Tape 21: 1: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q31993, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31994, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 187
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 0: [010101111101]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [0]
+Tape 15: 0: [1]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: []
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q31994, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 188
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 0: [010101111101]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [0]
+Tape 15: 0: [1]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: []
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8443,7 +8591,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 185
+After step 189
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -8465,7 +8613,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8480,7 +8628,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 186
+After step 190
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -8502,7 +8650,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8517,7 +8665,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 187
+After step 191
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -8539,7 +8687,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8554,7 +8702,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 188
+After step 192
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -8576,7 +8724,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8591,7 +8739,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 189
+After step 193
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -8613,7 +8761,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8628,7 +8776,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 190
+After step 194
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -8650,7 +8798,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8665,7 +8813,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 191
+After step 195
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -8687,7 +8835,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8702,7 +8850,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 192
+After step 196
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -8724,7 +8872,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8739,7 +8887,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 193
+After step 197
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -8761,7 +8909,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8776,7 +8924,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 194
+After step 198
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -8798,7 +8946,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8813,7 +8961,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 195
+After step 199
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -8835,7 +8983,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8850,7 +8998,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 196
+After step 200
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -8872,7 +9020,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8887,7 +9035,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, _, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q5, ..._..............................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 197
+After step 201
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -8909,7 +9057,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8924,7 +9072,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q5, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q5, ...0..............................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 198
+After step 202
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -8946,7 +9094,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8961,7 +9109,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q5, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ...1..............................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 199
+After step 203
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -8983,7 +9131,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -8998,7 +9146,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 200
+After step 204
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9020,7 +9168,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9035,7 +9183,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 201
+After step 205
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9057,7 +9205,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9072,7 +9220,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 202
+After step 206
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9094,7 +9242,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9109,7 +9257,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 203
+After step 207
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9131,7 +9279,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9146,7 +9294,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 204
+After step 208
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9168,7 +9316,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9183,7 +9331,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q6, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 205
+After step 209
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9205,7 +9353,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9220,7 +9368,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 206
+After step 210
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9242,7 +9390,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9257,154 +9405,6 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q6, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 207
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 1: [010101111110]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [0]
-Tape 15: 0: [1]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: []
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 208
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 0: [010101111110]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [0]
-Tape 15: 0: [1]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: []
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q6, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 209
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: -1: [010101111110]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [0]
-Tape 15: 0: [1]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: []
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q6, [_, _, 1, _, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q4, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 210
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 0: [010101111110]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [0]
-Tape 15: 0: [1]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: []
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q4, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q7, ....0.............................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 After step 211
 Tape 0: 0: []
 Tape 1: 0: []
@@ -9427,7 +9427,155 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 212
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 0: [010101111110]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [0]
+Tape 15: 0: [1]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: []
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q6, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 213
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: -1: [010101111110]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [0]
+Tape 15: 0: [1]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: []
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q6, [_, _, 1, _, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q4, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 214
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 0: [010101111110]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [0]
+Tape 15: 0: [1]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: []
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q4, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q7, ....0.............................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 215
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 1: [010101111110]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [0]
+Tape 15: 0: [1]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: []
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9442,7 +9590,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q7, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q8, .....1............................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 212
+After step 216
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9464,7 +9612,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9479,7 +9627,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q8, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q9, ......0............................, [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 213
+After step 217
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9501,7 +9649,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9516,7 +9664,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q9, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q10, .......1..........................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 214
+After step 218
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9538,7 +9686,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9553,7 +9701,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q10, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q11, ........0.........................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 215
+After step 219
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9575,7 +9723,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9590,7 +9738,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q11, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q12, .........1........................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 216
+After step 220
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9612,7 +9760,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9627,7 +9775,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q12, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q13, ..........1........................, [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 217
+After step 221
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9649,7 +9797,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9664,7 +9812,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q13, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q14, ...........1......................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 218
+After step 222
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9686,7 +9834,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9701,7 +9849,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q14, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q15, ............1......................, [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 219
+After step 223
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9723,7 +9871,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9738,7 +9886,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q15, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q16, .............1....................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 220
+After step 224
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9760,7 +9908,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9775,7 +9923,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q16, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q17, ..............1...................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 221
+After step 225
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9797,7 +9945,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9812,7 +9960,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q17, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q18, ...............0..................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 222
+After step 226
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9834,7 +9982,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9849,7 +9997,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q18, [_, _, 1, _, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q19, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 223
+After step 227
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9871,7 +10019,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9886,7 +10034,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q19, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q20, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 224
+After step 228
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9908,7 +10056,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9923,7 +10071,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q20, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q21, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 225
+After step 229
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9945,7 +10093,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9960,7 +10108,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q21, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q22, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 226
+After step 230
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -9982,7 +10130,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -9997,7 +10145,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q22, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q23, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 227
+After step 231
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10019,7 +10167,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10034,7 +10182,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q23, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q24, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 228
+After step 232
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10056,7 +10204,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10071,7 +10219,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q24, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q25, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 229
+After step 233
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10093,7 +10241,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10108,7 +10256,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q25, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q26, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 230
+After step 234
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10130,7 +10278,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10145,7 +10293,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q26, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q27, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 231
+After step 235
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10167,7 +10315,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10182,7 +10330,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q27, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q28, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 232
+After step 236
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10204,7 +10352,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10219,7 +10367,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q28, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q29, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 233
+After step 237
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10241,7 +10389,7 @@ Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
 Tape 20: 0: []
-Tape 21: 0: [0]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10256,154 +10404,6 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q29, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q30, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 234
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 0: [010101111110]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [0]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: []
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q30, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q3, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 235
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 0: [010101111110]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [0]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: []
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q3, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31913, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 236
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 0: [010101111110]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [0]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: []
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q31913, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31914, ....................0.............., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 237
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 0: [010101111110]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [0]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 1: [0]
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q31914, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31915, ...................._.............., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 After step 238
 Tape 0: 0: []
 Tape 1: 0: []
@@ -10425,8 +10425,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 1: [0]
-Tape 21: 0: [0]
+Tape 20: 0: []
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10440,7 +10440,7 @@ Tape 31: 0: []
 Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
-Transition from (q31915, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31916, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Transition from (q30, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q3, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 After step 239
 Tape 0: 0: []
 Tape 1: 0: []
@@ -10462,8 +10462,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: []
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10477,7 +10477,7 @@ Tape 31: 0: []
 Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
-Transition from (q31916, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Transition from (q3, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31995, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 After step 240
 Tape 0: 0: []
 Tape 1: 0: []
@@ -10499,8 +10499,304 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: []
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q31995, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31996, ....................0.............., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 241
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 0: [010101111110]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [1]
+Tape 15: 0: [0]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 1: [0]
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q31996, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31997, ....................1.............., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 242
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 0: [010101111110]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [1]
+Tape 15: 0: [0]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 2: [01]
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q31997, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31998, ....................1.............., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 243
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 0: [010101111110]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [1]
+Tape 15: 0: [0]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 3: [011]
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q31998, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31999, ...................._.............., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 244
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 0: [010101111110]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [1]
+Tape 15: 0: [0]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 3: [011]
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q31999, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q32000, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 245
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 0: [010101111110]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [1]
+Tape 15: 0: [0]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 2: [011]
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q32000, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 1, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q32001, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 246
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 0: [010101111110]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [1]
+Tape 15: 0: [0]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 1: [011]
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q32001, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 1, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q32002, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 247
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 0: [010101111110]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [1]
+Tape 15: 0: [0]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: [011]
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q32002, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 248
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 0: [010101111110]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [1]
+Tape 15: 0: [0]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10515,7 +10811,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 241
+After step 249
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10536,8 +10832,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10552,7 +10848,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 242
+After step 250
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10573,8 +10869,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10589,7 +10885,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 243
+After step 251
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10610,8 +10906,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10626,7 +10922,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 244
+After step 252
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10647,8 +10943,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10663,7 +10959,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 245
+After step 253
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10684,8 +10980,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10700,7 +10996,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 246
+After step 254
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10721,8 +11017,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10737,7 +11033,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 247
+After step 255
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10758,8 +11054,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10774,7 +11070,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 248
+After step 256
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10795,8 +11091,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10811,7 +11107,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 249
+After step 257
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10832,8 +11128,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10848,7 +11144,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 250
+After step 258
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10869,8 +11165,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10885,7 +11181,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 251
+After step 259
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10906,8 +11202,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10922,7 +11218,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 252
+After step 260
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10943,8 +11239,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10959,7 +11255,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q2, [_, _, 1, _, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q5, ..._..............................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 253
+After step 261
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -10980,8 +11276,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -10996,7 +11292,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q5, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ...1..............................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 254
+After step 262
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11017,8 +11313,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11033,7 +11329,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 255
+After step 263
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11054,8 +11350,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11070,7 +11366,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 256
+After step 264
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11091,8 +11387,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11107,7 +11403,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 257
+After step 265
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11128,8 +11424,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11144,7 +11440,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 258
+After step 266
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11165,8 +11461,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11181,7 +11477,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 259
+After step 267
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11202,8 +11498,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11218,7 +11514,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 260
+After step 268
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11239,8 +11535,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11255,302 +11551,6 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q6, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 261
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 3: [010101111111]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [0]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 262
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 2: [010101111111]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [0]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q6, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 263
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 1: [010101111111]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [0]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 264
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 0: [010101111111]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [0]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q6, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 265
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: -1: [010101111111]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [0]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q6, [_, _, 1, _, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q4, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 266
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 0: [010101111111]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [0]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q4, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q7, ....0.............................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 267
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 1: [010101111111]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [0]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q7, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q8, .....1............................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 268
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 2: [010101111111]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [0]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q8, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q9, ......0............................, [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 After step 269
 Tape 0: 0: []
 Tape 1: 0: []
@@ -11572,8 +11572,304 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 270
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 2: [010101111111]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [1]
+Tape 15: 0: [0]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: [011]
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q6, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 271
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 1: [010101111111]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [1]
+Tape 15: 0: [0]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: [011]
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q6, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 272
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 0: [010101111111]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [1]
+Tape 15: 0: [0]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: [011]
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q6, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q6, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 273
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: -1: [010101111111]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [1]
+Tape 15: 0: [0]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: [011]
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q6, [_, _, 1, _, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q4, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 274
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 0: [010101111111]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [1]
+Tape 15: 0: [0]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: [011]
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q4, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q7, ....0.............................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 275
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 1: [010101111111]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [1]
+Tape 15: 0: [0]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: [011]
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q7, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q8, .....1............................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 276
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 2: [010101111111]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [1]
+Tape 15: 0: [0]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: [011]
+Tape 21: 0: [001]
+Tape 22: 0: []
+Tape 23: 0: []
+Tape 24: 0: []
+Tape 25: 0: []
+Tape 26: 0: []
+Tape 27: 0: []
+Tape 28: 0: []
+Tape 29: 0: []
+Tape 30: 0: []
+Tape 31: 0: []
+Tape 32: 0: []
+Tape 33: 0: []
+Tape 34: 0: []
+Transition from (q8, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q9, ......0............................, [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+After step 277
+Tape 0: 0: []
+Tape 1: 0: []
+Tape 2: 0: [111111111110]
+Tape 3: 3: [010101111111]
+Tape 4: 0: [0]
+Tape 5: 0: [1]
+Tape 6: 0: [0]
+Tape 7: 0: [1]
+Tape 8: 0: [0]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [1]
+Tape 15: 0: [0]
+Tape 16: 0: []
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: 0: []
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11588,7 +11884,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q9, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q10, .......1..........................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 270
+After step 278
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11609,8 +11905,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11625,7 +11921,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q10, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q11, ........0.........................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 271
+After step 279
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11646,8 +11942,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11662,7 +11958,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q11, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q12, .........1........................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 272
+After step 280
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11683,8 +11979,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11699,7 +11995,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q12, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q13, ..........1........................, [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 273
+After step 281
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11720,8 +12016,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11736,7 +12032,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q13, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q14, ...........1......................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 274
+After step 282
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11757,8 +12053,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11773,7 +12069,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q14, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q15, ............1......................, [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 275
+After step 283
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11794,8 +12090,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11810,7 +12106,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q15, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q16, .............1....................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 276
+After step 284
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11831,8 +12127,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11847,7 +12143,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q16, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q17, ..............1...................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 277
+After step 285
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11868,8 +12164,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11884,7 +12180,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q17, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q18, ...............1..................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 278
+After step 286
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11905,8 +12201,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11921,7 +12217,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q18, [_, _, 1, _, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q19, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 279
+After step 287
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11942,8 +12238,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11958,7 +12254,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q19, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q20, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 280
+After step 288
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -11979,8 +12275,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -11995,7 +12291,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q20, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q21, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 281
+After step 289
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -12016,8 +12312,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -12032,7 +12328,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q21, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q22, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 282
+After step 290
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -12053,8 +12349,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -12069,7 +12365,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q22, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q23, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 283
+After step 291
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -12090,8 +12386,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -12106,7 +12402,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q23, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q24, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 284
+After step 292
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -12127,8 +12423,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -12143,7 +12439,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q24, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q25, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 285
+After step 293
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -12164,8 +12460,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -12180,7 +12476,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q25, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q26, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 286
+After step 294
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -12201,8 +12497,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -12217,7 +12513,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q26, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q27, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 287
+After step 295
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -12238,8 +12534,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -12254,7 +12550,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q27, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q28, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 288
+After step 296
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -12275,8 +12571,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -12291,7 +12587,7 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q28, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q29, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 289
+After step 297
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
@@ -12312,8 +12608,8 @@ Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -12328,302 +12624,6 @@ Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
 Transition from (q29, [_, _, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q30, ..................................., [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 290
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 0: [010101111111]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [1]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q30, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q3, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 291
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 0: [010101111111]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [1]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q3, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31917, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 292
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 0: [010101111111]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [1]
-Tape 16: 0: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q31917, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31920, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 293
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 0: [010101111111]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [1]
-Tape 16: 1: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q31920, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31918, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 294
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 0: [010101111111]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [1]
-Tape 16: 2: []
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q31918, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31918, ................0.................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 295
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 0: [010101111111]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [1]
-Tape 16: 3: [__0]
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 1: [0]
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q31918, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31921, ................_.................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 296
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 0: [010101111111]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [1]
-Tape 16: 2: [__0]
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q31921, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q31921, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-After step 297
-Tape 0: 0: []
-Tape 1: 0: []
-Tape 2: 0: [111111111110]
-Tape 3: 0: [010101111111]
-Tape 4: 0: [0]
-Tape 5: 0: [1]
-Tape 6: 0: [0]
-Tape 7: 0: [1]
-Tape 8: 0: [0]
-Tape 9: 0: [1]
-Tape 10: 0: [1]
-Tape 11: 0: [1]
-Tape 12: 0: [1]
-Tape 13: 0: [1]
-Tape 14: 0: [1]
-Tape 15: 0: [1]
-Tape 16: 1: [__0]
-Tape 17: 0: [0]
-Tape 18: 0: []
-Tape 19: 0: []
-Tape 20: -1: [0]
-Tape 21: 0: [0]
-Tape 22: 0: []
-Tape 23: 0: []
-Tape 24: 0: []
-Tape 25: 0: []
-Tape 26: 0: []
-Tape 27: 0: []
-Tape 28: 0: []
-Tape 29: 0: []
-Tape 30: 0: []
-Tape 31: 0: []
-Tape 32: 0: []
-Tape 33: 0: []
-Tape 34: 0: []
-Transition from (q31921, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, _, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 After step 298
 Tape 0: 0: []
 Tape 1: 0: []
@@ -12641,12 +12641,12 @@ Tape 12: 0: [1]
 Tape 13: 0: [1]
 Tape 14: 0: [1]
 Tape 15: 0: [1]
-Tape 16: 2: [__0]
+Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
@@ -12660,12 +12660,12 @@ Tape 31: 0: []
 Tape 32: 0: []
 Tape 33: 0: []
 Tape 34: 0: []
-Transition from (q2, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q2, ..................................., [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Transition from (q30, [_, _, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, _, 0, _, _, 0, 0, _, _, _, _, _, _, _, _, _, _, _, _, _]) -> (q3, ..................................., [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 After step 299
 Tape 0: 0: []
 Tape 1: 0: []
 Tape 2: 0: [111111111110]
-Tape 3: 1: [010101111111]
+Tape 3: 0: [010101111111]
 Tape 4: 0: [0]
 Tape 5: 0: [1]
 Tape 6: 0: [0]
@@ -12678,12 +12678,12 @@ Tape 12: 0: [1]
 Tape 13: 0: [1]
 Tape 14: 0: [1]
 Tape 15: 0: [1]
-Tape 16: 2: [__0]
+Tape 16: 0: []
 Tape 17: 0: [0]
 Tape 18: 0: []
 Tape 19: 0: []
-Tape 20: 0: [0]
-Tape 21: 0: [0]
+Tape 20: 0: [011]
+Tape 21: 0: [001]
 Tape 22: 0: []
 Tape 23: 0: []
 Tape 24: 0: []
