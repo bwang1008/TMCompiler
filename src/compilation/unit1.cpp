@@ -22,7 +22,6 @@
  */
 std::vector<std::string> lineNumToBits(const size_t lineNum, const size_t ipSize) {
 	std::vector<std::string> bits;
-	//bits.push_back("0");
 
 	size_t val = lineNum;
 
@@ -43,11 +42,6 @@ std::vector<std::string> lineNumToBits(const size_t lineNum, const size_t ipSize
 
 	std::reverse(bits.begin(), bits.end());
 
-	std::cout << "Set " << lineNum << " to ";
-	for(std::string s : bits) {
-		std::cout << s;
-	}
-	std::cout << std::endl;
 	return bits;
 }
 
@@ -114,7 +108,7 @@ std::string convertIntegerToBits(std::string val) {
 		val = divideIntegerBy2(val);
 	}
 
-	return val;
+	return bits;
 }
 
 /**
@@ -190,6 +184,17 @@ void addIncrementIP(MultiTapeBuilder &builder) {
 	builder.add1TapeTransition(prevNode, builder.node("after"), ipTapeIndex, ".", ".", 0);
 }
 
+/**
+ * put 0 in tape bitIndex
+ */
+void add0IntoBitIndex(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
+	const size_t tapeBitIndex = builder.tapeIndex("bitIndex");
+
+	const size_t q0 = builder.newNode();
+	builder.add1TapeTransition(startNode, q0, tapeBitIndex, ".", "0", 1);
+	builder.add1TapeTransition(q0, endNode, tapeBitIndex, ".", "_", -1);
+}
+
 /*
  * push -2 onto ipStack
  * use p bits to represent -2 in 2's complement:
@@ -199,16 +204,15 @@ void addIncrementIP(MultiTapeBuilder &builder) {
  * return last node used
  * should be called only once to construct
 */
-size_t addNeg2ToIpStack(MultiTapeBuilder &builder) {
+void addNeg2ToIpStack(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
 	const size_t ipStackTapeIndex = builder.tapeIndex("ipStack");
 
 	// for a given program, ipSize is constant
 	// so add a constant number of transitions to palce in -2
 
-	size_t prevNode = builder.node("start");
+	size_t prevNode = startNode;
 	for(size_t i = 0; i < builder.ipSize; ++i) {
 		const size_t toNode = builder.newNode();
-		std::cout << "newNode... = " << toNode << std::endl;
 		const int bit = (i == builder.ipSize - 1) ? 0 : 1;
 		builder.add1TapeTransition(prevNode, toNode, ipStackTapeIndex, ".", std::to_string(bit), 1);
 
@@ -222,16 +226,15 @@ size_t addNeg2ToIpStack(MultiTapeBuilder &builder) {
 		prevNode = toNode;
 	}
 
-	std::cout << "ok so addNeg2: last prevNode = " << prevNode << std::endl;
-	
-	return prevNode;
+	builder.add1TapeTransition(prevNode, endNode, ipStackTapeIndex, ".", ".", 0);
 }
 
 /**
  * Set all (ipSize) bits in IP to 0
  * Connect to node "sideways"
  */
-void setInitialIP(MultiTapeBuilder &builder, size_t prevNode) {
+void setInitialIP(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
+	size_t prevNode = startNode;
 	const size_t ipTapeIndex = builder.tapeIndex("ip");
 	for(size_t i = 0; i < builder.ipSize; ++i) {
 		const size_t toNode = builder.newNode();
@@ -247,7 +250,7 @@ void setInitialIP(MultiTapeBuilder &builder, size_t prevNode) {
 	}
 
 	// connect node "sideways" to write 00000 in sideways
-	builder.add1TapeTransition(prevNode, builder.node("sideways"), ipTapeIndex, ".", ".", 0);
+	builder.add1TapeTransition(prevNode, endNode, ipTapeIndex, ".", ".", 0);
 }
 
 /**
@@ -295,13 +298,18 @@ void initialize(MultiTapeBuilder &builder) {
 	// add nodes for incrementing IP between before and after
 	addIncrementIP(builder);
 
+	const size_t q0 = builder.newNode();
+	const size_t q1 = builder.newNode();
+
+	add0IntoBitIndex(builder, builder.node("start"), q0);
+
 	// put -2 into ip stack: so when main returns,
 	// ip incremented from -2 to -1, which then we exit
-	const size_t prevNode = addNeg2ToIpStack(builder);
+	addNeg2ToIpStack(builder, q0, q1);
 
 	// push 0 into IP, using p bits. Just 00000.
 	// push 0 into ipSideways: just all 0 in each one.
-	setInitialIP(builder, prevNode);	
+	setInitialIP(builder, q1, builder.node("sideways"));	
 	
 	// exit condition, aka when the TM halts, is when IP == -1:
 	// in bits, IP is all 1: IP == 11111 (cuz 2's complement)
@@ -2161,9 +2169,16 @@ void handleAssignmentIntegerLiteral(MultiTapeBuilder &builder, const size_t curr
 	const std::string bits = convertIntegerToBits(words[1]);
 	size_t prevNode = q0;
 
+	std::cout << "Converted from " << words[1] << " to ";
+	for(size_t i = 0; i < bits.size(); ++i) {
+		std::cout << bits[i];
+	}
+	std::cout << std::endl;
+
 	for(size_t i = 0; i < bits.size(); ++i) {
 		const size_t q = builder.newNode();
-		builder.add1TapeTransition(prevNode, q, toTape, ".", std::to_string(bits[i]), 1);
+		const std::string writeBit = std::string(1, bits[i]);
+		builder.add1TapeTransition(prevNode, q, toTape, ".", writeBit, 1);
 		prevNode = q;
 	}
 
@@ -2191,6 +2206,12 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 	for(size_t i = 0; i < assembly.size(); ++i) {
 		const std::vector<std::string> words = getWords(assembly[i]);
 		
+		std::cout << "doing line " << i << ": ";
+		for(std::string word : words) {
+			std::cout << word << " ";
+		}
+		std::cout << std::endl;
+
 		if(words[0] == "nop") {
 			handleNop(builder, i);
 		}
@@ -2333,6 +2354,7 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 			}
 			else {
 				// tape1 9001 = ; 
+				std::cout << "jah integer literal" << std::endl;
 				handleAssignmentIntegerLiteral(builder, i, words);
 			}
 		}
@@ -2378,7 +2400,7 @@ int main() {
 	std::cout << "Begin simulating:" << std::endl;
 	
 	int numSteps = 0;
-	int limit = 200;
+	int limit = 300;
 	while(!mttm.halted() && numSteps < limit) {
 		mttm.step(1);
 
@@ -2388,6 +2410,8 @@ int main() {
 
 		++numSteps;
 	}
+
+	std::cout << "halted ? " << mttm.halted() << std::endl;
 
 	/*
 	std::tuple<int, int> result = mttm.run();

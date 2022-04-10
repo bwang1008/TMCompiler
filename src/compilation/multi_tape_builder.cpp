@@ -37,14 +37,11 @@ size_t countTapeVariables(const std::vector<std::string> &assembly) {
 MultiTapeBuilder::MultiTapeBuilder(const std::vector<std::string> &assembly) {
 	this->numVars = countTapeVariables(assembly);
 
-	this->ipSize = 1;
+	this->ipSize = 2;
 	int s = ((int) assembly.size()) - 1;	
 	while(s > 1) {
 		++this->ipSize;
 		s /= 2;
-	}
-	if(this->ipSize < 2) {
-		this->ipSize = 2;
 	}
 
 	// initialize tapes with names
@@ -125,6 +122,13 @@ void MultiTapeBuilder::addTransition(const size_t fromState, const size_t toStat
 		const std::pair<size_t, std::string> p = writes[i];
 		const size_t tapeIndex = p.first;
 		const std::string rule = p.second;
+		
+		for(size_t j = 0; j < rule.size(); ++j) {
+			if(rule[j] != '[' && rule[j] != ']' && rule[j] != '0' && rule[j] != '1' && rule[j] != '_' && rule[j] != '.') {
+				throw std::invalid_argument("write rule " + rule + " invalid");
+			}
+		}
+
 		tapeWrite[tapeIndex] = rule;
 	}
 
@@ -153,6 +157,9 @@ void MultiTapeBuilder::addTransition(const size_t fromState, const size_t toStat
 		}
 		else if(shift == 1) {
 			allShifts[index] = Constants::Shift::right;
+		}
+		else {
+			throw std::invalid_argument("Invalid shift of " + std::to_string(shift));
 		}
 	}
 	
