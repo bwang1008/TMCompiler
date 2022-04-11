@@ -804,9 +804,33 @@ void handleBasicAdd(MultiTapeBuilder &builder, const size_t startNode, const siz
 		
 	const size_t q4 = builder.newNode();
 	builder.addTransition(carryOff, q4, reads, writes, shifts);
-	builder.addTransition(carryOn, q4, reads, writes, shifts);
+
+	// but for carryOn, when both read _ and _, need to write 1 instead
+	// also write a blank to the right of the 1
 	reads.clear();
 	writes.clear();
+	shifts.clear();
+
+	reads.emplace_back(tape0, "_");
+	reads.emplace_back(tape1, "_");
+	writes.emplace_back(tapeRax, "1");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tape1, -1);
+	shifts.emplace_back(tapeRax, 1);
+
+	const size_t q35 = builder.newNode();
+	const size_t q36 = builder.newNode();
+	builder.addTransition(carryOn, q35, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	builder.add1TapeTransition(q35, q36, tapeRax, ".", "_", -1);
+	builder.add1TapeTransition(q36, q4, tapeRax, ".", ".", -1);
+
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tape1, -1);
+	shifts.emplace_back(tapeRax, -1);
 	
 	// now keep moving left until read "_" and "_" again
 	reads.emplace_back(tape0, "[01]");
