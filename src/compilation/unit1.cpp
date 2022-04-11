@@ -469,7 +469,7 @@ void handleJump(MultiTapeBuilder &builder, const size_t currIP, const std::vecto
 	const size_t q0 = builder.newNode();
 	handleIPTransition(builder, currIP, builder.node("after"), q0);
 	
-	size_t jumpLine = (size_t) std::stoi(words[1]);
+	const size_t jumpLine = (size_t) std::stoi(words[1]);
 	
 	std::vector<std::string> bits = lineNumToBits(jumpLine, builder.ipSize);
 
@@ -1772,7 +1772,7 @@ void handleCallNum(MultiTapeBuilder &builder, const size_t currIP, const std::ve
 	copyBetweenTapes(builder, builder.tapeIndex("ip"), builder.tapeIndex("ipStack"), q1, q2);
 	
 	// set new ip
-	std::vector<std::string> bits = lineNumToBits(currIP, builder.ipSize);
+	std::vector<std::string> bits = lineNumToBits(lineNum, builder.ipSize);
 		
 	// write bits into ip tape
 	prevNode = q2;
@@ -1826,7 +1826,7 @@ void handleJf(MultiTapeBuilder &builder, const size_t currIP, const std::vector<
 	// aka we set ipTape to lineNum
 	
 	// set new ip
-	std::vector<std::string> bits = lineNumToBits(currIP, builder.ipSize);
+	std::vector<std::string> bits = lineNumToBits(lineNum, builder.ipSize);
 		
 	// write bits into ip tape
 	size_t prevNode = q1;
@@ -2392,7 +2392,7 @@ int main() {
 	std::cout << "Begin simulating:" << std::endl;
 	
 	int numSteps = 0;
-	int limit = 300;
+	int limit = 5000;
 	while(!mttm.halted() && numSteps < limit) {
 		mttm.step(1);
 
