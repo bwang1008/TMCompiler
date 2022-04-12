@@ -1088,7 +1088,7 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t startNode, const siz
 
 	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
 	popOffTop(builder, tapeStack, q0, q1);
-	copyBetweenTapes(builder, tapeStack, tape0 + 1, q1, q2);
+	copyBetweenTapes(builder, tapeStack, tape1, q1, q2);
 	popOffTop(builder, tapeStack, q2, q3);
 
 	std::vector<std::pair<size_t, std::string> > reads;
@@ -1237,6 +1237,9 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t startNode, const siz
 	// encountered1: while both see 0/1, go left
 	reads.emplace_back(tape0, "[01]");
 	reads.emplace_back(tape1, "[01]");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tape1, -1);
+	shifts.emplace_back(tapeRax, -1);
 		
 	builder.addTransition(encountered1, encountered1, reads, writes, shifts);
 	reads.clear();
@@ -1904,10 +1907,10 @@ void handleReturn(MultiTapeBuilder &builder, const size_t currIP) {
 /**
  * handle assembly code of not of a boolean
  */
-void handleNot(MultiTapeBuilder &builder, const size_t currIP, const std::vector<std::string> words) {
+void handleNot(MultiTapeBuilder &builder, const size_t currIP, const std::vector<std::string> &words) {
 	// arg ! = dest ; 
-	const size_t argTape = parseTapeNum(words[0]);
-	const size_t destTape = parseTapeNum(words[3]);
+	const size_t argTape = builder.tapeIndex("variables") + parseTapeNum(words[0]);
+	const size_t destTape = builder.tapeIndex("variables") + parseTapeNum(words[3]);
 
 	// first transition by reading ip
 	const size_t q0 = builder.newNode();
@@ -1948,11 +1951,11 @@ void handleNot(MultiTapeBuilder &builder, const size_t currIP, const std::vector
 /**
  * handle assembly code of AND of 2 booleans
  */
-void handleAnd(MultiTapeBuilder &builder, const size_t currIP, const std::vector<std::string> words) {
+void handleAnd(MultiTapeBuilder &builder, const size_t currIP, const std::vector<std::string> &words) {
 	// arg1 arg2 && = dest ; 
-	const size_t arg1Tape = parseTapeNum(words[0]);
-	const size_t arg2Tape = parseTapeNum(words[1]);
-	const size_t destTape = parseTapeNum(words[4]);
+	const size_t arg1Tape = builder.tapeIndex("variables") + parseTapeNum(words[0]);
+	const size_t arg2Tape = builder.tapeIndex("variables") + parseTapeNum(words[1]);
+	const size_t destTape = builder.tapeIndex("variables") + parseTapeNum(words[4]);
 
 	// first transition by reading ip
 	const size_t q0 = builder.newNode();
@@ -2019,9 +2022,9 @@ void handleAnd(MultiTapeBuilder &builder, const size_t currIP, const std::vector
  */
 void handleOr(MultiTapeBuilder &builder, const size_t currIP, const std::vector<std::string> &words) {
 	// arg1 arg2 && = dest ; 
-	const size_t arg1Tape = parseTapeNum(words[0]);
-	const size_t arg2Tape = parseTapeNum(words[1]);
-	const size_t destTape = parseTapeNum(words[4]);
+	const size_t arg1Tape = builder.tapeIndex("variables") + parseTapeNum(words[0]);
+	const size_t arg2Tape = builder.tapeIndex("variables") + parseTapeNum(words[1]);
+	const size_t destTape = builder.tapeIndex("variables") + parseTapeNum(words[4]);
 
 	// first transition by reading ip
 	const size_t q0 = builder.newNode();
@@ -2223,12 +2226,6 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 	for(size_t i = 0; i < assembly.size(); ++i) {
 		const std::vector<std::string> words = getWords(assembly[i]);
 		
-		std::cout << "doing line " << i << ": ";
-		for(std::string word : words) {
-			std::cout << word << " ";
-		}
-		std::cout << std::endl;
-
 		if(words[0] == "nop") {
 			handleNop(builder, i);
 		}
@@ -2416,8 +2413,8 @@ int main() {
 	std::cout << "Begin simulating:" << std::endl;
 	
 	int numSteps = 0;
-	int limit = 5000;
-	while(!mttm.halted() && numSteps < limit) {
+	int limit = 0;
+	while(!mttm.halted() && (limit <= 0 || numSteps < limit)) {
 		mttm.step(1);
 
 
