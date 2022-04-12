@@ -415,7 +415,9 @@ void pushEmptyFrame(MultiTapeBuilder &builder, const size_t tape, const size_t s
 	builder.add1TapeTransition(q1, endNode, tape, "_", ".", 1);
 	
 	// q2 just moves another right
-	builder.add1TapeTransition(q2, endNode, tape, "_", ".", 1);
+	// EDIT: it doesn't necessarily read another blank. could be residual 
+	// old memory. write a new blank
+	builder.add1TapeTransition(q2, endNode, tape, ".", "_", 1);
 }
 
 /**
