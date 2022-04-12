@@ -1558,7 +1558,6 @@ void handleSetMemBitIndex(MultiTapeBuilder &builder, const size_t startNode, con
 
 	const size_t tapeStack = builder.tapeIndex("paramStack");
 	const size_t tapeBitIndex = builder.tapeIndex("bitIndex");
-	const size_t tapeRax = builder.tapeIndex("rax");
 
 	copyBetweenTapes(builder, tapeStack, tapeBitIndex, startNode, q0);
 	popOffTop(builder, tapeStack, q0, endNode);
@@ -1568,42 +1567,42 @@ void handleSetMemBitIndex(MultiTapeBuilder &builder, const size_t startNode, con
  * handle assembly code of moving head of tape "bits" right
  */
 void handleMoveMemHeadRight(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	builder.add1TapeTransition(startNode, endNode, builder.tapeIndex("bitIndex"), ".", ".", 1);
+	builder.add1TapeTransition(startNode, endNode, builder.tapeIndex("bits"), ".", ".", 1);
 }
 
 /**
  * handle assembly code of moving head of tape "bits" left
  */
 void handleMoveMemHeadLeft(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	builder.add1TapeTransition(startNode, endNode, builder.tapeIndex("bitIndex"), ".", ".", -1);
+	builder.add1TapeTransition(startNode, endNode, builder.tapeIndex("bits"), ".", ".", -1);
 }
 
 /**
  * handle assembly code of moving head of setting bit of tape "bits" to 0
  */
 void handleSetMemBitZero(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	builder.add1TapeTransition(startNode, endNode, builder.tapeIndex("bitIndex"), ".", "0", 0);
+	builder.add1TapeTransition(startNode, endNode, builder.tapeIndex("bits"), ".", "0", 0);
 }
 
 /**
  * handle assembly code of moving head of setting bit of tape "bits" to 1
  */
 void handleSetMemBitOne(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	builder.add1TapeTransition(startNode, endNode, builder.tapeIndex("bitIndex"), ".", "1", 0);
+	builder.add1TapeTransition(startNode, endNode, builder.tapeIndex("bits"), ".", "1", 0);
 }
 
 /**
  * handle assembly code of moving head of setting bit of tape "bits" to blank
  */
 void handleSetMemBitBlank(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	builder.add1TapeTransition(startNode, endNode, builder.tapeIndex("bitIndex"), ".", "_", 0);
+	builder.add1TapeTransition(startNode, endNode, builder.tapeIndex("bits"), ".", "_", 0);
 }
 
 /**
  * handle assembly code of checking if bit at head of tape "bits" is 0
  */
 void handleMemBitIsZero(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	const size_t tapeBitIndex = builder.tapeIndex("bitIndex");
+	const size_t tapeBitIndex = builder.tapeIndex("bits");
 	const size_t tapeRax = builder.tapeIndex("rax");
 
 	std::vector<std::pair<size_t, std::string> > reads;
@@ -1638,7 +1637,7 @@ void handleMemBitIsZero(MultiTapeBuilder &builder, const size_t startNode, const
  * handle assembly code of checking if bit at head of tape "bits" is 1
  */
 void handleMemBitIsOne(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	const size_t tapeBitIndex = builder.tapeIndex("bitIndex");
+	const size_t tapeBitIndex = builder.tapeIndex("bits");
 	const size_t tapeRax = builder.tapeIndex("rax");
 
 	std::vector<std::pair<size_t, std::string> > reads;
@@ -1673,7 +1672,7 @@ void handleMemBitIsOne(MultiTapeBuilder &builder, const size_t startNode, const 
  * handle assembly code of checking if bit at head of tape "bits" is bank
  */
 void handleMemBitIsBlank(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	const size_t tapeBitIndex = builder.tapeIndex("bitIndex");
+	const size_t tapeBitIndex = builder.tapeIndex("bits");
 	const size_t tapeRax = builder.tapeIndex("rax");
 
 	std::vector<std::pair<size_t, std::string> > reads;
@@ -1773,7 +1772,8 @@ void handlePrintInt(MultiTapeBuilder &builder, const size_t startNode, const siz
 	popOffTop(builder, tapeStack, q0, q1);
 
 	// currently at left of num in output. move right until blank
-	builder.add1TapeTransition(q1, endNode, tapeOutput, "[01]", ".", 1);
+	builder.add1TapeTransition(q1, q1, tapeOutput, "[01]", ".", 1);
+	builder.add1TapeTransition(q1, endNode, tapeOutput, "_", ".", 0);
 }
 
 /**
@@ -2414,17 +2414,29 @@ int main() {
 
 	std::cout << "Begin simulating:" << std::endl;
 	
+	mttm.setInput("011_01101_001_111111");
+
+	int debug = 0;
 	int numSteps = 0;
 	int limit = 0;
 	while(!mttm.halted() && (limit <= 0 || numSteps < limit)) {
-		mttm.step(1);
+		mttm.step(debug);
 
+		if(debug) {
+			std::cout << "After step " << numSteps << std::endl;
+			mttm.displayTapes();
+		}
 
-		std::cout << "After step " << numSteps << std::endl;
-		mttm.displayTapes();
+		if(numSteps % 10000 == 0) {
+			std::cout << "Finished " << numSteps << " steps" << std::endl;
+		}
 
 		++numSteps;
 	}
+
+	std::cout << "Final: " << std::endl;
+	mttm.displayTapes();
+	std::cout << numSteps << " steps" << std::endl;
 
 	std::cout << "halted ? " << mttm.halted() << std::endl;
 
