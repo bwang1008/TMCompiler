@@ -2414,7 +2414,8 @@ int main() {
 
 	std::cout << "Begin simulating:" << std::endl;
 	
-	mttm.setInput("011_01101_001_111111");
+	//mttm.setInput("011_01101_001_111111");
+	mttm.setInput("011011110", 18);
 
 	int debug = 0;
 	int numSteps = 0;
