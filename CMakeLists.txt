@@ -1,7 +1,7 @@
 # guide from https://www.internalpointers.com/post/modern-cmake-beginner-introduction 
 
 # required first line of CMakeList
-cmake_minimum_required(VERSION 3.22.0)
+cmake_minimum_required(VERSION 3.16.3)
 
 # description of project, as well as executable name
 project(compile
@@ -28,11 +28,18 @@ add_executable(${CMAKE_PROJECT_NAME}
 	TMCompiler/compilation/unit1.cpp
 	TMCompiler/compilation/unit2.hpp
 	TMCompiler/compilation/unit2.cpp
+	TMCompiler/runner/runner.cpp
 	)
 
+# copy the file TMCompiler/compilation/lib.cpp (not for usual compilation) to build folder
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/TMCompiler/compilation/lib.cpp DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+# include the root TMCompiler folder so include statements work
+target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR})
+
 # add properties to the executable: set c++=std_14, as well as compilation options -Wall,... for coding standards
-target_compile_features(tmCompilation PRIVATE cxx_std_14)
-target_compile_options(tmCompilation PRIVATE -Wall -Wextra -Wpedantic)
+target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_14)
+target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic)
 
 # to run: enter folder "build", type "cmake .." to run this CMakeList, 
 # and then type "make help" to see the options in the Makefile

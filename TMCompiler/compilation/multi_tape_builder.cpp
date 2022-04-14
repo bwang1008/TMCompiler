@@ -4,9 +4,9 @@
 #include <utility>		// std::pair
 #include <vector>		// std::vector
 
-#include "TMCompiler/tm_definition/transition.hpp"
-#include "TMCompiler/tm_definition/constants.hpp"
 #include "TMCompiler/tm_definition/multi_tape_turing_machine.hpp"
+#include "TMCompiler/tm_definition/transition.hpp"
+#include "TMCompiler/utils/constants.hpp"
 #include "TMCompiler/utils/helper.hpp"
 
 /**

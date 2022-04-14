@@ -1,4 +1,4 @@
-#include "utils.hpp"
+#include "helper.hpp"
 
 #include <algorithm>		// std::find_if
 #include <cctype>			// std::isspace
@@ -32,20 +32,16 @@ bool isIntegerLiteral(const std::string &s) {
 		return false;
 	}
 	
+	size_t start = 0;
 	if(s[0] == '-') {
 		if(s.size() == 1) {
 			return false;
 		}
-		for(int i = 1; i < s.size(); ++i) {
-			if(s[i] < '0' || '9' < s[i]) {
-				return false;
-			}
-		}
-		
-		return true;
+
+		start = 1;
 	}
 	
-	for(int i = 0; i < s.size(); ++i) {
+	for(size_t i = start; i < s.size(); ++i) {
 		if(s[i] < '0' || '9' < s[i]) {
 			return false;
 		}
@@ -54,13 +50,13 @@ bool isIntegerLiteral(const std::string &s) {
 	return true;
 }
 
-std::string getAlphaNumericWord(const std::string &s, const int index) {
-	int left = index;
+std::string getAlphaNumericWord(const std::string &s, const size_t index) {
+	int left = static_cast<int>(index);
 	while(0 <= left && (('0' <= s[left] && s[left] <= '9') || ('a' <= s[left] && s[left] <= 'z') || ('A' <= s[left] && s[left] <= 'Z'))) {
 		--left;
 	}
 	
-	int right = index;
+	size_t right = index;
 	while(right < s.size() && (('0' <= s[right] && s[right] <= '9') || ('a' <= s[right] && s[right] <= 'z') || ('A' <= s[right] && s[right] <= 'Z'))) {
 		++right;
 	}
@@ -75,7 +71,7 @@ std::string getNonBlankWord(const std::string &s, const int index) {
 	}
 		
 	int right = index;
-	while(right < s.size() && !std::isspace(s[right])) {
+	while(right < static_cast<int>(s.size()) && !std::isspace(s[right])) {
 		++right;
 	}
 	
@@ -93,11 +89,11 @@ std::string formSubstring(const std::vector<char> &s, const int start, const int
 
 int findNext(const std::string &s, const char c, const int start) {
 	int index = start;
-	while(index < s.size() && s[index] != c) {
+	while(static_cast<size_t>(index) < s.size() && s[index] != c) {
 		++index;	
 	}
 
-	if(index == s.size()) {
+	if(static_cast<size_t>(index) == s.size()) {
 		return -1;
 	}
 
@@ -111,11 +107,11 @@ int findNext(const std::vector<char> &s, const char c, const int start) {
 
 int findNext(const std::vector<std::string> &words, const std::string &word, const int start) {
 	int index = start;
-	while(index < words.size() && words[index] != word) {
+	while(static_cast<size_t>(index) < words.size() && words[index] != word) {
 		++index;
 	}
 	
-	if(index == words.size()) {
+	if(index == static_cast<int>(words.size())) {
 		return -1;
 	}
 	
@@ -143,11 +139,11 @@ int findPrev(const std::vector<char> &s, const char c, const int start) {
 
 int findNonBlank(const std::vector<char> &s, const int start) {
 	int index = start;
-	while(index < s.size() && std::isspace(s[index])) {
+	while(static_cast<size_t>(index) < s.size() && std::isspace(s[index])) {
 		++index;
 	}
 
-	if(index == s.size()) {
+	if(static_cast<size_t>(index) == s.size()) {
 		return -1;
 	}
 
@@ -161,11 +157,11 @@ int findNonBlank(const std::string &s, const int start) {
 
 int findBlank(const std::string &s, const int start) {
 	int index = start;
-	while(index < s.size() && !std::isspace(s[index])) {
+	while(static_cast<size_t>(index) < s.size() && !std::isspace(s[index])) {
 		++index;
 	}
 	
-	if(index == s.size()) {
+	if(index == static_cast<int>(s.size())) {
 		index = -1;
 	}
 	
@@ -395,12 +391,16 @@ std::vector<std::string> getWords(const std::string &letters)  {
 	std::vector<std::string> words;
 	
 	int startSearch = findNonBlank(letters, 0);
-	while(startSearch < letters.size()) {
+	if(startSearch < 0) {
+		return words;
+	}
+
+	while(static_cast<size_t>(startSearch) < letters.size()) {
 		const std::string word = getNonBlankWord(letters, startSearch);
 		words.push_back(word);
 
 		startSearch = findBlank(letters, startSearch);
-		if(startSearch < 0 || startSearch >= letters.size()) {
+		if(startSearch < 0) {
 			break;
 		}
 		

@@ -64,7 +64,7 @@ std::vector<std::string> removeComments(const std::vector<std::string> &program)
 			if(letters[start] == '/') {
 				isComment[start - 1] = isComment[start] = true;
 				// find end of line
-				int end = start;
+				size_t end = start;
 				while(end < letters.size() && letters[end] != '\n') {
 					if(letters[end] == '\n') {
 						++numLines;
@@ -79,7 +79,7 @@ std::vector<std::string> removeComments(const std::vector<std::string> &program)
 			else if(letters[start] == '*') {
 				isComment[start - 1] = isComment[start] = true;
 				// find end of block comment
-				int end = start + 2;
+				size_t end = start + 2;
 				while(end < letters.size() && (letters[end - 1] != '*' || letters[end] != '/')) {
 					if(letters[end] == '\n') {
 						++numLines;
@@ -243,13 +243,13 @@ std::vector<std::string> formatProgram(std::vector<std::string> &program) {
 	std::vector<std::string> words;
 	int startSearch = findNonBlank(letters, 0);
 	
-	while(0 <= startSearch && startSearch < letters.size()) {
+	while(0 <= startSearch && static_cast<size_t>(startSearch) < letters.size()) {
 		std::string word = getNonBlankWord(letters, startSearch);
 		words.push_back(word);
 
 		startSearch = findBlank(letters, startSearch);
 
-		if(startSearch == -1 || startSearch == letters.size()) {
+		if(startSearch == -1 || static_cast<size_t>(startSearch) == letters.size()) {
 			break;
 		}
 
@@ -434,12 +434,12 @@ std::vector<std::string> renameUserVariables(std::vector<std::string> &program, 
 		std::string line = program[i];
 		
 		int index = findNonBlank(line, 0);
-		while(0 <= index && index < line.size()) {
+		while(0 <= index && static_cast<size_t>(index) < line.size()) {
 			std::string word = getNonBlankWord(line, index);
 			words.push_back(word);
 
 			index = findBlank(line, index);
-			if(index < 0 || index >= line.size()) {
+			if(index < 0 || static_cast<size_t>(index) >= line.size()) {
 				break;
 			}
 
@@ -447,10 +447,10 @@ std::vector<std::string> renameUserVariables(std::vector<std::string> &program, 
 		}
 	}
 
-	for(int i = 1; i < (int) words.size(); ++i) {
+	for(size_t i = 1; i < words.size(); ++i) {
 		std::string prev = words[i - 1];
 		if(validTypes.find(prev) != validTypes.end()) {
-			if(i < words.size() - 1 && words[i + 1] == "(") { // && words[i].substr(0, 10) != "!FUNC_LIB_") {
+			if(i + 1 < words.size() && words[i + 1] == "(") { // && words[i].substr(0, 10) != "!FUNC_LIB_") {
 				// // if function declaration, but is not a !FUNC_LIB_ function
 				origFuncNames.insert(words[i]);
 			}
@@ -486,8 +486,7 @@ std::vector<std::string> renameUserVariables(std::vector<std::string> &program, 
 	//std::string funcPrefix = "!FUNC_USER_";
 	std::string varPrefix = "!VAR_USER_";
 
-	int startSearch = letters.size() - 1;
-	for(int startSearch = letters.size() - 1; startSearch >= 0; startSearch = vimB(letters, startSearch)) {
+	for(int startSearch = static_cast<int>(letters.size()) - 1; startSearch >= 0; startSearch = vimB(letters, startSearch)) {
 		if(std::isblank(letters[startSearch])) {
 			continue;
 		}
@@ -541,7 +540,7 @@ std::vector<std::string> renameBuiltInVariables(std::vector<std::string> &progra
 	std::vector<std::string> words;
 	
 	int startSearch = findNonBlank(letters, 0);
-	while(startSearch < letters.size()) {
+	while(0 <= startSearch && startSearch < static_cast<int>(letters.size())) {
 		std::string word = getNonBlankWord(letters, startSearch);
 		
 		if(word == "MEM") {
@@ -554,7 +553,7 @@ std::vector<std::string> renameBuiltInVariables(std::vector<std::string> &progra
 		words.push_back(word);
 
 		startSearch = findBlank(letters, startSearch);
-		if(startSearch < 0 || startSearch >= letters.size()) {
+		if(startSearch < 0 || static_cast<size_t>(startSearch) >= letters.size()) {
 			break;
 		}
 		startSearch = findNonBlank(letters, startSearch);
@@ -831,7 +830,7 @@ std::vector<std::string> convertElif(std::vector<std::string> &program) {
 			int openBrace = findNext(allWords, "{", i + 1);
 			int closeBrace = findOpposite(allWords, openBrace);
 
-			while(closeBrace + 1 < allWords.size() && allWords[closeBrace + 1] == "else") {
+			while(static_cast<size_t>(closeBrace + 1) < allWords.size() && allWords[closeBrace + 1] == "else") {
 				openBrace = findNext(allWords, "{", closeBrace + 1);
 				closeBrace = findOpposite(allWords, openBrace);
 			}
@@ -1282,7 +1281,7 @@ std::vector<std::tuple<std::string, std::vector<std::string>, std::string> > get
 			std::vector<std::string> params;
 			int openParen = findNext(words, "(", 1);
 			int closeParen = findOpposite(words, openParen);
-			for(size_t j = openParen + 1; j < closeParen; ++j) {
+			for(int j = openParen + 1; j < closeParen; ++j) {
 				if(validTypes.find(words[j]) != validTypes.end()) {
 					params.push_back(words[j]);
 				}
@@ -1586,7 +1585,7 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 		}
 		// then the part from [paramIndex, op] is one sub-expression; take out and replace with temp variable
 		std::string subexpression;
-		for(size_t i = paramIndex; i <= op; ++i) {
+		for(int i = paramIndex; i <= op; ++i) {
 			subexpression.append(postfix[i]);
 			subexpression.append(" ");
 		}
@@ -2088,7 +2087,7 @@ std::vector<std::string> paramsToTemp(std::vector<std::string> &program) {
 			}
 
 			// append operator and rest of words
-			for(int j = opIndex; j < words.size(); ++j) {
+			for(int j = opIndex; j < static_cast<int>(words.size()); ++j) {
 				tempLine.append(words[j]);
 				tempLine.append(" ");
 			}
@@ -2296,7 +2295,7 @@ std::vector<std::string> reduceTemps(std::vector<std::string> &program) {
 			funcProgram = formatProgram(funcProgram);
 			funcs.push_back(funcProgram);
 
-			i = (size_t) closeBrace;
+			i = static_cast<size_t>(closeBrace);
 		}
 	}
 
@@ -2312,7 +2311,7 @@ std::vector<std::string> reduceTemps(std::vector<std::string> &program) {
 		for(size_t j = 0; j < funcProgram.size(); ++j) {
 			std::vector<std::string> words = getWords(funcProgram[j]);
 			
-			// ignore declarations
+			// ignore variable declarations
 			if(words.size() == 3 && validTypes.find(words[0]) != validTypes.end()) {
 				continue;
 			}
@@ -2379,7 +2378,7 @@ std::vector<std::string> reduceTemps(std::vector<std::string> &program) {
 		std::unordered_set<int> visited;
 		// now find assignment of new temp variables
 		for(std::map<int, std::vector<int> >::iterator it = events.begin(); it != events.end(); ++it) {
-			int lineNum = it->first;
+			//int lineNum = it->first;
 			std::vector<int> temps = it->second;
 
 			// handle all the starting intervals first, then the closing intervals (cuz technically the closing happens 1 timestep afterwards)
@@ -2546,7 +2545,7 @@ std::vector<std::string> pushAndPop(std::vector<std::string> &program) {
 			std::vector<std::string> paramNames;
 
 			int openParen = findNext(words, "(", 1);
-			int closeParen = findOpposite(words, openParen);
+			//int closeParen = findOpposite(words, openParen);
 			
 			int index = openParen + 1;
 			while(validTypes.find(words[index]) != validTypes.end()) {
@@ -2575,7 +2574,7 @@ std::vector<std::string> pushAndPop(std::vector<std::string> &program) {
 			}
 			
 			ans.push_back("call " + words[funcIndex] + " " + ";" + " ");
-			if(funcIndex == words.size() - 4) {
+			if(funcIndex == static_cast<int>(words.size()) - 4) {
 				ans.push_back("pop !TAPE_RAX " + words[words.size() - 2] + " ; ");	
 			}
 		}
@@ -2617,7 +2616,7 @@ std::vector<std::string> remapVariableNamesToTapes(std::vector<std::string> &pro
 
 	int openBrace = findNext(allWords, "{", 0);
 
-	while(0 <= openBrace && openBrace < allWords.size()) {
+	while(0 <= openBrace && static_cast<size_t>(openBrace) < allWords.size()) {
 		int closeBrace = findOpposite(allWords, openBrace);
 
 		// find declaration line
@@ -2754,7 +2753,7 @@ std::vector<std::string> whileToJump(std::vector<std::string> &program, std::vec
 		else if(allWords[i] == "continue") {
 			// this break belongs to the most recently active while
 			int openBrace = openWhile[openWhile.size() - 1];
-			int closeBrace = braces[openBrace];	
+			//int closeBrace = braces[openBrace];	
 
 			// jump to line with openBrace
 			int fromLine = wordLines[i];
@@ -3050,7 +3049,7 @@ std::vector<std::string> addJumpsAndLineNumbers(std::vector<std::string> &progra
 	return ans;
 }
 
-std::vector<std::string> sourceToAssembly(std::vector<std::string> &program) {
+std::vector<std::string> sourceToAssembly(const std::vector<std::string> &program) {
 	std::vector<std::string> modifiedProgram = program;
 
 	modifiedProgram = removeComments(modifiedProgram);

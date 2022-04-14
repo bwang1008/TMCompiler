@@ -11,11 +11,11 @@
  * constructor fills in tape with a string, starting at index 0
  */
 Tape::Tape(const std::string& s) :
-		tape(std::max(s.size(), 1), Constants::Symbol::blank),
+		tape(std::max(s.size(), static_cast<size_t>(1)), Constants::Symbol::blank),
 		tapeNeg(1, Constants::Symbol::blank),
 		head{0},
 		earliestIndex{0},
-		latestIndex{s.size() - 1} {
+		latestIndex{static_cast<int>(s.size()) - 1} {
 	for(size_t i = 0; i < s.size(); ++i) {
 		this->tape[i] = s[i];
 	}

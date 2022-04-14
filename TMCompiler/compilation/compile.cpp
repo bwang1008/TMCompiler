@@ -1,8 +1,8 @@
 #include "compile.hpp"
 
 #include <iostream>		// std::cout, std::endl	
-#include <exception>	// std::exception
 #include <fstream>		// std::ifstream
+#include <stdexcept>	// std::runtime_error
 #include <string>		// std::string
 #include <vector>		// std::vector	
 
@@ -12,15 +12,15 @@
 #include "TMCompiler/utils/helper.hpp"								// checkCompilation
 
 MultiTapeTuringMachine compile(const std::string &fileName) {
-	const std::ifstream file(fileName);
+	std::ifstream file(fileName);
 
 	if(!file.is_open()) {
-		throw std::exception("Could not open file " + fileName);
+		throw std::runtime_error("Could not open file " + fileName);
 	}
 
 	const int compilationStatus = checkCompilation(fileName);	
 	if(compilationStatus != 0) {
-		throw std::exception("Error compiling source code");
+		throw std::runtime_error("Error compiling source code");
 	}
 	else {
 		std::cout << "Initial compilation OK" << std::endl;
@@ -28,7 +28,7 @@ MultiTapeTuringMachine compile(const std::string &fileName) {
 
 	std::vector<std::string> program;
 	std::string programLine;
-	while(std::getline(myFile, programLine)) {
+	while(std::getline(file, programLine)) {
 		program.push_back(programLine);
 	}
 
