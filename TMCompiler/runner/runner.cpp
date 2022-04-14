@@ -22,7 +22,6 @@ int main(int argc, char* argv[]) {
 
 	mttm.displayProfile();
 	
-	
 
 	return 0;
 }
