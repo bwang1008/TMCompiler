@@ -1,3 +1,4 @@
+/*
 void what(int x) {
 
 }
@@ -26,6 +27,23 @@ void genPrimes(int N) {
 			printSpace();
 		}
 	}
+}
+*/
+
+int comp(int a, int b) {
+	if(b == 0) {
+		return a;
+	}
+
+	return a + comp(a, b-1);
+}
+
+int fib(int n) {
+	if(n == 0 || n == 1) {
+		return n;
+	}
+
+	return fib(n-1) + fib(n-2);
 }
 
 int main() {
@@ -133,7 +151,7 @@ int main() {
 	c = b ^ b;
 	*/
 
-	int ans = 2 + 3;
+	int ans = MEM[0];
 
 	return ans;
 }

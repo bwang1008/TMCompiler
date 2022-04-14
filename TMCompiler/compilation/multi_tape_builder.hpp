@@ -1,14 +1,14 @@
-#ifndef MULTI_TAPE_BUILDER_H
-#define MULTI_TAPE_BUILDER_H
+#ifndef MULTI_TAPE_BUILDER_HPP
+#define MULTI_TAPE_BUILDER_HPP
 
+#include <string>			// std::string
 #include <unordered_map>	// std::unordered_map
 #include <utility>			// std::pair
-#include <string>			// std::string
 #include <vector>			// std::vector
 
-#include "../tm_definition/tape.h"
-#include "../tm_definition/transition.h"
-#include "../tm_definition/multi_tape_turing_machine.h"
+#include "TMCompiler/tm_definition/tape.hpp"
+#include "TMCompiler/tm_definition/transition.hpp"
+#include "TMCompiler/tm_definition/multi_tape_turing_machine.hpp"
 
 class MultiTapeBuilder {
 	public:

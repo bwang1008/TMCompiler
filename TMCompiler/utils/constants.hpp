@@ -1,10 +1,13 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+#ifndef CONSTANTS_HPP
+#define CONSTANTS_HPP
 
 namespace Constants {
-	const char zero = '0';
-	const char one = '1';
-	const char blank = '_';
+
+	namespace Symbol {
+		const char zero = '0';
+		const char one = '1';
+		const char blank = '_';
+	}
 
 	namespace Shift {
 		const int left = -1;

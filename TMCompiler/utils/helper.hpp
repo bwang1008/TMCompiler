@@ -1,10 +1,14 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef UTILS_HPP
+#define UTILS_HPP
 
 #include <algorithm>		// std::find_if
 #include <cctype>			// std::isspace
 #include <string>			// std::string
 #include <vector>			// std::vector
+
+/**
+ * Helper functions, mainly for use in TMCompiler/compilation/unit2.cpp
+ */
 
 // next 3 functions found on : https://stackoverflow.com/questions/216823/how-to-trim-a-stdstring
 // trim from start (in place)

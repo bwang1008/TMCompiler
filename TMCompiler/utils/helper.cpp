@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "utils.hpp"
 
 #include <algorithm>		// std::find_if
 #include <cctype>			// std::isspace
@@ -9,7 +9,9 @@
 #include <string>			// std::string, std::getline, std::to_string
 #include <vector>			// std::vector
 
-// HELPER FUNCTIONS
+/**
+ * Implementation of helper functions, mainly for TMCompiler/compilation/unit2.cpp
+ */
 
 bool isBlankString(const std::string &s) {
 	if(s.size() == 0) {

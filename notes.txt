@@ -1,0 +1,34 @@
+input = 0
+output = 1
+ipStack = 2
+ip = 3
+ipSideways = 4 - 15
+paramStack = 16
+bitIndex = 17
+bits = 18
+variables = 19 - 33
+rax = 34
+
+
+99*99 took 4,600,000 steps
+22 minutes, 22 seconds
+
+suggests each second simulates 3500 steps of turing machine
+
+division: 23/3 == 7. 
+2,685,524 steps. 
+
+memset: 6.33 million steps. 30 minutes.
+memget: 5,541,154 steps. 29 minutes 41 seconds.
+
+
+Works:
+Assignment, declaration, +, -, *, /, <, >, <=, >=, ==, !=, ^, ||, &&
+while loop, if - else if - else statements
+recursive function calls
+nextInt, printInt, printSpace
+For loops
+mod
+memset, memget
+
+

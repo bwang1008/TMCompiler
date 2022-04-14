@@ -4,26 +4,26 @@ Function names must be unique
 Variable names must be distinct from function names
 No (user) global variables allowed
 Global infinite int[] array called MEM: 0-indexed
-No ++ or -- operators
+No ++ or -- operators, nor bit-shifts
 only allowed types are int and bool
-An important difference to standard C++, is here we don't have boolean short-circuiting
 */
 
 #define SINGLE_FILE 1
 
-#include "unit2.h"
-#include "utils.h"			// helper functions; basic algorithms
+#include "unit2.hpp"
 
 #include <algorithm>		// std::reverse
 #include <fstream>			// std::ifstream
-#include <iostream>			// std::cerr, std::cout, std::endl
+#include <iostream>			// std::cout, std::endl
 #include <map>				// std::map
 #include <set>				// std::set
-#include <string>			// std::string, std::getline, std::to_string, std::insert, std::replace
+#include <string>			// std::string, std::getline, std::to_string
 #include <tuple>			// std::tuple, std::make_tuple, std::get<>
 #include <unordered_map>	// std::unordered_map
 #include <unordered_set>	// std::unordered_set
 #include <vector>			// std::vector
+
+#include "TMCompiler/utils/helper.hpp"			// helper functions; basic algorithms
 
 int tempCount = 0;			// counter for number of temp variables used
 
@@ -31,7 +31,7 @@ int tempCount = 0;			// counter for number of temp variables used
  * create a new identifier for temporary variable
  */
 std::string createTemp() {
-	std::string varName = "!VAR_TEMP_temp" + std::to_string(tempCount);
+	const std::string varName = "!VAR_TEMP_temp" + std::to_string(tempCount);
 	++tempCount;
 	return varName;
 }
@@ -41,7 +41,7 @@ std::string createTemp() {
  * or block comments (potentially multiple lines) of the form / * ... * /
  *
  */
-std::vector<std::string> removeComments(std::vector<std::string> &program) {
+std::vector<std::string> removeComments(const std::vector<std::string> &program) {
 	std::vector<std::string> ans;
 	
 	std::vector<char> letters;

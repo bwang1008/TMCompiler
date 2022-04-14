@@ -1,18 +1,43 @@
-#include "constants.h"
-#include "multi_tape_turing_machine.h"
+#include "multi_tape_turing_machine.hpp"
 
 #include <algorithm>		// std::sort
 #include <iostream>			// std::cout, std::endl
+#include <map>				// std::map
+#include <regex>			// std::regex, std::regex_match
 #include <string>			// std::string
 #include <tuple>			// std::tuple, std::make_tuple
-#include <regex>			// std::regex, std::regex_match
+#include <vector>			// std::vector
 
-MultiTapeTuringMachine::MultiTapeTuringMachine(const int numStates, const int numTapes, const int initialState, const int haltState, const std::vector<Transition> transitions) : Q(numStates), T(numTapes), tapes(numTapes, Tape("", 0)), initialState(initialState), currentState(initialState), haltState(haltState) {
-	this->transitions = transitions;
-	std::sort(this->transitions.begin(), this->transitions.end());
+#include "TMCompiler/utils/constants.hpp"
+
+MultiTapeTuringMachine::MultiTapeTuringMachine(const unsigned int numStates,
+		const unsigned int numTapes,
+		const unsigned int initialState,
+		const unsigned int haltState,
+		const std::vector<Transition> transitions) :
+Q{numStates},
+T{numTapes},
+tapes(numTapes, Tape("")),
+initialState{initialState},
+currentState{initialState},
+haltState{haltState} {
+	for(const Transition transition : transitions) {
+		const unsigned int state1 = transition.state1;
+		this->transitions[state1].push_back(transition);
+	}
+
+	// sort transitions for the one node with many transitions: node "after" : 3
+	for(size_t i = 0; i < this.transitions.size(); ++i) {
+		if(this.transitions[i].size() > 15) {
+			std::sort(this.transitions[i].begin(),
+					this.transitions[i].end(),
+					[](const Transition &t1, const Transition &t2) -> bool {
+						t1.compare(t2) < 0;
+					}
+			);
+		}
+	}
 }
-
-MultiTapeTuringMachine::~MultiTapeTuringMachine() {}
 
 void MultiTapeTuringMachine::setInput(const std::string &input) {
 	this->setInput(input, 0);
@@ -171,5 +196,33 @@ void MultiTapeTuringMachine::displayTapes() const {
 	for(int t = 0; t < this->T; ++t) {
 		std::cout << "Tape " << t << ": ";
 		this->displayTape(t);
+	}
+}
+
+void MultiTapeTuringMachine::displayProfile() const {
+	std::cout << this->Q << " states" << std::endl;
+	std::cout << this->T << " tapes" << std::endl;
+	std::cout << this->transitions.size() << " transitions" << std::endl;
+	std::cout << "Start at node " << this->initialState << " and ends at " << this->haltState << std::endl;
+
+	// map from nodes, to number of transitions out
+	std::map<int, int> counts;
+	for(std::vector<Transition>::const_iterator it = this->transitions.cbegin(); it != this->transitions.cend(); ++it) {
+		int node = it->state1;
+		counts[node] += 1;
+	}
+
+	// count number of nodes have this many transitions
+	std::map<int, int> counts2;
+	for(std::map<int, int>::iterator it = counts.begin(); it != counts.end(); ++it) {
+		int b = it->second;
+		counts2[b] += 1;
+	}
+
+	int lowerLimit = 0;
+	for(std::map<int, int>::iterator it = counts2.begin(); it != counts2.end(); ++it) {
+		if(it->first >= lowerLimit) {
+			std::cout << it->second << " nodes have " << it->first << " transitions" << std::endl;
+		}
 	}
 }

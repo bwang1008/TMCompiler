@@ -2,24 +2,24 @@
  * Run the assembly code generated.
  */
 
-#include "utils.h"
+#include <iostream>		// std::cout, std::endl
+#include <fstream>		// std::ifstream
+#include <string>		// std::string, std::getline
+#include <vector>		// std::vector
 
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
+#include "TMCompiler/utils/helper.cpp"
 
 int DEBUG = 0;
 
-int getTapeNum(std::string s) {
+int getTapeNum(const std::string &s) {
 	return std::stoi(s.substr(10, s.size() - 10));
 }
 
-void simulateAssembly(std::vector<std::string> &program) {
+void simulateAssembly(const std::vector<std::string> &program) {
 	// determine how many variable tapes there are
 	int numTapes = 0;
 	for(size_t i = 0; i < program.size(); ++i) {
-		std::vector<std::string> words = getWords(program[i]);
+		const std::vector<std::string> words = getWords(program[i]);
 		for(size_t j = 0; j < words.size(); ++j) {
 			if(words[j].substr(0, 10) == "!TAPE_tape") {
 				int val = getTapeNum(words[j]);
@@ -414,7 +414,7 @@ void simulateAssembly(std::vector<std::string> &program) {
 
 
 int main() {
-	std::string fileName = "assembly.txt";
+	const std::string fileName = "assembly.txt";
 	std::ifstream file(fileName);
 
 	std::vector<std::string> assembly;

@@ -1,16 +1,13 @@
-#include "multi_tape_builder.h"
+#include "multi_tape_builder.hpp"
 
-#include <iostream>
-#include <stdexcept>
-#include <string>
-#include <utility>
-#include <vector>
+#include <string>		// std::string
+#include <utility>		// std::pair
+#include <vector>		// std::vector
 
-#include "utils.h"
-#include "../tm_definition/transition.h"
-#include "../tm_definition/constants.h"
-#include "../tm_definition/multi_tape_turing_machine.h"
-
+#include "TMCompiler/tm_definition/transition.hpp"
+#include "TMCompiler/tm_definition/constants.hpp"
+#include "TMCompiler/tm_definition/multi_tape_turing_machine.hpp"
+#include "TMCompiler/utils/helper.hpp"
 
 /**
  * Return number of distinct variables of form "!TAPE_tapeX" for some integer X

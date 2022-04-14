@@ -1,13 +1,12 @@
-#ifndef TAPE_H
-#define TAPE_H
+#ifndef TAPE_HPP
+#define TAPE_HPP
 
-#include <string>
-#include <vector>
+#include <string>		// std::string
+#include <vector>		// std::vector
 
 class Tape {
 public:
-	Tape(const std::string& s, const int offset);
-	~Tape();
+	Tape(const std::string &s);
 	char read() const;
 	void write(const char symbol);
 	void moveHead(int shift);
