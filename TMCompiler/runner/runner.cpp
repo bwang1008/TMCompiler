@@ -16,12 +16,38 @@ int main(int argc, char* argv[]) {
 	}
 
 	const std::string fileName(argv[1]);
-	const MultiTapeTuringMachine mttm = compile(fileName);
+	MultiTapeTuringMachine mttm = compile(fileName);
 
 	std::cout << "Compile successful" << std::endl;
 
 	mttm.displayProfile();
 	
+	std::cout << "Begin simulating:" << std::endl;
+
+	int debug = 1;
+	int numSteps = 0;
+	int limit = 0;
+
+	while(!mttm.halted() && (limit <= 0 || numSteps < limit)) {
+		mttm.step(debug);
+
+		if(debug) {
+			std::cout << "After step " << numSteps << std::endl;
+			mttm.displayTapes();
+		}
+
+		if(numSteps % 100 == 0) {
+			std::cout << "Finished " << numSteps << " steps" << std::endl;
+		}
+
+		++numSteps;
+	}
+
+	std::cout << "Final: " << std::endl;
+	mttm.displayTapes();
+	std::cout << numSteps << " steps" << std::endl;
+
+	std::cout << "halted ? " << mttm.halted() << std::endl;
 
 	return 0;
 }

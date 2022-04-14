@@ -72,9 +72,9 @@ Transition MultiTapeTuringMachine::findTransition(const int state, const std::ve
 	const std::string input(symbols.begin(), symbols.end());
 	
 	// special case: node == "after": many transitions, but are sorted. Use binary search to find write one
-	if(state == 3) {
+	if(false && state == 3) { // binary searching ain't working yet... just do linear search for now
 		int low = 0;
-		int high = static_cast<int>(this->transitions.size() - 1);
+		int high = static_cast<int>(validTransitions.size() - 1);
 
 		while(low <= high) {
 			const int mid = (low + high) / 2;

@@ -151,7 +151,7 @@ int main() {
 	c = b ^ b;
 	*/
 
-	int ans = MEM[0];
+	int ans = 3 + 9;
 
 	return ans;
 }
