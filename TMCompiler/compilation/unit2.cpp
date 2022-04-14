@@ -8,8 +8,6 @@ No ++ or -- operators, nor bit-shifts
 only allowed types are int and bool
 */
 
-#define SINGLE_FILE 1
-
 #include "unit2.hpp"
 
 #include <algorithm>		// std::reverse
@@ -24,6 +22,8 @@ only allowed types are int and bool
 #include <vector>			// std::vector
 
 #include "TMCompiler/utils/helper.hpp"			// helper functions; basic algorithms
+
+#define SINGLE_FILE 0
 
 int tempCount = 0;			// counter for number of temp variables used
 

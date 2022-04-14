@@ -15,6 +15,8 @@
 #include "TMCompiler/tm_definition/transition.hpp"
 #include "TMCompiler/utils/helper.hpp"
 
+#define SINGLE_FILE 0
+
 /**
  * helper function: convert line number (non-negative)
  * to format of ipSize bits: 0 for non-negative, then
@@ -2390,6 +2392,7 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 	return builder.generateMTTM(builder.node("start"), builder.node("end"));
 }
 
+#if SINGLE_FILE==1
 // just a placeholder
 int main() {
 	const std::string fileName = "assembly.txt";
@@ -2458,4 +2461,5 @@ int main() {
 
 	return 0;
 }
+#endif
 

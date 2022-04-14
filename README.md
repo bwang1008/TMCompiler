@@ -26,12 +26,14 @@ V for each declared variable, where V = max number of declared variables (includ
 
 Current features:
 Conversion from source C++ code into assembly code.
+Conversion from assembly code into a MultiTapeTuringMachine
 
 Next ideas:
-Finish implementing special functions.
-Should rewrite Turing Machine definition (especially Transitions)
 Should rework Constants file
 Should rework CMake
+Add conversion to and from JSON (using CMake)
+Change some exceptions to asserts
+Fix runner program once can convert to JSON
 
 Future ideas:
 Add more features into what is allowed in the restricted C++, like strings and floats.
