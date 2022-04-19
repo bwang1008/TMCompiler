@@ -37,43 +37,54 @@ int add(int x, int y) {
 	if(isZero(y)) {
 		return x;
 	}
-	
+
 	// here, both are non-zero
-	if(isNeg(x) && isPos(y)) {
-		if(-x == y) {
-			// cxse: -5 + 5
+
+	bool b1 = isPos(x);
+	bool b2 = isPos(y);
+
+	if(b1) {
+		if(b2) {
+			return basic_add(x, y);
+		}
+
+		// y is negative
+		int negY = basic_neg(y);
+		if(negY == x) {
 			return 0;
 		}
-		else if(-x < y) {
-			// cxse: -3 + 5
-			return basic_sub(y, -x);
-		}
-		else {
-			// -x > y: case: -5 + 3
-			return -basic_sub(-x, y);
-		}
-	}
-	else if(isPos(x) && isNeg(y)) {
-		if(-y == x) {
-			return 0;
-		}
-		else if(-y < x) {
+
+		if(negY < x) {
 			// case: 5 + -3
-			return basic_sub(x, -y);
+			return basic_sub(x, negY);
 		}
-		else {
-			// -y > x: case: 3 + (-5)
-			return -basic_sub(-y, x);
+
+		// case: 3 + (-5)
+		return basic_neg(basic_sub(negY, x));
+	}
+	
+	// x is negative
+	if(b2) {
+		// y is positive
+		int negX = basic_neg(x);
+		if(negX == y) {
+			return 0;
 		}
+
+		if(negX < y) {
+			// case: -3 + 5
+			return basic_sub(y, negX);
+		}
+
+		// case: -5 + 3
+		return basic_neg(basic_sub(negX, y));
 	}
-	else if(isNeg(x) && isNeg(y)) {
-		// case: -5 + (-3)
-		return -basic_add(-x, -y);
-	}
-	else {
-		// both positive
-		return basic_add(x, y);
-	}
+	
+	// both x and y are negative
+
+	// case: -5 + (-3)
+	return basic_neg(basic_add(basic_neg(x), basic_neg(y)));
+
 }
 
 /**

@@ -9,6 +9,13 @@ bits = 18
 variables = 19 - 33
 rax = 34
 
+1+1: 4677 steps
+2+2: 4831 steps
+4+4: 4985 steps
+8+8: 5139 steps
+16+16: 5293 steps
+32+32: 5447 steps
+so to sum 2^n + 2^n, need 154n + 4677 steps
 
 99*99 took 4,600,000 steps
 22 minutes, 22 seconds
@@ -18,9 +25,24 @@ suggests each second simulates 3500 steps of turing machine
 division: 23/3 == 7. 
 2,685,524 steps. 
 
-memset: 6.33 million steps. 30 minutes.
-memget: 5,541,154 steps. 29 minutes 41 seconds.
+memset: MEM[0] = 5. 6.33 million steps. 30 minutes.
+memget: Had setInput on bits tape. got MEM[0] to get 5. 5,541,154 steps. 29 minutes 41 seconds.
 
+EDIT: changed add function 
+1+1: 3392 steps
+2+2: 3522 steps
+4+4: 3652 steps
+to sum 2^n + 2^n, need 130n + 3392 steps
+
+and now 99*99 takes 3,926,980 stpes in 18 minutes 20 seconds
+
+EDIT: with O2 optimization, 99*99 now only 3 minutes. About 21,000 steps of turing machine simulated per second
+
+memset: MEM[0] = 5. Now 5,511,645 steps, in 4 minutes 40 seconds.
+
+With O3 optimization, 99*99 now only 2 minutes 27 seconds
+
+EDIT: leaving residual memory and avoiding some unnecessary work of erasing in pop, 99*99 takes 3,639,656 steps, in 2 minutes 42 seconds, suggesting about 22,000 steps per second. Probably just computer being bad. Addition of 2^n + 2^n needs 86n + 3244.
 
 Works:
 Assignment, declaration, +, -, *, /, <, >, <=, >=, ==, !=, ^, ||, &&

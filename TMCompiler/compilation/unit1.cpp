@@ -412,9 +412,14 @@ void pushEmptyFrame(MultiTapeBuilder &builder, const size_t tape, const size_t s
 	builder.add1TapeTransition(startNode, q1, tape, "[01]", ".", 0);
 	builder.add1TapeTransition(startNode, q2, tape, "_", ".", 1);
 	
-	// q1: while see [01], move right. when see blank, move to endNode
+	// q1: while see [01], move right. when see blank, move right, 
+	// write a blank, then stay: cuz what if pop (and no erase),
+	// then push empty (no copy), then push again? it would mistakenly
+	// think there was a value there (the old one) rather than an empty push
+	const size_t q3 = builder.newNode();
 	builder.add1TapeTransition(q1, q1, tape, "[01]", ".", 1);
-	builder.add1TapeTransition(q1, endNode, tape, "_", ".", 1);
+	builder.add1TapeTransition(q1, q3, tape, "_", ".", 1);
+	builder.add1TapeTransition(q3, endNode, tape, ".", "_", 0);
 	
 	// q2 just moves another right
 	// EDIT: it doesn't necessarily read another blank. could be residual 
@@ -430,19 +435,8 @@ void popOffTop(MultiTapeBuilder &builder, const size_t tape, const size_t startN
 	const size_t q1 = builder.newNode();
 	const size_t mid = builder.newNode();
 	
-	builder.add1TapeTransition(startNode, q1, tape, "_", ".", -1);
-	builder.add1TapeTransition(q1, mid, tape, ".", ".", -1);
-	
-	// startNode: otherwise, erase currentNum
-	const size_t q3 = builder.newNode();
-	builder.add1TapeTransition(startNode, q3, tape, "[01]", ".", 0);
-	// q3 is where we go to end of num
-	const size_t q4 = builder.newNode();
-	builder.add1TapeTransition(q3, q3, tape, "[01]", ".", 1);
-	builder.add1TapeTransition(q3, q4, tape, "_", ".", -1);
-	// q4 is where we erase the num, and move left
-	builder.add1TapeTransition(q4, q4, tape, "[01]", "_", -1);
-	builder.add1TapeTransition(q4, mid, tape, "_", ".", -1);
+	builder.add1TapeTransition(startNode, q1, tape, ".", "_", -1);
+	builder.add1TapeTransition(q1, mid, tape, ".", "_", -1);
 	
 	// ok now we are two left from where we first started on the tape
 	// mid: current cell could be blank! if so, just move to endNode
@@ -567,6 +561,134 @@ void handlePush(MultiTapeBuilder &builder, const size_t currIP, const std::vecto
 	//push1ThingToStack(builder, fromTape, toTape, q0, builder.node("before"));
 	pushEmptyFrame(builder, toTape, q0, q1);
 	copyBetweenTapes(builder, fromTape, toTape, q1, endNode);
+}
+
+/**
+ * add padding of 0s to shorter of two tapes until they are of the same length
+ * Be careful of residual memory! guarantee one space at end of each word tho
+ */
+void handlePadding(MultiTapeBuilder &builder, const size_t tape0, const size_t tape1, const size_t startNode, const size_t endNode, const bool moveLeft = true) {
+	std::vector<std::pair<size_t, std::string> > reads;
+	std::vector<std::pair<size_t, std::string> > writes;
+	std::vector<std::pair<size_t, int> > shifts;
+
+	// pad end of shorter number with 0's
+	// while both are not blank, move right
+	reads.emplace_back(tape0, "[01]");
+	reads.emplace_back(tape1, "[01]");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+
+	builder.addTransition(startNode, startNode, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	const size_t qBlank0 = builder.newNode();
+	const size_t qBlank1 = builder.newNode();
+	const size_t qMoveLeft = (moveLeft) ? builder.newNode() : endNode;
+
+	// startNode: if tape0 sees blank, move to new node
+	reads.emplace_back(tape0, "_");
+	reads.emplace_back(tape1, "[01]");
+
+	builder.addTransition(startNode, qBlank0, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// startNode: if tape1 sees blank, move to new node
+	reads.emplace_back(tape0, "[01]");
+	reads.emplace_back(tape1, "_");
+
+	builder.addTransition(startNode, qBlank1, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// startNode:  but if both tapes see _, go to node to move left
+	reads.emplace_back(tape0, "_");
+	reads.emplace_back(tape1, "_");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tape1, -1);
+
+	builder.addTransition(startNode, qMoveLeft, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// qBlank0: while tape1 isn't blank, write 0 to tape0, move tapes right
+	reads.emplace_back(tape1, "[01]");
+	writes.emplace_back(tape0, "0");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+
+	builder.addTransition(qBlank0, qBlank0, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// qBlank0: but when tape1 is blank, go to qMoveLeft
+	reads.emplace_back(tape1, "_");
+	writes.emplace_back(tape0, "_");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tape1, -1);
+
+	builder.addTransition(qBlank0, qMoveLeft, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// qBlank1: while tape0 isn't blank, write 0 to tape1, move tapes right
+	reads.emplace_back(tape0, "[01]");
+	writes.emplace_back(tape1, "0");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+
+	builder.addTransition(qBlank1, qBlank1, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// qBlank1: but when tape0 is blank, go to qMoveLeft
+	reads.emplace_back(tape0, "_");
+	writes.emplace_back(tape1, "_");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tape1, -1);
+
+	builder.addTransition(qBlank1, qMoveLeft, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	if(!moveLeft) {
+		return;
+	}
+
+	// ok so everyone at qMoveLeft. Let's move left
+
+	// qMoveLeft: while both not blank, move back left
+	reads.emplace_back(tape0, "[01]");
+	reads.emplace_back(tape1, "[01]");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tape1, -1);
+
+	builder.addTransition(qMoveLeft, qMoveLeft, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// qMoveLeft: but when encounter both blanks on the left, move 1 right, 
+	// and transition to endNode
+	reads.emplace_back(tape0, "_");
+	reads.emplace_back(tape1, "_");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+
+	builder.addTransition(qMoveLeft, endNode, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
 }
 
 /**
@@ -757,48 +879,126 @@ void handleBasicAdd(MultiTapeBuilder &builder, const size_t startNode, const siz
 	copyBetweenTapes(builder, tapeStack, tape0 + 1, q1, q2);
 	popOffTop(builder, tapeStack, q2, q3);
 
-	// add the values in the two tapes. both are positive.
-	const size_t carryOff = q3;
-	const size_t carryOn = builder.newNode();
-
 	std::vector<std::pair<size_t, std::string> > reads;
 	std::vector<std::pair<size_t, std::string> > writes;
 	std::vector<std::pair<size_t, int> > shifts;
 	
+	// pad shorter argument with 0's until both have same length
+	const size_t q4 = builder.newNode();
+	handlePadding(builder, tape0, tape1, q3, q4, true);
+
+	// add the values in the two tapes. both values are positive.
+	const size_t carryOff = q4;
+	const size_t carryOn = builder.newNode();
+	
+	// carryOff: if see 0 and 0, write 0. no carry
+	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape1, "0");
+	writes.emplace_back(tapeRax, "0");
 	shifts.emplace_back(tape0, 1);
 	shifts.emplace_back(tape1, 1);
 	shifts.emplace_back(tapeRax, 1);
 
-	const std::vector<std::string> symbols {"0", "1", "_"};
-	const std::unordered_map<std::string, int> inherentValue {{"0", 0}, {"1", 1}, {"_", 0}};
-	const std::vector<size_t> nodes {carryOff, carryOn};
-
-	for(const std::string &s1 : symbols) {
-		for(const std::string &s2 : symbols) {
-			if(s1 == "_" && s2 == "_") {
-				continue;
-			}
-
-			for(size_t i = 0; i < nodes.size(); ++i) {
-				const int sum = ((int) i) + inherentValue.at(s1) + inherentValue.at(s2);	
-
-				reads.emplace_back(tape0, s1);
-				reads.emplace_back(tape1, s2);
-				writes.emplace_back(tapeRax, std::to_string(sum % 2));
-
-				const size_t toNode = (sum >= 2) ? carryOn : carryOff;
-				builder.addTransition(nodes[i], toNode, reads, writes, shifts);
-
-				reads.clear();
-				writes.clear();
-			}
-		}
-	}
-	
-	// now handle reading both _ and _ : reached end of input
+	builder.addTransition(carryOff, carryOff, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
 	shifts.clear();
 
+	// carryOff: if see 0 and 1, write a 1. no carry
+	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape1, "1");
+	writes.emplace_back(tapeRax, "1");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(carryOff, carryOff, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// carryOff: is see 1 and 0, write a 1. no carry
+	reads.emplace_back(tape0, "1");
+	reads.emplace_back(tape1, "0");
+	writes.emplace_back(tapeRax, "1");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(carryOff, carryOff, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// carryOff: is see 1 and 1, write a 0. yes carry
+	reads.emplace_back(tape0, "1");
+	reads.emplace_back(tape1, "1");
+	writes.emplace_back(tapeRax, "0");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(carryOff, carryOn, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// carryOn: if see 0 and 0, write 1. no carry
+	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape1, "0");
+	writes.emplace_back(tapeRax, "1");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(carryOn, carryOff, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// carryOn: if see 0 and 1, write a 0. yes carry
+	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape1, "1");
+	writes.emplace_back(tapeRax, "0");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(carryOn, carryOn, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// carryOn: is see 1 and 0, write a 0. yes carry
+	reads.emplace_back(tape0, "1");
+	reads.emplace_back(tape1, "0");
+	writes.emplace_back(tapeRax, "0");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(carryOn, carryOn, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// carryOn: is see 1 and 1, write a 1. yes carry
+	reads.emplace_back(tape0, "1");
+	reads.emplace_back(tape1, "1");
+	writes.emplace_back(tapeRax, "1");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(carryOn, carryOn, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// now handle reading both _ and _ : reached end of input
 	// need to write _ when overwriting a tape
+	const size_t q5 = builder.newNode();
+
 	reads.emplace_back(tape0, "_");
 	reads.emplace_back(tape1, "_");
 	writes.emplace_back(tapeRax, "_");
@@ -806,14 +1006,15 @@ void handleBasicAdd(MultiTapeBuilder &builder, const size_t startNode, const siz
 	shifts.emplace_back(tape1, -1);
 	shifts.emplace_back(tapeRax, -1);
 		
-	const size_t q4 = builder.newNode();
-	builder.addTransition(carryOff, q4, reads, writes, shifts);
-
-	// but for carryOn, when both read _ and _, need to write 1 instead
-	// also write a blank to the right of the 1
+	builder.addTransition(carryOff, q5, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 	shifts.clear();
+
+	// but for carryOn, when both read _ and _, need to write 1 instead
+	// also write a blank to the right of the 1
+	const size_t q35 = builder.newNode();
+	const size_t q36 = builder.newNode();
 
 	reads.emplace_back(tape0, "_");
 	reads.emplace_back(tape1, "_");
@@ -822,15 +1023,13 @@ void handleBasicAdd(MultiTapeBuilder &builder, const size_t startNode, const siz
 	shifts.emplace_back(tape1, -1);
 	shifts.emplace_back(tapeRax, 1);
 
-	const size_t q35 = builder.newNode();
-	const size_t q36 = builder.newNode();
 	builder.addTransition(carryOn, q35, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 	shifts.clear();
 
 	builder.add1TapeTransition(q35, q36, tapeRax, ".", "_", -1);
-	builder.add1TapeTransition(q36, q4, tapeRax, ".", ".", -1);
+	builder.add1TapeTransition(q36, q5, tapeRax, ".", ".", -1);
 
 	shifts.emplace_back(tape0, -1);
 	shifts.emplace_back(tape1, -1);
@@ -840,23 +1039,23 @@ void handleBasicAdd(MultiTapeBuilder &builder, const size_t startNode, const siz
 	reads.emplace_back(tape0, "[01]");
 	reads.emplace_back(tape1, "[01_]");
 
-	builder.addTransition(q4, q4, reads, writes, shifts);
+	builder.addTransition(q5, q5, reads, writes, shifts);
 	
 	reads.clear();
 	reads.emplace_back(tape0, "[01_]");
 	reads.emplace_back(tape1, "[01]");
 
-	builder.addTransition(q4, q4, reads, writes, shifts);
-	
+	builder.addTransition(q5, q5, reads, writes, shifts);
 	reads.clear();
+	shifts.clear();
+
 	reads.emplace_back(tape0, "_");
 	reads.emplace_back(tape1, "_");
-	shifts.clear();
 	shifts.emplace_back(tape0, 1);
 	shifts.emplace_back(tape1, 1);
 	shifts.emplace_back(tapeRax, 1);
 
-	builder.addTransition(q4, endNode, reads, writes, shifts);
+	builder.addTransition(q5, endNode, reads, writes, shifts);
 }
 
 /**
@@ -884,66 +1083,12 @@ void handleBasicSub(MultiTapeBuilder &builder, const size_t startNode, const siz
 	std::vector<std::pair<size_t, std::string> > writes;
 	std::vector<std::pair<size_t, int> > shifts;
 
-	// pad end of shorter number with 0's
-	shifts.emplace_back(tape0, 1);
-	shifts.emplace_back(tape1, 1);
-
-	reads.emplace_back(tape0, "[01]");
-	reads.emplace_back(tape1, "[01]");
-
-	builder.addTransition(q3, q3, reads, writes, shifts);
-	reads.clear();
-	
-	reads.emplace_back(tape0, "[01]");
-	reads.emplace_back(tape1, "_");
-	writes.emplace_back(tape1, "0");
-	
-	builder.addTransition(q3, q3, reads, writes, shifts);
-	reads.clear();
-	writes.clear();
-
-	reads.emplace_back(tape0, "_");
-	reads.emplace_back(tape1, "[01]");
-	writes.emplace_back(tape0, "0");
-
-	builder.addTransition(q3, q3, reads, writes, shifts);
-	reads.clear();
-	writes.clear();
-	shifts.clear();
-
-	// q3: if see _ and _, end. start going back left.
+	// pad shorter argument with 0's until both have same length
 	const size_t q4 = builder.newNode();
-
-	reads.emplace_back(tape0, "_");
-	reads.emplace_back(tape1, "_");
-	shifts.emplace_back(tape0, -1);
-	shifts.emplace_back(tape1, -1);
-
-	builder.addTransition(q3, q4, reads, writes, shifts);
-	reads.clear();
-	writes.clear();
-
-	reads.emplace_back(tape0, "[01]");
-	reads.emplace_back(tape1, "[01]");
-	
-	builder.addTransition(q4, q4, reads, writes, shifts);
-	reads.clear();
-	writes.clear();
-	shifts.clear();
-
-	const size_t q5 = builder.newNode();
-	reads.emplace_back(tape0, "_");
-	reads.emplace_back(tape1, "_");
-	shifts.emplace_back(tape0, 1);
-	shifts.emplace_back(tape1, 1);
-
-	builder.addTransition(q4, q5, reads, writes, shifts);
-	reads.clear();
-	writes.clear();
-	shifts.clear();
+	handlePadding(builder, tape0, tape1, q3, q4, true);
 	
 	// ok now back where we started from. now subtract!
-	const size_t borrowOff = q5;
+	const size_t borrowOff = q4;
 	const size_t borrowOn = builder.newNode();
 	
 	shifts.emplace_back(tape0, 1);
@@ -1099,63 +1244,9 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t startNode, const siz
 	std::vector<std::pair<size_t, std::string> > writes;
 	std::vector<std::pair<size_t, int> > shifts;
 	
-	// pad end of shorter number with 0's
-	shifts.emplace_back(tape0, 1);
-	shifts.emplace_back(tape1, 1);
-
-	reads.emplace_back(tape0, "[01]");
-	reads.emplace_back(tape1, "[01]");
-
-	builder.addTransition(q3, q3, reads, writes, shifts);
-	reads.clear();
-	
-	reads.emplace_back(tape0, "[01]");
-	reads.emplace_back(tape1, "_");
-	writes.emplace_back(tape1, "0");
-	
-	builder.addTransition(q3, q3, reads, writes, shifts);
-	reads.clear();
-	writes.clear();
-
-	reads.emplace_back(tape0, "_");
-	reads.emplace_back(tape1, "[01]");
-	writes.emplace_back(tape0, "0");
-
-	builder.addTransition(q3, q3, reads, writes, shifts);
-	reads.clear();
-	writes.clear();
-	shifts.clear();
-	
-	// q3: if see _ and _, end. start going back left.
+	// pad shorter argument with 0's until both have same length
 	const size_t q4 = builder.newNode();
-
-	reads.emplace_back(tape0, "_");
-	reads.emplace_back(tape1, "_");
-	shifts.emplace_back(tape0, -1);
-	shifts.emplace_back(tape1, -1);
-
-	builder.addTransition(q3, q4, reads, writes, shifts);
-	reads.clear();
-	writes.clear();
-
-	reads.emplace_back(tape0, "[01]");
-	reads.emplace_back(tape1, "[01]");
-	
-	builder.addTransition(q4, q4, reads, writes, shifts);
-	reads.clear();
-	writes.clear();
-	shifts.clear();
-
-	const size_t q5 = builder.newNode();
-	reads.emplace_back(tape0, "_");
-	reads.emplace_back(tape1, "_");
-	shifts.emplace_back(tape0, 1);
-	shifts.emplace_back(tape1, 1);
-
-	builder.addTransition(q4, q5, reads, writes, shifts);
-	reads.clear();
-	writes.clear();
-	shifts.clear();
+	handlePadding(builder, tape0, tape1, q3, q4, true);
 	
 	// ok now back where we started from. now do bit-wise xor!
 	shifts.emplace_back(tape0, 1);
@@ -1167,7 +1258,7 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t startNode, const siz
 	reads.emplace_back(tape1, "0");
 	writes.emplace_back(tapeRax, "0");
 
-	builder.addTransition(q5, q5, reads, writes, shifts);
+	builder.addTransition(q4, q4, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 	
@@ -1176,7 +1267,7 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t startNode, const siz
 	reads.emplace_back(tape1, "1");
 	writes.emplace_back(tapeRax, "1");
 
-	builder.addTransition(q5, q5, reads, writes, shifts);
+	builder.addTransition(q4, q4, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 	
@@ -1185,7 +1276,7 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t startNode, const siz
 	reads.emplace_back(tape1, "0");
 	writes.emplace_back(tapeRax, "1");
 
-	builder.addTransition(q5, q5, reads, writes, shifts);
+	builder.addTransition(q4, q4, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 	
@@ -1194,13 +1285,13 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t startNode, const siz
 	reads.emplace_back(tape1, "1");
 	writes.emplace_back(tapeRax, "0");
 
-	builder.addTransition(q5, q5, reads, writes, shifts);
+	builder.addTransition(q4, q4, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 
 	shifts.clear();
 	// if see _ and _, write a _, and move left
-	const size_t q6 = builder.newNode();
+	const size_t q5 = builder.newNode();
 
 	reads.emplace_back(tape0, "_");
 	reads.emplace_back(tape1, "_");
@@ -1209,7 +1300,7 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t startNode, const siz
 	shifts.emplace_back(tape1, -1);
 	shifts.emplace_back(tapeRax, -1);
 
-	builder.addTransition(q5, q6, reads, writes, shifts);
+	builder.addTransition(q4, q5, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 		
@@ -1224,7 +1315,7 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t startNode, const siz
 	reads.emplace_back(tapeRax, "0");
 	writes.emplace_back(tapeRax, "_");
 		
-	builder.addTransition(q6, q6, reads, writes, shifts);
+	builder.addTransition(q5, q5, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 	shifts.clear();
@@ -1234,7 +1325,7 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t startNode, const siz
 	reads.emplace_back(tape1, "[01]");
 	reads.emplace_back(tapeRax, "1");
 		
-	builder.addTransition(q6, encountered1, reads, writes, shifts);
+	builder.addTransition(q5, encountered1, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 
@@ -1249,7 +1340,7 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t startNode, const siz
 	reads.clear();
 	writes.clear();
 	
-	// if q6 or encountered1 sees _ and _, go to node penultimateNode
+	// if q5 or encountered1 sees _ and _, go to node penultimateNode
 	shifts.clear();
 	shifts.emplace_back(tape0, 1);
 	shifts.emplace_back(tape1, 1);
@@ -1258,7 +1349,7 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t startNode, const siz
 	reads.emplace_back(tape0, "_");
 	reads.emplace_back(tape1, "_");
 	
-	builder.addTransition(q6, penultimateNode, reads, writes, shifts);
+	builder.addTransition(q5, penultimateNode, reads, writes, shifts);
 	builder.addTransition(encountered1, penultimateNode, reads, writes, shifts);
 	
 	// now all heads in original spot. one last thing tho:
@@ -1389,45 +1480,9 @@ void handleBasicLt(MultiTapeBuilder &builder, const size_t startNode, const size
 	std::vector<std::pair<size_t, std::string> > writes;
 	std::vector<std::pair<size_t, int> > shifts;
 	
-	// pad end of shorter number with 0's
-	shifts.emplace_back(tape0, 1);
-	shifts.emplace_back(tape1, 1);
-
-	reads.emplace_back(tape0, "[01]");
-	reads.emplace_back(tape1, "[01]");
-
-	builder.addTransition(q3, q3, reads, writes, shifts);
-	reads.clear();
-	
-	reads.emplace_back(tape0, "[01]");
-	reads.emplace_back(tape1, "_");
-	writes.emplace_back(tape1, "0");
-	
-	builder.addTransition(q3, q3, reads, writes, shifts);
-	reads.clear();
-	writes.clear();
-
-	reads.emplace_back(tape0, "_");
-	reads.emplace_back(tape1, "[01]");
-	writes.emplace_back(tape0, "0");
-
-	builder.addTransition(q3, q3, reads, writes, shifts);
-	reads.clear();
-	writes.clear();
-	shifts.clear();
-	
-	// q3: if see _ and _, end going right. Then do comparisons!
+	// pad shorter argument with 0's until both have same length, but don't go left
 	const size_t q4 = builder.newNode();
-
-	reads.emplace_back(tape0, "_");
-	reads.emplace_back(tape1, "_");
-	shifts.emplace_back(tape0, -1);
-	shifts.emplace_back(tape1, -1);
-
-	builder.addTransition(q3, q4, reads, writes, shifts);
-	reads.clear();
-	writes.clear();
-	shifts.clear();
+	handlePadding(builder, tape0, tape1, q3, q4, false);
 
 	// ok now back where we started from. now do less-than!
 	// starting from right side: that's where significant bits are
@@ -1435,6 +1490,8 @@ void handleBasicLt(MultiTapeBuilder &builder, const size_t startNode, const size
 	
 	// node to signal when to start moving both tape heads back left
 	const size_t moveBackLeft = builder.newNode();
+	// node that answer was written
+	const size_t penultimateNode = builder.newNode();
 
 	// read 0 and 0: keep going left
 	reads.emplace_back(tape0, "0");
@@ -1451,6 +1508,7 @@ void handleBasicLt(MultiTapeBuilder &builder, const size_t startNode, const size
 	reads.emplace_back(tape0, "0");
 	reads.emplace_back(tape1, "1");
 	writes.emplace_back(tapeRax, "1");
+	shifts.emplace_back(tapeRax, 1);
 
 	builder.addTransition(q4, moveBackLeft, reads, writes, shifts);
 	reads.clear();
@@ -1461,6 +1519,7 @@ void handleBasicLt(MultiTapeBuilder &builder, const size_t startNode, const size
 	reads.emplace_back(tape0, "1");
 	reads.emplace_back(tape1, "0");
 	writes.emplace_back(tapeRax, "0");
+	shifts.emplace_back(tapeRax, 1);
 
 	builder.addTransition(q4, moveBackLeft, reads, writes, shifts);
 	reads.clear();
@@ -1478,14 +1537,15 @@ void handleBasicLt(MultiTapeBuilder &builder, const size_t startNode, const size
 	writes.clear();
 	shifts.clear();
 
-	// read _ and _: well A == B. Write 0 to rax, go to endNode
+	// read _ and _: well A == B. Write 0 to rax, go to penultimateNode
 	reads.emplace_back(tape0, "_");
 	reads.emplace_back(tape1, "_");
 	writes.emplace_back(tapeRax, "0");
 	shifts.emplace_back(tape0, 1);
 	shifts.emplace_back(tape1, 1);
+	shifts.emplace_back(tapeRax, 1);
 
-	builder.addTransition(q4, endNode, reads, writes, shifts);
+	builder.addTransition(q4, penultimateNode, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 	shifts.clear();
@@ -1501,16 +1561,19 @@ void handleBasicLt(MultiTapeBuilder &builder, const size_t startNode, const size
 	writes.clear();
 	shifts.clear();
 
-	// when go to far left, move back right 1
+	// when go too far left, move back right 1
 	reads.emplace_back(tape0, "_");
 	reads.emplace_back(tape1, "_");
 	shifts.emplace_back(tape0, 1);
 	shifts.emplace_back(tape1, 1);
 
-	builder.addTransition(moveBackLeft, endNode, reads, writes, shifts);
+	builder.addTransition(moveBackLeft, penultimateNode, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 	shifts.clear();
+	
+	// penultimateNode: have tapeRax write a blank, then move back left
+	builder.add1TapeTransition(penultimateNode, endNode, tapeRax, ".", "_", -1);
 }
 
 /**

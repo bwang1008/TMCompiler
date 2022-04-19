@@ -24,18 +24,25 @@ num bits in Instruction Pointer in 2's complement
 V for each declared variable, where V = max number of declared variables (including temp variables and parameters) across all functions  
 1 for return values  
 
-Current features:
-Conversion from source C++ code into assembly code.
-Conversion from assembly code into a MultiTapeTuringMachine
+Current features:  
+Conversion from source C++ code into assembly code.  
+Conversion from assembly code into a MultiTapeTuringMachine  
 
-Next ideas:
-Should rework Constants file
-Should rework CMake
-Add conversion to and from JSON (using CMake)
-Change some exceptions to asserts
-Fix runner program once can convert to JSON
+Next ideas:  
+Should rework Constants file  
+Should rework CMake  
+Optimizations  
+Add conversion to and from JSON (using CMake)  
+Change some exceptions to asserts  
+Fix runner program once can convert to JSON  
 
-Future ideas:
-Add more features into what is allowed in the restricted C++, like strings and floats.
-Convert from multi-tape Turing Machine into a single-tape Turing Machine with only left and right shifts
+Ideas for Optimization:  
+Pop doesn't have to erase the content: just trash memory to be overwritten later  
+Rework basic_add, isPos, isNeg, isZero to be in-place, to avoid unnecessary pushes and pops  
+Incorporate "sideways" ip when changing ip. Should half the work of incrementing IP  
+Write an actually decent multiplication algorithm  
+
+Future ideas:  
+Add more features into what is allowed in the restricted C++, like strings and floats.  
+Convert from multi-tape Turing Machine into a single-tape Turing Machine with only left and right shifts  
 

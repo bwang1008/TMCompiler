@@ -39,7 +39,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR})
 
 # add properties to the executable: set c++=std_14, as well as compilation options -Wall,... for coding standards
 target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_14)
-target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic)
+target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -O3 -Wall -Wextra -Wpedantic)
 
 # to run: enter folder "build", type "cmake .." to run this CMakeList, 
 # and then type "make help" to see the options in the Makefile

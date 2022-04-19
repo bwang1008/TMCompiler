@@ -22,32 +22,36 @@ int main(int argc, char* argv[]) {
 
 	mttm.displayProfile();
 	
-	std::cout << "Begin simulating:" << std::endl;
+	int simulate = 1;
 
-	int debug = 1;
-	int numSteps = 0;
-	int limit = 0;
+	if(simulate) {
+		std::cout << "Begin simulating:" << std::endl;
 
-	while(!mttm.halted() && (limit <= 0 || numSteps < limit)) {
-		mttm.step(debug);
+		int debug = 0;
+		int numSteps = 0;
+		int limit = 0;
 
-		if(debug) {
-			std::cout << "After step " << numSteps << std::endl;
-			mttm.displayTapes();
+		while(!mttm.halted() && (limit <= 0 || numSteps < limit)) {
+			mttm.step(debug);
+
+			if(debug) {
+				std::cout << "After step " << numSteps << std::endl;
+				mttm.displayTapes();
+			}
+
+			if(numSteps % 10000 == 0) {
+				std::cout << "Finished " << numSteps << " steps" << std::endl;
+			}
+
+			++numSteps;
 		}
 
-		if(numSteps % 100 == 0) {
-			std::cout << "Finished " << numSteps << " steps" << std::endl;
-		}
+		std::cout << "Final: " << std::endl;
+		mttm.displayTapes();
+		std::cout << numSteps << " steps" << std::endl;
 
-		++numSteps;
+		std::cout << "halted ? " << mttm.halted() << std::endl;
 	}
-
-	std::cout << "Final: " << std::endl;
-	mttm.displayTapes();
-	std::cout << numSteps << " steps" << std::endl;
-
-	std::cout << "halted ? " << mttm.halted() << std::endl;
 
 	return 0;
 }
