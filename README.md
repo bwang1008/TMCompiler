@@ -37,7 +37,6 @@ Change some exceptions to asserts
 Fix runner program once can convert to JSON  
 
 Ideas for Optimization:  
-Pop doesn't have to erase the content: just trash memory to be overwritten later  
 Rework basic_add, isPos, isNeg, isZero to be in-place, to avoid unnecessary pushes and pops  
 Incorporate "sideways" ip when changing ip. Should half the work of incrementing IP  
 Write an actually decent multiplication algorithm  

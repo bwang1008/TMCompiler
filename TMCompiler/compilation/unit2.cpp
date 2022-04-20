@@ -535,7 +535,7 @@ std::vector<std::string> renameBuiltInVariables(std::vector<std::string> &progra
 	std::string varPrefix = "!VAR_LIB_";
 	std::string funcPrefix = "!FUNC_LIB_";
 
-	std::unordered_set<std::string> reservedForTM {"nextInt", "printInt", "printSpace", "isZero", "isNeg", "isPos", "basic_add", "basic_sub", "basic_xor", "basic_eq", "basic_lt", "basic_neg", "getMemBitIndex", "setMemBitIndex", "moveMemHeadRight", "moveMemHeadLeft", "setMemBitZero", "setMemBitOne", "setMemBitBlank", "memBitIsZero", "memBitIsOne", "memBitIsBlank"};
+	std::unordered_set<std::string> reservedForTM {"nextInt", "printInt", "printSpace", "isZero", "isNeg", "isPos", "basic_add", "basic_sub", "basic_xor", "basic_eq", "basic_lt", "basic_neg", "basic_mul2", "basic_div2", "isEven", "isOdd", "getMemBitIndex", "setMemBitIndex", "moveMemHeadRight", "moveMemHeadLeft", "setMemBitZero", "setMemBitOne", "setMemBitBlank", "memBitIsZero", "memBitIsOne", "memBitIsBlank"};
 
 	std::vector<std::string> words;
 	
@@ -1255,9 +1255,13 @@ std::vector<std::tuple<std::string, std::vector<std::string>, std::string> > get
 	funcs.push_back(std::make_tuple("!FUNC_LIB_basic_add", std::vector<std::string> {"int", "int"}, "int"));
 	funcs.push_back(std::make_tuple("!FUNC_LIB_basic_sub", std::vector<std::string> {"int", "int"}, "int"));
 	funcs.push_back(std::make_tuple("!FUNC_LIB_basic_xor", std::vector<std::string> {"int", "int"}, "int"));
-	funcs.push_back(std::make_tuple("!FUNC_LIB_basic_eq", std::vector<std::string> {"int", "int"}, "int"));
-	funcs.push_back(std::make_tuple("!FUNC_LIB_basic_lt", std::vector<std::string> {"int", "int"}, "int"));
+	funcs.push_back(std::make_tuple("!FUNC_LIB_basic_eq", std::vector<std::string> {"int", "int"}, "bool"));
+	funcs.push_back(std::make_tuple("!FUNC_LIB_basic_lt", std::vector<std::string> {"int", "int"}, "bool"));
 	funcs.push_back(std::make_tuple("!FUNC_LIB_basic_neg", std::vector<std::string> {"int"}, "int"));
+	funcs.push_back(std::make_tuple("!FUNC_LIB_basic_mul2", std::vector<std::string> {"int"}, "int"));
+	funcs.push_back(std::make_tuple("!FUNC_LIB_basic_div2", std::vector<std::string> {"int"}, "int"));
+	funcs.push_back(std::make_tuple("!FUNC_LIB_isEven", std::vector<std::string> {"int"}, "bool"));
+	funcs.push_back(std::make_tuple("!FUNC_LIB_isOdd", std::vector<std::string> {"int"}, "bool"));
 	
 	funcs.push_back(std::make_tuple("!FUNC_LIB_getMemBitIndex", std::vector<std::string>(), "int"));
 	funcs.push_back(std::make_tuple("!FUNC_LIB_setMemBitIndex", std::vector<std::string> {"int"}, "void"));

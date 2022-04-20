@@ -1,5 +1,4 @@
 // private functions - all operators (except for !, &&, ||)
-// reason: worried about 0 vs -0 being registered as different...
 // as well as private functions: memset, memget. The functions nextInt, printInt, printSpace implemented in Turing Machine
 
 // actual functions to be implemented in Turing-Machine: isZero, isNeg, isPos, basic_add, basic_sub, basic_xor, basic_eq: semantically,
@@ -12,6 +11,10 @@
 // int basic_eq(int x, int y): return x == y    : x,y must both be positive
 // int basic_lt(int x, int y): return x < y		: x,y must both be positive
 // int basic_neg(int x): return -x				: x must be non-zero
+// int basic_mul2(int x): return 2*x : x must be positive
+// int basic_div2(int x): return x/2 (floor): x must be positive
+// bool isEven(int x): return (x % 2)? 0 : 1
+// bool isOdd(int x): return (bool) (x % 2)
 //
 // int getMemBitIndex(): MEM represented as bits. What index is head at?
 // void setMemBitIndex(int x): set the head of MEM_bits
@@ -23,6 +26,13 @@
 // bool memBitIsZero(): check if tape cell at head of MEM_bits is 0
 // bool memBitIsOne(): check if tape cell at head of MEM_bits is 1
 // bool memBitIsBlank(): check if tape cell at head of MEM_bits is blank
+
+
+// void moveTapeVar0HeadRight(): move head of MEM_bits right
+// void moveTapeVar0HeadLeft(): move head of MEM_bits left
+// bool tapeVar0IsZero(): check if tape of variable 0 (usually tape 19) is currently at a 0
+// bool tapeVar0IsOne(): check if tape of variable 0 (usually tape 19) is currently at a 1
+// bool tapeVar0IsBlank(): check if tape of variable 0 (usually tape 19) is currently at blank
 
 // unlike !,&&,|| however, these above are functions: need to manually pop off
 // from parameters stack when processing
@@ -139,31 +149,21 @@ int mul(int x, int y) {
 		ansNeg = !ansNeg;
 	}
 
-	// reduced binary search
-	// use only addition, subtraction, and comparisons
-	// subtract highest power of 2 from y0 (which is y1);
-	// add to ans the value (x * that power of 2) (which is val1)
-	// ex: 3 * 11 == 3*8 + remaining 3*3
+	// in reference to https://math.stackexchange.com/questions/1147825/designing-a-turing-machine-for-binary-multiplication	
+
+	// swap if x > y: without, 15 * 3758175 took 32022 steps to compute, but 3758175 * 15 took 111,698 steps to compute (at least at this point in time).
+
 	int ans = 0;
 
-	int y0 = y;
-	while(y0 > 0) {
-		int y1 = 1;
-		int y2 = 2;
-		int val1 = x;
-		int val2 = x + x;
-
-		while(val2 <= y0) {
-			y1 = y2;
-			val1 = val2;
-			y2 += y2;
-			val2 += val2;
+	while(!isZero(x)) {
+		if(isOdd(x)) {
+			ans += y;
 		}
 
-		ans += val1;
-		y0 -= y1;
+		x = basic_div2(x);
+		y = basic_mul2(y);
 	}
-	
+
 	if(ansNeg) {
 		ans = -ans;
 	}

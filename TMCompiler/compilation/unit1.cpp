@@ -1606,6 +1606,319 @@ void handleBasicNeg(MultiTapeBuilder &builder, const size_t startNode, const siz
 }
 
 /**
+ * handle assembly code of doing 2*x
+ * where x is value popped from paramStack
+ * Can assume x is positive
+ */
+void handleBasicMul2(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
+	const size_t q0 = builder.newNode();
+	const size_t q1 = builder.newNode();
+
+	const size_t tapeStack = builder.tapeIndex("paramStack");
+	const size_t tape0 = builder.tapeIndex("variables");
+	const size_t tapeRax = builder.tapeIndex("rax");
+
+	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
+	popOffTop(builder, tapeStack, q0, q1);
+
+	std::vector<std::pair<size_t, std::string> > reads;
+	std::vector<std::pair<size_t, std::string> > writes;
+	std::vector<std::pair<size_t, int> > shifts;
+	
+	// ok now back where we started from. now double: answer is argument but shifted up
+	
+	// copy the sign bit
+	const size_t q2 = builder.newNode();
+	reads.emplace_back(tape0, "0");
+	writes.emplace_back(tapeRax, "0");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(q1, q2, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	reads.emplace_back(tape0, "1");
+	writes.emplace_back(tapeRax, "1");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(q1, q2, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// write a 0 into least-significant bit (cuz even)
+	const size_t q3 = builder.newNode();
+	builder.add1TapeTransition(q2, q3, tapeRax, ".", "0", 1);
+
+	// now copy digits from tape0 into tapeRax
+	reads.emplace_back(tape0, "0");
+	writes.emplace_back(tapeRax, "0");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(q3, q3, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	reads.emplace_back(tape0, "1");
+	writes.emplace_back(tapeRax, "1");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(q3, q3, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// when tape0 encounters _, write a _ too
+	const size_t q4 = builder.newNode();
+
+	reads.emplace_back(tape0, "_");
+	writes.emplace_back(tapeRax, "_");
+	shifts.emplace_back(tapeRax, -1);
+
+	builder.addTransition(q3, q4, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// now move both heads back
+	reads.emplace_back(tapeRax, "[01]");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tapeRax, -1);
+
+	builder.addTransition(q4, q4, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	reads.emplace_back(tapeRax, "_");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tapeRax, 1);
+	
+	builder.addTransition(q4, endNode, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+}
+
+/**
+ * handle assembly code of doing x/2 (floored)
+ * where x is value popped from paramStack
+ * Can assume x is positive
+ */
+void handleBasicDiv2(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
+	const size_t q0 = builder.newNode();
+	const size_t q1 = builder.newNode();
+
+	const size_t tapeStack = builder.tapeIndex("paramStack");
+	const size_t tape0 = builder.tapeIndex("variables");
+	const size_t tapeRax = builder.tapeIndex("rax");
+
+	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
+	popOffTop(builder, tapeStack, q0, q1);
+
+	std::vector<std::pair<size_t, std::string> > reads;
+	std::vector<std::pair<size_t, std::string> > writes;
+	std::vector<std::pair<size_t, int> > shifts;
+	
+	// ok now back where we started from. now divide: answer is argument but without least-significant bit
+	
+	// copy the sign bit, tho logically should always be 0 because assumed is positive)
+	const size_t q2 = builder.newNode();
+	reads.emplace_back(tape0, "0");
+	writes.emplace_back(tapeRax, "0");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(q1, q2, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	reads.emplace_back(tape0, "1");
+	writes.emplace_back(tapeRax, "1");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(q1, q2, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// ignore least-significant bit of argument by moving right
+	const size_t q3 = builder.newNode();
+	builder.add1TapeTransition(q2, q3, tape0, ".", ".", 1);
+
+	// now copy bits to tapeRax
+	reads.emplace_back(tape0, "0");
+	writes.emplace_back(tapeRax, "0");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(q3, q3, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	reads.emplace_back(tape0, "1");
+	writes.emplace_back(tapeRax, "1");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(q3, q3, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// when argument sees blank, also write blank
+	const size_t q4 = builder.newNode();
+	reads.emplace_back(tape0, "_");
+	writes.emplace_back(tapeRax, "_");
+	shifts.emplace_back(tape0, -1);
+
+	builder.addTransition(q3, q4, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// now move both heads back
+	reads.emplace_back(tape0, "[01]");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tapeRax, -1);
+
+	builder.addTransition(q4, q4, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	reads.emplace_back(tape0, "_");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(q4, endNode, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+}
+
+/**
+ * handle assembly code of reporting if (x % 2) == 0
+ * where x is value popped from paramStack
+ */
+void handleIsEven(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
+	const size_t q0 = builder.newNode();
+	const size_t q1 = builder.newNode();
+
+	const size_t tapeStack = builder.tapeIndex("paramStack");
+	const size_t tape0 = builder.tapeIndex("variables");
+	const size_t tapeRax = builder.tapeIndex("rax");
+
+	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
+	popOffTop(builder, tapeStack, q0, q1);
+
+	std::vector<std::pair<size_t, std::string> > reads;
+	std::vector<std::pair<size_t, std::string> > writes;
+	std::vector<std::pair<size_t, int> > shifts;
+	
+	// ok now back where we started from. now divide: answer is (1 - least-significant bit)
+	
+	// move to lsb of tape0
+	const size_t q2 = builder.newNode();
+	builder.add1TapeTransition(q1, q2, tape0, ".", ".", 1);
+
+	// now do 1 - current thing in tape0
+	const size_t q3 = builder.newNode();
+	reads.emplace_back(tape0, "[0_]");
+	writes.emplace_back(tapeRax, "1");
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(q2, q3, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	reads.emplace_back(tape0, "1");
+	writes.emplace_back(tapeRax, "0");
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(q2, q3, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+	
+	// write a blank afterwards in tapeRax; move both left
+	writes.emplace_back(tapeRax, "_");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tapeRax, -1);
+
+	builder.addTransition(q3, endNode, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+}
+
+/**
+ * handle assembly code of reporting if (x % 2) == 1
+ * where x is value popped from paramStack
+ */
+void handleIsOdd(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
+	const size_t q0 = builder.newNode();
+	const size_t q1 = builder.newNode();
+
+	const size_t tapeStack = builder.tapeIndex("paramStack");
+	const size_t tape0 = builder.tapeIndex("variables");
+	const size_t tapeRax = builder.tapeIndex("rax");
+
+	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
+	popOffTop(builder, tapeStack, q0, q1);
+
+	std::vector<std::pair<size_t, std::string> > reads;
+	std::vector<std::pair<size_t, std::string> > writes;
+	std::vector<std::pair<size_t, int> > shifts;
+	
+	// ok now back where we started from. now divide: answer is (least-significant bit)
+	
+	// move to lsb of tape0
+	const size_t q2 = builder.newNode();
+	builder.add1TapeTransition(q1, q2, tape0, ".", ".", 1);
+
+	// now write current thing in tape0
+	const size_t q3 = builder.newNode();
+	reads.emplace_back(tape0, "[0_]");
+	writes.emplace_back(tapeRax, "0");
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(q2, q3, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	reads.emplace_back(tape0, "1");
+	writes.emplace_back(tapeRax, "1");
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(q2, q3, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+	
+	// write a blank afterwards in tapeRax; move both left
+	writes.emplace_back(tapeRax, "_");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tapeRax, -1);
+
+	builder.addTransition(q3, endNode, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+}
+
+/**
  * handle assembly code of putting tape bitIndex value into rax
  */
 void handleGetMemBitIndex(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
@@ -2348,6 +2661,18 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 			}
 			else if(func == "basic_neg") {
 				handleBasicNeg(builder, prevNode, q1);
+			}
+			else if(func == "basic_mul2") {
+				handleBasicMul2(builder, prevNode, q1);
+			}
+			else if(func == "basic_div2") {
+				handleBasicDiv2(builder, prevNode, q1);
+			}
+			else if(func == "isEven") {
+				handleIsEven(builder, prevNode, q1);
+			}
+			else if(func == "isOdd") {
+				handleIsOdd(builder, prevNode, q1);
 			}
 			else if(func == "getMemBitIndex") {
 				handleGetMemBitIndex(builder, prevNode, q1);

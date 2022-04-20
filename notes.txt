@@ -44,6 +44,10 @@ With O3 optimization, 99*99 now only 2 minutes 27 seconds
 
 EDIT: leaving residual memory and avoiding some unnecessary work of erasing in pop, 99*99 takes 3,639,656 steps, in 2 minutes 42 seconds, suggesting about 22,000 steps per second. Probably just computer being bad. Addition of 2^n + 2^n needs 86n + 3244.
 
+EDIT: reworking multiplication (by adding in basic_mul2, basic_div2, isEven, isOdd), computing 99*99 now takes 31,799 steps! Whoo!
+
+MEM[0] = 5. Now takes 1,074,030 steps in 48 seconds.
+
 Works:
 Assignment, declaration, +, -, *, /, <, >, <=, >=, ==, !=, ^, ||, &&
 while loop, if - else if - else statements

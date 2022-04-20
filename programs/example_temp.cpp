@@ -34,6 +34,14 @@ void genPrimes(int N) {
 }
 */
 
+int factorial(int n) {
+	if(n == 0 || n == 1) {
+		return 1;
+	}
+
+	return n * factorial(n-1);
+}
+
 int comp(int a, int b) {
 	if(b == 0) {
 		return a;
@@ -155,7 +163,7 @@ int main() {
 	c = b ^ b;
 	*/
 
-	int ans = 1250126021960 + 30198690168209;
+	int ans = 3758175 * 15;
 
 	return ans;
 }
