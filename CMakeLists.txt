@@ -28,7 +28,7 @@ add_executable(${CMAKE_PROJECT_NAME}
 	TMCompiler/compilation/unit1.cpp
 	TMCompiler/compilation/unit2.hpp
 	TMCompiler/compilation/unit2.cpp
-	TMCompiler/runner/runner.cpp
+	TMCompiler/runner/compile.cpp
 	)
 
 # copy the file TMCompiler/compilation/lib.cpp (not for usual compilation) to build folder

@@ -48,6 +48,8 @@ EDIT: reworking multiplication (by adding in basic_mul2, basic_div2, isEven, isO
 
 MEM[0] = 5. Now takes 1,074,030 steps in 48 seconds.
 
+EDIT: after reworking memset, "MEM[0] = 5" takes 216,417 steps.
+
 Works:
 Assignment, declaration, +, -, *, /, <, >, <=, >=, ==, !=, ^, ||, &&
 while loop, if - else if - else statements

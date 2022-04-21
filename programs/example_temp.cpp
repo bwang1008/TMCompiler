@@ -163,7 +163,7 @@ int main() {
 	c = b ^ b;
 	*/
 
-	int ans = 3758175 * 15;
+	int ans = 99 * 99;
 
 	return ans;
 }

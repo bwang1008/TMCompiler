@@ -34,7 +34,7 @@ MultiTapeTuringMachine compile(const std::string &fileName) {
 
 	const std::vector<std::string> assembly = sourceToAssembly(program);
 	
-	printProgram(assembly);
+	//printProgram(assembly);
 
 	const MultiTapeTuringMachine mttm = assemblyToMultiTapeTuringMachine(assembly);
 

@@ -5,9 +5,11 @@
 
 #include "TMCompiler/tm_definition/tape.hpp"
 #include "TMCompiler/tm_definition/transition.hpp"
+#include "TMCompiler/utils/json.hpp"
 
 class MultiTapeTuringMachine {
 	public:
+		MultiTapeTuringMachine();
 		MultiTapeTuringMachine(const unsigned int numStates,
 				const unsigned int numTapes,
 				const unsigned int initialState,
@@ -17,14 +19,19 @@ class MultiTapeTuringMachine {
 		void setInput(const std::string &input);
 		void setInput(const std::string &input, const int tapeIndex);
 		bool halted() const;
-		int step(const int verbose=0);
+		unsigned int numSteps() const;
+		void step(const int verbose=0);
 
-		// run, until reject/accept, return (ongoing/halted, number of steps)
-		std::tuple<int, int> run(const int verbose=0, const int maxSteps=-1);
+		// run, until reject/accept, or maxSteps
+		void run(const int verbose=0, const int maxSteps=0);
 
 		void displayTape(const int tapeIndex) const;
 		void displayTapes() const;
 		void displayProfile() const;
+
+		// allow these non-member functions to access all members for json serialization
+		friend void to_json(nlohmann::json &j, const MultiTapeTuringMachine &mttm);
+		friend void from_json(const nlohmann::json &j, MultiTapeTuringMachine &mttm);
 
 	private:
 		unsigned int Q;						// number of states, indexed from [0, Q-1]
@@ -32,6 +39,7 @@ class MultiTapeTuringMachine {
 		unsigned int initialState;
 		unsigned int currentState;
 		unsigned int haltState;
+		unsigned int steps;
 
 		std::vector<Tape> tapes;
 		std::vector<std::vector<Transition> > transitions;

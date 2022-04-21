@@ -13,105 +13,9 @@
 #include "TMCompiler/compilation/multi_tape_builder.hpp"
 #include "TMCompiler/tm_definition/multi_tape_turing_machine.hpp"
 #include "TMCompiler/tm_definition/transition.hpp"
-#include "TMCompiler/utils/helper.hpp"
+#include "TMCompiler/utils/helper.hpp"  // lineNumToBits, convertIntegerToBits
 
 #define SINGLE_FILE 0
-
-/**
- * helper function: convert line number (non-negative)
- * to format of ipSize bits: 0 for non-negative, then
- * least-significant to most significant bits
- */
-std::vector<std::string> lineNumToBits(const size_t lineNum, const size_t ipSize) {
-	std::vector<std::string> bits;
-
-	size_t val = lineNum;
-
-	while(val > 0) {
-		if(val % 2 == 0) {
-			bits.push_back("0");
-		}
-		else {
-			bits.push_back("1");
-		}
-
-		val /= 2;
-	}
-
-	while(bits.size() < ipSize) {
-		bits.push_back("0");
-	}
-
-	std::reverse(bits.begin(), bits.end());
-
-	return bits;
-}
-
-/**
- * calculate biginteger / 2 (floor integer division)
- * assume val is positive
- */
-std::string divideIntegerBy2(const std::string &val) {
-	bool carry = false;
-
-	std::string ans;
-	for(size_t i = 0; i < val.size(); ++i) {
-		int digit = (val[i] - '0');
-		
-		if(digit < 0 || digit >= 10) {
-			throw std::invalid_argument("Val provided for divideIntegerBy2 not an integer: " + val);
-		}
-
-		if(carry) {
-			digit += 10;
-		}
-
-		ans.push_back('0' + (digit / 2));
-		carry = (digit % 2 == 1);
-	}
-
-	size_t firstNon0 = 0;
-	while(firstNon0 < ans.size() && ans[firstNon0] == '0') {
-		++firstNon0;
-	}
-
-	ans = ans.substr(firstNon0, ans.size() - firstNon0);
-	
-	if(ans.size() == 0) {
-		ans.push_back('0');
-	}
-
-	return ans;
-}
-
-/**
- * Convert string representing integer literal to bits
- * Use style of (1 if neg, 0 if non-negative), then bits from 
- * least-significant to most-significant. 0 is just "0"
- */
-std::string convertIntegerToBits(std::string val) {
-	if(val.size() == 0) {
-		throw std::invalid_argument(val + " is blank, so not an integer");
-	}
-
-	std::string bits;
-
-	if(val[0] == '-') {
-		bits.push_back('1');
-		val = val.substr(1, val.size() - 1);
-	}
-	else {
-		bits.push_back('0');
-	}
-
-	while(val.size() != 1 || val[0] != '0') {
-		const int mod2 = ((val.back() - '0') % 2);
-		bits.push_back('0' + mod2);
-		val = divideIntegerBy2(val);
-	}
-
-	return bits;
-}
 
 /**
  * add nodes and transitions to increment ip
@@ -2767,8 +2671,10 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 
 	std::cout << "Finished building" << std::endl;
 
+	/*
 	std::cout << "ipSize = " << builder.ipSize << std::endl;
 	std::cout << "numVars = " << builder.numVars << std::endl;
+	*/
 
 	std::cout << "tapes:" << std::endl;
 	std::vector<std::string> tapeNames {"input", "output", "ipStack", "ip", "ipSideways", "paramStack", "bitIndex", "bits", "variables", "rax"};

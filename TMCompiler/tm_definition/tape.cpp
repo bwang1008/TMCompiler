@@ -6,6 +6,11 @@
 #include <vector>			// std::vector
 
 #include "TMCompiler/utils/constants.hpp"
+#include "TMCompiler/utils/json.hpp"
+
+Tape::Tape() : tape(1, Constants::Symbol::blank), tapeNeg(1, Constants::Symbol::blank), head{0}, earliestIndex{0}, latestIndex{-1} {
+
+}
 
 /**
  * constructor fills in tape with a string, starting at index 0
@@ -128,4 +133,22 @@ void Tape::display() const {
 		std::cout << char(symbol);
 	}
 	std::cout << "]\n";
+}
+
+// serialization methods for nlohmann::json
+void to_json(nlohmann::json &j, const Tape &tape) {
+	j = nlohmann::json{
+		{"tape", tape.tape},
+		{"tapeNeg", tape.tapeNeg},
+		{"head", tape.head},
+		{"earliestIndex", tape.earliestIndex},
+		{"latestIndex", tape.latestIndex}};
+}
+
+void from_json(const nlohmann::json &j, Tape &tape) {
+	j.at("tape").get_to(tape.tape);
+	j.at("tapeNeg").get_to(tape.tapeNeg);
+	j.at("head").get_to(tape.head);
+	j.at("earliestIndex").get_to(tape.earliestIndex);
+	j.at("latestIndex").get_to(tape.latestIndex);
 }

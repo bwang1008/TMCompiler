@@ -79,4 +79,10 @@ size_t parseTapeNum(const std::string &word);
 
 int checkCompilation(const std::string &fileName);
 
+std::vector<std::string> lineNumToBits(const size_t lineNum, const size_t ipSize);
+
+std::string divideIntegerBy2(const std::string &val);
+
+std::string convertIntegerToBits(std::string val);
+
 #endif

@@ -151,7 +151,13 @@ int mul(int x, int y) {
 
 	// in reference to https://math.stackexchange.com/questions/1147825/designing-a-turing-machine-for-binary-multiplication	
 
-	// swap if x > y: without, 15 * 3758175 took 32022 steps to compute, but 3758175 * 15 took 111,698 steps to compute (at least at this point in time).
+	// swap if x > y: without, 15 * 3758175 took 32,022 steps to compute, but
+	// 3758175 * 15 took 111,698 steps to compute (at least at this point in time).
+	if(x > y) {
+		int temp = x;
+		x = y;
+		y = temp;
+	}
 
 	int ans = 0;
 
@@ -349,7 +355,15 @@ void memset(int index, int val) {
 
 	while(!isZero(V) || !handledSign) {
 		// function above: (x+y)^2 + y
-		int desiredBitIndex = ((index + valIndex) * (index + valIndex + 1)) / 2 + index;
+		
+		//int desiredBitIndex = ((index + valIndex) * (index + valIndex + 1)) / 2 + index;
+
+		int desiredBitIndex = index + valIndex;
+		if(!isZero(desiredBitIndex)) {
+			int temp = desiredBitIndex * (desiredBitIndex + 1);
+			temp = basic_div2(temp);
+			desiredBitIndex = temp + index;
+		}
 
 		while(currBitIndex > desiredBitIndex) {
 			currBitIndex -= 1;
@@ -372,23 +386,31 @@ void memset(int index, int val) {
 			handledSign = true;
 		}
 		else {
-			int V2 = V / 2;
-			int bit = V - (2 * V2);
-			if(bit == 1) {
+			bool bit = isOdd(V);
+			if(bit) {
 				setMemBitOne();
 			}
 			else {
 				setMemBitZero();
 			}
 
-			V = V2;
+			V = basic_div2(V);
 		}
 		
 		valIndex += 1;
 	}
 
 	// must clear out the next tape cell by making it blank
-	int desiredBitIndex = ((index + valIndex) * (index + valIndex + 1)) / 2 + index;
+	//int desiredBitIndex = ((index + valIndex) * (index + valIndex + 1)) / 2 + index;
+	
+	// equivalent to above, but better performance
+	int desiredBitIndex = index + valIndex;
+	if(!isZero(desiredBitIndex)) {
+		int temp = desiredBitIndex * (desiredBitIndex + 1);
+		temp = basic_div2(temp);
+		desiredBitIndex = temp + index;
+	}
+
 	while(currBitIndex < desiredBitIndex) {
 		currBitIndex += 1;
 		moveMemHeadRight();
@@ -402,7 +424,15 @@ void memset(int index, int val) {
 int memget(int index) {
 	int ans = 0;
 	int currBitIndex = getMemBitIndex();
-	int desiredBitIndex = (index * (index + 1)) / 2 + index;
+
+	//int desiredBitIndex = (index * (index + 1)) / 2 + index;
+	
+	int desiredBitIndex = index;
+	if(!isZero(desiredBitIndex)) {
+		int temp = desiredBitIndex * (desiredBitIndex + 1);
+		temp = basic_div2(temp);
+		desiredBitIndex = temp + index;
+	}
 
 	//printInt(desiredBitIndex);
 
@@ -441,7 +471,15 @@ int memget(int index) {
 			pow2 += pow2;
 		}
 
-		desiredBitIndex = ((index + valIndex) * (index + valIndex + 1)) / 2 + index;
+		//desiredBitIndex = ((index + valIndex) * (index + valIndex + 1)) / 2 + index;
+
+		desiredBitIndex = index + valIndex;
+		if(!isZero(desiredBitIndex)) {
+			int temp = desiredBitIndex * (desiredBitIndex + 1);
+			temp = basic_div2(temp);
+			desiredBitIndex = temp + index;
+		}
+
 		while(currBitIndex < desiredBitIndex) {
 			currBitIndex += 1;
 			moveMemHeadRight();

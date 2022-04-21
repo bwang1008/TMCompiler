@@ -1,7 +1,9 @@
 #include "multi_tape_turing_machine.hpp"
 
 #include <algorithm>		// std::sort
+#include <iomanip>			// std::setw
 #include <iostream>			// std::cout, std::endl
+#include <fstream>			// std::ifstream, std::ofstream
 #include <map>				// std::map
 #include <regex>			// std::regex, std::regex_match
 #include <string>			// std::string
@@ -9,8 +11,13 @@
 #include <vector>			// std::vector
 
 #include "TMCompiler/utils/constants.hpp"
+#include "TMCompiler/utils/json.hpp"
 #include "TMCompiler/tm_definition/tape.hpp"
 #include "TMCompiler/tm_definition/transition.hpp"
+
+MultiTapeTuringMachine::MultiTapeTuringMachine() : Q{1}, T{1}, initialState{0}, currentState{0}, haltState{0}, steps{0}, tapes(), transitions() {
+
+}
 
 MultiTapeTuringMachine::MultiTapeTuringMachine(const unsigned int numStates,
 		const unsigned int numTapes,
@@ -22,7 +29,8 @@ T{numTapes},
 initialState{initialState},
 currentState{initialState},
 haltState{haltState},
-tapes(numTapes, Tape("")) {
+steps{0},
+tapes(numTapes, Tape("")), transitions() {
 	for(size_t i = 0; i < this->Q; ++i) {
 		this->transitions.push_back(std::vector<Transition>());
 	}
@@ -65,6 +73,10 @@ void MultiTapeTuringMachine::setInput(const std::string &input, const int tapeIn
 
 bool MultiTapeTuringMachine::halted() const {
 	return this->currentState == this->haltState;
+}
+
+unsigned int MultiTapeTuringMachine::numSteps() const {
+	return this->steps;
 }
 
 Transition MultiTapeTuringMachine::findTransition(const int state, const std::vector<char> &symbols) const {
@@ -122,7 +134,7 @@ Transition MultiTapeTuringMachine::findTransition(const int state, const std::ve
 	return temp;
 }
 
-int MultiTapeTuringMachine::step(const int verbose) {
+void MultiTapeTuringMachine::step(const int verbose) {
 	// check if already in HALT state
 
 	if(this->halted()) {
@@ -130,7 +142,7 @@ int MultiTapeTuringMachine::step(const int verbose) {
 			std::cout << "Already reached HALT state " << this->haltState << std::endl;
 		}
 
-		return Constants::StateStatus::halted;
+		return;
 	}
 
 	std::vector<char> symbols;
@@ -204,21 +216,13 @@ int MultiTapeTuringMachine::step(const int verbose) {
 		this->tapes[t].moveHead(shift);
 	}
 	
-	return (this->halted()) ? Constants::StateStatus::halted : Constants::StateStatus::ongoing;	
+	++this->steps;
 }
 
-std::tuple<int, int> MultiTapeTuringMachine::run(const int verbose, const int maxSteps) {
-	int numSteps = 0;
-
-	while(!this->halted() && (maxSteps < 0 || numSteps < maxSteps)) {
-		++numSteps;
+void MultiTapeTuringMachine::run(const int verbose, const int maxSteps) {
+	while(!this->halted() && (maxSteps <= 0 || this->steps < static_cast<unsigned int>(maxSteps))) {
 		this->step(verbose);
 	}
-
-	int status = (this->halted()) ? Constants::StateStatus::halted : Constants::StateStatus::ongoing;
-	std::tuple<int, int> ret = std::make_tuple(status, numSteps);
-	
-	return ret;
 }
 
 void MultiTapeTuringMachine::displayTape(const int tapeIndex) const {
@@ -251,4 +255,28 @@ void MultiTapeTuringMachine::displayProfile() const {
 	for(std::map<int, int>::iterator it = counts.begin(); it != counts.end(); ++it) {
 		std::cout << it->second << " nodes have " << it->first << " transitions" << std::endl;
 	}
+}
+
+// serialization methods for nlohmann::json
+void to_json(nlohmann::json &j, const MultiTapeTuringMachine &mttm) {
+	j = nlohmann::json{
+		{"Q", mttm.Q},
+		{"T", mttm.T},
+		{"initialState", mttm.initialState},
+		{"currentState", mttm.currentState},
+		{"haltState", mttm.haltState},
+		{"steps", mttm.steps},
+		{"tapes", mttm.tapes},
+		{"transitions", mttm.transitions}};
+}
+
+void from_json(const nlohmann::json &j, MultiTapeTuringMachine &mttm) {
+	j.at("Q").get_to(mttm.Q);
+	j.at("T").get_to(mttm.T);
+	j.at("initialState").get_to(mttm.initialState);
+	j.at("currentState").get_to(mttm.currentState);
+	j.at("haltState").get_to(mttm.haltState);
+	j.at("steps").get_to(mttm.steps);
+	j.at("tapes").get_to(mttm.tapes);
+	j.at("transitions").get_to(mttm.transitions);
 }

@@ -2811,7 +2811,7 @@ std::vector<std::string> funcToJump(std::vector<std::string> &program, std::vect
 		int funcLine = it->second;
 		program[funcLine] = "nop ; ";
 
-		std::cout << "func " << it->first << " on line " << funcLine << std::endl;
+		//std::cout << "func " << it->first << " on line " << funcLine << std::endl;
 	}
 
 	// replace each closing brace with "nop" : the only remaining closing braces were from function declarations
@@ -3048,7 +3048,7 @@ std::vector<std::string> addJumpsAndLineNumbers(std::vector<std::string> &progra
 
 	ans.push_back(tempLine);
 
-	std::cout << "Done with jumps" << std::endl;
+	//std::cout << "Done with jumps" << std::endl;
 
 	return ans;
 }
