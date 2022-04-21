@@ -23,8 +23,6 @@ only allowed types are int and bool
 
 #include "TMCompiler/utils/helper.hpp"			// helper functions; basic algorithms
 
-#define SINGLE_FILE 0
-
 int tempCount = 0;			// counter for number of temp variables used
 
 /**
@@ -3118,53 +3116,3 @@ std::vector<std::string> sourceToAssembly(const std::vector<std::string> &progra
 	return modifiedProgram;
 }
 
-#if SINGLE_FILE==1
-int main() {
-	std::string fileName = "../programs/example.cpp";
-	std::ifstream file(fileName);	
-
-	if(!file.is_open()) {
-		std::cout << "Unable to open file " << fileName << std::endl;
-		return -1;
-	}
-
-	int status = checkCompilation(fileName);
-	if(status != 0) {
-		std::cout << "Error compiling source code: " << std::endl;
-		return status;
-	}
-	else {
-		std::cout << "Initial compilation OK" << std::endl;
-	}
-
-	std::vector<std::string> program;
-	std::string line;
-	while(std::getline(file, line)) {
-		program.push_back(line);
-	}
-	
-	file.close();
-	
-	std::vector<std::string> transformedProgram = sourceToAssembly(program);
-	//printPrettyProgram(transformedProgram);
-	printProgram(transformedProgram);
-
-	bool writeAssemblyToFile = true;
-	if(writeAssemblyToFile) {
-		std::string outFileName = "assembly.txt";
-		std::ofstream outFile(outFileName);
-
-		if(outFile.is_open()) {
-			for(size_t i = 0; i < transformedProgram.size(); ++i) {
-				outFile << transformedProgram[i] << std::endl;
-			}
-			outFile.close();
-		}
-		else {
-			std::cout << "Unable to open writing file " << outFileName << std::endl;
-		}
-	}
-
-	return 0;
-}
-#endif

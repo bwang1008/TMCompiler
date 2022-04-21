@@ -1,12 +1,8 @@
 #include "unit1.hpp"
 
-#include <algorithm>		// std::reverse
-#include <fstream>			// std::ifstream
-#include <iostream>			// std::cout
+#include <iostream>			// std::cout, std::endl
 #include <stdexcept>		// std::invalid_argument
 #include <string>			// std::string, std::stoi
-#include <tuple>			// std::tuple, std::get<>
-#include <unordered_map>	// std::unordered_map
 #include <utility>			// std::pair, std::make_pair
 #include <vector>			// std::vector
 
@@ -14,8 +10,6 @@
 #include "TMCompiler/tm_definition/multi_tape_turing_machine.hpp"
 #include "TMCompiler/tm_definition/transition.hpp"
 #include "TMCompiler/utils/helper.hpp"  // lineNumToBits, convertIntegerToBits
-
-#define SINGLE_FILE 0
 
 /**
  * add nodes and transitions to increment ip
@@ -2685,75 +2679,4 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 
 	return builder.generateMTTM(builder.node("start"), builder.node("end"));
 }
-
-#if SINGLE_FILE==1
-// just a placeholder
-int main() {
-	const std::string fileName = "assembly.txt";
-	std::ifstream file(fileName);
-
-	if(!file.is_open()) {
-		std::cout << "Unable to open file " << fileName << std::endl;
-		return -1;
-	}
-
-	std::vector<std::string> assembly;
-	std::string line;
-	while(std::getline(file, line)) {
-		assembly.push_back(line);
-	}
-
-	std::cout << "Assembly file read" << std::endl;
-
-	MultiTapeTuringMachine mttm = assemblyToMultiTapeTuringMachine(assembly);
-	
-	std::cout << "Finished generating" << std::endl;
-
-	std::cout << "Begin simulating:" << std::endl;
-	
-	//mttm.setInput("011_01101_001_111111");
-	mttm.setInput("011011110", 18);
-
-	mttm.displayProfile();
-	/*
-	int debug = 0;
-	int numSteps = 0;
-	int limit = 0;
-	while(!mttm.halted() && (limit <= 0 || numSteps < limit)) {
-		mttm.step(debug);
-
-		if(debug) {
-			std::cout << "After step " << numSteps << std::endl;
-			mttm.displayTapes();
-		}
-
-		if(numSteps % 10000 == 0) {
-			std::cout << "Finished " << numSteps << " steps" << std::endl;
-		}
-
-		++numSteps;
-	}
-
-	std::cout << "Final: " << std::endl;
-	mttm.displayTapes();
-	std::cout << numSteps << " steps" << std::endl;
-
-	std::cout << "halted ? " << mttm.halted() << std::endl;
-	*/
-
-	/*
-	std::tuple<int, int> result = mttm.run();
-
-	int a = std::get<0>(result);
-	int b = std::get<1>(result);
-
-	std::cout << "Status: " << a << " :  if 0, ongoing, 1 then halted" << std::endl;
-	std::cout << "Num steps: " << b << std::endl;
-
-	mttm.displayTapes();
-	*/
-
-	return 0;
-}
-#endif
 

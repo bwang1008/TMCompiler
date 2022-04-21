@@ -28,16 +28,19 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	const std::string outFileName = fileName.substr(0, lastDot) + ".json";
-
 	MultiTapeTuringMachine mttm = compile(fileName);
 
 	std::cout << "Compile successful" << std::endl;
+	std::cout << std::endl;
+
+	mttm.displayProfile();
+	std::cout << std::endl;
 
 	// write to JSON file
 	nlohmann::json j;
 	to_json(j, mttm);
 
+	const std::string outFileName = fileName.substr(0, lastDot) + ".json";
 	std::ofstream outFile(outFileName);
 	outFile << j.dump(4) << std::endl;
 	outFile.close();

@@ -1,6 +1,6 @@
 #include "helper.hpp"
 
-#include <algorithm>		// std::find_if
+#include <algorithm>		// std::reverse
 #include <cctype>			// std::isspace
 #include <cstdlib>			// std::system
 #include <fstream>			// std::ifstream, std::ofstream
@@ -458,6 +458,10 @@ std::vector<std::string> lineNumToBits(const size_t lineNum, const size_t ipSize
  * assume val is positive
  */
 std::string divideIntegerBy2(const std::string &val) {
+	if(val.size() == 0) {
+		throw std::invalid_argument("Provided parameter is blank, so not an integer");
+	}
+
 	bool carry = false;
 
 	std::string ans;
@@ -491,13 +495,81 @@ std::string divideIntegerBy2(const std::string &val) {
 }
 
 /**
+ * calculate biginteger * 2
+ * assume val is non-negative
+ */
+std::string multiplyIntegerBy2(const std::string &val) {
+	if(val.size() == 0) {
+		throw std::invalid_argument("Provided parameter is blank, so not an integer");
+	}
+
+	int carry = 0;
+
+	std::string ans;
+	for(int i = static_cast<int>(val.size()) - 1; i >= 0; --i) {
+		int digit = (val[i] - '0');
+		
+		if(digit < 0 || digit >= 10) {
+			throw std::invalid_argument("Val provided for divideIntegerBy2 not an integer: " + val);
+		}
+
+		int output = 2 * digit + carry;
+
+		ans.push_back('0' + (output % 10));
+		carry = (output / 10);
+	}
+
+	if(carry > 0) {
+		ans.push_back('0' + carry);
+	}
+
+	std::reverse(ans.begin(), ans.end());
+	
+	return ans;
+}
+
+/**
+ * calculate biginteger + 1
+ * assume val is non-negative
+ */
+std::string incrementInteger(const std::string &val) {
+	if(val.size() == 0) {
+		throw std::invalid_argument("Provided parameter is blank, so not an integer");
+	}
+
+	int carry = 1;
+
+	std::string ans;
+	for(int i = static_cast<int>(val.size()) - 1; i >= 0; --i) {
+		int digit = (val[i] - '0');
+		
+		if(digit < 0 || digit >= 10) {
+			throw std::invalid_argument("Val provided for divideIntegerBy2 not an integer: " + val);
+		}
+
+		int output = digit + carry;
+
+		ans.push_back('0' + (output % 10));
+		carry = (output / 10);
+	}
+
+	if(carry > 0) {
+		ans.push_back('0' + carry);
+	}
+
+	std::reverse(ans.begin(), ans.end());
+	
+	return ans;
+}
+
+/**
  * Convert string representing integer literal to bits
  * Use style of (1 if neg, 0 if non-negative), then bits from 
  * least-significant to most-significant. 0 is just "0"
  */
 std::string convertIntegerToBits(std::string val) {
 	if(val.size() == 0) {
-		throw std::invalid_argument(val + " is blank, so not an integer");
+		throw std::invalid_argument("Argument is blank, so not an integer");
 	}
 
 	std::string bits;
@@ -517,6 +589,33 @@ std::string convertIntegerToBits(std::string val) {
 	}
 
 	return bits;
+}
+
+/**
+ * Convert bit-string into a decimal integer.
+ * Bit-string in form mentioned above: [sign-bit] then 
+ * least-significant bit to most significant bit (no ending 0's)
+ */
+std::string convertBitStringToDecimalInteger(const std::string &bitString) {
+	if(bitString.size() == 0) {
+		throw std::invalid_argument("Parameter is blank, so not an integer");
+	}
+
+	bool isNeg = (bitString[0] == '1');
+
+	std::string ans("0");
+	for(size_t i = bitString.size() - 1; i >= 1; --i) {
+		ans = multiplyIntegerBy2(ans);
+		if(bitString[i] == '1') {
+			ans = incrementInteger(ans);	
+		}
+	}
+
+	if(isNeg) {
+		ans = "-" + ans;
+	}
+
+	return ans;
 }
 
 int checkCompilation(const std::string &fileName) {

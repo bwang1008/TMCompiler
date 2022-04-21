@@ -14,6 +14,7 @@ add_executable(${CMAKE_PROJECT_NAME}
 	TMCompiler/utils/constants.hpp
 	TMCompiler/utils/helper.hpp
 	TMCompiler/utils/helper.cpp
+	TMCompiler/utils/json.hpp
 	TMCompiler/tm_definition/tape.hpp
 	TMCompiler/tm_definition/tape.cpp
 	TMCompiler/tm_definition/transition.hpp

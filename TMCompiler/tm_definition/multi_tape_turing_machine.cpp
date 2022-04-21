@@ -1,13 +1,9 @@
 #include "multi_tape_turing_machine.hpp"
 
 #include <algorithm>		// std::sort
-#include <iomanip>			// std::setw
 #include <iostream>			// std::cout, std::endl
-#include <fstream>			// std::ifstream, std::ofstream
-#include <map>				// std::map
 #include <regex>			// std::regex, std::regex_match
 #include <string>			// std::string
-#include <tuple>			// std::tuple, std::make_tuple
 #include <vector>			// std::vector
 
 #include "TMCompiler/utils/constants.hpp"
@@ -242,19 +238,13 @@ void MultiTapeTuringMachine::displayProfile() const {
 	std::cout << "Start at node " << this->initialState << " and ends at " << this->haltState << std::endl;
 
 	// count number of nodes have this many transitions
-	std::map<int, int> counts;
 	int numTransitions = 0;
 	for(size_t i = 0; i < this->transitions.size(); ++i) {
 		int b = static_cast<int>(this->transitions[i].size());
 		numTransitions += b;
-		counts[b] += 1;
 	}
 
 	std::cout << numTransitions << " transitions" << std::endl;
-
-	for(std::map<int, int>::iterator it = counts.begin(); it != counts.end(); ++it) {
-		std::cout << it->second << " nodes have " << it->first << " transitions" << std::endl;
-	}
 }
 
 // serialization methods for nlohmann::json

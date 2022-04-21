@@ -3,9 +3,11 @@
  * read in the Multi-Tape Turing Machine and simulate for a number of steps
  */
 
-#include <iostream>
+#include <iostream>		// std::cout, std::endl
+#include <fstream>		// std::ifstream
 
 #include "TMCompiler/tm_definition/multi_tape_turing_machine.hpp"
+#include "TMCompiler/utils/json.hpp"
 
 int main(int argc, char* argv[]) {
 	if(argc <= 1) {
@@ -14,7 +16,32 @@ int main(int argc, char* argv[]) {
 	}
 
 	// options...
-	
 
+	std::cout << "Begin simulating:" << std::endl;
+
+	int debug = 0;
+	int numSteps = 0;
+	int limit = 0;
+
+	while(!mttm.halted() && (limit <= 0 || numSteps < limit)) {
+		mttm.step(debug);
+
+		if(debug) {
+			std::cout << "After step " << numSteps << std::endl;
+			mttm.displayTapes();
+		}
+
+		if(numSteps % 10000 == 0) {
+			std::cout << "Finished " << numSteps << " steps" << std::endl;
+		}
+
+		++numSteps;
+	}
+
+	std::cout << "Final: " << std::endl;
+	mttm.displayTapes();
+	std::cout << numSteps << " steps" << std::endl;
+
+	std::cout << "halted ? " << mttm.halted() << std::endl;
 
 }

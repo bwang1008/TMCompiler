@@ -35,5 +35,4 @@
 # CMAKE build folder
 build*/
 *.swp
-output.txt
-what.txt
+TMCompiler/compilation/assemblyRunner.cpp

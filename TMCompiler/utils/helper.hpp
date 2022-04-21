@@ -83,6 +83,12 @@ std::vector<std::string> lineNumToBits(const size_t lineNum, const size_t ipSize
 
 std::string divideIntegerBy2(const std::string &val);
 
+std::string multiplyIntegerBy2(const std::string &val);
+
+std::string incrementInteger(const std::string &val);
+
 std::string convertIntegerToBits(std::string val);
+
+std::string convertBitStringToDecimalInteger(const std::string &bitString);
 
 #endif
