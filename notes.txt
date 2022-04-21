@@ -49,6 +49,8 @@ EDIT: reworking multiplication (by adding in basic_mul2, basic_div2, isEven, isO
 MEM[0] = 5. Now takes 1,074,030 steps in 48 seconds.
 
 EDIT: after reworking memset, "MEM[0] = 5" takes 216,417 steps.
+Program BFS on input "5 3 1 1 2 1 3 4 5" runs successfully 
+with output "0 1 1 2 -1" in 54,299,477 steps in 48 minutes.
 
 Works:
 Assignment, declaration, +, -, *, /, <, >, <=, >=, ==, !=, ^, ||, &&

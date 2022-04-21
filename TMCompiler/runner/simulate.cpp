@@ -17,6 +17,24 @@ int main(int argc, char* argv[]) {
 
 	// options...
 
+	const std::string fileName(argv[1]);
+	std::ifstream inputFile(fileName);
+
+	if(!inputFile.is_open()) {
+		std::cout << "File " << fileName << " not found" << std::endl;
+		return -1;
+	}
+
+	nlohmann::json j;
+	inputFile >> j;
+	inputFile.close();
+
+	std::cout << "File successfully read" << std::endl;
+
+	MultiTapeTuringMachine mttm = j.get<MultiTapeTuringMachine>();
+
+	std::cout << "JSON to MTTM successful" << std::endl;
+
 	std::cout << "Begin simulating:" << std::endl;
 
 	int debug = 0;
@@ -31,7 +49,7 @@ int main(int argc, char* argv[]) {
 			mttm.displayTapes();
 		}
 
-		if(numSteps % 10000 == 0) {
+		if(numSteps % 50000 == 0) {
 			std::cout << "Finished " << numSteps << " steps" << std::endl;
 		}
 
