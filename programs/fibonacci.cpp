@@ -1,3 +1,8 @@
+/**
+ * Program to compute n'th fibonacci number
+ * Input: one integer n
+ * Return: n'th fibonacci number
+ */
 int fib(int n) {
 	if(n == 0 || n == 1) {
 		return n;

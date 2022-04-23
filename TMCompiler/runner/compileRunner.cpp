@@ -47,40 +47,5 @@ int main(int argc, char* argv[]) {
 
 	std::cout << "Results written to file " << outFileName << std::endl;
 
-	int simulate = 0;
-	
-	if(simulate) {
-
-		std::cout << "Begin simulating:" << std::endl;
- 
- 		// 5 9 5 8 2 5
-		mttm.setInput("0101_01001_0101_00001_001_0101");
-
-		int debug = 0;
-		int numSteps = 0;
-		int limit = 0;
-
-		while(!mttm.halted() && (limit <= 0 || numSteps < limit)) {
-			mttm.step(debug);
-
-			if(debug) {
-				std::cout << "After step " << numSteps << std::endl;
-				mttm.displayTapes();
-			}
-
-			if(numSteps % 50000 == 0) {
-				std::cout << "Finished " << numSteps << " steps" << std::endl;
-			}
-
-			++numSteps;
-		}
-
-		std::cout << "Final: " << std::endl;
-		mttm.displayTapes();
-		std::cout << numSteps << " steps" << std::endl;
-
-		std::cout << "halted ? " << mttm.halted() << std::endl;
-	}
-
 	return 0;
 }
