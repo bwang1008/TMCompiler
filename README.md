@@ -25,7 +25,7 @@ This downloads the git repo from Github, creates and populates a `build` directo
 3. Type `ls` in the terminal and ensure there are two executables named `compile` and `simulate`.
 
 ## Running the Project
-You can run one of the provided examples in `TMCompiler/programs/`, or you can write your own program. If you write your own, place it in the `TMCompiler/programs` folder, name it with a `.cpp` extension, and ensure that your file has a `int main()` function. Further notes on how to write such a proram is detailed below. For now, suppose you want to run `TMCompiler/programs/fibonacci.cpp`, whose program requires an integer as input.
+You can run one of the provided examples in `TMCompiler/programs/`, or you can write your own program. If you write your own, place it in the `TMCompiler/programs` folder, name it with a `.cpp` extension, and ensure that your file has a `int main()` function. Further notes on how to write such a program is detailed below. For now, suppose you want to run `TMCompiler/programs/fibonacci.cpp`, whose program requires an integer as input.
 
 Be sure you are in the `TMCompiler/build/` directory, and that the executables `compile` and `simulate` exist.
 
@@ -51,7 +51,36 @@ If you had compiled a program that did not require input, like `TMCompiler/progr
 
 If your program requires multiple integers as input, use quotation marks around the space-separated integers, so the option would look something like `input="3 1 2 3"`.
 
+## The Restricted C++
+The restricted subset of C++, which I'll abbreviate as rC++, contains 
+- `bool` data type
+- `int` data type, but with arbitrary precision
+- Arithmetical operators on ints: `+`,`-`,`*`,`/`,`%`,`^`,`-` for addition, subtraction, multiplication, floor division, modulo, exclusive-or, and the unary minus for negation. 
+- Comparison operators on ints: `==`,`!=`,`<`,`<=`,`>`,`>=` for equals, not equals, less than, less than or equal to, greater than, and greater or equal to 
+- Logical operators and comparison operators on bools: `==`,`!=`,`&&`,`||`,`^`,`!` for equals, not equals, AND, OR, exclusive-or, and the not operator
+- Declaration and assignment of variables, like `int x = 999999999999999999999;`
+- For-loops, while-loops, if statements
+- Functions that can be recurisve or mutually recursive
+- 3 provided functions:
+    - `int nextInt()`, which reads in an integer from a tape designated as standard input
+	- `void printInt(int x)` which prints an integer to a tape designated as standard output
+    - `void printSpace()` which prints a space on the output tape. Should always be used after every call to `printInt`.
+- A global int array `MEM` of theoretically infinite size, with values initialized to 0. You can get and set values in the array with statements like `MEM[3] = 5;` or `int x = MEM[3];`
 
+Things that are NOT part of rC++ include, but are not limited to,
+- floats or strings or any other types besides `int` and `bool`
+- you cannot have something like `int[] x = MEM;` either
+- classes or structs or objects
+- preprocessor directives
+- multiple files
+- The operators `++`, `--`, `<<`, `>>`, `<<=`, `>>=`, `~`
+- Casting
+- Global variables (though you can use a value in `MEM` to act as a global variable)
+- Function forward declarations
+- malloc/free/new/delete
+- do-while loop
+
+The number of tapes in the multi-tape Turing Machine varies per program, but it will be at least 30 tapes. Writing a function that takes a lot of parameters is one way to increase the number of tapes used. While each tape is two-way infinite, each tape in the generated multi-tape Turing Machines will never go lower than index `-2`, so they are more like one-way infinite tapes. There are three symbols in the alphabet used by the multi-tape Turing Machine: `0`, `1`, and `_` (blank). A transition in a multi-tape Turing Machine with $$T$$ tapes is denoted using a regular expression that matches $$T$$ characters read from the $$T$$ tapes. This is used rather than specifying all possible values that the $$T$$ tapes could read to reduce space.  
 
 ## Extra notes
 Integers will be in little-endian: there is a sign bit, and then the least-significant-bit 
