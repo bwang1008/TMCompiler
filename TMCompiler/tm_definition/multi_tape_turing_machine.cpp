@@ -71,6 +71,10 @@ bool MultiTapeTuringMachine::halted() const {
 	return this->currentState == this->haltState;
 }
 
+unsigned int MultiTapeTuringMachine::numTapes() const {
+	return this->T;
+}
+
 unsigned int MultiTapeTuringMachine::numSteps() const {
 	return this->steps;
 }
@@ -245,6 +249,10 @@ void MultiTapeTuringMachine::displayProfile() const {
 	}
 
 	std::cout << numTransitions << " transitions" << std::endl;
+}
+
+std::string MultiTapeTuringMachine::tapeContents(const int tapeIndex) const {
+	return this->tapes[tapeIndex].tapeContents();
 }
 
 // serialization methods for nlohmann::json

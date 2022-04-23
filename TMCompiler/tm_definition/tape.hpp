@@ -19,6 +19,7 @@ class Tape {
 
 		int headPosition() const;
 		void display() const;
+		std::string tapeContents() const;
 
 		// allow these non-member functions to access all members for json serialization
 		friend void to_json(nlohmann::json &j, const Tape &tape);

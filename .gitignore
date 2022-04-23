@@ -35,4 +35,4 @@
 # CMAKE build folder
 build*/
 *.swp
-TMCompiler/compilation/assemblyRunner.cpp
+*.json

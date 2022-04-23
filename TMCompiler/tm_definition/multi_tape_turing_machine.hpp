@@ -1,6 +1,7 @@
 #ifndef MULTI_TAPE_TURING_MACHINE_HPP
 #define MULTI_TAPE_TURING_MACHINE_HPP
 
+#include <string>				// std::string
 #include <vector>				// std::vector
 
 #include "TMCompiler/tm_definition/tape.hpp"
@@ -19,6 +20,7 @@ class MultiTapeTuringMachine {
 		void setInput(const std::string &input);
 		void setInput(const std::string &input, const int tapeIndex);
 		bool halted() const;
+		unsigned int numTapes() const;
 		unsigned int numSteps() const;
 		void step(const int verbose=0);
 
@@ -28,6 +30,7 @@ class MultiTapeTuringMachine {
 		void displayTape(const int tapeIndex) const;
 		void displayTapes() const;
 		void displayProfile() const;
+		std::string tapeContents(const int tapeIndex) const;
 
 		// allow these non-member functions to access all members for json serialization
 		friend void to_json(nlohmann::json &j, const MultiTapeTuringMachine &mttm);

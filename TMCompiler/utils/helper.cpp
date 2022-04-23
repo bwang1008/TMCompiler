@@ -569,7 +569,7 @@ std::string incrementInteger(const std::string &val) {
  */
 std::string convertIntegerToBits(std::string val) {
 	if(val.size() == 0) {
-		throw std::invalid_argument("Argument is blank, so not an integer");
+		throw std::invalid_argument("Argument to convertIntegerToBits is blank, so not an integer");
 	}
 
 	std::string bits;
@@ -652,6 +652,16 @@ int checkCompilation(const std::string &fileName) {
 	const std::string command = std::string("g++ -fsyntax-only ") + tempFileName;
 	std::cout << "Execute: " << command << std::endl;
 	const int status = std::system(command.c_str());
+
+	if(status == 0) {
+		const std::string removeCommand = std::string("rm " + tempFileName);
+		std::cout << "Execute: " << removeCommand << std::endl;
+		const int removeStatus = std::system(removeCommand.c_str());
+		if(removeStatus != 0) {
+			std::cout << "There was a problem removing " << tempFileName << std::endl;
+			std::cout << "You may have to manually remove this file" << std::endl;
+		}
+	}
 
 	return status;
 }

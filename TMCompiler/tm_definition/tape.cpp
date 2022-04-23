@@ -135,6 +135,14 @@ void Tape::display() const {
 	std::cout << "]\n";
 }
 
+std::string Tape::tapeContents() const {
+	std::string ans;
+	for(int i = earliestIndex; i <= latestIndex; ++i) {
+		ans.push_back(this->get(i));
+	}
+	return ans;
+}
+
 // serialization methods for nlohmann::json
 void to_json(nlohmann::json &j, const Tape &tape) {
 	j = nlohmann::json{

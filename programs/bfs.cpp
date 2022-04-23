@@ -1,9 +1,12 @@
 /**
  * Given a graph and a start node, find shortest distance from start node to all other nodes. -1 if not reachable
- * 
+ * Input: First line is 3 integers: N M S, representing number of nodes,
+ * number of edges, and the start node (1 <= S <= N)
+ * Then the following M lines each contain two integers, u v (1 <= u,v <= N),
+ * representing an edge between nodes u and v.
+ * Output the shortest distances from S to all N nodes, -1 if not reachable
  */
 int main() {
-	// first line of input formatted as: N M S: number of nodes, number of edges, then start node (1 <= S <= N)
 	int numNodes = nextInt();
 	int numEdges = nextInt();
 	int startNode = nextInt() - 1;
