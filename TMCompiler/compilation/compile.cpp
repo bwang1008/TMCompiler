@@ -18,6 +18,8 @@ MultiTapeTuringMachine compile(const std::string &fileName) {
 		throw std::runtime_error("Could not open file " + fileName);
 	}
 
+	// EDIT: checking compilation removes mutual recursive functions
+	/*
 	const int compilationStatus = checkCompilation(fileName);	
 	if(compilationStatus != 0) {
 		throw std::runtime_error("Error compiling source code");
@@ -25,6 +27,7 @@ MultiTapeTuringMachine compile(const std::string &fileName) {
 	else {
 		std::cout << "Initial compilation OK" << std::endl;
 	}
+	*/
 
 	std::vector<std::string> program;
 	std::string programLine;
