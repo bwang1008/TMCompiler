@@ -1,6 +1,7 @@
 #include "unit1.hpp"
 
 #include <iostream>			// std::cout, std::endl
+#include <unordered_set>	// std::unordered_set
 #include <stdexcept>		// std::invalid_argument
 #include <string>			// std::string, std::stoi
 #include <utility>			// std::pair, std::make_pair
@@ -592,19 +593,16 @@ void handlePadding(MultiTapeBuilder &builder, const size_t tape0, const size_t t
 /**
  * handle assembly code of checking whether value at tape is zero or not.
  * write 0 into rax if not zero; write a 1 into rax if it zero
+ * Function is inlined: no popping off from paramStack. Which tape argument
+ * is on is given instead
  */
-void handleIsZero(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	// must pop from paramStack
-	const size_t q0 = builder.newNode();
-	const size_t q1 = builder.newNode();
-	const size_t penultimateNode = builder.newNode();
-
-	copyBetweenTapes(builder, builder.tapeIndex("paramStack"), builder.tapeIndex("variables"), startNode, q0);
-	popOffTop(builder, builder.tapeIndex("paramStack"), q0, q1);
-	
+void handleIsZero(MultiTapeBuilder &builder, const size_t paramTape, const size_t startNode, const size_t endNode) {
 	// zero is just 0 followed by a blank
-	const size_t tape0 = builder.tapeIndex("variables");
+	
+	const size_t tape0 = paramTape;
 	const size_t tapeRax = builder.tapeIndex("rax");
+	const size_t q1 = startNode;
+	const size_t penultimateNode = builder.newNode();
 	
 	// q1: if see 1 or _, not a zero
 	std::vector<std::pair<size_t, std::string> > reads;
@@ -2501,6 +2499,8 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 
 	std::cout << "Initialization complete" << std::endl;
 
+	std::unordered_set<std::string> inlined {"isZero"};
+
 	for(size_t i = 0; i < assembly.size(); ++i) {
 		const std::vector<std::string> words = getWords(assembly[i]);
 		
@@ -2521,112 +2521,127 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 			const size_t q0 = builder.newNode();
 			handleIPTransition(builder, i, builder.node("after"), q0);
 
-			size_t prevNode = q0;
-			// then push new stack frames to all varTapes
-			for(size_t i = 0; i < builder.numVars; ++i) {
-				const size_t tape = builder.tapeIndex("variables") + i;
-				const size_t q = builder.newNode();
-				pushEmptyFrame(builder, tape, prevNode, q);
-				prevNode = q;
-			}
-
 			const std::string func = words[1].substr(10, words[1].size() - 10);
 
-			const size_t q1 = builder.newNode();
-			if(func == "isZero") {
-				handleIsZero(builder, prevNode, q1);
-			}
-			else if(func == "isPos") {
-				handleIsPos(builder, prevNode, q1);	
-			}
-			else if(func == "isNeg") {
-				handleIsNeg(builder, prevNode, q1);	
-			}
-			else if(func == "basic_add") {
-				handleBasicAdd(builder, prevNode, q1);
-			}
-			else if(func == "basic_sub") {
-				handleBasicSub(builder, prevNode, q1);
-			}
-			else if(func == "basic_xor") {
-				handleBasicXor(builder, prevNode, q1);
-			}
-			else if(func == "basic_eq") {
-				handleBasicEq(builder, prevNode, q1);
-			}
-			else if(func == "basic_lt") {
-				handleBasicLt(builder, prevNode, q1);
-			}
-			else if(func == "basic_neg") {
-				handleBasicNeg(builder, prevNode, q1);
-			}
-			else if(func == "basic_mul2") {
-				handleBasicMul2(builder, prevNode, q1);
-			}
-			else if(func == "basic_div2") {
-				handleBasicDiv2(builder, prevNode, q1);
-			}
-			else if(func == "isEven") {
-				handleIsEven(builder, prevNode, q1);
-			}
-			else if(func == "isOdd") {
-				handleIsOdd(builder, prevNode, q1);
-			}
-			else if(func == "getMemBitIndex") {
-				handleGetMemBitIndex(builder, prevNode, q1);
-			}
-			else if(func == "setMemBitIndex") {
-				handleSetMemBitIndex(builder, prevNode, q1);
-			}
-			else if(func == "moveMemHeadRight") {
-				handleMoveMemHeadRight(builder, prevNode, q1);
-			}
-			else if(func == "moveMemHeadLeft") {
-				handleMoveMemHeadLeft(builder, prevNode, q1);
-			}
-			else if(func == "setMemBitZero") {
-				handleSetMemBitZero(builder, prevNode, q1);
-			}
-			else if(func == "setMemBitOne") {
-				handleSetMemBitOne(builder, prevNode, q1);
-			}
-			else if(func == "setMemBitBlank") {
-				handleSetMemBitBlank(builder, prevNode, q1);
-			}
-			else if(func == "memBitIsZero") {
-				handleMemBitIsZero(builder, prevNode, q1);
-			}
-			else if(func == "memBitIsOne") {
-				handleMemBitIsOne(builder, prevNode, q1);
-			}
-			else if(func == "memBitIsBlank") {
-				handleMemBitIsBlank(builder, prevNode, q1);
-			}
-			else if(func == "nextInt") {
-				handleNextInt(builder, prevNode, q1);
-			}
-			else if(func == "printSpace") {
-				handlePrintSpace(builder, prevNode, q1);
-			}
-			else if(func == "printInt") {
-				handlePrintInt(builder, prevNode, q1);
+			// branch depending on if func is an "inlined" function or not
+			if(inlined.find(func) != inlined.end()) {
+				size_t prevNode = q0;
+				const size_t q1 = builder.newNode();	
+
+				if(func == "isZero") {
+					handleIsZero(builder, builder.tapeIndex("variables") + parseTapeNum(words[2]), prevNode, q1);
+				}
+
+				// now connect from q1 to node "before"
+				builder.add1TapeTransition(q1, builder.node("before"), builder.tapeIndex("variables"), ".", ".", 0);
+
 			}
 			else {
-				throw std::invalid_argument("Invalid line " + std::to_string(i));
-			}
-			
-			prevNode = q1;
+				size_t prevNode = q0;
+				// then push new stack frames to all varTapes
+				for(size_t i = 0; i < builder.numVars; ++i) {
+					const size_t tape = builder.tapeIndex("variables") + i;
+					const size_t q = builder.newNode();
+					pushEmptyFrame(builder, tape, prevNode, q);
+					prevNode = q;
+				}
 
-			// then pop off all the pushed stack frames
-			for(size_t i = 0; i < builder.numVars; ++i) {
-				const size_t tape = builder.tapeIndex("variables") + i;
-				const size_t q = builder.newNode();
-				popOffTop(builder, tape, prevNode, q);
-				prevNode = q;
-			}
+				const size_t q1 = builder.newNode();
+				//if(func == "isZero") {
+				//	handleIsZero(builder, prevNode, q1);
+				//}
+				if(func == "isPos") {
+					handleIsPos(builder, prevNode, q1);	
+				}
+				else if(func == "isNeg") {
+					handleIsNeg(builder, prevNode, q1);	
+				}
+				else if(func == "basic_add") {
+					handleBasicAdd(builder, prevNode, q1);
+				}
+				else if(func == "basic_sub") {
+					handleBasicSub(builder, prevNode, q1);
+				}
+				else if(func == "basic_xor") {
+					handleBasicXor(builder, prevNode, q1);
+				}
+				else if(func == "basic_eq") {
+					handleBasicEq(builder, prevNode, q1);
+				}
+				else if(func == "basic_lt") {
+					handleBasicLt(builder, prevNode, q1);
+				}
+				else if(func == "basic_neg") {
+					handleBasicNeg(builder, prevNode, q1);
+				}
+				else if(func == "basic_mul2") {
+					handleBasicMul2(builder, prevNode, q1);
+				}
+				else if(func == "basic_div2") {
+					handleBasicDiv2(builder, prevNode, q1);
+				}
+				else if(func == "isEven") {
+					handleIsEven(builder, prevNode, q1);
+				}
+				else if(func == "isOdd") {
+					handleIsOdd(builder, prevNode, q1);
+				}
+				else if(func == "getMemBitIndex") {
+					handleGetMemBitIndex(builder, prevNode, q1);
+				}
+				else if(func == "setMemBitIndex") {
+					handleSetMemBitIndex(builder, prevNode, q1);
+				}
+				else if(func == "moveMemHeadRight") {
+					handleMoveMemHeadRight(builder, prevNode, q1);
+				}
+				else if(func == "moveMemHeadLeft") {
+					handleMoveMemHeadLeft(builder, prevNode, q1);
+				}
+				else if(func == "setMemBitZero") {
+					handleSetMemBitZero(builder, prevNode, q1);
+				}
+				else if(func == "setMemBitOne") {
+					handleSetMemBitOne(builder, prevNode, q1);
+				}
+				else if(func == "setMemBitBlank") {
+					handleSetMemBitBlank(builder, prevNode, q1);
+				}
+				else if(func == "memBitIsZero") {
+					handleMemBitIsZero(builder, prevNode, q1);
+				}
+				else if(func == "memBitIsOne") {
+					handleMemBitIsOne(builder, prevNode, q1);
+				}
+				else if(func == "memBitIsBlank") {
+					handleMemBitIsBlank(builder, prevNode, q1);
+				}
+				else if(func == "nextInt") {
+					handleNextInt(builder, prevNode, q1);
+				}
+				else if(func == "printSpace") {
+					handlePrintSpace(builder, prevNode, q1);
+				}
+				else if(func == "printInt") {
+					handlePrintInt(builder, prevNode, q1);
+				}
+				else {
+					throw std::invalid_argument("Invalid line " + std::to_string(i));
+				}
 
-			// now connect from prevNode to node "before"
-			builder.add1TapeTransition(prevNode, builder.node("before"), builder.tapeIndex("variables"), ".", ".", 0);
+				prevNode = q1;
+
+				// then pop off all the pushed stack frames
+				for(size_t i = 0; i < builder.numVars; ++i) {
+					const size_t tape = builder.tapeIndex("variables") + i;
+					const size_t q = builder.newNode();
+					popOffTop(builder, tape, prevNode, q);
+					prevNode = q;
+				}
+
+				// now connect from prevNode to node "before"
+				builder.add1TapeTransition(prevNode, builder.node("before"), builder.tapeIndex("variables"), ".", ".", 0);
+			}
 		}
 		else if(words[0] == "call") {
 			handleCallNum(builder, i, words);	

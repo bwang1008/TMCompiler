@@ -256,16 +256,6 @@ std::vector<std::string> formatProgram(std::vector<std::string> &program) {
 
 	std::string letters2;
 	
-	// kinds of single-lines:
-	// 1) declaration: int x = ...;  , with potentially function calls. only int / bool allowed
-	// 2) assignment: x =  ...;
-	// 3) special assignment: x += ...;, -=, *=, /=, %= (for ints), and &=, |=, ^= (for bools)  . Notable, no shifts, or bit-wise operations
-	// 4) function call: my_func(3, 2);
-	// 5) function declaration: func int my_func(int x, int y) {
-	// 6) loops: for(...) {  / while(...) {
-	// 7) conditionals: if(...) {,  else if(...) {, else {...
-	// 8) just "}"
-
 	int numIndent = 0;
 	bool isFor = false;
 	bool newLine = true;
@@ -300,98 +290,6 @@ std::vector<std::string> formatProgram(std::vector<std::string> &program) {
 			}
 		}
 	}
-
-
-	/*
-	int startSearch = findNonBlank(letters, 0);
-	while(startSearch < (int) letters.size()) {
-
-		if(std::isblank(letters[startSearch])) {
-			startSearch = findNonBlank(letters, startSearch);
-			continue;
-		}
-
-
-		if(letters[startSearch] == '}') {
-			--numIndent;
-
-			addIndents(letters2, numIndent);
-			letters2.push_back('}');
-			letters2.push_back('\n');
-
-			++startSearch;
-			continue;
-		}
-
-		// remaining: 1,2,3,4,5,6,7
-		// letter must be alpha-numerical
-
-		std::string w = getAlphaNumericWord(letters, startSearch);
-
-		if(w == "if") {
-			startSearch = findNext(letters, '(', startSearch);
-			
-			int endParen = findOpposite(letters, startSearch);
-
-			addIndents(letters2, numIndent);
-			letters2.append("if(");
-			for(int j = startSearch + 1; j < endParen; ++j) {
-				char c = letters[j];
-				if(!std::isblank(c) && c != '\n') {
-					letters2.push_back(c);
-				}
-			}
-			letters2.append(") {\n");
-			++numIndent;
-
-			startSearch = findNext(letters, '{', endParen) + 1;
-			continue;
-		}
-
-		if(w == "else") {
-
-			// 4 cuz "else" is 4 letters long"
-			for(int j = startSearch + 4; j < letters.size(); ++j) {
-				if(!(std::isblank(letters[j]))) {
-					startSearch = j;
-					break;
-				}
-			}
-
-			std::string w2 = getAlphaNumericWord(letters, startSearch);
-			if(w2 == "if") {
-				startSearch = findNex(letters, '(', startSearch);
-				int endParen = findOpposite(letters, startSearch);
-
-				addIndents(letters2, numIndent);
-				letters2.append("else if(");
-				for(int j = startSearch + 1; j < endParen; ++j) {
-					char c = letters[j];
-					if(!std::isblank(c) && c != '\n') {
-						letters2.push_back(c);
-					}
-				}
-				letters2.append(") {\n");
-
-				startSearch = findNext(letters, '{', endParen + 1);
-			}
-			else {
-				// is "{"
-				addIndents(letters2, numIndent);
-				letters2.append("else {\n");
-				
-				startSearch = startSearch + 1;
-			}
-
-			++numIndent;
-		}
-
-
-		// remaining: 1,2,3,4,5,6
-
-
-	}
-	*/
 
 	std::string line = "";
 	for(char c : letters2) {
@@ -2569,6 +2467,7 @@ std::vector<std::string> pushAndPop(std::vector<std::string> &program) {
 			}
 		}
 		else if((words.size() >= 2 && words[words.size() - 2].substr(0, 5) == "!FUNC") || (words.size() >= 4 && words[words.size() - 4].substr(0, 5) == "!FUNC")) {
+			// either "x y z f ;" or "x y z f = temp ;"
 			int funcIndex = (words.size() >= 2 && words[words.size() - 2].substr(0, 5) == "!FUNC") ? (int) words.size() - 2 : (int) words.size() - 4;
 			
 			for(int j = funcIndex - 1; j >= 0; --j) {
@@ -2601,6 +2500,72 @@ std::vector<std::string> pushAndPop(std::vector<std::string> &program) {
 		}
 	}
 	ans2.push_back(tempLine);
+
+	return ans2;
+}
+
+/**
+ * For optimizing performance, don't push parameters onto stack
+ * for simple functions like isZero, isPos, isNeg, basic_add.
+ * Functions that don't call other functions (so those implemented in the
+ * Turing Machine itself)
+ * This avoids unnecessary push/pop to find if a number is zero or not,
+ * when you only have to check 2 bits
+ * Here, we remove pushes when calling these "inline" functions
+ * and also add the tape parameters to end of "call basic_add" or whatever
+ * inline function is being called. Will look like "call basic_add !VAR_TEMP_temp0 !VAR_TEMP_temp1"
+ */
+std::vector<std::string> incorporateInline(const std::vector<std::string> &program) {
+	std::vector<std::string> ans;
+
+	std::unordered_set<std::string> inlinedFuncs {"!FUNC_LIB_isZero"};
+
+	for(size_t i = 0; i < program.size(); ++i) {
+		std::vector<std::string> words = getWords(program[i]);
+
+		// if you find a call to an inlined function,
+		if(words.size() >= 2 && words[0] == "call" && inlinedFuncs.find(words[1]) != inlinedFuncs.end()) {
+			// collect parameter names that were pushed
+			std::vector<std::string> params;
+			// remove the push statements above it
+			while(ans.size() > 0) {
+				std::vector<std::string> lastWords = getWords(ans.back());
+				if(lastWords.size() > 1 && lastWords[0] == "push") {
+					std::string paramName = lastWords[1];
+					params.push_back(paramName);
+					ans.pop_back();	
+				}
+	
+				break;
+			}
+
+			// write the "call <func> params..." statement
+			std::string callStatement = words[0] + " " + words[1];
+			for(size_t j = 0; j < params.size(); ++j) {
+				callStatement.append(" ");
+				callStatement.append(params[j]);
+			}
+
+			callStatement.append(" ");
+			callStatement.append(";");
+			callStatement.append(" ");
+			
+			ans.push_back(callStatement);
+		}
+		else {
+			ans.push_back(program[i]);
+		}
+	}
+
+	// convert to list of words to avoid formatting issues
+	std::vector<std::string> ans2;
+	for(size_t i = 0; i < ans.size(); ++i) {
+		std::vector<std::string> words = getWords(ans[i]);
+		for(size_t j = 0; j < words.size(); ++j) {
+			ans2.push_back(words[j]);
+			ans2.push_back(" ");
+		}
+	}
 
 	return ans2;
 }
@@ -3105,6 +3070,9 @@ std::vector<std::string> sourceToAssembly(const std::vector<std::string> &progra
 	modifiedProgram = formatProgram(modifiedProgram);
 
 	modifiedProgram = pushAndPop(modifiedProgram);
+	modifiedProgram = formatProgram(modifiedProgram);
+
+	modifiedProgram = incorporateInline(modifiedProgram);
 	modifiedProgram = formatProgram(modifiedProgram);
 
 	modifiedProgram = remapVariableNamesToTapes(modifiedProgram);
