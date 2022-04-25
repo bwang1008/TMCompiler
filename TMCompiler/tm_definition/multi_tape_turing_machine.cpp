@@ -3,6 +3,7 @@
 #include <algorithm>		// std::sort
 #include <iostream>			// std::cout, std::endl
 #include <regex>			// std::regex, std::regex_match
+#include <stdexcept>		// std::invalid_argument
 #include <string>			// std::string
 #include <vector>			// std::vector
 
@@ -84,49 +85,13 @@ Transition MultiTapeTuringMachine::findTransition(const int state, const std::ve
 	const std::string input(symbols.begin(), symbols.end());
 	
 	// special case: node == "after": many transitions, but are sorted. Use binary search to find write one
-	if(false && state == 3) { // binary searching ain't working yet... just do linear search for now
-		int low = 0;
-		int high = static_cast<int>(validTransitions.size() - 1);
-
-		while(low <= high) {
-			const int mid = (low + high) / 2;
-			const Transition temp = validTransitions[mid];
-			if(std::regex_match(input, std::regex(temp.symbols1))) {
-				return validTransitions[mid];
-			}
-			else {
-				std::string readRule;
-				for(size_t i = 0; i < temp.symbols1.size(); ++i) {
-					if(temp.symbols1[i] == '.') {
-						readRule.push_back(input[i]);
-					}
-					else {
-						readRule.push_back(temp.symbols1[i]);
-					}
-				}
-
-				if(input.compare(readRule) < 0) {
-					high = low - 1;
-				}
-				else {
-					low = high + 1;
-				}
-			}
+	// EDIT: ignore, not working rn
+	// other nodes only have at most 10 transitions; do a linear search
+	for(size_t i = 0; i < validTransitions.size(); ++i) {
+		Transition temp = validTransitions[i];
+		if(std::regex_match(input, std::regex(temp.symbols1))) {
+			return temp;
 		}
-
-		// could not find it
-		const Transition temp(this->Q + 1, std::string('.', this->T), this->Q + 1, std::string('.', this->T), std::vector<int>(this->T, Constants::Shift::none));
-		return temp;
-	}
-	else {
-		// other nodes only have at most 10 transitions; do a linear search
-		for(size_t i = 0; i < validTransitions.size(); ++i) {
-			Transition temp = validTransitions[i];
-			if(std::regex_match(input, std::regex(temp.symbols1))) {
-				return temp;
-			}
-		}
-
 	}
 
 	// could not find it
@@ -253,6 +218,15 @@ void MultiTapeTuringMachine::displayProfile() const {
 
 std::string MultiTapeTuringMachine::tapeContents(const int tapeIndex) const {
 	return this->tapes[tapeIndex].tapeContents();
+}
+
+int MultiTapeTuringMachine::outputTapeHeadPosition() const {
+	if(T < 2) {
+		throw std::invalid_argument("No output tape");
+
+	}
+
+	return tapes[1].headPosition();
 }
 
 // serialization methods for nlohmann::json

@@ -941,21 +941,10 @@ void handleBasicAdd(MultiTapeBuilder &builder, const size_t paramTape0, const si
  * where A is first value popped,
  * B is second value popped
  */
-void handleBasicSub(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	const size_t q0 = builder.newNode();
-	const size_t q1 = builder.newNode();
-	const size_t q2 = builder.newNode();
-	const size_t q3 = builder.newNode();
-
-	const size_t tapeStack = builder.tapeIndex("paramStack");
-	const size_t tape0 = builder.tapeIndex("variables");
-	const size_t tape1 = tape0 + 1;
+void handleBasicSub(MultiTapeBuilder &builder, const size_t paramTape0, const size_t paramTape1, const size_t startNode, const size_t endNode) {
+	const size_t tape0 = paramTape0;
+	const size_t tape1 = paramTape1;
 	const size_t tapeRax = builder.tapeIndex("rax");
-
-	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
-	popOffTop(builder, tapeStack, q0, q1);
-	copyBetweenTapes(builder, tapeStack, tape0 + 1, q1, q2);
-	popOffTop(builder, tapeStack, q2, q3);
 
 	std::vector<std::pair<size_t, std::string> > reads;
 	std::vector<std::pair<size_t, std::string> > writes;
@@ -963,7 +952,7 @@ void handleBasicSub(MultiTapeBuilder &builder, const size_t startNode, const siz
 
 	// pad shorter argument with 0's until both have same length
 	const size_t q4 = builder.newNode();
-	handlePadding(builder, tape0, tape1, q3, q4, true);
+	handlePadding(builder, tape0, tape1, startNode, q4, true);
 	
 	// ok now back where we started from. now subtract!
 	const size_t borrowOff = q4;
@@ -1102,21 +1091,10 @@ void handleBasicSub(MultiTapeBuilder &builder, const size_t startNode, const siz
  * handle assembly code of doing A xor B
  * where A is first value popped, B is second value popped
  */
-void handleBasicXor(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	const size_t q0 = builder.newNode();
-	const size_t q1 = builder.newNode();
-	const size_t q2 = builder.newNode();
-	const size_t q3 = builder.newNode();
-
-	const size_t tapeStack = builder.tapeIndex("paramStack");
-	const size_t tape0 = builder.tapeIndex("variables");
-	const size_t tape1 = tape0 + 1;
+void handleBasicXor(MultiTapeBuilder &builder, const size_t paramTape0, const size_t paramTape1, const size_t startNode, const size_t endNode) {
+	const size_t tape0 = paramTape0;
+	const size_t tape1 = paramTape1;
 	const size_t tapeRax = builder.tapeIndex("rax");
-
-	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
-	popOffTop(builder, tapeStack, q0, q1);
-	copyBetweenTapes(builder, tapeStack, tape1, q1, q2);
-	popOffTop(builder, tapeStack, q2, q3);
 
 	std::vector<std::pair<size_t, std::string> > reads;
 	std::vector<std::pair<size_t, std::string> > writes;
@@ -1124,7 +1102,7 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t startNode, const siz
 	
 	// pad shorter argument with 0's until both have same length
 	const size_t q4 = builder.newNode();
-	handlePadding(builder, tape0, tape1, q3, q4, true);
+	handlePadding(builder, tape0, tape1, startNode, q4, true);
 	
 	// ok now back where we started from. now do bit-wise xor!
 	shifts.emplace_back(tape0, 1);
@@ -1243,27 +1221,17 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t startNode, const siz
  * where A is first value popped, B is second value popped
  * can assume both have no leading 0's, and both positive
  */
-void handleBasicEq(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	const size_t q0 = builder.newNode();
-	const size_t q1 = builder.newNode();
-	const size_t q2 = builder.newNode();
-	const size_t q3 = builder.newNode();
-
-	const size_t tapeStack = builder.tapeIndex("paramStack");
-	const size_t tape0 = builder.tapeIndex("variables");
-	const size_t tape1 = tape0 + 1;
+void handleBasicEq(MultiTapeBuilder &builder, const size_t paramTape0, const size_t paramTape1, const size_t startNode, const size_t endNode) {
+	const size_t tape0 = paramTape0;
+	const size_t tape1 = paramTape1;
 	const size_t tapeRax = builder.tapeIndex("rax");
-
-	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
-	popOffTop(builder, tapeStack, q0, q1);
-	copyBetweenTapes(builder, tapeStack, tape0 + 1, q1, q2);
-	popOffTop(builder, tapeStack, q2, q3);
 
 	std::vector<std::pair<size_t, std::string> > reads;
 	std::vector<std::pair<size_t, std::string> > writes;
 	std::vector<std::pair<size_t, int> > shifts;
 	
-	// ok now back where we started from. now check for equality!
+
+	const size_t q3 = startNode;
 
 	// when have written ans, but tape0 and tape1 heads need to go back left
 	const size_t moveBackLeft = builder.newNode();
@@ -2095,7 +2063,7 @@ void handleJf(MultiTapeBuilder &builder, const size_t currIP, const std::vector<
 		valTape = builder.tapeIndex("variables") + parseTapeNum(words[1]);
 	}
 	else {
-		throw std::invalid_argument("Invalid line " + std::to_string(currIP));
+		throw std::invalid_argument("Jf: Invalid line " + std::to_string(currIP));
 	}
 	
 	const size_t lineNum = (size_t) std::stoi(words[2]);
@@ -2361,7 +2329,7 @@ void handleAssignmentBetweenTapes(MultiTapeBuilder &builder, const size_t currIP
 		fromTape = builder.tapeIndex("variables") + parseTapeNum(words[1]);
 	}
 	else {
-		throw std::invalid_argument("Invalid line " + std::to_string(currIP));
+		throw std::invalid_argument("Assignment: Invalid line " + std::to_string(currIP));
 	}
 
 	size_t toTape;
@@ -2372,7 +2340,7 @@ void handleAssignmentBetweenTapes(MultiTapeBuilder &builder, const size_t currIP
 		toTape = builder.tapeIndex("variables") + parseTapeNum(words[0]);
 	}
 	else{
-		throw std::invalid_argument("Invalid line " + std::to_string(currIP));
+		throw std::invalid_argument("Assignment: Invalid line " + std::to_string(currIP));
 	}
 
 	const size_t endNode = builder.node("before");
@@ -2395,7 +2363,7 @@ void handleAssignmentTrue(MultiTapeBuilder &builder, const size_t currIP, const 
 		toTape = builder.tapeIndex("variables") + parseTapeNum(words[0]);
 	}
 	else {
-		throw std::invalid_argument("Invalid line " + std::to_string(currIP));
+		throw std::invalid_argument("Assign true: Invalid line " + std::to_string(currIP));
 	}
 
 	const size_t q1 = builder.newNode();
@@ -2421,7 +2389,7 @@ void handleAssignmentFalse(MultiTapeBuilder &builder, const size_t currIP, const
 		toTape = builder.tapeIndex("variables") + parseTapeNum(words[0]);
 	}
 	else {
-		throw std::invalid_argument("Invalid line " + std::to_string(currIP));
+		throw std::invalid_argument("Assign false: Invalid line " + std::to_string(currIP));
 	}
 
 	const size_t q1 = builder.newNode();
@@ -2447,7 +2415,7 @@ void handleAssignmentIntegerLiteral(MultiTapeBuilder &builder, const size_t curr
 		toTape = builder.tapeIndex("variables") + parseTapeNum(words[0]);
 	}
 	else {
-		throw std::invalid_argument("Invalid line " + std::to_string(currIP));
+		throw std::invalid_argument("Assign integer literal: Invalid line " + std::to_string(currIP));
 	}
 	
 	const std::string bits = convertIntegerToBits(words[1]);
@@ -2481,7 +2449,7 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 
 	std::cout << "Initialization complete" << std::endl;
 
-	std::unordered_set<std::string> inlined {"isZero", "isPos", "isNeg", "basic_add"};
+	std::unordered_set<std::string> inlined {"isZero", "isPos", "isNeg", "basic_add", "basic_sub", "basic_xor", "basic_eq"};
 
 	for(size_t i = 0; i < assembly.size(); ++i) {
 		const std::vector<std::string> words = getWords(assembly[i]);
@@ -2524,6 +2492,21 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 					const size_t paramTape1 = builder.tapeIndex("variables") + parseTapeNum(words[3]);
 					handleBasicAdd(builder, paramTape0, paramTape1, prevNode, q1);
 				}
+				else if(func == "basic_sub") {
+					const size_t paramTape0 = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+					const size_t paramTape1 = builder.tapeIndex("variables") + parseTapeNum(words[3]);
+					handleBasicSub(builder, paramTape0, paramTape1, prevNode, q1);
+				}
+				else if(func == "basic_xor") {
+					const size_t paramTape0 = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+					const size_t paramTape1 = builder.tapeIndex("variables") + parseTapeNum(words[3]);
+					handleBasicXor(builder, paramTape0, paramTape1, prevNode, q1);
+				}
+				else if(func == "basic_eq") {
+					const size_t paramTape0 = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+					const size_t paramTape1 = builder.tapeIndex("variables") + parseTapeNum(words[3]);
+					handleBasicEq(builder, paramTape0, paramTape1, prevNode, q1);
+				}
 
 				// now connect from q1 to node "before"
 				builder.add1TapeTransition(q1, builder.node("before"), builder.tapeIndex("variables"), ".", ".", 0);
@@ -2540,28 +2523,7 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 				}
 
 				const size_t q1 = builder.newNode();
-				//if(func == "isZero") {
-				//	handleIsZero(builder, prevNode, q1);
-				//}
-				//if(func == "isPos") {
-				//	handleIsPos(builder, prevNode, q1);	
-				//}
-				//if(func == "isNeg") {
-				//	handleIsNeg(builder, prevNode, q1);	
-				//}
-				//if(func == "basic_add") {
-				//	handleBasicAdd(builder, prevNode, q1);
-				//}
-				if(func == "basic_sub") {
-					handleBasicSub(builder, prevNode, q1);
-				}
-				else if(func == "basic_xor") {
-					handleBasicXor(builder, prevNode, q1);
-				}
-				else if(func == "basic_eq") {
-					handleBasicEq(builder, prevNode, q1);
-				}
-				else if(func == "basic_lt") {
+				if(func == "basic_lt") {
 					handleBasicLt(builder, prevNode, q1);
 				}
 				else if(func == "basic_neg") {
@@ -2619,7 +2581,7 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 					handlePrintInt(builder, prevNode, q1);
 				}
 				else {
-					throw std::invalid_argument("Invalid line " + std::to_string(i));
+					throw std::invalid_argument("Parsing Invalid line " + std::to_string(i));
 				}
 
 				prevNode = q1;

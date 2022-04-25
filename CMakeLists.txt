@@ -60,7 +60,7 @@ target_compile_options(compile PRIVATE -std=c++14 -O3 -Wall -Wextra -Wpedantic)
 
 target_compile_options(simulate PRIVATE -std=c++14 -O3 -Wall -Wextra -Wpedantic)
 
-# to run: enter folder "build", type "cmake .." to run this CMakeList, 
+# to run: enter folder "build", type "cmake -S .. -B ." to run this CMakeList, 
 # and then type "make help" to see the options in the Makefile
 # Usually, would just run "make" to generate the executable
 # then "./compile" to run (assuming no errors generated)

@@ -2518,7 +2518,7 @@ std::vector<std::string> pushAndPop(std::vector<std::string> &program) {
 std::vector<std::string> incorporateInline(const std::vector<std::string> &program) {
 	std::vector<std::string> ans;
 
-	std::unordered_set<std::string> inlinedFuncs {"!FUNC_LIB_isZero", "!FUNC_LIB_isPos", "!FUNC_LIB_isNeg", "!FUNC_LIB_basic_add"};
+	std::unordered_set<std::string> inlinedFuncs {"!FUNC_LIB_isZero", "!FUNC_LIB_isPos", "!FUNC_LIB_isNeg", "!FUNC_LIB_basic_add", "!FUNC_LIB_basic_sub", "!FUNC_LIB_basic_xor", "!FUNC_LIB_basic_eq"};
 
 	for(size_t i = 0; i < program.size(); ++i) {
 		std::vector<std::string> words = getWords(program[i]);

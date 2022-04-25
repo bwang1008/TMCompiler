@@ -58,13 +58,13 @@ int add(int x, int y) {
 			return basic_add(x, y);
 		}
 
-		// y is negative
+		// y is negative, negY is positive
 		int negY = basic_neg(y);
-		if(negY == x) {
+		if(basic_eq(negY, x)) {
 			return 0;
 		}
 
-		if(negY < x) {
+		if(basic_lt(negY, x)) {
 			// case: 5 + -3
 			return basic_sub(x, negY);
 		}
@@ -77,11 +77,11 @@ int add(int x, int y) {
 	if(b2) {
 		// y is positive
 		int negX = basic_neg(x);
-		if(negX == y) {
+		if(basic_eq(negX, y)) {
 			return 0;
 		}
 
-		if(negX < y) {
+		if(basic_lt(negX, y)) {
 			// case: -3 + 5
 			return basic_sub(y, negX);
 		}
@@ -108,25 +108,8 @@ int sub(int x, int y) {
 	if(isZero(y)) {
 		return x;
 	}
-		
-	// here, both non-zero
-	if(isNeg(x) && isNeg(y)) {
-		// ex: -3 - (-5)  == -3 + 5
-		return add(x, -y);
-	}
-	else if(isNeg(x) && isPos(y)) {
-		// ex: -3 - (5) == -(3 + 5)
-		return -basic_add(-x, y);
-	}
-	else if(isPos(x) && isNeg(y)) {
-		// ex: 3 - (-5) == 3 + 5
-		return basic_add(x, -y);
-	}
-	else {
-		// both positive
-		// ex: 3 - 5 == 3 + (-5)
-		return add(x, -y);
-	}
+
+	return add(x, basic_neg(y));	
 }
 
 /**
@@ -153,7 +136,7 @@ int mul(int x, int y) {
 
 	// swap if x > y: without, 15 * 3758175 took 32,022 steps to compute, but
 	// 3758175 * 15 took 111,698 steps to compute (at least at this point in time).
-	if(x > y) {
+	if(basic_lt(y, x)) {
 		int temp = x;
 		x = y;
 		y = temp;

@@ -31,6 +31,7 @@ class MultiTapeTuringMachine {
 		void displayTapes() const;
 		void displayProfile() const;
 		std::string tapeContents(const int tapeIndex) const;
+		int outputTapeHeadPosition() const;
 
 		// allow these non-member functions to access all members for json serialization
 		friend void to_json(nlohmann::json &j, const MultiTapeTuringMachine &mttm);

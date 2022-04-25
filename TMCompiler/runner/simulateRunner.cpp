@@ -345,6 +345,7 @@ int main(const int argc, const char* argv[]) {
 	std::cout << "Begin simulating:" << std::endl;
 
 	int debug = 0;
+	int outputHead = mttm.outputTapeHeadPosition();
 
 	while(!mttm.halted() && (limit <= 0 || mttm.numSteps() < static_cast<unsigned int>(limit))) {
 		mttm.step(debug);
@@ -367,6 +368,12 @@ int main(const int argc, const char* argv[]) {
 			outputFile.close();
 
 			std::cout << "File " << fileName << " overwritten with current progress" << std::endl;
+		}
+
+		// print if detect output has been written
+		if(mttm.outputTapeHeadPosition() > outputHead) {
+			outputHead = mttm.outputTapeHeadPosition();
+			std::cout << "Output printed: " << mttm.tapeContents(1) << std::endl;
 		}
 	}
 

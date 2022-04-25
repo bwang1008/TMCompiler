@@ -63,6 +63,8 @@ Will try inlining some more functions tomorrow!
 EDIT: after "inlining" "isPos" and "isNeg", 2^n + 2^n needs 54n + 2565.
 EDIT: after "inlining" "basic_add", 2^n + 2^n needs 36n + 2329. 99*99 takes 28526 steps. "MEM[0] = 5" takes 173,388 steps.
 
+EDIT: after "inlining" "basic_sub", 2^(n+1) - 2^n for n >= 0 takes 192n + 10649 steps. After optimizing sub(), now 142n + 5301.
+
 Works:
 Assignment, declaration, +, -, *, /, <, >, <=, >=, ==, !=, ^, ||, &&
 while loop, if - else if - else statements
