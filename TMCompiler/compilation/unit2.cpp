@@ -2518,7 +2518,7 @@ std::vector<std::string> pushAndPop(std::vector<std::string> &program) {
 std::vector<std::string> incorporateInline(const std::vector<std::string> &program) {
 	std::vector<std::string> ans;
 
-	std::unordered_set<std::string> inlinedFuncs {"!FUNC_LIB_isZero"};
+	std::unordered_set<std::string> inlinedFuncs {"!FUNC_LIB_isZero", "!FUNC_LIB_isPos", "!FUNC_LIB_isNeg", "!FUNC_LIB_basic_add"};
 
 	for(size_t i = 0; i < program.size(); ++i) {
 		std::vector<std::string> words = getWords(program[i]);
@@ -2534,6 +2534,7 @@ std::vector<std::string> incorporateInline(const std::vector<std::string> &progr
 					std::string paramName = lastWords[1];
 					params.push_back(paramName);
 					ans.pop_back();	
+					continue;
 				}
 	
 				break;
@@ -2650,10 +2651,6 @@ std::vector<std::string> ifElseToJump(std::vector<std::string> &program, std::ve
 				int lineNum2 = wordLines[closeBrace];
 				program[lineNum1] = "jf " + allWords[i] + " " + std::to_string(lineNum2) + " ; ";
 
-				if(lineNum2 == 308) {
-					std::cout << "opt1" << std::endl;
-				}
-
 				// change "}" into "nop"
 				program[lineNum2] = "nop ; ";
 			}
@@ -2667,10 +2664,6 @@ std::vector<std::string> ifElseToJump(std::vector<std::string> &program, std::ve
 				int lineNum2 = wordLines[closeBrace];
 				int lineNum3 = wordLines[elseIndex];
 				int lineNum4 = wordLines[closeBrace2];
-
-				if(lineNum3 == 308) {
-					std::cout << "opt2" << std::endl;
-				}
 
 				program[lineNum1] = "jf " + allWords[i] + " " + std::to_string(lineNum3) + " ; ";
 				program[lineNum2] = "jmp " + std::to_string(lineNum4) + " ; ";

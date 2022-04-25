@@ -651,19 +651,16 @@ void handleIsZero(MultiTapeBuilder &builder, const size_t paramTape, const size_
 /**
  * handle assembly code of checking whether value at paramStack is positive or not
  * write 0 into rax if not positive; write a 1 into rax if it is positive
+ * Function is inlined: don't need to pop parameters from stack. 
+ * Which tape parameter is on is given instead
  */
-void handleIsPos(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	// must pop from paramStack
-	const size_t q0 = builder.newNode();
-	const size_t q1 = builder.newNode();
-	const size_t penultimateNode = builder.newNode();
-
-	copyBetweenTapes(builder, builder.tapeIndex("paramStack"), builder.tapeIndex("variables"), startNode, q0);
-	popOffTop(builder, builder.tapeIndex("paramStack"), q0, q1);
-
+void handleIsPos(MultiTapeBuilder &builder, const size_t paramTape, const size_t startNode, const size_t endNode) {
 	// positive is when bits start with 0 then a [01]
-	const size_t tape0 = builder.tapeIndex("variables");
+	const size_t tape0 = paramTape;
 	const size_t tapeRax = builder.tapeIndex("rax");
+
+	const size_t q1 = startNode;
+	const size_t penultimateNode = builder.newNode();
 
 	// q1: if see 1 or _, not positive
 	std::vector<std::pair<size_t, std::string> > reads;
@@ -710,18 +707,14 @@ void handleIsPos(MultiTapeBuilder &builder, const size_t startNode, const size_t
 /**
  * handle assembly code of checking whether value at paramStack is negative or not
  * write 0 into rax if not negative; write a 1 into rax if it is negative
+ * Function is inlined
  */
-void handleIsNeg(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	// must pop from paramStack
-	const size_t q0 = builder.newNode();
-	const size_t q1 = builder.newNode();
+void handleIsNeg(MultiTapeBuilder &builder, const size_t paramTape, const size_t startNode, const size_t endNode) {
+	const size_t q1 = startNode;
 	const size_t penultimateNode = builder.newNode();
 
-	copyBetweenTapes(builder, builder.tapeIndex("paramStack"), builder.tapeIndex("variables"), startNode, q0);
-	popOffTop(builder, builder.tapeIndex("paramStack"), q0, q1);
-
 	// positive is when bits start with 0 then a [01]
-	const size_t tape0 = builder.tapeIndex("variables");
+	const size_t tape0 = paramTape;
 	const size_t tapeRax = builder.tapeIndex("rax");
 
 	// q1: if see 0 or _, not negative
@@ -759,21 +752,10 @@ void handleIsNeg(MultiTapeBuilder &builder, const size_t startNode, const size_t
  * No chance of having leading 0's in result
  * Make sure to put blank after answer in rax tho
  */
-void handleBasicAdd(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	const size_t q0 = builder.newNode();
-	const size_t q1 = builder.newNode();
-	const size_t q2 = builder.newNode();
-	const size_t q3 = builder.newNode();
-
-	const size_t tapeStack = builder.tapeIndex("paramStack");
-	const size_t tape0 = builder.tapeIndex("variables");
-	const size_t tape1 = tape0 + 1;
+void handleBasicAdd(MultiTapeBuilder &builder, const size_t paramTape0, const size_t paramTape1, const size_t startNode, const size_t endNode) {
+	const size_t tape0 = paramTape0;
+	const size_t tape1 = paramTape1;
 	const size_t tapeRax = builder.tapeIndex("rax");
-
-	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
-	popOffTop(builder, tapeStack, q0, q1);
-	copyBetweenTapes(builder, tapeStack, tape0 + 1, q1, q2);
-	popOffTop(builder, tapeStack, q2, q3);
 
 	std::vector<std::pair<size_t, std::string> > reads;
 	std::vector<std::pair<size_t, std::string> > writes;
@@ -781,7 +763,7 @@ void handleBasicAdd(MultiTapeBuilder &builder, const size_t startNode, const siz
 	
 	// pad shorter argument with 0's until both have same length
 	const size_t q4 = builder.newNode();
-	handlePadding(builder, tape0, tape1, q3, q4, true);
+	handlePadding(builder, tape0, tape1, startNode, q4, true);
 
 	// add the values in the two tapes. both values are positive.
 	const size_t carryOff = q4;
@@ -2499,7 +2481,7 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 
 	std::cout << "Initialization complete" << std::endl;
 
-	std::unordered_set<std::string> inlined {"isZero"};
+	std::unordered_set<std::string> inlined {"isZero", "isPos", "isNeg", "basic_add"};
 
 	for(size_t i = 0; i < assembly.size(); ++i) {
 		const std::vector<std::string> words = getWords(assembly[i]);
@@ -2531,6 +2513,17 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 				if(func == "isZero") {
 					handleIsZero(builder, builder.tapeIndex("variables") + parseTapeNum(words[2]), prevNode, q1);
 				}
+				else if(func == "isPos") {
+					handleIsPos(builder, builder.tapeIndex("variables") + parseTapeNum(words[2]), prevNode, q1);
+				}
+				else if(func == "isNeg") {
+					handleIsNeg(builder, builder.tapeIndex("variables") + parseTapeNum(words[2]), prevNode, q1);
+				}
+				else if(func == "basic_add") {
+					const size_t paramTape0 = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+					const size_t paramTape1 = builder.tapeIndex("variables") + parseTapeNum(words[3]);
+					handleBasicAdd(builder, paramTape0, paramTape1, prevNode, q1);
+				}
 
 				// now connect from q1 to node "before"
 				builder.add1TapeTransition(q1, builder.node("before"), builder.tapeIndex("variables"), ".", ".", 0);
@@ -2550,16 +2543,16 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 				//if(func == "isZero") {
 				//	handleIsZero(builder, prevNode, q1);
 				//}
-				if(func == "isPos") {
-					handleIsPos(builder, prevNode, q1);	
-				}
-				else if(func == "isNeg") {
-					handleIsNeg(builder, prevNode, q1);	
-				}
-				else if(func == "basic_add") {
-					handleBasicAdd(builder, prevNode, q1);
-				}
-				else if(func == "basic_sub") {
+				//if(func == "isPos") {
+				//	handleIsPos(builder, prevNode, q1);	
+				//}
+				//if(func == "isNeg") {
+				//	handleIsNeg(builder, prevNode, q1);	
+				//}
+				//if(func == "basic_add") {
+				//	handleBasicAdd(builder, prevNode, q1);
+				//}
+				if(func == "basic_sub") {
 					handleBasicSub(builder, prevNode, q1);
 				}
 				else if(func == "basic_xor") {
