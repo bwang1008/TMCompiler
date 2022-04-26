@@ -1456,7 +1456,7 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 	int numOp = 0;
 	for(size_t i = 0; i < postfix.size(); ++i) {
 		std::string word = postfix[i];
-		if(numParams.find(word) != numParams.end()) {
+		if(numParams.find(word) != numParams.end() || word == "return" || word == "if") {
 			++numOp;
 		}
 	}
@@ -1513,38 +1513,6 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 	}
 
 	// 1 operator left
-	
-	// careful: could be "temp1 temp2 && if" or "temp1 temp2 - return" (but don't count sth like "temp return" (no ; cuz handled later)
-	if(postfix[postfix.size() - 1] == "if" || postfix[postfix.size() - 1] == "return") {
-		if(postfix.size() > 2) {
-			std::string tempVar = createTemp();
-			// create first expression: "temp1 temp2 && = temp3"
-			std::string subexpression;
-			for(size_t i = 0; i < postfix.size() - 1; ++i) {
-				subexpression.append(postfix[i]);
-				subexpression.append(" ");
-			}
-			subexpression.append("= " + tempVar + " ; ");
-			
-			ans.push_back("bool " + tempVar + " ; ");	// declare tempVar
-			ans.push_back(subexpression);
-
-			// let postfix = "temp3 if"
-			std::string lastWord = postfix[postfix.size() - 1];
-			postfix.clear();
-			postfix.push_back(tempVar + " " + lastWord); 	// the ; or openCurly is handled below
-		}
-		else if(postfix.size() == 2 && postfix[0].substr(0, 5) == "!FUNC") {
-			// or "!FUNC_... if" : could be a function with no arguments
-			std::string tempVar = createTemp();
-			std::string funcName = postfix[0];
-			// declare temp variable, call no argument function and assign to temp, then if on that
-			ans.push_back("bool " + tempVar + " ; ");
-			ans.push_back(funcName + " = " + tempVar + " ; ");	// format of funcs with variables: x f = y ;  (meaning y is assigned value of f(x))
-			postfix[0] = tempVar;
-		}
-	}
-
 	std::string subexpression;
 	for(size_t i = 0; i < postfix.size(); ++i) {
 		subexpression.append(postfix[i]);
@@ -1633,6 +1601,12 @@ std::vector<std::string> simplifyLine(std::string &line, std::vector<std::tuple<
 
 				ans2.pop_back();
 				arg2Lines.push_back(arg2Line);
+				
+				if(ans2.size() == 0) {
+					// well all of the previous must be part of arg2's definition
+					break;
+				}
+
 				prevWords = getWords(ans2[ans2.size() - 1]);
 
 				for(size_t j = 0; j < prevWords.size(); ++j) {
@@ -1810,47 +1784,6 @@ std::vector<std::string> convertSpecialAssignment(std::vector<std::string> &prog
 	ans2.push_back(line);
 
 	return ans2;
-}
-
-/**
- * a && b:  if a is false, then result is false
- * a || b:  if a is true, then result is true
- * avoid situations like "if(b != 0 && a / b > 0)" to avoid dividing by 0
- *
- * What is the difference between
- * bool b1 = false;
- * bool b2 = expensiveFunc();
- * bool b3 = b1 && b2;
- * vs
- * bool b3 = false && expensiveFunc()
- * ?
- */
-std::vector<std::string> addShortCircuiting(std::vector<std::string> &program) {
-	// whenever find temp1 temp2 && = temp3, find last line where temp1 is used. add if statement (in postfix notation)
-	std::vector<std::vector<std::string> > allWords;
-	for(size_t i = 0; i < program.size(); ++i) {
-		std::vector<std::string> words = getWords(program[i]);
-		
-		bool containsAnd = false;
-		bool containsOr = false;
-		for(size_t j = 0; j < words.size(); ++j) {
-			if(words[j] == "&&") {
-				containsAnd = true;	
-			}
-			else if(words[j] == "||") {
-				containsOr = true;
-			}
-		}
-
-		if(!(containsAnd || containsOr)) {
-			allWords.push_back(words);
-			continue;
-		}
-
-
-	}
-
-	return program;
 }
 
 /**
@@ -2059,6 +1992,11 @@ std::vector<std::string> convertMemoryAccess(std::vector<std::string> &program) 
 		std::tuple<std::string, std::vector<std::string>, std::string> func = funcs[i];
 		funcNames.insert(std::get<0>(func));
 	}
+	
+	// well modified simplifyExpressions...
+	// interpret "return" and "if" as functions
+	funcNames.insert("return");
+	funcNames.insert("if");
 
 	for(size_t i = 0; i < ans.size(); ++i) {
 		std::vector<std::string> words = getWords(ans[i]);
@@ -2518,7 +2456,7 @@ std::vector<std::string> pushAndPop(std::vector<std::string> &program) {
 std::vector<std::string> incorporateInline(const std::vector<std::string> &program) {
 	std::vector<std::string> ans;
 
-	std::unordered_set<std::string> inlinedFuncs {"!FUNC_LIB_isZero", "!FUNC_LIB_isPos", "!FUNC_LIB_isNeg", "!FUNC_LIB_basic_add", "!FUNC_LIB_basic_sub", "!FUNC_LIB_basic_xor", "!FUNC_LIB_basic_eq"};
+	std::unordered_set<std::string> inlinedFuncs {"!FUNC_LIB_isZero", "!FUNC_LIB_isPos", "!FUNC_LIB_isNeg", "!FUNC_LIB_basic_add", "!FUNC_LIB_basic_sub", "!FUNC_LIB_basic_xor", "!FUNC_LIB_basic_eq", "!FUNC_LIB_basic_lt", "!FUNC_LIB_basic_neg"};
 
 	for(size_t i = 0; i < program.size(); ++i) {
 		std::vector<std::string> words = getWords(program[i]);

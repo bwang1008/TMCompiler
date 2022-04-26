@@ -1306,21 +1306,10 @@ void handleBasicEq(MultiTapeBuilder &builder, const size_t paramTape0, const siz
  * where A is first value popped, B is second value popped
  * can assume both have no leading 0's, and both positive
  */
-void handleBasicLt(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	const size_t q0 = builder.newNode();
-	const size_t q1 = builder.newNode();
-	const size_t q2 = builder.newNode();
-	const size_t q3 = builder.newNode();
-
-	const size_t tapeStack = builder.tapeIndex("paramStack");
-	const size_t tape0 = builder.tapeIndex("variables");
-	const size_t tape1 = tape0 + 1;
+void handleBasicLt(MultiTapeBuilder &builder, const size_t paramTape0, const size_t paramTape1, const size_t startNode, const size_t endNode) {
+	const size_t tape0 = paramTape0;
+	const size_t tape1 = paramTape1;
 	const size_t tapeRax = builder.tapeIndex("rax");
-
-	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
-	popOffTop(builder, tapeStack, q0, q1);
-	copyBetweenTapes(builder, tapeStack, tape0 + 1, q1, q2);
-	popOffTop(builder, tapeStack, q2, q3);
 
 	std::vector<std::pair<size_t, std::string> > reads;
 	std::vector<std::pair<size_t, std::string> > writes;
@@ -1328,7 +1317,7 @@ void handleBasicLt(MultiTapeBuilder &builder, const size_t startNode, const size
 	
 	// pad shorter argument with 0's until both have same length, but don't go left
 	const size_t q4 = builder.newNode();
-	handlePadding(builder, tape0, tape1, q3, q4, false);
+	handlePadding(builder, tape0, tape1, startNode, q4, false);
 
 	// ok now back where we started from. now do less-than!
 	// starting from right side: that's where significant bits are
@@ -1427,22 +1416,17 @@ void handleBasicLt(MultiTapeBuilder &builder, const size_t startNode, const size
  * where x is value popped from paramStack
  * Can assume x is non-zero
  */
-void handleBasicNeg(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	const size_t q0 = builder.newNode();
-	const size_t q1 = builder.newNode();
+void handleBasicNeg(MultiTapeBuilder &builder, const size_t paramTape, const size_t startNode, const size_t endNode) {
+	const size_t q1 = startNode;
 
-	const size_t tapeStack = builder.tapeIndex("paramStack");
-	const size_t tape0 = builder.tapeIndex("variables");
+	const size_t tape0 = paramTape;
 	const size_t tapeRax = builder.tapeIndex("rax");
-
-	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
-	popOffTop(builder, tapeStack, q0, q1);
 
 	std::vector<std::pair<size_t, std::string> > reads;
 	std::vector<std::pair<size_t, std::string> > writes;
 	std::vector<std::pair<size_t, int> > shifts;
 	
-	// ok now back where we started from. now flip sign bit
+	// now flip sign bit
 	// sign bit is the cell the head is currently on!
 	const size_t q2 = builder.newNode();
 	builder.add1TapeTransition(q1, q2, tape0, "0", "1", 0);
@@ -2449,7 +2433,7 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 
 	std::cout << "Initialization complete" << std::endl;
 
-	std::unordered_set<std::string> inlined {"isZero", "isPos", "isNeg", "basic_add", "basic_sub", "basic_xor", "basic_eq"};
+	std::unordered_set<std::string> inlined {"isZero", "isPos", "isNeg", "basic_add", "basic_sub", "basic_xor", "basic_eq", "basic_lt", "basic_neg"};
 
 	for(size_t i = 0; i < assembly.size(); ++i) {
 		const std::vector<std::string> words = getWords(assembly[i]);
@@ -2507,6 +2491,15 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 					const size_t paramTape1 = builder.tapeIndex("variables") + parseTapeNum(words[3]);
 					handleBasicEq(builder, paramTape0, paramTape1, prevNode, q1);
 				}
+				else if(func == "basic_lt") {
+					const size_t paramTape0 = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+					const size_t paramTape1 = builder.tapeIndex("variables") + parseTapeNum(words[3]);
+					handleBasicLt(builder, paramTape0, paramTape1, prevNode, q1);
+				}
+				else if(func == "basic_neg") {
+					const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+					handleBasicNeg(builder, paramTape, prevNode, q1);
+				}
 
 				// now connect from q1 to node "before"
 				builder.add1TapeTransition(q1, builder.node("before"), builder.tapeIndex("variables"), ".", ".", 0);
@@ -2523,13 +2516,7 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 				}
 
 				const size_t q1 = builder.newNode();
-				if(func == "basic_lt") {
-					handleBasicLt(builder, prevNode, q1);
-				}
-				else if(func == "basic_neg") {
-					handleBasicNeg(builder, prevNode, q1);
-				}
-				else if(func == "basic_mul2") {
+				if(func == "basic_mul2") {
 					handleBasicMul2(builder, prevNode, q1);
 				}
 				else if(func == "basic_div2") {
