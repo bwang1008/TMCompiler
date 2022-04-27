@@ -1741,14 +1741,9 @@ void handleGetMemBitIndex(MultiTapeBuilder &builder, const size_t startNode, con
 /**
  * handle assembly code of putting a value into tape bitIndex
  */
-void handleSetMemBitIndex(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	const size_t q0 = builder.newNode();
-
-	const size_t tapeStack = builder.tapeIndex("paramStack");
+void handleSetMemBitIndex(MultiTapeBuilder &builder, const size_t paramTape, const size_t startNode, const size_t endNode) {
 	const size_t tapeBitIndex = builder.tapeIndex("bitIndex");
-
-	copyBetweenTapes(builder, tapeStack, tapeBitIndex, startNode, q0);
-	popOffTop(builder, tapeStack, q0, endNode);
+	copyBetweenTapes(builder, paramTape, tapeBitIndex, startNode, endNode);
 }
 
 /**
@@ -2413,7 +2408,7 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 
 	std::cout << "Initialization complete" << std::endl;
 
-	std::unordered_set<std::string> inlined {"isZero", "isPos", "isNeg", "basic_add", "basic_sub", "basic_xor", "basic_eq", "basic_lt", "basic_neg", "basic_mul2", "basic_div2", "isEven", "isOdd"};
+	std::unordered_set<std::string> inlined {"isZero", "isPos", "isNeg", "basic_add", "basic_sub", "basic_xor", "basic_eq", "basic_lt", "basic_neg", "basic_mul2", "basic_div2", "isEven", "isOdd", "getMemBitIndex", "setMemBitIndex", "moveMemHeadRight", "moveMemHeadLeft", "setMemBitZero", "setMemBitOne", "setMemBitBlank"};
 
 	for(size_t i = 0; i < assembly.size(); ++i) {
 		const std::vector<std::string> words = getWords(assembly[i]);
@@ -2496,27 +2491,12 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 					const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
 					handleIsOdd(builder, paramTape, prevNode, q1);
 				}
-
-				// now connect from q1 to node "before"
-				builder.add1TapeTransition(q1, builder.node("before"), builder.tapeIndex("variables"), ".", ".", 0);
-
-			}
-			else {
-				size_t prevNode = q0;
-				// then push new stack frames to all varTapes
-				for(size_t i = 0; i < builder.numVars; ++i) {
-					const size_t tape = builder.tapeIndex("variables") + i;
-					const size_t q = builder.newNode();
-					pushEmptyFrame(builder, tape, prevNode, q);
-					prevNode = q;
-				}
-
-				const size_t q1 = builder.newNode();
-				if(func == "getMemBitIndex") {
+				else if(func == "getMemBitIndex") {
 					handleGetMemBitIndex(builder, prevNode, q1);
 				}
 				else if(func == "setMemBitIndex") {
-					handleSetMemBitIndex(builder, prevNode, q1);
+					const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+					handleSetMemBitIndex(builder, paramTape, prevNode, q1);
 				}
 				else if(func == "moveMemHeadRight") {
 					handleMoveMemHeadRight(builder, prevNode, q1);
@@ -2533,7 +2513,22 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 				else if(func == "setMemBitBlank") {
 					handleSetMemBitBlank(builder, prevNode, q1);
 				}
-				else if(func == "memBitIsZero") {
+				
+				// now connect from q1 to node "before"
+				builder.add1TapeTransition(q1, builder.node("before"), builder.tapeIndex("variables"), ".", ".", 0);
+			}
+			else {
+				size_t prevNode = q0;
+				// then push new stack frames to all varTapes
+				for(size_t i = 0; i < builder.numVars; ++i) {
+					const size_t tape = builder.tapeIndex("variables") + i;
+					const size_t q = builder.newNode();
+					pushEmptyFrame(builder, tape, prevNode, q);
+					prevNode = q;
+				}
+
+				const size_t q1 = builder.newNode();
+				if(func == "memBitIsZero") {
 					handleMemBitIsZero(builder, prevNode, q1);
 				}
 				else if(func == "memBitIsOne") {
