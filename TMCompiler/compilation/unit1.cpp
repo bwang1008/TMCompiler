@@ -2408,7 +2408,7 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 
 	std::cout << "Initialization complete" << std::endl;
 
-	std::unordered_set<std::string> inlined {"isZero", "isPos", "isNeg", "basic_add", "basic_sub", "basic_xor", "basic_eq", "basic_lt", "basic_neg", "basic_mul2", "basic_div2", "isEven", "isOdd", "getMemBitIndex", "setMemBitIndex", "moveMemHeadRight", "moveMemHeadLeft", "setMemBitZero", "setMemBitOne", "setMemBitBlank"};
+	std::unordered_set<std::string> inlined {"isZero", "isPos", "isNeg", "basic_add", "basic_sub", "basic_xor", "basic_eq", "basic_lt", "basic_neg", "basic_mul2", "basic_div2", "isEven", "isOdd", "getMemBitIndex", "setMemBitIndex", "moveMemHeadRight", "moveMemHeadLeft", "setMemBitZero", "setMemBitOne", "setMemBitBlank", "memBitIsZero", "memBitIsOne", "memBitIsBlank"};
 
 	for(size_t i = 0; i < assembly.size(); ++i) {
 		const std::vector<std::string> words = getWords(assembly[i]);
@@ -2513,6 +2513,15 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 				else if(func == "setMemBitBlank") {
 					handleSetMemBitBlank(builder, prevNode, q1);
 				}
+				else if(func == "memBitIsZero") {
+					handleMemBitIsZero(builder, prevNode, q1);
+				}
+				else if(func == "memBitIsOne") {
+					handleMemBitIsOne(builder, prevNode, q1);
+				}
+				else if(func == "memBitIsBlank") {
+					handleMemBitIsBlank(builder, prevNode, q1);
+				}
 				
 				// now connect from q1 to node "before"
 				builder.add1TapeTransition(q1, builder.node("before"), builder.tapeIndex("variables"), ".", ".", 0);
@@ -2528,16 +2537,7 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 				}
 
 				const size_t q1 = builder.newNode();
-				if(func == "memBitIsZero") {
-					handleMemBitIsZero(builder, prevNode, q1);
-				}
-				else if(func == "memBitIsOne") {
-					handleMemBitIsOne(builder, prevNode, q1);
-				}
-				else if(func == "memBitIsBlank") {
-					handleMemBitIsBlank(builder, prevNode, q1);
-				}
-				else if(func == "nextInt") {
+				if(func == "nextInt") {
 					handleNextInt(builder, prevNode, q1);
 				}
 				else if(func == "printSpace") {
