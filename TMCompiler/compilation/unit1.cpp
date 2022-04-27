@@ -1440,16 +1440,11 @@ void handleBasicNeg(MultiTapeBuilder &builder, const size_t paramTape, const siz
  * where x is value popped from paramStack
  * Can assume x is positive
  */
-void handleBasicMul2(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	const size_t q0 = builder.newNode();
-	const size_t q1 = builder.newNode();
+void handleBasicMul2(MultiTapeBuilder &builder, const size_t paramTape, const size_t startNode, const size_t endNode) {
+	const size_t q1 = startNode;
 
-	const size_t tapeStack = builder.tapeIndex("paramStack");
-	const size_t tape0 = builder.tapeIndex("variables");
+	const size_t tape0 = paramTape;
 	const size_t tapeRax = builder.tapeIndex("rax");
-
-	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
-	popOffTop(builder, tapeStack, q0, q1);
 
 	std::vector<std::pair<size_t, std::string> > reads;
 	std::vector<std::pair<size_t, std::string> > writes;
@@ -1541,16 +1536,11 @@ void handleBasicMul2(MultiTapeBuilder &builder, const size_t startNode, const si
  * where x is value popped from paramStack
  * Can assume x is positive
  */
-void handleBasicDiv2(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	const size_t q0 = builder.newNode();
-	const size_t q1 = builder.newNode();
+void handleBasicDiv2(MultiTapeBuilder &builder, const size_t paramTape, const size_t startNode, const size_t endNode) {
+	const size_t q1 = startNode;
 
-	const size_t tapeStack = builder.tapeIndex("paramStack");
-	const size_t tape0 = builder.tapeIndex("variables");
+	const size_t tape0 = paramTape;
 	const size_t tapeRax = builder.tapeIndex("rax");
-
-	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
-	popOffTop(builder, tapeStack, q0, q1);
 
 	std::vector<std::pair<size_t, std::string> > reads;
 	std::vector<std::pair<size_t, std::string> > writes;
@@ -1640,16 +1630,11 @@ void handleBasicDiv2(MultiTapeBuilder &builder, const size_t startNode, const si
  * handle assembly code of reporting if (x % 2) == 0
  * where x is value popped from paramStack
  */
-void handleIsEven(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	const size_t q0 = builder.newNode();
-	const size_t q1 = builder.newNode();
+void handleIsEven(MultiTapeBuilder &builder, const size_t paramTape, const size_t startNode, const size_t endNode) {
+	const size_t q1 = startNode;
 
-	const size_t tapeStack = builder.tapeIndex("paramStack");
-	const size_t tape0 = builder.tapeIndex("variables");
+	const size_t tape0 = paramTape;
 	const size_t tapeRax = builder.tapeIndex("rax");
-
-	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
-	popOffTop(builder, tapeStack, q0, q1);
 
 	std::vector<std::pair<size_t, std::string> > reads;
 	std::vector<std::pair<size_t, std::string> > writes;
@@ -1696,16 +1681,11 @@ void handleIsEven(MultiTapeBuilder &builder, const size_t startNode, const size_
  * handle assembly code of reporting if (x % 2) == 1
  * where x is value popped from paramStack
  */
-void handleIsOdd(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	const size_t q0 = builder.newNode();
-	const size_t q1 = builder.newNode();
+void handleIsOdd(MultiTapeBuilder &builder, const size_t paramTape, const size_t startNode, const size_t endNode) {
+	const size_t q1 = startNode;
 
-	const size_t tapeStack = builder.tapeIndex("paramStack");
-	const size_t tape0 = builder.tapeIndex("variables");
+	const size_t tape0 = paramTape;
 	const size_t tapeRax = builder.tapeIndex("rax");
-
-	copyBetweenTapes(builder, tapeStack, tape0, startNode, q0);
-	popOffTop(builder, tapeStack, q0, q1);
 
 	std::vector<std::pair<size_t, std::string> > reads;
 	std::vector<std::pair<size_t, std::string> > writes;
@@ -2433,7 +2413,7 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 
 	std::cout << "Initialization complete" << std::endl;
 
-	std::unordered_set<std::string> inlined {"isZero", "isPos", "isNeg", "basic_add", "basic_sub", "basic_xor", "basic_eq", "basic_lt", "basic_neg"};
+	std::unordered_set<std::string> inlined {"isZero", "isPos", "isNeg", "basic_add", "basic_sub", "basic_xor", "basic_eq", "basic_lt", "basic_neg", "basic_mul2", "basic_div2", "isEven", "isOdd"};
 
 	for(size_t i = 0; i < assembly.size(); ++i) {
 		const std::vector<std::string> words = getWords(assembly[i]);
@@ -2500,6 +2480,22 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 					const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
 					handleBasicNeg(builder, paramTape, prevNode, q1);
 				}
+				else if(func == "basic_mul2") {
+					const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+					handleBasicMul2(builder, paramTape, prevNode, q1);
+				}
+				else if(func == "basic_div2") {
+					const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+					handleBasicDiv2(builder, paramTape, prevNode, q1);
+				}
+				else if(func == "isEven") {
+					const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+					handleIsEven(builder, paramTape, prevNode, q1);
+				}
+				else if(func == "isOdd") {
+					const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+					handleIsOdd(builder, paramTape, prevNode, q1);
+				}
 
 				// now connect from q1 to node "before"
 				builder.add1TapeTransition(q1, builder.node("before"), builder.tapeIndex("variables"), ".", ".", 0);
@@ -2516,19 +2512,7 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 				}
 
 				const size_t q1 = builder.newNode();
-				if(func == "basic_mul2") {
-					handleBasicMul2(builder, prevNode, q1);
-				}
-				else if(func == "basic_div2") {
-					handleBasicDiv2(builder, prevNode, q1);
-				}
-				else if(func == "isEven") {
-					handleIsEven(builder, prevNode, q1);
-				}
-				else if(func == "isOdd") {
-					handleIsOdd(builder, prevNode, q1);
-				}
-				else if(func == "getMemBitIndex") {
+				if(func == "getMemBitIndex") {
 					handleGetMemBitIndex(builder, prevNode, q1);
 				}
 				else if(func == "setMemBitIndex") {

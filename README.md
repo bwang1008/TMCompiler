@@ -57,7 +57,7 @@ The restricted subset of C++, which I'll abbreviate as rC++, contains
 - Comparison operators on ints: `==`,`!=`,`<`,`<=`,`>`,`>=` for equals, not equals, less than, less than or equal to, greater than, and greater or equal to 
 - Logical operators and comparison operators on bools: `==`,`!=`,`&&`,`||`,`^`,`!` for equals, not equals, AND, OR, exclusive-or, and the not operator. Operators `&=`, `|=`, `^=` for compound assignment on bools.
 - Declaration and assignment of variables, like `int x = 999999999999999999999;` or `bool b = false;`
-- For-loops, while-loops, if statements
+- For-loops, while-loops, break, continue, if statements
 - Functions that can be recurisve or mutually recursive
 - 3 provided functions:
     - `int nextInt()`, which reads in an integer from a tape designated as standard input
@@ -69,12 +69,13 @@ Things that are NOT part of rC++ include, but are not limited to,
 - floats or strings or any other types besides `int` and `bool`
     - you cannot have something like `int[] x = MEM;` either
 - classes or structs or objects
+- pointers or references
 - preprocessor directives
 - multiple files
-- The operators `++`, `--`, `<<`, `>>`, `<<=`, `>>=`, `~`
-- Casting
-- Global variables (though you can use a value in `MEM` to act as a global variable)
-- Function forward declarations
+- the operators `++`, `--`, `<<`, `>>`, `<<=`, `>>=`, `~`
+- casting
+- global variables (though you can use a value in `MEM` to act as a global variable)
+- function forward-declarations
 - malloc/free/new/delete
 - do-while loop
 
@@ -85,9 +86,11 @@ In a text editor, create a new file in the `TMCompiler/programs/` directory. The
 
 Make sure the program contains a main function in the format of `int main()`. Ensure this `main` function actually returns an int, such as `return 0;` at the end. 
 
-You can use the provided functions `nextInt`, `printInt`, and `printSpace` for input and output. Always use `printSpace()` after every call to `printInt()`. You can also use `MEM` as a global `int` array to store information. You can also write comments using line comments `//` as well as block comments `/* ... */`. Do not nest block comments.
+You can use the provided functions `nextInt`, `printInt`, and `printSpace` for input and output. Always use `printSpace()` after every call to `printInt()`.
 
-When you are done writing the program, ensure that you did not accidentally use `++` or `--` for increments or decrements.
+You can also use `MEM` as a global `int` array to store information. The cost of using bit	`y` of `MEM[x]` is proportional to `(x+y)*(x+y)`, so it is more expensive to request large indices than small indices. You can also write comments using line comments `//` as well as block comments `/* ... */`. Do not nest block comments.
+
+When you are done writing the program, ensure that you did not accidentally use `++` or `--` for increments or decrements, and that the `main` function returns a value.
 
 ## Project Structure
 - TMCompiler/TMCompiler/utils/ contains helper functions (for searching and transforming text) as well as json.hpp from nlohmann::json. 
