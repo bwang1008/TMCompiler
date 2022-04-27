@@ -463,8 +463,11 @@ void handlePush(MultiTapeBuilder &builder, const size_t currIP, const std::vecto
 }
 
 /**
- * add padding of 0s to shorter of two tapes until they are of the same length
+ * add padding of BLANKS to shorter of two tapes until they are of the same length
+ * Blanks because adding 0's will change the parameters...for inlined functions, 
+ * parameters should basically be const and not changed
  * Be careful of residual memory! guarantee one space at end of each word tho
+ * (which is why we're padding it with blanks to erase residual memory)
  */
 void handlePadding(MultiTapeBuilder &builder, const size_t tape0, const size_t tape1, const size_t startNode, const size_t endNode, const bool moveLeft = true) {
 	std::vector<std::pair<size_t, std::string> > reads;
@@ -516,9 +519,9 @@ void handlePadding(MultiTapeBuilder &builder, const size_t tape0, const size_t t
 	writes.clear();
 	shifts.clear();
 
-	// qBlank0: while tape1 isn't blank, write 0 to tape0, move tapes right
+	// qBlank0: while tape1 isn't blank, write _ to tape0, move tapes right
 	reads.emplace_back(tape1, "[01]");
-	writes.emplace_back(tape0, "0");
+	writes.emplace_back(tape0, "_");
 	shifts.emplace_back(tape0, 1);
 	shifts.emplace_back(tape1, 1);
 
@@ -538,9 +541,9 @@ void handlePadding(MultiTapeBuilder &builder, const size_t tape0, const size_t t
 	writes.clear();
 	shifts.clear();
 
-	// qBlank1: while tape0 isn't blank, write 0 to tape1, move tapes right
+	// qBlank1: while tape0 isn't blank, write _ to tape1, move tapes right
 	reads.emplace_back(tape0, "[01]");
-	writes.emplace_back(tape1, "0");
+	writes.emplace_back(tape1, "_");
 	shifts.emplace_back(tape0, 1);
 	shifts.emplace_back(tape1, 1);
 
@@ -567,8 +570,19 @@ void handlePadding(MultiTapeBuilder &builder, const size_t tape0, const size_t t
 	// ok so everyone at qMoveLeft. Let's move left
 
 	// qMoveLeft: while both not blank, move back left
-	reads.emplace_back(tape0, "[01]");
+	reads.emplace_back(tape0, "[01_]");
 	reads.emplace_back(tape1, "[01]");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tape1, -1);
+
+	builder.addTransition(qMoveLeft, qMoveLeft, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// again, but if other tape has blank: qMoveLeft: while both not blank, move back left
+	reads.emplace_back(tape0, "[01]");
+	reads.emplace_back(tape1, "[01_]");
 	shifts.emplace_back(tape0, -1);
 	shifts.emplace_back(tape1, -1);
 
@@ -649,7 +663,7 @@ void handleIsZero(MultiTapeBuilder &builder, const size_t paramTape, const size_
 }
 
 /**
- * handle assembly code of checking whether value at paramStack is positive or not
+ * handle assembly code of checking whether value at paramTape is positive or not
  * write 0 into rax if not positive; write a 1 into rax if it is positive
  * Function is inlined: don't need to pop parameters from stack. 
  * Which tape parameter is on is given instead
@@ -705,7 +719,7 @@ void handleIsPos(MultiTapeBuilder &builder, const size_t paramTape, const size_t
 }
 
 /**
- * handle assembly code of checking whether value at paramStack is negative or not
+ * handle assembly code of checking whether value at paramTape is negative or not
  * write 0 into rax if not negative; write a 1 into rax if it is negative
  * Function is inlined
  */
@@ -747,7 +761,7 @@ void handleIsNeg(MultiTapeBuilder &builder, const size_t paramTape, const size_t
 }
 
 /**
- * handle assembly code of adding top 2 values of paramStack
+ * handle assembly code of adding values at paramTape0 and paramTape1
  * put sum in rax tape
  * No chance of having leading 0's in result
  * Make sure to put blank after answer in rax tho
@@ -761,17 +775,31 @@ void handleBasicAdd(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	std::vector<std::pair<size_t, std::string> > writes;
 	std::vector<std::pair<size_t, int> > shifts;
 	
-	// pad shorter argument with 0's until both have same length
+	// pad shorter argument with blanks until both have same length
 	const size_t q4 = builder.newNode();
 	handlePadding(builder, tape0, tape1, startNode, q4, true);
 
 	// add the values in the two tapes. both values are positive.
+	// when reading a blank and a non-blank, the blank represents a 0
 	const size_t carryOff = q4;
 	const size_t carryOn = builder.newNode();
 	
 	// carryOff: if see 0 and 0, write 0. no carry
-	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape0, "[0_]");
 	reads.emplace_back(tape1, "0");
+	writes.emplace_back(tapeRax, "0");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(carryOff, carryOff, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+	
+	// same thing, but handle other blank: carryOff: if see 0 and 0, write 0. no carry
+	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape1, "[0_]");
 	writes.emplace_back(tapeRax, "0");
 	shifts.emplace_back(tape0, 1);
 	shifts.emplace_back(tape1, 1);
@@ -783,7 +811,7 @@ void handleBasicAdd(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	shifts.clear();
 
 	// carryOff: if see 0 and 1, write a 1. no carry
-	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape0, "[0_]");
 	reads.emplace_back(tape1, "1");
 	writes.emplace_back(tapeRax, "1");
 	shifts.emplace_back(tape0, 1);
@@ -797,7 +825,7 @@ void handleBasicAdd(MultiTapeBuilder &builder, const size_t paramTape0, const si
 
 	// carryOff: is see 1 and 0, write a 1. no carry
 	reads.emplace_back(tape0, "1");
-	reads.emplace_back(tape1, "0");
+	reads.emplace_back(tape1, "[0_]");
 	writes.emplace_back(tapeRax, "1");
 	shifts.emplace_back(tape0, 1);
 	shifts.emplace_back(tape1, 1);
@@ -822,7 +850,7 @@ void handleBasicAdd(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	shifts.clear();
 
 	// carryOn: if see 0 and 0, write 1. no carry
-	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape0, "[0_]");
 	reads.emplace_back(tape1, "0");
 	writes.emplace_back(tapeRax, "1");
 	shifts.emplace_back(tape0, 1);
@@ -834,8 +862,21 @@ void handleBasicAdd(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	writes.clear();
 	shifts.clear();
 
-	// carryOn: if see 0 and 1, write a 0. yes carry
+	// same thing, but handle other blank: carryOn: if see 0 and 0, write 1. no carry
 	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape1, "[0_]");
+	writes.emplace_back(tapeRax, "1");
+	shifts.emplace_back(tape0, 1);
+	shifts.emplace_back(tape1, 1);
+	shifts.emplace_back(tapeRax, 1);
+
+	builder.addTransition(carryOn, carryOff, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// carryOn: if see 0 and 1, write a 0. yes carry
+	reads.emplace_back(tape0, "[0_]");
 	reads.emplace_back(tape1, "1");
 	writes.emplace_back(tapeRax, "0");
 	shifts.emplace_back(tape0, 1);
@@ -849,7 +890,7 @@ void handleBasicAdd(MultiTapeBuilder &builder, const size_t paramTape0, const si
 
 	// carryOn: is see 1 and 0, write a 0. yes carry
 	reads.emplace_back(tape0, "1");
-	reads.emplace_back(tape1, "0");
+	reads.emplace_back(tape1, "[0_]");
 	writes.emplace_back(tapeRax, "0");
 	shifts.emplace_back(tape0, 1);
 	shifts.emplace_back(tape1, 1);
@@ -938,8 +979,8 @@ void handleBasicAdd(MultiTapeBuilder &builder, const size_t paramTape0, const si
 
 /**
  * handle assembly code of doing (A - B),
- * where A is first value popped,
- * B is second value popped
+ * where A is value in paramTape0,
+ * B is value in paramTape1
  */
 void handleBasicSub(MultiTapeBuilder &builder, const size_t paramTape0, const size_t paramTape1, const size_t startNode, const size_t endNode) {
 	const size_t tape0 = paramTape0;
@@ -950,7 +991,7 @@ void handleBasicSub(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	std::vector<std::pair<size_t, std::string> > writes;
 	std::vector<std::pair<size_t, int> > shifts;
 
-	// pad shorter argument with 0's until both have same length
+	// pad shorter argument with blanks until both have same length
 	const size_t q4 = builder.newNode();
 	handlePadding(builder, tape0, tape1, startNode, q4, true);
 	
@@ -963,8 +1004,17 @@ void handleBasicSub(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	shifts.emplace_back(tapeRax, 1);
 
 	// borrowOff: if see 0 and 0, answer is 0, go to borrowOff
-	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape0, "[0_]");
 	reads.emplace_back(tape1, "0");
+	writes.emplace_back(tapeRax, "0");
+
+	builder.addTransition(borrowOff, borrowOff, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	
+	// same thing, but handle if other is blank: borrowOff: if see 0 and 0, answer is 0, go to borrowOff
+	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape1, "[0_]");
 	writes.emplace_back(tapeRax, "0");
 
 	builder.addTransition(borrowOff, borrowOff, reads, writes, shifts);
@@ -972,7 +1022,7 @@ void handleBasicSub(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	writes.clear();
 
 	// borrowOff: if see 0 and 1, answer is 1, go to borrowOn
-	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape0, "[0_]");
 	reads.emplace_back(tape1, "1");
 	writes.emplace_back(tapeRax, "1");
 	
@@ -982,14 +1032,14 @@ void handleBasicSub(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	
 	// borrowOff: if see 1 and 0, answer is 1, go to borrowOff
 	reads.emplace_back(tape0, "1");
-	reads.emplace_back(tape1, "0");
+	reads.emplace_back(tape1, "[0_]");
 	writes.emplace_back(tapeRax, "1");
 
 	builder.addTransition(borrowOff, borrowOff, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 	
-	// borrowOff: if see 1 and ;, answer is 0, go to borrowOn
+	// borrowOff: if see 1 and 1, answer is 0, go to borrowOn
 	reads.emplace_back(tape0, "1");
 	reads.emplace_back(tape1, "1");
 	writes.emplace_back(tapeRax, "0");
@@ -999,7 +1049,7 @@ void handleBasicSub(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	writes.clear();
 	
 	// borrowOn: if see 0 and 0, answer is 1, go to borrowOn
-	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape0, "[0_]");
 	reads.emplace_back(tape1, "0");
 	writes.emplace_back(tapeRax, "1");
 
@@ -1007,8 +1057,17 @@ void handleBasicSub(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	reads.clear();
 	writes.clear();
 	
-	// borrowOn: if see 0 and 1, answer is 0, go to borrowOn
+	// same thing, but if other is blank: borrowOn: if see 0 and 0, answer is 1, go to borrowOn
 	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape1, "[0_]");
+	writes.emplace_back(tapeRax, "1");
+
+	builder.addTransition(borrowOn, borrowOn, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+
+	// borrowOn: if see 0 and 1, answer is 0, go to borrowOn
+	reads.emplace_back(tape0, "[0_]");
 	reads.emplace_back(tape1, "1");
 	writes.emplace_back(tapeRax, "0");
 
@@ -1018,7 +1077,7 @@ void handleBasicSub(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	
 	// borrowOn: if see 1 and 0, answer is 0, go to borrowOff
 	reads.emplace_back(tape0, "1");
-	reads.emplace_back(tape1, "0");
+	reads.emplace_back(tape1, "[0_]");
 	writes.emplace_back(tapeRax, "0");
 
 	builder.addTransition(borrowOn, borrowOff, reads, writes, shifts);
@@ -1053,8 +1112,6 @@ void handleBasicSub(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	// ok now traverse all the way to the back again
 	// IMPORTANT: must remove leading 0's on the right
 	const size_t encountered1 = builder.newNode();
-	reads.emplace_back(tape0, "[01]");
-	reads.emplace_back(tape1, "[01]");
 	reads.emplace_back(tapeRax, "0");
 	writes.emplace_back(tapeRax, "_");
 	
@@ -1062,34 +1119,32 @@ void handleBasicSub(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	reads.clear();
 	writes.clear();
 	
-	reads.emplace_back(tape0, "[01]");
-	reads.emplace_back(tape1, "[01]");
 	reads.emplace_back(tapeRax, "1");
 
 	builder.addTransition(q6, encountered1, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 
-	reads.emplace_back(tape0, "[01]");
-	reads.emplace_back(tape1, "[01]");
+	reads.emplace_back(tapeRax, "[01]");
 
 	builder.addTransition(encountered1, encountered1, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 	shifts.clear();
 
-	reads.emplace_back(tape0, "_");
-	reads.emplace_back(tape1, "_");
+	reads.emplace_back(tapeRax, "_");
 	shifts.emplace_back(tape0, 1);
 	shifts.emplace_back(tape1, 1);
 	shifts.emplace_back(tapeRax, 1);
+
+	// precondition of basic_sub(A,B) is that A,B are positive, and A > B
 
 	builder.addTransition(encountered1, endNode, reads, writes, shifts);
 }
 
 /**
  * handle assembly code of doing A xor B
- * where A is first value popped, B is second value popped
+ * where A is value in paramTape0, B is value in paramTape1
  */
 void handleBasicXor(MultiTapeBuilder &builder, const size_t paramTape0, const size_t paramTape1, const size_t startNode, const size_t endNode) {
 	const size_t tape0 = paramTape0;
@@ -1100,7 +1155,7 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	std::vector<std::pair<size_t, std::string> > writes;
 	std::vector<std::pair<size_t, int> > shifts;
 	
-	// pad shorter argument with 0's until both have same length
+	// pad shorter argument with blanks until both have same length
 	const size_t q4 = builder.newNode();
 	handlePadding(builder, tape0, tape1, startNode, q4, true);
 	
@@ -1110,7 +1165,7 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	shifts.emplace_back(tapeRax, 1);
 
 	// if see 0 and 0, write a 0
-	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape0, "[0_]");
 	reads.emplace_back(tape1, "0");
 	writes.emplace_back(tapeRax, "0");
 
@@ -1118,8 +1173,17 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	reads.clear();
 	writes.clear();
 	
-	// if see 0 and 1, write a 1
+	// same but if other is blank: if see 0 and 0, write a 0
 	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape1, "[0_]");
+	writes.emplace_back(tapeRax, "0");
+
+	builder.addTransition(q4, q4, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+
+	// if see 0 and 1, write a 1
+	reads.emplace_back(tape0, "[0_]");
 	reads.emplace_back(tape1, "1");
 	writes.emplace_back(tapeRax, "1");
 
@@ -1129,7 +1193,7 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	
 	// if see 1 and 0, write a 1
 	reads.emplace_back(tape0, "1");
-	reads.emplace_back(tape1, "0");
+	reads.emplace_back(tape1, "[0_]");
 	writes.emplace_back(tapeRax, "1");
 
 	builder.addTransition(q4, q4, reads, writes, shifts);
@@ -1166,8 +1230,6 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	const size_t penultimateNode = builder.newNode();
 
 	// while see both 0/1, and haven't encountered 1 in tapeRax, replace 0 with _
-	reads.emplace_back(tape0, "[01]");
-	reads.emplace_back(tape1, "[01]");
 	reads.emplace_back(tapeRax, "0");
 	writes.emplace_back(tapeRax, "_");
 		
@@ -1177,17 +1239,14 @@ void handleBasicXor(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	shifts.clear();
 	
 	// if see 1 in tapeRax tho, go to state encountered1
-	reads.emplace_back(tape0, "[01]");
-	reads.emplace_back(tape1, "[01]");
 	reads.emplace_back(tapeRax, "1");
 		
 	builder.addTransition(q5, encountered1, reads, writes, shifts);
 	reads.clear();
 	writes.clear();
 
-	// encountered1: while both see 0/1, go left
-	reads.emplace_back(tape0, "[01]");
-	reads.emplace_back(tape1, "[01]");
+	// encountered1: while answer sees 0/1, go left
+	reads.emplace_back(tapeRax, "[01]");
 	shifts.emplace_back(tape0, -1);
 	shifts.emplace_back(tape1, -1);
 	shifts.emplace_back(tapeRax, -1);
@@ -1315,7 +1374,7 @@ void handleBasicLt(MultiTapeBuilder &builder, const size_t paramTape0, const siz
 	std::vector<std::pair<size_t, std::string> > writes;
 	std::vector<std::pair<size_t, int> > shifts;
 	
-	// pad shorter argument with 0's until both have same length, but don't go left
+	// pad shorter argument with blanks until both have same length, but don't go left
 	const size_t q4 = builder.newNode();
 	handlePadding(builder, tape0, tape1, startNode, q4, false);
 
@@ -1329,7 +1388,7 @@ void handleBasicLt(MultiTapeBuilder &builder, const size_t paramTape0, const siz
 	const size_t penultimateNode = builder.newNode();
 
 	// read 0 and 0: keep going left
-	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape0, "[0_]");
 	reads.emplace_back(tape1, "0");
 	shifts.emplace_back(tape0, -1);
 	shifts.emplace_back(tape1, -1);
@@ -1339,8 +1398,19 @@ void handleBasicLt(MultiTapeBuilder &builder, const size_t paramTape0, const siz
 	writes.clear();
 	shifts.clear();
 
-	// read 0 and 1: A < B, so write 1 to rax. Go to moveBackLeft
+	// same, but if other was blank: read 0 and 0: keep going left
 	reads.emplace_back(tape0, "0");
+	reads.emplace_back(tape1, "[0_]");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tape1, -1);
+
+	builder.addTransition(q4, q4, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// read 0 and 1: A < B, so write 1 to rax. Go to moveBackLeft
+	reads.emplace_back(tape0, "[0_]");
 	reads.emplace_back(tape1, "1");
 	writes.emplace_back(tapeRax, "1");
 	shifts.emplace_back(tapeRax, 1);
@@ -1352,7 +1422,7 @@ void handleBasicLt(MultiTapeBuilder &builder, const size_t paramTape0, const siz
 	
 	// read 1 and 0: A > B, so write 0 to rax. Go to moveBackLeft
 	reads.emplace_back(tape0, "1");
-	reads.emplace_back(tape1, "0");
+	reads.emplace_back(tape1, "[0_]");
 	writes.emplace_back(tapeRax, "0");
 	shifts.emplace_back(tapeRax, 1);
 
@@ -1385,9 +1455,20 @@ void handleBasicLt(MultiTapeBuilder &builder, const size_t paramTape0, const siz
 	writes.clear();
 	shifts.clear();
 
-	// moveBackLeft: while reading [01] on both tapes, move left
-	reads.emplace_back(tape0, "[01]");
+	// moveBackLeft: while both tapes don't have blanks, move left
+	reads.emplace_back(tape0, "[01_]");
 	reads.emplace_back(tape1, "[01]");
+	shifts.emplace_back(tape0, -1);
+	shifts.emplace_back(tape1, -1);
+	
+	builder.addTransition(moveBackLeft, moveBackLeft, reads, writes, shifts);
+	reads.clear();
+	writes.clear();
+	shifts.clear();
+
+	// same but if other had blank: moveBackLeft: while both tapes don't have blanks, move left
+	reads.emplace_back(tape0, "[01]");
+	reads.emplace_back(tape1, "[01_]");
 	shifts.emplace_back(tape0, -1);
 	shifts.emplace_back(tape1, -1);
 	
@@ -1413,7 +1494,7 @@ void handleBasicLt(MultiTapeBuilder &builder, const size_t paramTape0, const siz
 
 /**
  * handle assembly code of doing (-x)
- * where x is value popped from paramStack
+ * where x is value at paramTape
  * Can assume x is non-zero
  */
 void handleBasicNeg(MultiTapeBuilder &builder, const size_t paramTape, const size_t startNode, const size_t endNode) {
@@ -1437,7 +1518,7 @@ void handleBasicNeg(MultiTapeBuilder &builder, const size_t paramTape, const siz
 
 /**
  * handle assembly code of doing 2*x
- * where x is value popped from paramStack
+ * where x is value at parmTape
  * Can assume x is positive
  */
 void handleBasicMul2(MultiTapeBuilder &builder, const size_t paramTape, const size_t startNode, const size_t endNode) {
@@ -1533,7 +1614,7 @@ void handleBasicMul2(MultiTapeBuilder &builder, const size_t paramTape, const si
 
 /**
  * handle assembly code of doing x/2 (floored)
- * where x is value popped from paramStack
+ * where x is value at paramTape
  * Can assume x is positive
  */
 void handleBasicDiv2(MultiTapeBuilder &builder, const size_t paramTape, const size_t startNode, const size_t endNode) {
@@ -1628,7 +1709,7 @@ void handleBasicDiv2(MultiTapeBuilder &builder, const size_t paramTape, const si
 
 /**
  * handle assembly code of reporting if (x % 2) == 0
- * where x is value popped from paramStack
+ * where x is value at paramTape
  */
 void handleIsEven(MultiTapeBuilder &builder, const size_t paramTape, const size_t startNode, const size_t endNode) {
 	const size_t q1 = startNode;
@@ -1679,7 +1760,7 @@ void handleIsEven(MultiTapeBuilder &builder, const size_t paramTape, const size_
 
 /**
  * handle assembly code of reporting if (x % 2) == 1
- * where x is value popped from paramStack
+ * where x is value at paramTape
  */
 void handleIsOdd(MultiTapeBuilder &builder, const size_t paramTape, const size_t startNode, const size_t endNode) {
 	const size_t q1 = startNode;
@@ -2404,8 +2485,6 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 
 	std::cout << "Initialization complete" << std::endl;
 
-	std::unordered_set<std::string> inlined {"isZero", "isPos", "isNeg", "basic_add", "basic_sub", "basic_xor", "basic_eq", "basic_lt", "basic_neg", "basic_mul2", "basic_div2", "isEven", "isOdd", "getMemBitIndex", "setMemBitIndex", "moveMemHeadRight", "moveMemHeadLeft", "setMemBitZero", "setMemBitOne", "setMemBitBlank", "memBitIsZero", "memBitIsOne", "memBitIsBlank", "nextInt", "printSpace", "printInt"};
-
 	for(size_t i = 0; i < assembly.size(); ++i) {
 		const std::vector<std::string> words = getWords(assembly[i]);
 		
@@ -2428,145 +2507,110 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 
 			const std::string func = words[1].substr(10, words[1].size() - 10);
 
-			// branch depending on if func is an "inlined" function or not
-			if(inlined.find(func) != inlined.end()) {
-				size_t prevNode = q0;
-				const size_t q1 = builder.newNode();	
+			size_t prevNode = q0;
+			const size_t q1 = builder.newNode();	
 
-				if(func == "isZero") {
-					handleIsZero(builder, builder.tapeIndex("variables") + parseTapeNum(words[2]), prevNode, q1);
-				}
-				else if(func == "isPos") {
-					handleIsPos(builder, builder.tapeIndex("variables") + parseTapeNum(words[2]), prevNode, q1);
-				}
-				else if(func == "isNeg") {
-					handleIsNeg(builder, builder.tapeIndex("variables") + parseTapeNum(words[2]), prevNode, q1);
-				}
-				else if(func == "basic_add") {
-					const size_t paramTape0 = builder.tapeIndex("variables") + parseTapeNum(words[2]);
-					const size_t paramTape1 = builder.tapeIndex("variables") + parseTapeNum(words[3]);
-					handleBasicAdd(builder, paramTape0, paramTape1, prevNode, q1);
-				}
-				else if(func == "basic_sub") {
-					const size_t paramTape0 = builder.tapeIndex("variables") + parseTapeNum(words[2]);
-					const size_t paramTape1 = builder.tapeIndex("variables") + parseTapeNum(words[3]);
-					handleBasicSub(builder, paramTape0, paramTape1, prevNode, q1);
-				}
-				else if(func == "basic_xor") {
-					const size_t paramTape0 = builder.tapeIndex("variables") + parseTapeNum(words[2]);
-					const size_t paramTape1 = builder.tapeIndex("variables") + parseTapeNum(words[3]);
-					handleBasicXor(builder, paramTape0, paramTape1, prevNode, q1);
-				}
-				else if(func == "basic_eq") {
-					const size_t paramTape0 = builder.tapeIndex("variables") + parseTapeNum(words[2]);
-					const size_t paramTape1 = builder.tapeIndex("variables") + parseTapeNum(words[3]);
-					handleBasicEq(builder, paramTape0, paramTape1, prevNode, q1);
-				}
-				else if(func == "basic_lt") {
-					const size_t paramTape0 = builder.tapeIndex("variables") + parseTapeNum(words[2]);
-					const size_t paramTape1 = builder.tapeIndex("variables") + parseTapeNum(words[3]);
-					handleBasicLt(builder, paramTape0, paramTape1, prevNode, q1);
-				}
-				else if(func == "basic_neg") {
-					const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
-					handleBasicNeg(builder, paramTape, prevNode, q1);
-				}
-				else if(func == "basic_mul2") {
-					const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
-					handleBasicMul2(builder, paramTape, prevNode, q1);
-				}
-				else if(func == "basic_div2") {
-					const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
-					handleBasicDiv2(builder, paramTape, prevNode, q1);
-				}
-				else if(func == "isEven") {
-					const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
-					handleIsEven(builder, paramTape, prevNode, q1);
-				}
-				else if(func == "isOdd") {
-					const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
-					handleIsOdd(builder, paramTape, prevNode, q1);
-				}
-				else if(func == "getMemBitIndex") {
-					handleGetMemBitIndex(builder, prevNode, q1);
-				}
-				else if(func == "setMemBitIndex") {
-					const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
-					handleSetMemBitIndex(builder, paramTape, prevNode, q1);
-				}
-				else if(func == "moveMemHeadRight") {
-					handleMoveMemHeadRight(builder, prevNode, q1);
-				}
-				else if(func == "moveMemHeadLeft") {
-					handleMoveMemHeadLeft(builder, prevNode, q1);
-				}
-				else if(func == "setMemBitZero") {
-					handleSetMemBitZero(builder, prevNode, q1);
-				}
-				else if(func == "setMemBitOne") {
-					handleSetMemBitOne(builder, prevNode, q1);
-				}
-				else if(func == "setMemBitBlank") {
-					handleSetMemBitBlank(builder, prevNode, q1);
-				}
-				else if(func == "memBitIsZero") {
-					handleMemBitIsZero(builder, prevNode, q1);
-				}
-				else if(func == "memBitIsOne") {
-					handleMemBitIsOne(builder, prevNode, q1);
-				}
-				else if(func == "memBitIsBlank") {
-					handleMemBitIsBlank(builder, prevNode, q1);
-				}
-				else if(func == "nextInt") {
-					handleNextInt(builder, prevNode, q1);
-				}
-				else if(func == "printSpace") {
-					handlePrintSpace(builder, prevNode, q1);
-				}
-				else if(func == "printInt") {
-					const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
-					handlePrintInt(builder, paramTape, prevNode, q1);
-				}
-				else {
-					throw std::invalid_argument("Parsing Invalid line " + std::to_string(i));
-				}
-				
-				// now connect from q1 to node "before"
-				builder.add1TapeTransition(q1, builder.node("before"), builder.tapeIndex("variables"), ".", ".", 0);
+			if(func == "isZero") {
+				handleIsZero(builder, builder.tapeIndex("variables") + parseTapeNum(words[2]), prevNode, q1);
+			}
+			else if(func == "isPos") {
+				handleIsPos(builder, builder.tapeIndex("variables") + parseTapeNum(words[2]), prevNode, q1);
+			}
+			else if(func == "isNeg") {
+				handleIsNeg(builder, builder.tapeIndex("variables") + parseTapeNum(words[2]), prevNode, q1);
+			}
+			else if(func == "basic_add") {
+				const size_t paramTape0 = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+				const size_t paramTape1 = builder.tapeIndex("variables") + parseTapeNum(words[3]);
+				handleBasicAdd(builder, paramTape0, paramTape1, prevNode, q1);
+			}
+			else if(func == "basic_sub") {
+				const size_t paramTape0 = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+				const size_t paramTape1 = builder.tapeIndex("variables") + parseTapeNum(words[3]);
+				handleBasicSub(builder, paramTape0, paramTape1, prevNode, q1);
+			}
+			else if(func == "basic_xor") {
+				const size_t paramTape0 = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+				const size_t paramTape1 = builder.tapeIndex("variables") + parseTapeNum(words[3]);
+				handleBasicXor(builder, paramTape0, paramTape1, prevNode, q1);
+			}
+			else if(func == "basic_eq") {
+				const size_t paramTape0 = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+				const size_t paramTape1 = builder.tapeIndex("variables") + parseTapeNum(words[3]);
+				handleBasicEq(builder, paramTape0, paramTape1, prevNode, q1);
+			}
+			else if(func == "basic_lt") {
+				const size_t paramTape0 = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+				const size_t paramTape1 = builder.tapeIndex("variables") + parseTapeNum(words[3]);
+				handleBasicLt(builder, paramTape0, paramTape1, prevNode, q1);
+			}
+			else if(func == "basic_neg") {
+				const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+				handleBasicNeg(builder, paramTape, prevNode, q1);
+			}
+			else if(func == "basic_mul2") {
+				const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+				handleBasicMul2(builder, paramTape, prevNode, q1);
+			}
+			else if(func == "basic_div2") {
+				const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+				handleBasicDiv2(builder, paramTape, prevNode, q1);
+			}
+			else if(func == "isEven") {
+				const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+				handleIsEven(builder, paramTape, prevNode, q1);
+			}
+			else if(func == "isOdd") {
+				const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+				handleIsOdd(builder, paramTape, prevNode, q1);
+			}
+			else if(func == "getMemBitIndex") {
+				handleGetMemBitIndex(builder, prevNode, q1);
+			}
+			else if(func == "setMemBitIndex") {
+				const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+				handleSetMemBitIndex(builder, paramTape, prevNode, q1);
+			}
+			else if(func == "moveMemHeadRight") {
+				handleMoveMemHeadRight(builder, prevNode, q1);
+			}
+			else if(func == "moveMemHeadLeft") {
+				handleMoveMemHeadLeft(builder, prevNode, q1);
+			}
+			else if(func == "setMemBitZero") {
+				handleSetMemBitZero(builder, prevNode, q1);
+			}
+			else if(func == "setMemBitOne") {
+				handleSetMemBitOne(builder, prevNode, q1);
+			}
+			else if(func == "setMemBitBlank") {
+				handleSetMemBitBlank(builder, prevNode, q1);
+			}
+			else if(func == "memBitIsZero") {
+				handleMemBitIsZero(builder, prevNode, q1);
+			}
+			else if(func == "memBitIsOne") {
+				handleMemBitIsOne(builder, prevNode, q1);
+			}
+			else if(func == "memBitIsBlank") {
+				handleMemBitIsBlank(builder, prevNode, q1);
+			}
+			else if(func == "nextInt") {
+				handleNextInt(builder, prevNode, q1);
+			}
+			else if(func == "printSpace") {
+				handlePrintSpace(builder, prevNode, q1);
+			}
+			else if(func == "printInt") {
+				const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+				handlePrintInt(builder, paramTape, prevNode, q1);
 			}
 			else {
-				size_t prevNode = q0;
-				// then push new stack frames to all varTapes
-				for(size_t i = 0; i < builder.numVars; ++i) {
-					const size_t tape = builder.tapeIndex("variables") + i;
-					const size_t q = builder.newNode();
-					pushEmptyFrame(builder, tape, prevNode, q);
-					prevNode = q;
-				}
-
-				const size_t q1 = builder.newNode();
-				// well you moved them all to begin inlined...
-				if(false) {
-
-				}
-				else {
-					throw std::invalid_argument("Parsing Invalid line " + std::to_string(i));
-				}
-
-				prevNode = q1;
-
-				// then pop off all the pushed stack frames
-				for(size_t i = 0; i < builder.numVars; ++i) {
-					const size_t tape = builder.tapeIndex("variables") + i;
-					const size_t q = builder.newNode();
-					popOffTop(builder, tape, prevNode, q);
-					prevNode = q;
-				}
-
-				// now connect from prevNode to node "before"
-				builder.add1TapeTransition(prevNode, builder.node("before"), builder.tapeIndex("variables"), ".", ".", 0);
+				throw std::invalid_argument("Parsing Invalid line " + std::to_string(i));
 			}
+
+			// now connect from q1 to node "before"
+			builder.add1TapeTransition(q1, builder.node("before"), builder.tapeIndex("variables"), ".", ".", 0);
 		}
 		else if(words[0] == "call") {
 			handleCallNum(builder, i, words);	

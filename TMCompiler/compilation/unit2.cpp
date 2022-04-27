@@ -2456,6 +2456,7 @@ std::vector<std::string> pushAndPop(std::vector<std::string> &program) {
 std::vector<std::string> incorporateInline(const std::vector<std::string> &program) {
 	std::vector<std::string> ans;
 
+	// same as "reservedForTM"?
 	std::unordered_set<std::string> inlinedFuncs {"!FUNC_LIB_isZero", "!FUNC_LIB_isPos", "!FUNC_LIB_isNeg", "!FUNC_LIB_basic_add", "!FUNC_LIB_basic_sub", "!FUNC_LIB_basic_xor", "!FUNC_LIB_basic_eq", "!FUNC_LIB_basic_lt", "!FUNC_LIB_basic_neg", "!FUNC_LIB_basic_mul2", "!FUNC_LIB_basic_div2", "!FUNC_LIB_isEven", "!FUNC_LIB_isOdd", "!FUNC_LIB_getMemBitIndex", "!FUNC_LIB_setMemBitIndex", "!FUNC_LIB_moveMemHeadRight", "!FUNC_LIB_moveMemHeadLeft", "!FUNC_LIB_setMemBitZero", "!FUNC_LIB_setMemBitOne", "!FUNC_LIB_setMemBitBlank", "!FUNC_LIB_memBitIsZero", "!FUNC_LIB_memBitIsOne", "!FUNC_LIB_memBitIsBlank", "!FUNC_LIB_nextInt", "!FUNC_LIB_printSpace", "!FUNC_LIB_printInt"};
 
 	for(size_t i = 0; i < program.size(); ++i) {
