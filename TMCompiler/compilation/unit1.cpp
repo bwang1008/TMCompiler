@@ -1944,15 +1944,11 @@ void handlePrintSpace(MultiTapeBuilder &builder, const size_t startNode, const s
 /**
  * handle assembly code of printing an int
  */
-void handlePrintInt(MultiTapeBuilder &builder, const size_t startNode, const size_t endNode) {
-	const size_t q0 = builder.newNode();
+void handlePrintInt(MultiTapeBuilder &builder, const size_t paramTape, const size_t startNode, const size_t endNode) {
 	const size_t q1 = builder.newNode();
-
-	const size_t tapeStack = builder.tapeIndex("paramStack");
 	const size_t tapeOutput = builder.tapeIndex("output");
 
-	copyBetweenTapes(builder, tapeStack, tapeOutput, startNode, q0);
-	popOffTop(builder, tapeStack, q0, q1);
+	copyBetweenTapes(builder, paramTape, tapeOutput, startNode, q1);
 
 	// currently at left of num in output. move right until blank
 	builder.add1TapeTransition(q1, q1, tapeOutput, "[01]", ".", 1);
@@ -2408,7 +2404,7 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 
 	std::cout << "Initialization complete" << std::endl;
 
-	std::unordered_set<std::string> inlined {"isZero", "isPos", "isNeg", "basic_add", "basic_sub", "basic_xor", "basic_eq", "basic_lt", "basic_neg", "basic_mul2", "basic_div2", "isEven", "isOdd", "getMemBitIndex", "setMemBitIndex", "moveMemHeadRight", "moveMemHeadLeft", "setMemBitZero", "setMemBitOne", "setMemBitBlank", "memBitIsZero", "memBitIsOne", "memBitIsBlank"};
+	std::unordered_set<std::string> inlined {"isZero", "isPos", "isNeg", "basic_add", "basic_sub", "basic_xor", "basic_eq", "basic_lt", "basic_neg", "basic_mul2", "basic_div2", "isEven", "isOdd", "getMemBitIndex", "setMemBitIndex", "moveMemHeadRight", "moveMemHeadLeft", "setMemBitZero", "setMemBitOne", "setMemBitBlank", "memBitIsZero", "memBitIsOne", "memBitIsBlank", "nextInt", "printSpace", "printInt"};
 
 	for(size_t i = 0; i < assembly.size(); ++i) {
 		const std::vector<std::string> words = getWords(assembly[i]);
@@ -2522,6 +2518,19 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 				else if(func == "memBitIsBlank") {
 					handleMemBitIsBlank(builder, prevNode, q1);
 				}
+				else if(func == "nextInt") {
+					handleNextInt(builder, prevNode, q1);
+				}
+				else if(func == "printSpace") {
+					handlePrintSpace(builder, prevNode, q1);
+				}
+				else if(func == "printInt") {
+					const size_t paramTape = builder.tapeIndex("variables") + parseTapeNum(words[2]);
+					handlePrintInt(builder, paramTape, prevNode, q1);
+				}
+				else {
+					throw std::invalid_argument("Parsing Invalid line " + std::to_string(i));
+				}
 				
 				// now connect from q1 to node "before"
 				builder.add1TapeTransition(q1, builder.node("before"), builder.tapeIndex("variables"), ".", ".", 0);
@@ -2537,14 +2546,9 @@ MultiTapeTuringMachine assemblyToMultiTapeTuringMachine(const std::vector<std::s
 				}
 
 				const size_t q1 = builder.newNode();
-				if(func == "nextInt") {
-					handleNextInt(builder, prevNode, q1);
-				}
-				else if(func == "printSpace") {
-					handlePrintSpace(builder, prevNode, q1);
-				}
-				else if(func == "printInt") {
-					handlePrintInt(builder, prevNode, q1);
+				// well you moved them all to begin inlined...
+				if(false) {
+
 				}
 				else {
 					throw std::invalid_argument("Parsing Invalid line " + std::to_string(i));
