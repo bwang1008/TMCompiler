@@ -9,7 +9,7 @@ However, I find that the statement "for any given C++ program, I can build an eq
 This project is solely a "for fun" project.
 
 ## Installation
-1. This project is meant to run through command-line on a Linux or Mac machine (sorry Windows!). Ensure you have the following installed: git, CMake, and a C++ compiler. Ensure you have a persistant internet connection.
+1. This project is meant to run through command-line on a Linux or Mac machine (sorry Windows!). Ensure you have the following installed: git, CMake, Make, and a C++ compiler. Ensure you have a persistant internet connection.
 2. Open a terminal and change to a directory to install the project. Then run each command below one-by-one:
 ```sh
 git clone https://github.com/bwang1008/TMCompiler.git
@@ -19,7 +19,7 @@ cd build
 cmake -S .. -B .
 make
 ```
-This downloads the git repo from Github, creates and populates a `build` directory, and then finally compiles the source code in the project to generate two executables.
+This downloads the git repository from Github, creates and populates a `build` directory, and then finally compiles the source code in the project to generate two executables.
 3. Type `ls` in the terminal and ensure there are two executables named `compile` and `simulate`.
 
 ## Running the Project
@@ -47,7 +47,7 @@ If you had compiled a program that did not require input, like `TMCompiler/progr
 ./simulate ../programs/example.json
 ```
 
-If your program requires multiple integers as input, use quotation marks around the space-separated integers, so the option would look something like `input="3 1 2 3"`.
+If your program requires multiple integers as input, use quotation marks around the space-separated integers, so the option would look something like `--input="3 1 2 3"`.
 
 ## The Restricted C++
 The restricted subset of C++, which I'll abbreviate as rC++, contains 
@@ -63,7 +63,7 @@ The restricted subset of C++, which I'll abbreviate as rC++, contains
     - `int nextInt()`, which reads in an integer from a tape designated as standard input
 	- `void printInt(int x)` which prints an integer to a tape designated as standard output
     - `void printSpace()` which prints a space on the output tape. Should always be used after every call to `printInt`.
-- A global int array `MEM` of theoretically infinite size, with values initialized to 0. You can get and set values in the array with statements like `MEM[3] = 5;` or `int x = MEM[3];`
+- A global int array `MEM` of theoretically infinite size, with values initialized to 0. You can get and set values in the array with statements like `MEM[3] = 5;` or `int x = MEM[3];`. `MEM` is not random-access.
 
 Things that are NOT part of rC++ include, but are not limited to,
 - floats or strings or any other types besides `int` and `bool`
@@ -72,7 +72,7 @@ Things that are NOT part of rC++ include, but are not limited to,
 - pointers or references
 - preprocessor directives
 - multiple files
-- the operators `++`, `--`, `<<`, `>>`, `<<=`, `>>=`, `~`
+- the operators `++`, `--`, `<<`, `>>`, `<<=`, `>>=`, `~`, '\&`, `|`
 - casting
 - global variables (though you can use a value in `MEM` to act as a global variable)
 - function forward-declarations
@@ -82,7 +82,7 @@ Things that are NOT part of rC++ include, but are not limited to,
 The number of tapes in the multi-tape Turing Machine varies per program, but it will be at least 30 tapes. Writing a function that takes a lot of parameters is one way to increase the number of tapes used. While each tape is two-way infinite, each tape in the generated multi-tape Turing Machines will never go lower than index `-2`, so they are more like one-way infinite tapes. There are three symbols in the alphabet used by the multi-tape Turing Machine: `0`, `1`, and `_` (blank). A transition in a multi-tape Turing Machine with T tapes is denoted using a regular expression that matches T characters read from the T tapes. This is used rather than specifying all possible values that the T tapes could read to reduce space. When following a transition, each tape can move left, right, or not move.
 
 ## Writing your own program
-In a text editor, create a new file in the `TMCompiler/programs/` directory. The file name should end in the `.cpp` file extension. The program should contain valid C++ syntax.
+Create a new file in the `TMCompiler/programs/` directory using a text editor. The file name should end in the `.cpp` file extension. The program should contain valid C++ syntax. Reference the existing files in the directory for examples.
 
 Make sure the program contains a main function in the format of `int main()`. Ensure this `main` function actually returns an int, such as `return 0;` at the end. 
 
@@ -122,19 +122,27 @@ The tapes are organized as follows:
 - some tapes for user variables
 - 1 for return value
 
+Accessing bit `y` of `MEM[x]` requires the head of the tape reserved for `MEM` to move to index `((x+y)(x+y+1) / 2) + x`.
+
 ## Things to work on
-- Rework a Constants file  
+- Rework the Constants file  
 - Clean up `unit1.cpp`
 - Rework CMake  
 - Optimizations  
 
 ## Ideas for Optimization  
-Rework basic\_add, isPos, isNeg, isZero to be in-place, to avoid unnecessary pushes and pops  
-Incorporate "sideways" ip when changing ip. Should half the work of incrementing IP  
+- [x] Don't erase the value when popping off from a stack, leaving residual memory
+- [x] Rework basic\_add, isPos, isNeg, isZero, and other functions implemented in the TM to be in-place, to avoid unnecessary pushes and pops  
+- [ ] Incorporate "sideways" ip when changing ip. Should half the work of incrementing IP  
 
-## Future ideas:  
-Add more features into what is allowed in the restricted C++, like strings and floats
+## Ideas for programs
+- Implement some standard data structures and algorithms. It's a little bit harder when you only have an array!
+- Write a Universal Turing Machine that takes in a description of a Turing Machine as well as input, and simulates the provided Turing Machine on the input.
+- Pretend that MEM is all of a computer's memory, and designate some (infinite) section to be disc space, some section to be for RAM, and some section for a process's heap and stack. You could write a bootloader that runs when the Turing machine starts, and you could run an operating system on the Turing Machine.
 
-Convert from multi-tape Turing Machine into a single-tape Turing Machine, with only left and right shifts  
+## Future ideas 
+- Add more features into what is allowed in the restricted C++, like strings and floats
+- Convert from multi-tape Turing Machine into a "standard" single-tape Turing Machine of two symbols, with only left and right shifts. However, a quadratic slowdown may make it impractical to simulate.
+    - Suppose I take all valid rC++ programs of at most 512 bytes, and compile them into standard single-tape Turing Machines. Let `Q` be the maximum number of states among all generated standard Turing machines, let `BB(n)` be the `n`th Busy Beaver Number, and let `Comp(n)` be the largest integer computed by any rC++ program of at most `n` bytes. Then we have `Comp(512) <= BB(Q)`. This means any rC++ entry to a Bignum Bakeoff Contest will compute some number that is at most `BB(Q)`. Equivalently, you could write a deterministic, halting rC++ program in at most 512 bytes that returns a large number, use some mathematics to prove that the program computes some explicit integer `N` (or prove that the number computed is at least as large as `N`), then claim that `N` is a lower bound for `BB(Q)`.
+    - This project first converts rC++ to my own assembly code, then from assembly code to a multi-tape Turing Machine. If I can determine an upper bound on the number of lines of assembly generated by any rC++ program of at most 512 bytes, as well as determine the maximum number of times `newNode()` is called for any assembly instruction, then I can determine an upper bound on the maximum number of states in any multi-tape Turing Machine generated by this project from a rC++ program of at most 512 bytes. Then by figuring out how the number of states increases by changing it to a standard Turing Machine (probably increases it by some polynomial amount), then determining an explicit `Q` for which `Comp(512) <= BB(Q)` is true becomes possible.
 
-Write a Universal Turing Machine that takes in a description of a Turing Machine, and simulates the provided Turing Machine.

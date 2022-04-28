@@ -337,7 +337,7 @@ void memset(int index, int val) {
 	int V = val;
 
 	while(!isZero(V) || !handledSign) {
-		// function above: (x+y)^2 + y
+		// function above: (x+y)*(x+y+1) + x
 		
 		//int desiredBitIndex = ((index + valIndex) * (index + valIndex + 1)) / 2 + index;
 
