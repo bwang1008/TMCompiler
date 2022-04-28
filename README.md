@@ -19,7 +19,7 @@ cd build
 cmake -S .. -B .
 make
 ```
-This downloads the git repository from Github, creates and populates a `build` directory, and then finally compiles the source code in the project to generate two executables.
+This downloads the git repository from Github, creates and populates a `build` directory, and then finally compiles the source code in the project to generate two executables. The last command make take some time to complete.
 3. Type `ls` in the terminal and ensure there are two executables named `compile` and `simulate`.
 
 ## Running the Project
@@ -48,6 +48,86 @@ If you had compiled a program that did not require input, like `TMCompiler/progr
 ```
 
 If your program requires multiple integers as input, use quotation marks around the space-separated integers, so the option would look something like `--input="3 1 2 3"`.
+
+## Example Run
+Suppose I want to run the provided fibonacci program. Then my compilation looks like
+```sh
+TMCompiler/build$ ./compile ../programs/fibonacci.cpp
+Library file found
+Initialization complete
+Finished building
+tapes:
+tape input = 0
+tape output = 1
+tape ipStack = 2
+tape ip = 3
+tape ipSideways = 4
+tape paramStack = 16
+tape bitIndex = 17
+tape bits = 18
+tape variables = 19
+tape rax = 31
+Compile successful
+
+14335 states
+32 tapes
+Start at node 0 and ends at 1
+21497 transitions
+
+Results written to file ../programs/fibonacci.json
+```
+Afterwards, I can simulate the multi-tape Turing Machine with
+```sh
+TMCompiler/build$ ./simualte --input="15" ../programs/fibonacci.json
+File successfully read
+JSON to MTTM conversion successful
+
+Begin simulating:
+Finished step 50000
+Finished step 100000
+
+Final:
+Tape 0: 6: [01111]
+Tape 1: 0: []
+Tape 2: -2: [_11111111110__10001001100__10000101101__01000000010]
+Tape 3: 0: [111111111111]
+Tape 4: 0: [1]
+Tape 5: 0: [1]
+Tape 6: 0: [1]
+Tape 7: 0: [1]
+Tape 8: 0: [1]
+Tape 9: 0: [1]
+Tape 10: 0: [1]
+Tape 11: 0: [1]
+Tape 12: 0: [1]
+Tape 13: 0: [1]
+Tape 14: 0: [1]
+Tape 15: 0: [1]
+Tape 16: 0: [___1111__00001_0010111]
+Tape 17: 0: [0]
+Tape 18: 0: []
+Tape 19: -2: [_1111__1111__00001__00001]
+Tape 20: -2: [_0100011001_1101__1111__1111]
+Tape 21: -2: [___0100011001_____111]
+Tape 22: -2: [_____00001__00001]
+Tape 23: -2: [___00001__1111__1111]
+Tape 24: -2: [____0001___0001__11]
+Tape 25: -2: [___1111_______100111101]
+Tape 26: -2: [____0001]
+Tape 27: -2: [___0100011001]
+Tape 28: -2: []
+Tape 29: -2: []
+Tape 30: -2: []
+Tape 31: 0: [00100011001]
+
+141056 steps
+halted ? true
+Output: 
+
+
+Return value:
+610
+```
 
 ## The Restricted C++
 The restricted subset of C++, which I'll abbreviate as rC++, contains 
