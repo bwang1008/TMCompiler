@@ -1,16 +1,16 @@
 // private functions - all operators (except for !, &&, ||)
 // as well as private functions: memset, memget. The functions nextInt, printInt, printSpace implemented in Turing Machine
-
+//
 // actual functions to be implemented in Turing-Machine: isZero, isNeg, isPos, basic_add, basic_sub, basic_xor, basic_eq: semantically,
 // bool isZero(int x): return (x == 0)
 // bool isNeg(int x): return (x < 0)
 // bool isPos(int x): return (x > 0)
-// int basic_add(int x, int y): return x + y	: x,y must both be non-negative
-// int basic_sub(int x, int y): return x - y	: x,y must both be positive, x > y
-// int basic_xor(int x, int y): return x ^ y	: x,y must both be non-zero
+// int basic_add(int x, int y): return x + y: x,y must both be positive
+// int basic_sub(int x, int y): return x - y: x,y must both be positive, x > y
+// int basic_xor(int x, int y): return x ^ y: x,y must both be non-zero
 // int basic_eq(int x, int y): return x == y    : x,y must both be positive
-// int basic_lt(int x, int y): return x < y		: x,y must both be non-negative
-// int basic_neg(int x): return -x				: x must be non-zero
+// int basic_lt(int x, int y): return x < y: x,y must both be positive
+// int basic_neg(int x): return -x: x must be non-zero
 // int basic_mul2(int x): return 2*x : x must be positive
 // int basic_div2(int x): return x/2 (floor): x must be positive
 // bool isEven(int x): return (x % 2)? 0 : 1
@@ -58,13 +58,13 @@ int add(int x, int y) {
 			return basic_add(x, y);
 		}
 
-		// y is negative, negY is positive
+		// y is negative
 		int negY = basic_neg(y);
-		if(basic_eq(negY, x)) {
+		if(negY == x) {
 			return 0;
 		}
 
-		if(basic_lt(negY, x)) {
+		if(negY < x) {
 			// case: 5 + -3
 			return basic_sub(x, negY);
 		}
@@ -72,16 +72,16 @@ int add(int x, int y) {
 		// case: 3 + (-5)
 		return basic_neg(basic_sub(negY, x));
 	}
-	
+
 	// x is negative
 	if(b2) {
 		// y is positive
 		int negX = basic_neg(x);
-		if(basic_eq(negX, y)) {
+		if(negX == y) {
 			return 0;
 		}
 
-		if(basic_lt(negX, y)) {
+		if(negX < y) {
 			// case: -3 + 5
 			return basic_sub(y, negX);
 		}
@@ -89,7 +89,7 @@ int add(int x, int y) {
 		// case: -5 + 3
 		return basic_neg(basic_sub(negX, y));
 	}
-	
+
 	// both x and y are negative
 
 	// case: -5 + (-3)
@@ -104,12 +104,29 @@ int sub(int x, int y) {
 	if(isZero(x)) {
 		return -y;
 	}
-	
+
 	if(isZero(y)) {
 		return x;
 	}
 
-	return add(x, basic_neg(y));	
+	// here, both non-zero
+	if(isNeg(x) && isNeg(y)) {
+		// ex: -3 - (-5)  == -3 + 5
+		return add(x, -y);
+	}
+	else if(isNeg(x) && isPos(y)) {
+		// ex: -3 - (5) == -(3 + 5)
+		return -basic_add(-x, y);
+	}
+	else if(isPos(x) && isNeg(y)) {
+		// ex: 3 - (-5) == 3 + 5
+		return basic_add(x, -y);
+	}
+	else {
+		// both positive
+		// ex: 3 - 5 == 3 + (-5)
+		return add(x, -y);
+	}
 }
 
 /**
@@ -119,24 +136,24 @@ int mul(int x, int y) {
 	if(isZero(x) || isZero(y)) {
 		return 0;
 	}
-	
+
 	bool ansNeg = false;
 
 	if(isNeg(x)) {
-		x = basic_neg(x);
+		x = -x;
 		ansNeg = true;
 	}
 
 	if(isNeg(y)) {
-		y = basic_neg(y);
+		y = -y;
 		ansNeg = !ansNeg;
 	}
 
-	// in reference to https://math.stackexchange.com/questions/1147825/designing-a-turing-machine-for-binary-multiplication	
+	// in reference to https://math.stackexchange.com/questions/1147825/designing-a-turing-machine-for-binary-multiplication
 
 	// swap if x > y: without, 15 * 3758175 took 32,022 steps to compute, but
 	// 3758175 * 15 took 111,698 steps to compute (at least at this point in time).
-	if(basic_lt(y, x)) {
+	if(x > y) {
 		int temp = x;
 		x = y;
 		y = temp;
@@ -146,7 +163,7 @@ int mul(int x, int y) {
 
 	while(!isZero(x)) {
 		if(isOdd(x)) {
-			ans = basic_add(ans, y);
+			ans += y;
 		}
 
 		x = basic_div2(x);
@@ -154,7 +171,6 @@ int mul(int x, int y) {
 	}
 
 	if(ansNeg) {
-		// answer could be 0
 		ans = -ans;
 	}
 
@@ -165,7 +181,7 @@ int div(int x, int y) {
 	if(isZero(x)) {
 		return 0;
 	}
-	
+
 	if(x < 0 && y < 0) {
 		return div(-x, -y);
 	}
@@ -180,14 +196,14 @@ int div(int x, int y) {
 	int ans = 0;
 
 	/*
-	while(y * (ans + 1) < x)  {
-		ans += 1;
-	}
-	*/
+	   while(y * (ans + 1) < x)  {
+	   ans += 1;
+	   }
+	   */
 
 	// rudimentary binary search: find largest power of two less than or equal to it, subtract, repeat
 	int n = x;
-	while(n >= y) {			// if n < y, then remaining to jump is just 0; nothing to add
+	while(n >= y) { //repeat// if n < y, then remaining to jump is just 0; nothing to add
 		int prevJump = 0;
 		int jump = 1;
 		while(y * (ans + jump) <= x) {
@@ -198,11 +214,11 @@ int div(int x, int y) {
 		ans += prevJump;
 		n = x - (y * ans);
 	}
-	
+
 	// analysis: each iteration of outer while loop, gains most-significant digit of ans.
 	// takes O(log(x)) calls to multiplication to perform one outer while loop
 	// total: O(log^2(x)) calls to multiplication. at least better than original naive! 
-	return ans;	
+	return ans;
 }
 
 int mod(int x, int y) {
@@ -223,7 +239,7 @@ bool lt(int x, int y) {
 	// careful: tho isPos(y - x) seems nice, 
 	// sub(traction) uses "<" operator
 	// avoid dependency loop please...
-	
+
 	if(isNeg(x)) {
 		if(isNeg(y)) {
 			// cases: -a < -b  -> (a+b) + (-a) <? (a+b) + (-b)  -> b <? a
@@ -331,112 +347,104 @@ int eor(int x, int y) {
  * represent 0 as 0, 11 (8 + 3) as 01101 (pos and 1 + 2 + 8), and -6 as 1011 (neg and 2 + 4)
  */
 void memset(int index, int val) {
-	int V = val;
-	int one = 1;
-
-	// first handle sign
 	int currBitIndex = getMemBitIndex();
-	
-	// index(index + 1)/2 + index
-	int signBitIndex = index;
-	if(!isZero(signBitIndex)) {
-		signBitIndex = basic_div2(signBitIndex * basic_add(signBitIndex, 3));
-	}
 
-	if(basic_lt(signBitIndex, currBitIndex)) {
-		int diff = basic_sub(currBitIndex, signBitIndex);
-		while(isPos(diff)) {
-			diff = basic_sub(diff, one);
+	bool handledSign = false;
+	int valIndex = 0;
+	int V = val;
+
+	while(!isZero(V) || !handledSign) {
+		// function above: (x+y)^2 + y
+
+		//int desiredBitIndex = ((index + valIndex) * (index + valIndex + 1)) / 2 + index;
+
+		int desiredBitIndex = index + valIndex;
+		if(!isZero(desiredBitIndex)) {
+			int temp = desiredBitIndex * (desiredBitIndex + 1);
+			temp = basic_div2(temp);
+			desiredBitIndex = temp + index;
+		}
+
+		while(currBitIndex > desiredBitIndex) {
+			currBitIndex -= 1;
 			moveMemHeadLeft();
 		}
-
-		currBitIndex = signBitIndex;
-	}
-	else {
-		// signBitIndex >= currBitIndex
-		int diff = basic_sub(signBitIndex, currBitIndex);
-		while(isPos(diff)) {
-			diff = basic_sub(diff, one);
-			moveMemHeadRight();
-		}
-		currBitIndex = signBitIndex;
-	}
-
-	if(isNeg(V)) {
-		setMemBitOne();
-		V = basic_neg(V);
-	}
-	else {
-		setMemBitZero();
-	}
-
-	printInt(-3);
-	printSpace();
-
-	int diff = index;
-	while(!isZero(V)) {
-		diff = basic_add(diff, one);
-		currBitIndex = basic_add(currBitIndex, diff);
-		printInt(currBitIndex);
-		printSpace();
-		int copy = diff;
-		
-		while(isPos(copy)) {
-			copy = basic_sub(copy, one);
+		while(currBitIndex < desiredBitIndex) {
+			currBitIndex += 1;
 			moveMemHeadRight();
 		}
 
-		if(isOdd(V)) {
-			setMemBitOne();
+		if(!handledSign) {
+			if(isNeg(V)) {
+				setMemBitOne();
+				V = -V;
+			}
+			else {
+				setMemBitZero();
+			}
+
+			handledSign = true;
 		}
 		else {
-			setMemBitZero();
+			bool bit = isOdd(V);
+			if(bit) {
+				setMemBitOne();
+			}
+			else {
+				setMemBitZero();
+			}
+
+			V = basic_div2(V);
 		}
 
-		V = basic_div2(V);
+		valIndex += 1;
 	}
 
 	// must clear out the next tape cell by making it blank
-	diff = basic_add(diff, one);
-	currBitIndex = basic_add(currBitIndex, diff);
-	while(isPos(diff)) {
-		diff = basic_sub(diff, one);
-		moveMemHeadRight();
-	}
+	//int desiredBitIndex = ((index + valIndex) * (index + valIndex + 1)) / 2 + index;
 
-	setMemBitBlank();
-	setMemBitIndex(currBitIndex);
-}
-
-/**
- * Retrieve value from MEM[index]
- * If none, defaults to 0
- */
-int memget(int index) {
-	int ans = 0;
-
-	int one = 1;
-	int currBitIndex = getMemBitIndex();
-
-
-	//int desiredBitIndex = (index * (index + 1)) / 2 + index;
-	
-	int desiredBitIndex = index;
+	// equivalent to above, but better performance
+	int desiredBitIndex = index + valIndex;
 	if(!isZero(desiredBitIndex)) {
-		int temp = desiredBitIndex * (desiredBitIndex + 3);
+		int temp = desiredBitIndex * (desiredBitIndex + 1);
 		temp = basic_div2(temp);
 		desiredBitIndex = temp + index;
 	}
 
-	while(basic_lt(desiredBitIndex, currBitIndex)) {
-		currBitIndex -= one;
-		moveMemHeadLeft();
-	}
-	while(basic_lt(currBitIndex, desiredBitIndex)) {
-		currBitIndex += one;
+	while(currBitIndex < desiredBitIndex) {
+		currBitIndex += 1;
 		moveMemHeadRight();
 	}
-	
+
+	setMemBitBlank();
+
+	setMemBitIndex(currBitIndex);
+}
+
+int memget(int index) {
+	int ans = 0;
+	int currBitIndex = getMemBitIndex();
+
+	//int desiredBitIndex = (index * (index + 1)) / 2 + index;
+
+	int desiredBitIndex = index;
+	if(!isZero(desiredBitIndex)) {
+		int temp = desiredBitIndex * (desiredBitIndex + 1);
+		temp = basic_div2(temp);
+		desiredBitIndex = temp + index;
+	}
+
+	//printInt(desiredBitIndex);
+
+	while(currBitIndex > desiredBitIndex) {
+		currBitIndex -= 1;
+		moveMemHeadLeft();
+	}
+	while(currBitIndex < desiredBitIndex) {
+		currBitIndex += 1;
+		moveMemHeadRight();
+	}
+
 	int valIndex = 0;
 	bool shouldBeNegative = false;
 	int pow2 = 0;
@@ -445,7 +453,7 @@ int memget(int index) {
 		if(isZero(valIndex)) {
 			// 1 for negative, 0 for non-negative
 			if(memBitIsOne()) {
-				shouldBeNegative = true;	
+				shouldBeNegative = true;
 			}
 		}
 		else {
@@ -455,25 +463,25 @@ int memget(int index) {
 			}
 		}
 
-		valIndex += one;
+		valIndex += 1;
 		if(isZero(pow2)) {
-			pow2 = one;
+			pow2 = 1;
 		}
 		else {
-			pow2 = basic_mul2(pow2);
+			pow2 += pow2;
 		}
 
 		//desiredBitIndex = ((index + valIndex) * (index + valIndex + 1)) / 2 + index;
 
 		desiredBitIndex = index + valIndex;
 		if(!isZero(desiredBitIndex)) {
-			int temp = desiredBitIndex * (desiredBitIndex + one);
+			int temp = desiredBitIndex * (desiredBitIndex + 1);
 			temp = basic_div2(temp);
 			desiredBitIndex = temp + index;
 		}
 
-		while(basic_lt(currBitIndex, desiredBitIndex)) {
-			currBitIndex += one;
+		while(currBitIndex < desiredBitIndex) {
+			currBitIndex += 1;
 			moveMemHeadRight();
 		}
 	}

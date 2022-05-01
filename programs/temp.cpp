@@ -1,4 +1,4 @@
 int main() {
-	MEM[0] = 5;
+	MEM[100] = 5;
 	return 0;
 }

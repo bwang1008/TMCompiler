@@ -1112,6 +1112,7 @@ void handleBasicSub(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	// ok now traverse all the way to the back again
 	// IMPORTANT: must remove leading 0's on the right
 	const size_t encountered1 = builder.newNode();
+	const size_t penultimateNode = builder.newNode();
 	reads.emplace_back(tapeRax, "0");
 	writes.emplace_back(tapeRax, "_");
 	
@@ -1137,9 +1138,13 @@ void handleBasicSub(MultiTapeBuilder &builder, const size_t paramTape0, const si
 	shifts.emplace_back(tape1, 1);
 	shifts.emplace_back(tapeRax, 1);
 
-	// precondition of basic_sub(A,B) is that A,B are positive, and A > B
+	// when see blank, go right
+	builder.addTransition(q6, penultimateNode, reads, writes, shifts);
+	builder.addTransition(encountered1, penultimateNode, reads, writes, shifts);
 
-	builder.addTransition(encountered1, endNode, reads, writes, shifts);
+	// penultimateNode: if current tape head is blank, write a 0
+	builder.add1TapeTransition(penultimateNode, endNode, tapeRax, "_", "0", 0);
+	builder.add1TapeTransition(penultimateNode, endNode, tapeRax, "[01]", ".", 0);
 }
 
 /**
@@ -1363,7 +1368,7 @@ void handleBasicEq(MultiTapeBuilder &builder, const size_t paramTape0, const siz
 /**
  * handle assembly code of doing (A < B)
  * where A is first value popped, B is second value popped
- * can assume both have no leading 0's, and both positive
+ * can assume both have no leading 0's, and both non-negative
  */
 void handleBasicLt(MultiTapeBuilder &builder, const size_t paramTape0, const size_t paramTape1, const size_t startNode, const size_t endNode) {
 	const size_t tape0 = paramTape0;

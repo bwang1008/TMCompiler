@@ -123,12 +123,12 @@ int mul(int x, int y) {
 	bool ansNeg = false;
 
 	if(isNeg(x)) {
-		x = basic_neg(x);
+		x = -x;
 		ansNeg = true;
 	}
 
 	if(isNeg(y)) {
-		y = basic_neg(y);
+		y = -y;
 		ansNeg = !ansNeg;
 	}
 
@@ -146,7 +146,7 @@ int mul(int x, int y) {
 
 	while(!isZero(x)) {
 		if(isOdd(x)) {
-			ans = basic_add(ans, y);
+			ans += y;
 		}
 
 		x = basic_div2(x);
@@ -154,7 +154,6 @@ int mul(int x, int y) {
 	}
 
 	if(ansNeg) {
-		// answer could be 0
 		ans = -ans;
 	}
 
@@ -331,99 +330,89 @@ int eor(int x, int y) {
  * represent 0 as 0, 11 (8 + 3) as 01101 (pos and 1 + 2 + 8), and -6 as 1011 (neg and 2 + 4)
  */
 void memset(int index, int val) {
+	int currBitIndex = getMemBitIndex();
+
+	bool handledSign = false;
+	int valIndex = 0;
 	int V = val;
+
 	int one = 1;
 
-	// first handle sign
-	int currBitIndex = getMemBitIndex();
-	
-	// index(index + 1)/2 + index
-	int signBitIndex = index;
-	if(!isZero(signBitIndex)) {
-		signBitIndex = basic_div2(signBitIndex * basic_add(signBitIndex, 3));
-	}
+	while(!isZero(V) || !handledSign) {
+		// function above: (x+y)*(x+y+1) + x
+		
+		//int desiredBitIndex = ((index + valIndex) * (index + valIndex + 1)) / 2 + index;
 
-	if(basic_lt(signBitIndex, currBitIndex)) {
-		int diff = basic_sub(currBitIndex, signBitIndex);
-		while(isPos(diff)) {
-			diff = basic_sub(diff, one);
+		int desiredBitIndex = basic_add(index, valIndex);
+		int temp = desiredBitIndex * basic_add(desiredBitIndex, one);
+		temp = basic_div2(temp);
+		desiredBitIndex = basic_add(temp, index);
+
+		while(basic_lt(desiredBitIndex, currBitIndex)) {
+			currBitIndex -= one;
 			moveMemHeadLeft();
 		}
-
-		currBitIndex = signBitIndex;
-	}
-	else {
-		// signBitIndex >= currBitIndex
-		int diff = basic_sub(signBitIndex, currBitIndex);
-		while(isPos(diff)) {
-			diff = basic_sub(diff, one);
-			moveMemHeadRight();
-		}
-		currBitIndex = signBitIndex;
-	}
-
-	if(isNeg(V)) {
-		setMemBitOne();
-		V = basic_neg(V);
-	}
-	else {
-		setMemBitZero();
-	}
-
-	printInt(-3);
-	printSpace();
-
-	int diff = index;
-	while(!isZero(V)) {
-		diff = basic_add(diff, one);
-		currBitIndex = basic_add(currBitIndex, diff);
-		printInt(currBitIndex);
-		printSpace();
-		int copy = diff;
-		
-		while(isPos(copy)) {
-			copy = basic_sub(copy, one);
+		while(basic_lt(currBitIndex, desiredBitIndex)) {
+			currBitIndex = basic_add(currBitIndex, one);
 			moveMemHeadRight();
 		}
 
-		if(isOdd(V)) {
-			setMemBitOne();
+		if(!handledSign) {
+			if(isNeg(V)) {
+				setMemBitOne();
+				V = basic_neg(V);
+			}
+			else {
+				setMemBitZero();
+			}
+
+			handledSign = true;
 		}
 		else {
-			setMemBitZero();
-		}
+			bool bit = isOdd(V);
+			if(bit) {
+				setMemBitOne();
+			}
+			else {
+				setMemBitZero();
+			}
 
-		V = basic_div2(V);
+			V = basic_div2(V);
+		}
+		
+		valIndex = basic_add(valIndex, one);
 	}
 
 	// must clear out the next tape cell by making it blank
-	diff = basic_add(diff, one);
-	currBitIndex = basic_add(currBitIndex, diff);
-	while(isPos(diff)) {
-		diff = basic_sub(diff, one);
+	//int desiredBitIndex = ((index + valIndex) * (index + valIndex + 1)) / 2 + index;
+	
+	// equivalent to above, but better performance
+	int desiredBitIndex = basic_add(index, valIndex);
+	int temp = desiredBitIndex * basic_add(desiredBitIndex, one);
+	temp = basic_div2(temp);
+	desiredBitIndex = basic_add(temp, index);
+
+	while(basic_lt(currBitIndex, desiredBitIndex)) {
+		currBitIndex = basic_add(currBitIndex, one);
 		moveMemHeadRight();
 	}
 
 	setMemBitBlank();
+
 	setMemBitIndex(currBitIndex);
 }
 
-/**
- * Retrieve value from MEM[index]
- * If none, defaults to 0
- */
 int memget(int index) {
 	int ans = 0;
-
-	int one = 1;
 	int currBitIndex = getMemBitIndex();
 
+	int one = 1;
 
 	//int desiredBitIndex = (index * (index + 1)) / 2 + index;
 	
 	int desiredBitIndex = index;
 	if(!isZero(desiredBitIndex)) {
-		int temp = desiredBitIndex * (desiredBitIndex + 3);
+		int temp = desiredBitIndex * (desiredBitIndex + one);
 		temp = basic_div2(temp);
 		desiredBitIndex = temp + index;
 	}

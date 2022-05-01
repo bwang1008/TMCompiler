@@ -6,6 +6,8 @@ In a Theory of Compuation course, we learn that "any program written in a Turing
 
 However, I find that the statement "for any given C++ program, I can build an equivalent Turing Machine that computes the same thing" is much more incredulous than the statement "I can write a C++ program that can simulate a Turing Machine". This project serves to demonstrate a watered-down version of the first statement by constructing an explicit multi-tape Turing Machine from a given program written in a restricted subset of C++.
  
+The current project version is 1.0.
+
 This project is solely a "for fun" project.
 
 ## Installation
@@ -138,6 +140,7 @@ The restricted subset of C++, which I'll abbreviate as rC++, contains
 - Logical operators and comparison operators on bools: `==`,`!=`,`&&`,`||`,`^`,`!` for equals, not equals, AND, OR, exclusive-or, and the not operator. Operators `&=`, `|=`, `^=` for compound assignment on bools.
 - Declaration and assignment of variables, like `int x = 999999999999999999999;` or `bool b = false;`
 - For-loops, while-loops, break, continue, if statements
+    - short-circuiting of boolean expressions
 - Functions that can be recurisve or mutually recursive
 - 3 provided functions:
     - `int nextInt()`, which reads in an integer from a tape designated as standard input
@@ -152,12 +155,13 @@ Things that are NOT part of rC++ include, but are not limited to,
 - pointers or references
 - preprocessor directives
 - multiple files
-- the operators `++`, `--`, `<<`, `>>`, `<<=`, `>>=`, `~`, '\&`, `|`
+- the operators `++`, `--`, `<<`, `>>`, `<<=`, `>>=`, `~`, `\&`, `|`
 - casting
 - global variables (though you can use a value in `MEM` to act as a global variable)
 - function forward-declarations
 - malloc/free/new/delete
 - do-while loop
+- use an int for a boolean expression
 
 The number of tapes in the multi-tape Turing Machine varies per program, but it will be at least 30 tapes. Writing a function that takes a lot of parameters is one way to increase the number of tapes used. While each tape is two-way infinite, each tape in the generated multi-tape Turing Machines will never go lower than index `-2`, so they are more like one-way infinite tapes. There are three symbols in the alphabet used by the multi-tape Turing Machine: `0`, `1`, and `_` (blank). A transition in a multi-tape Turing Machine with T tapes is denoted using a regular expression that matches T characters read from the T tapes. This is used rather than specifying all possible values that the T tapes could read to reduce space. When following a transition, each tape can move left, right, or not move.
 
