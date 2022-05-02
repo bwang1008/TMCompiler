@@ -1,4 +1,5 @@
 int main() {
-	MEM[100] = 5;
-	return 0;
+	//int ans = 63 / 1;
+	int ans = 3 * -8;
+	return ans;
 }

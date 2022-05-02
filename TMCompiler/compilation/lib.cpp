@@ -370,15 +370,11 @@ void memset(int index, int val) {
 		setMemBitZero();
 	}
 
-	printInt(-3);
-	printSpace();
-
 	int diff = index;
 	while(!isZero(V)) {
 		diff = basic_add(diff, one);
 		currBitIndex = basic_add(currBitIndex, diff);
-		printInt(currBitIndex);
-		printSpace();
+
 		int copy = diff;
 		
 		while(isPos(copy)) {
@@ -418,68 +414,69 @@ int memget(int index) {
 	int one = 1;
 	int currBitIndex = getMemBitIndex();
 
-
-	//int desiredBitIndex = (index * (index + 1)) / 2 + index;
-	
-	int desiredBitIndex = index;
-	if(!isZero(desiredBitIndex)) {
-		int temp = desiredBitIndex * (desiredBitIndex + 3);
-		temp = basic_div2(temp);
-		desiredBitIndex = temp + index;
+	// index(index + 1)/2 + index
+	int signBitIndex = index;
+	if(!isZero(signBitIndex)) {
+		signBitIndex = basic_div2(signBitIndex * (basic_add(signBitIndex, 3)));
 	}
 
-	while(basic_lt(desiredBitIndex, currBitIndex)) {
-		currBitIndex -= one;
-		moveMemHeadLeft();
+	if(basic_lt(signBitIndex, currBitIndex)) {
+		int diff = basic_sub(currBitIndex, signBitIndex);
+		while(isPos(diff)) {
+			diff = basic_sub(diff, one);
+			moveMemHeadLeft();
+		}
 	}
-	while(basic_lt(currBitIndex, desiredBitIndex)) {
-		currBitIndex += one;
-		moveMemHeadRight();
-	}
-	
-	int valIndex = 0;
-	bool shouldBeNegative = false;
-	int pow2 = 0;
-	while(!memBitIsBlank()) {
-		// first bit encountered is the sign bit
-		if(isZero(valIndex)) {
-			// 1 for negative, 0 for non-negative
-			if(memBitIsOne()) {
-				shouldBeNegative = true;	
-			}
-		}
-		else {
-			// goes from 1,2,4,8,... increasing. Little-endian
-			if(memBitIsOne()) {
-				ans += pow2;
-			}
-		}
-
-		valIndex += one;
-		if(isZero(pow2)) {
-			pow2 = one;
-		}
-		else {
-			pow2 = basic_mul2(pow2);
-		}
-
-		//desiredBitIndex = ((index + valIndex) * (index + valIndex + 1)) / 2 + index;
-
-		desiredBitIndex = index + valIndex;
-		if(!isZero(desiredBitIndex)) {
-			int temp = desiredBitIndex * (desiredBitIndex + one);
-			temp = basic_div2(temp);
-			desiredBitIndex = temp + index;
-		}
-
-		while(basic_lt(currBitIndex, desiredBitIndex)) {
-			currBitIndex += one;
+	else {
+		int diff = basic_sub(signBitIndex, currBitIndex);
+		while(isPos(diff)) {
+			diff = basic_sub(diff, one);
 			moveMemHeadRight();
 		}
 	}
 
+	currBitIndex = signBitIndex;
+
+	// if doesn't exist, default is 0
+	if(memBitIsBlank()) {
+		setMemBitIndex(currBitIndex);
+		return ans;
+	}
+
+	bool shouldBeNegative = false;
+	if(memBitIsOne()) {
+		// 1 for negative. if 0, nonneg.
+		shouldBeNegative = true;
+	}
+
+	int diff = index;
+	int pow2 = 1;
+	while(true) {
+		diff = basic_add(diff, one);
+		currBitIndex = basic_add(currBitIndex, diff);
+
+		int copy = diff;
+		while(isPos(copy)) {
+			copy = basic_sub(copy, one);
+			moveMemHeadRight();
+		}
+
+		if(memBitIsBlank()) {
+			break;
+		}
+
+		// goes from 1,2,4,8,... increasing. Little-endian
+		if(memBitIsOne()) {
+			ans = basic_add(ans, pow2);
+		}
+
+		pow2 = basic_mul2(pow2);
+	}
+
 	if(shouldBeNegative) {
-		ans = -ans;
+		if(!isZero(ans)) {
+			ans = basic_neg(ans);
+		}
 	}
 
 	setMemBitIndex(currBitIndex);
