@@ -9,7 +9,7 @@ However, I find that the statement "for any given C++ program, I can build an eq
 The current project version is 1.0.
 
 ## Installation
-1. This project is meant to run through command-line on a Linux or Mac machine (sorry Windows!). Ensure you have the following installed: git, CMake, Make, and a C++ compiler. Ensure you have a persistant internet connection.
+1. This project is meant to run through command-line on a Linux or Mac machine (sorry Windows!). Ensure you have the following installed: git, CMake, Make, and a C++ compiler. You can check this through `git --version`, `cmake --version`, `make --version`, and `g++ --version` (if you use `g++`).
 2. Open a terminal and change to a directory to install the project. Then run each command below one-by-one:
 ```sh
 git clone https://github.com/bwang1008/TMCompiler.git
