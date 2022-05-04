@@ -167,7 +167,7 @@ The number of tapes in the multi-tape Turing Machine varies per program, but it 
 
 There are three symbols in the alphabet used by the multi-tape Turing Machine: `0`, `1`, and `_` (blank). 
 
-A transition in a multi-tape Turing Machine with T tapes is denoted using a regular expression that matches T characters read from the T tapes. This is used rather than specifying all possible values that the T tapes could read to reduce space. When following a transition, each tape can move left, right, or not move.
+A transition in a multi-tape Turing Machine with T tapes is denoted using a regular expression that matches T characters read from the T tapes. This is used rather than specifying all possible values that the T tapes could read to reduce space. Not using these regular expressions for transitions would still result in the same number of tapes and states, but the number of exact transitions will increase. When following a transition, each tape head can shift left, right, or not move.
 
 ## Writing your own program
 Create a new file in the `TMCompiler/programs/` directory using a text editor. The file name should end in the `.cpp` file extension. The program should contain valid C++ syntax. Reference the existing files in the directory for examples.
@@ -176,7 +176,7 @@ Make sure the program contains a main function in the format of `int main()`. En
 
 Use curly braces for every if-else statement and for/while loops, even if they are only one line long.
 
-Commas can only be used to separate out parameters, whether in defining a function or calling a function. I have not included the comma operator, so you can not have two statements separated by a comma, declare multiple variables in the same statement, or use commas in for loops like `for(int i = 0, j = 0; i < 10; i +=1, j += 1)`.
+Commas can only be used to separate out parameters, whether in defining a function or calling a function. rC++ does not include the comma operator, so you can not have two statements separated by a comma, declare multiple variables in the same statement, or use commas in for loops like `for(int i = 0, j = 0; i < 10; i +=1, j += 1)`.
 
 You can use the provided functions `nextInt`, `printInt`, and `printSpace` for input and output. Always use `printSpace()` after every call to `printInt()`.
 
@@ -231,7 +231,6 @@ int main() {
 }
 ```
 where `<w>` is the integer literal `2^n - 1` for `n >= 2` takes `30n^2 + 1211n + 2904` steps (doing `1*1` takes 4140 steps, which is 5 less than the quadratic predicts).
-
 
 
 ## Things to work on
