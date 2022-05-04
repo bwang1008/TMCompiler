@@ -81,7 +81,7 @@ Results written to file ../programs/fibonacci.json
 ```
 Afterwards, I can simulate the multi-tape Turing Machine with
 ```sh
-.../TMCompiler/build$ ./simualte --input="15" ../programs/fibonacci.json
+.../TMCompiler/build$ ./simulate --input="15" ../programs/fibonacci.json
 File successfully read
 JSON to MTTM conversion successful
 
