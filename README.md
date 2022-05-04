@@ -20,6 +20,7 @@ cmake -S .. -B .
 make
 ```
 This downloads the git repository from Github, creates and populates a `build` directory, and then finally compiles the source code in the project to generate two executables. The last command make take some time to complete.
+
 3. Type `ls` in the terminal and ensure there are two executables named `compile` and `simulate`.
 
 ## Running the Project
