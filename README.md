@@ -200,7 +200,7 @@ Integers are written to the tapes in the following way:
 - the integer `0` is written as `0`
 - otherwise, the first bit on the left is a sign bit: `1` for negative, `0` for non-negative
 - the other bits, from left to right, go from least-significant bit to most-significant bit
-- the only exception are the tapes reserved for storing instruction pointers: they are stored in the standard two's-complement form
+- the only exception is the tapes reserved for storing instruction pointers: they are stored in the standard two's-complement form
 
 The tapes are organized as follows:
 - 1 for INPUT
