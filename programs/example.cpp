@@ -35,19 +35,28 @@ int main() {
 
 	printInt(b);
 	printSpace();
+	
+	/*
+	 * Below is equivalent to 
+	 * MEM[2] = 2;
+	 * MEM[2] += MEM[2];
+	 */
+	MEM[MEM[2] = 2] += MEM[2];
+	printInt(MEM[2]);
+	printSpace();
 
 	int ans = 0;
+
+	bool b = !!!false;
 
 	if(isOdd(3)) {
 		ans += 1;
 	}
-
-	if(isEven(3)) {
-		ans += 2;
+	else if(b) {
+		ans = 23;
 	}
-
-	if(isOdd(0)) {
-		ans += 4;
+	else {
+		ans = 31;
 	}
 
 	return ans;
