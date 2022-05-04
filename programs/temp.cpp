@@ -1,5 +1,4 @@
 int main() {
-	//int ans = 63 / 1;
-	int ans = 3 * -8;
+	int ans = 99*99;
 	return ans;
 }

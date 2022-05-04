@@ -78,8 +78,14 @@ Also same change in mul(). Also made some expressions more compact, shaving off 
 time in performance. 
 "99 * 99" takes 11,735 steps.
 "MEM[0] = 5" takes 45,450 steps.
-
-Program heapsort on input 5 9 5 8 2 5 takes 
+ 
+EDIT: made further small optimizations to memget, also changed div algorithm for efficienct.
+"99 * 99" takes 11743 steps
+"63 / -1" went from 414,601 -> 264122 -> 205643 -> 93671 steps
+"MEM[0] = 5" takes 16,450 steps
+"MEM[0] = 5; return MEM[0]" takes 40,542 steps
+Program BFS on input "5 3 1 1 2 1 3 3 4" takes 3,751,956 steps in about 4 minutes 36 seconds. About 13600 steps per second...
+Program heapsort on input "5 9 5 8 2 5" takes 5,601,188 steps in 7 minutes, 48 seconds.  
 
 Works:
 Assignment, declaration, +, -, *, /, <, >, <=, >=, ==, !=, ^, ||, &&

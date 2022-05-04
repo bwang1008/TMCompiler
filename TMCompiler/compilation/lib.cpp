@@ -154,8 +154,9 @@ int mul(int x, int y) {
 	}
 
 	if(ansNeg) {
-		// answer could be 0
-		ans = -ans;
+		if(!isZero(ans)) {
+			ans = basic_neg(ans);
+		}
 	}
 
 	return ans;
@@ -166,42 +167,58 @@ int div(int x, int y) {
 		return 0;
 	}
 	
-	if(x < 0 && y < 0) {
-		return div(-x, -y);
+	bool b1 = isNeg(x);
+	bool b2 = isNeg(y);
+
+	bool shouldBeNegative = false;
+
+	if(b1 && b2) {
+		x = basic_neg(x);
+		y = basic_neg(y);
 	}
-	if(x < 0) {
-		return -div(-x, y);
+	else if(b1) {
+		x = basic_neg(x);
+		shouldBeNegative = true;
 	}
-	if(y < 0) {
-		return -div(x, -y);
+	else if(b2) {
+		y = basic_neg(y);
+		shouldBeNegative = true;
 	}
-	// replace with enhanced binary search? then need division by 2...
 
 	int ans = 0;
 
-	/*
-	while(y * (ans + 1) < x)  {
-		ans += 1;
-	}
-	*/
+	int pow2Before = 0;
+	int pow2After = 1;
+	int prodBefore = 0;
+	int prodAfter = y;
 
-	// rudimentary binary search: find largest power of two less than or equal to it, subtract, repeat
-	int n = x;
-	while(n >= y) {			// if n < y, then remaining to jump is just 0; nothing to add
-		int prevJump = 0;
-		int jump = 1;
-		while(y * (ans + jump) <= x) {
-			prevJump = jump;
-			jump += jump;
+	while(prodAfter <= x) {
+		pow2Before = pow2After;
+		prodBefore = prodAfter;
+
+		pow2After = basic_mul2(pow2After);
+		prodAfter = basic_mul2(prodAfter);
+	}
+
+	ans = basic_add(ans, pow2Before);
+	x -= prodBefore;
+
+	while(x >= y) {
+		while(basic_lt(x, prodBefore)) {
+			pow2After = pow2Before;
+			prodAfter = prodBefore;
+
+			pow2Before = basic_div2(pow2Before);
+			prodBefore = basic_div2(prodBefore);
 		}
 
-		ans += prevJump;
-		n = x - (y * ans);
+		ans = basic_add(ans, pow2Before);
+		x -= prodBefore;
 	}
 	
-	// analysis: each iteration of outer while loop, gains most-significant digit of ans.
-	// takes O(log(x)) calls to multiplication to perform one outer while loop
-	// total: O(log^2(x)) calls to multiplication. at least better than original naive! 
+	if(shouldBeNegative) {
+		ans = -ans;
+	}
 	return ans;	
 }
 
@@ -264,7 +281,7 @@ bool leq(int x, int y) {
 }
 
 bool gt(int x, int y) {
-	return !(x <= y);
+	return (y < x);
 }
 
 bool geq(int x, int y) {

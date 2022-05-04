@@ -8,8 +8,6 @@ However, I find that the statement "for any given C++ program, I can build an eq
  
 The current project version is 1.0.
 
-This project is solely a "for fun" project.
-
 ## Installation
 1. This project is meant to run through command-line on a Linux or Mac machine (sorry Windows!). Ensure you have the following installed: git, CMake, Make, and a C++ compiler. Ensure you have a persistant internet connection.
 2. Open a terminal and change to a directory to install the project. Then run each command below one-by-one:
@@ -50,6 +48,8 @@ If you had compiled a program that did not require input, like `TMCompiler/progr
 ```
 
 If your program requires multiple integers as input, use quotation marks around the space-separated integers, so the option would look something like `--input="3 1 2 3"`.
+
+Please be patient when simulating! Only the simplest programs will finish in a few seconds. On my machine, about 15000-25000 steps are simulated every second. 
 
 ## Example Run
 Suppose I want to run the provided fibonacci program. Then my compilation looks like
@@ -170,6 +170,10 @@ Create a new file in the `TMCompiler/programs/` directory using a text editor. T
 
 Make sure the program contains a main function in the format of `int main()`. Ensure this `main` function actually returns an int, such as `return 0;` at the end. 
 
+Use curly braces for every if-else statement and for/while loops, even if they are only one line long.
+
+Commas can only be used to separate out parameters, whether in defining a function or calling a function. I have not included the comma operator, so you can not have two statements separated by a comma, declare multiple variables in the same statement, or use commas in for loops like `for(int i = 0, j = 0; i < 10; i +=1, j += 1)`.
+
 You can use the provided functions `nextInt`, `printInt`, and `printSpace` for input and output. Always use `printSpace()` after every call to `printInt()`.
 
 You can also use `MEM` as a global `int` array to store information. The cost of using bit	`y` of `MEM[x]` is proportional to `(x+y)*(x+y)`, so it is more expensive to request large indices than small indices. You can also write comments using line comments `//` as well as block comments `/* ... */`. Do not nest block comments.
@@ -208,16 +212,36 @@ The tapes are organized as follows:
 
 Accessing bit `y` of `MEM[x]` requires the head of the tape reserved for `MEM` to move to index `((x+y)(x+y+1) / 2) + x`.
 
+As of current writing, the following program
+```sh
+int main() {
+    return <w> + <w>;
+}
+```
+where `<w>` is the integer literal `2^n` for `n >= 0` takes `34n + 2123` steps.
+
+The following program
+```sh
+int main() {
+    return <w> * <w>;
+}
+```
+where `<w>` is the integer literal `2^n - 1` for `n >= 2` takes `30n^2 + 1211n + 2904` steps (doing `1*1` takes 4140 steps, which is 5 less than the quadratic predicts).
+
+
+
 ## Things to work on
-- Rework the Constants file  
+- Rework the Constants file
 - Clean up `unit1.cpp`
-- Rework CMake  
-- Optimizations  
+- Rework CMake
+- Add assert statements and exceptions
+- Optimizations
 
 ## Ideas for Optimization  
 - [x] Don't erase the value when popping off from a stack, leaving residual memory
-- [x] Rework basic\_add, isPos, isNeg, isZero, and other functions implemented in the TM to be in-place, to avoid unnecessary pushes and pops  
-- [ ] Incorporate "sideways" ip when changing ip. Should half the work of incrementing IP  
+- [x] Rework basic\_add, isPos, isNeg, isZero, and other functions implemented in the TM to be in-place, to avoid unnecessary pushes and pops
+- [ ] Incorporate "sideways" ip when changing ip. Should half the work of incrementing IP
+- [ ] Somehow incorporate loop-unrolling when moving the tape head of `bits` when calling `memset` or `memget`: most of the time is spent here
 
 ## Ideas for programs
 - Implement some standard data structures and algorithms. It's a little bit harder when you only have an array!
@@ -225,10 +249,12 @@ Accessing bit `y` of `MEM[x]` requires the head of the tape reserved for `MEM` t
 - Pretend that MEM is all of a computer's memory, and designate some (infinite) section to be disc space, some section to be for RAM, and some section for a process's heap and stack. You could write a bootloader that runs when the Turing machine starts, and you could run an operating system on the Turing Machine.
 
 ## Future ideas 
+- Have input be set interactively, rather than having input being available all at once when the machine starts. Then a program can be written to play tic-tac-toe against humans!
+- Have `MEM` be set to some pre-determined value before simulating the machine to act as non-volatile memory.
+- Make `MultiTapeTuringMachine` more general to specify its alphabet, then use this to apply the Linear Speedup Theorem to decrease the number of steps without increasing the time to simulate a single step.
 - Add more features into what is allowed in the restricted C++, like strings and floats
 - Convert from multi-tape Turing Machine into a "standard" single-tape Turing Machine of two symbols, with only left and right shifts. However, a quadratic slowdown may make it impractical to simulate.
     - Suppose I take all valid rC++ programs of at most 512 bytes, and compile them into standard single-tape Turing Machines. Let `Q` be the maximum number of states among all generated standard Turing machines, let `BB(n)` be the `n`th Busy Beaver Number, and let `Comp(n)` be the largest integer computed by any rC++ program of at most `n` bytes. Then we have `Comp(512) <= BB(Q)`. This means any rC++ entry to a Bignum Bakeoff Contest will compute some number that is at most `BB(Q)`. Equivalently, you could write a deterministic, halting rC++ program in at most 512 bytes that returns a large number, use some mathematics to prove that the program computes some explicit integer `N` (or prove that the number computed is at least as large as `N`), then claim that `N` is a lower bound for `BB(Q)`.
     - This project first converts rC++ to my own assembly code, then from assembly code to a multi-tape Turing Machine. If I can determine an upper bound on the number of lines of assembly generated by any rC++ program of at most 512 bytes, as well as determine the maximum number of times `newNode()` is called for any assembly instruction, then I can determine an upper bound on the maximum number of states in any multi-tape Turing Machine generated by this project from a rC++ program of at most 512 bytes. Then by figuring out how the number of states increases by changing it to a standard Turing Machine (probably increases it by some polynomial amount), then determining an explicit `Q` for which `Comp(512) <= BB(Q)` is true becomes possible.
 
-
-Any comments, questions, or suggestions are welcome!
+This project is solely a "for fun" project, written by a student who has not taken a compilers course. Any comments, questions, bug reports, or suggestions are welcome!
