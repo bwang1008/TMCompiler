@@ -253,6 +253,7 @@ where `<w>` is the integer literal `2^n - 1` for `n >= 2` takes `30n^2 + 1211n +
 - Pretend that MEM is all of a computer's memory, and designate some (infinite) section to be disc space, some section to be for RAM, and some section for a process's heap and stack. You could write a bootloader that runs when the Turing machine starts, and you could run an operating system on the Turing Machine.
 
 ## Future ideas 
+- Write a program to visualize these multi-tape Turing Machines, given the JSON file
 - Have input be set interactively, rather than having input being available all at once when the machine starts. Then a program can be written to play tic-tac-toe against humans!
 - Have `MEM` be set to some pre-determined value before simulating the machine to act as non-volatile memory.
 - Make `MultiTapeTuringMachine` more general to specify its alphabet, then use this to apply the Linear Speedup Theorem to decrease the number of steps without increasing the time to simulate a single step.
