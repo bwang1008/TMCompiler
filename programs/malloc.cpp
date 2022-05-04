@@ -20,6 +20,20 @@ int malloc(int size) {
 	return ptr;
 }
 
+/**
+ * Sum array of size arrSize, starting at MEM address arrPtr
+ * Looks like "int sumArray(int* arrPtr, int arrSize)" in C
+ */
+int sumArray(int arrPtr, int arrSize) {
+	int sum = 0;
+	for(int i = 0; i < arrSize; i += 1) {
+		sum += MEM[arrPtr + i];
+		// looks like "sum += *(arrPtr + i)" in C
+	}
+
+	return sum;
+}
+
 int main() {
 	initializeMalloc();
 
@@ -32,10 +46,7 @@ int main() {
 		MEM[arrPtr + i] = nextInt();	// looks like *(arrPtr + i) = nextInt() in C
 	}
 
-	int sum = 0;
-	for(int i = 0; i < N; i += 1) {
-		sum += MEM[arrPtr + i];
-	}
+	int sum = sumArray(arrPtr, N);
 
 	printInt(sum);
 	printSpace();
