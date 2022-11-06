@@ -10,7 +10,7 @@
 class TextEditor {
 	public:
 		// constructor and convenience functions
-		TextEditor(const std::string text);
+		TextEditor(const std::string& text);
 		std::string getText() const;
 		std::size_t lineNum() const;
 		std::size_t colNum() const;
@@ -25,18 +25,18 @@ class TextEditor {
 		TextEditor rowCol(const int row, const int col);
 		TextEditor absolutePosition(const int position);
 
-		TextEditor setMark(const std::string label = "");
+		TextEditor setMark(const std::string& label = "");
 
 		// range
 		TextEditor find(const char character);
-		TextEditor find(const std::string pattern);
+		TextEditor find(const std::string& pattern);
 		TextEditor findPrev(const char character);
-		TextEditor findPrev(const std::string pattern);
+		TextEditor findPrev(const std::string& pattern);
 
 		TextEditor til(const char character);
-		TextEditor til(const std::string pattern);
+		TextEditor til(const std::string& pattern);
 		TextEditor tilPrev(const char character);
-		TextEditor tilPrev(const std::string pattern);
+		TextEditor tilPrev(const std::string& pattern);
 
 		TextEditor aWord();
 		TextEditor aLine();
@@ -54,26 +54,26 @@ class TextEditor {
 		TextEditor endOfWord(const bool fullWord = false);
 
 		TextEditor opposite();
-		TextEditor toMark(const std::string label = "");
+		TextEditor toMark(const std::string& label = "");
 
 		// visual
 		TextEditor visual();
 		TextEditor visualLineMode();
 
 		// actions: substitute, delete, insert
-		TextEditor insert(const std::string additionalText);
-		TextEditor insertLine(const std::string additionalText, const bool below = false);
-		TextEditor insertInBeginningOfEachLine(const std::string additionalText);
+		TextEditor insert(const std::string& additionalText);
+		TextEditor insertLine(const std::string& additionalText, const bool below = false);
+		TextEditor insertInBeginningOfEachLine(const std::string& additionalText);
 
-		TextEditor append(const std::string additionalText);
+		TextEditor append(const std::string& additionalText);
 		
-		TextEditor change(const std::string additionalText);
-		TextEditor changeLine(const std::string additionalText);
-		TextEditor changeChar(const std::string additionalText);
+		TextEditor change(const std::string& additionalText);
+		TextEditor changeLine(const std::string& additionalText);
+		TextEditor changeChar(const std::string& additionalText);
 		TextEditor deleteText();
 		TextEditor deleteChar();
 		TextEditor deleteLine();
-		TextEditor replace(const std::string oldPattern, const std::string newPattern);
+		TextEditor replace(const std::string& oldPattern, const std::string& newPattern);
 		TextEditor copy();
 		TextEditor paste();
 		TextEditor toggleCase();
