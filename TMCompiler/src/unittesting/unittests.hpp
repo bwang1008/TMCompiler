@@ -25,7 +25,7 @@ struct TestCasesSummary {
 	int numFailed;
 	int numErrored;
 	std::list<std::string> failedFunctions;
-	std::list<std::pair<std::string, std::exception> > erroredFunctions;
+	std::list<std::pair<std::string, std::string> > erroredFunctions;
 
 	TestCasesSummary(): numPassed{0}, numFailed{0}, numErrored{0}, failedFunctions(), erroredFunctions() {
 
@@ -50,7 +50,7 @@ TestCasesSummary runAllTestCases() {
 		}
 		catch(const std::exception &e) {
 			++summary.numErrored;
-			summary.erroredFunctions.push_back(std::make_pair(functionName, e));
+			summary.erroredFunctions.push_back(std::make_pair(functionName, e.what()));
 		}
 	}
 
@@ -76,12 +76,20 @@ int main() {
 		return 0;
 	}
 
-	for(std::pair<std::string, std::exception> result : summary.erroredFunctions) {
-		std::cout << result.first << " errored: " << std::endl << result.second.what() << std::endl << outputSeparator << std::endl;
+	if(summary.erroredFunctions.size() > 0) {
+		for(std::pair<std::string, std::string> result : summary.erroredFunctions) {
+			std::cout << result.first << " errored: " << std::endl << result.second << std::endl;
+		}
+
+		std::cout << outputSeparator << std::endl;
 	}
 
-	for(std::string result : summary.failedFunctions) {
-		std::cout << result << " failed: " << std::endl << outputSeparator << std::endl;
+	if(summary.failedFunctions.size() > 0) {
+		for(std::string result : summary.failedFunctions) {
+			std::cout << result << " failed" << std::endl;
+		}
+
+		std::cout << outputSeparator << std::endl;
 	}
 
 	std::cout << "Number of tests passed      : " << summary.numPassed << std::endl;
