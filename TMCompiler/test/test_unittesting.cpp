@@ -1,5 +1,7 @@
 #include "unittesting/unittests.hpp"
 
+#include <vector>
+
 // run from TMCompiler root:
 // g++ -std=c++11 -ITMCompiler/src TMCompiler/test/test_unittesting.cpp
 
@@ -13,38 +15,46 @@ int factorial(int n) {
 }
 
 TEST_CASE(test0) {
-	return factorial(0) == 1;
+	ASSERT(factorial(0) == 1);
 }
 
 TEST_CASE(test1) {
-	return factorial(1) == 1;
+	ASSERT(factorial(1) == 1);
 }
 
 TEST_CASE(test2) {
-	return factorial(2) == 2;
+	ASSERT(factorial(2) == 2);
 }
 
 TEST_CASE(test3) {
-	return factorial(3) == 6;
+	ASSERT(factorial(3) == 6);
 }
 
 TEST_CASE(test4) {
-	return factorial(4) == 24;
+	ASSERT(factorial(4) == 24);
 }
 
 TEST_CASE(test5) {
-	return factorial(5) == 120;
+	ASSERT(factorial(5) == 120);
 }
 
 TEST_CASE(test6) {
-	return factorial(6) == 720;
+	ASSERT(factorial(6) == 720);
 }
 
 TEST_CASE(test7) {
-	return factorial(7) == 100;
+	// ASSERT(factorial(7) == 100);
+	ASSERT(factorial(7) == 5040);
 }
 
 TEST_CASE(test8) {
-	throw std::runtime_error("Gak!");
-	return true;
+	// throw std::runtime_error("Gak!");
+	ASSERT(true);
+}
+
+TEST_CASE(test9) {
+	std::vector<int> answers = {1, 1, 2, 6, 24, 120};
+	for(int i = 0; i < 6; ++i) {
+		ASSERT(factorial(i) == answers[i]);
+	}
 }

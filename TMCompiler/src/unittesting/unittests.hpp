@@ -8,16 +8,32 @@
 #include <string>
 #include <utility>
 
+int numPassingAsserts = 0;
+int numFailingAsserts = 0;
+
+// assigns function to global map. runs before main by using comma operator
 #define REGISTER_TEST(FUNCTION_NAME) \
 	int DUMMY_REGISTER_ ## FUNCTION_NAME = ( NAMES_TO_FUNCTIONS[#FUNCTION_NAME] = &FUNCTION_NAME , 0)
 
 // declare the function, register it, then define
 #define TEST_CASE(FUNCTION_NAME) \
-	bool FUNCTION_NAME () ; \
+	void FUNCTION_NAME () ; \
 	REGISTER_TEST(FUNCTION_NAME) ; \
-	bool FUNCTION_NAME ()
+	void FUNCTION_NAME ()
 
-using FUNCTION_POINTER = bool (*)(void);
+#define FAIL_ASSERT() \
+	std::cout << "Assert failed in " << __FILE__ << " in " << __func__ << "()" << " on line " << __LINE__ << std::endl;
+	
+
+#define ASSERT(BOOL_EXPR) \
+	if( ! (BOOL_EXPR) ) { \
+		++numFailingAsserts; \
+		FAIL_ASSERT(); \
+	} \
+	else \
+		++numPassingAsserts
+		
+using FUNCTION_POINTER = void (*)(void);
 std::map<std::string, FUNCTION_POINTER> NAMES_TO_FUNCTIONS;
 
 struct TestCasesSummary {
@@ -39,7 +55,10 @@ TestCasesSummary runAllTestCases() {
 		FUNCTION_POINTER func = it->second;
 
 		try {
-			bool passed = func();
+			int prevFailingAsserts = numFailingAsserts;
+			func();
+			bool passed = (numFailingAsserts == prevFailingAsserts);
+
 			if(passed) {
 				++summary.numPassed;
 			}
@@ -73,6 +92,8 @@ int main() {
 
 	if(summary.numPassed == numTestCases) {
 		std::cout << "All " << numTestCases << " test cases passed!" << std::endl;
+		std::cout << "All " << numPassingAsserts << " asserts passed!" << std::endl;
+		std::cout << outputSeparator << std::endl;
 		return 0;
 	}
 
@@ -95,6 +116,10 @@ int main() {
 	std::cout << "Number of tests passed      : " << summary.numPassed << std::endl;
 	std::cout << "Number of tests failed      : " << summary.numFailed << std::endl;
 	std::cout << "Number of tests errored     : " << summary.numErrored << std::endl;
+	std::cout << outputSeparator << std::endl;
+
+	std::cout << "Number of passing asserts   : " << numPassingAsserts << std::endl;
+	std::cout << "Number of failing asserts   : " << numFailingAsserts << std::endl;
 	std::cout << outputSeparator << std::endl;
 
 	return 0;
