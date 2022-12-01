@@ -1,9 +1,9 @@
-#include "unittesting/unittests.hpp"
-
 #include <vector>
 
+#include <TMCompiler/utils/unittesting/unittests.hpp>
+
 // run from TMCompiler root:
-// g++ -std=c++11 -ITMCompiler/src TMCompiler/test/test_unittesting.cpp
+// g++ -std=c++11 -I. TMCompiler/tests/test_unittesting.cpp
 
 int factorial(int n) {
 	int prod = 1;

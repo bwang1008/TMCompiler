@@ -1,8 +1,8 @@
 #include <string>
 #include <iostream>
 
-#include "text_editor/text_editor.hpp"
-#include <unittesting/unittests.hpp>
+#include <TMCompiler/utils/text_editor/text_editor.hpp>
+#include <TMCompiler/utils/unittesting/unittests.hpp>
 
 TEST_CASE(test_move_right) {
 	std::string text = "abc\ndef\nghi";
