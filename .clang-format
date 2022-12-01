@@ -68,17 +68,17 @@ ForEachMacros:
   - BOOST_FOREACH
 IncludeBlocks:   Regroup
 IncludeCategories:
-  - Regex:           '^<ext/.*\.h>'
-    Priority:        2
-    SortPriority:    0
-  - Regex:           '^<.*\.h>'
+  - Regex:           '<.*\.h>'
     Priority:        1
     SortPriority:    0
-  - Regex:           '^<.*'
+  - Regex:           '<[^\.]*>'
     Priority:        2
     SortPriority:    0
-  - Regex:           '.*'
+  - Regex:           '<TMCompiler/\.*>'
     Priority:        3
+    SortPriority:    0
+  - Regex:           '.*'
+    Priority:        4
     SortPriority:    0
 IncludeIsMainRegex: '([-_](test|unittest))?$'
 IncludeIsMainSourceRegex: ''
