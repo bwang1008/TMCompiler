@@ -10,4 +10,4 @@
 
 # reference: https://www.labri.fr/perso/fleury/posts/programming/using-clang-tidy-and-clang-format.html
 
-clang-tidy $1 -config='' -- -std=c++14
+clang-tidy $1 -config='' -- -std=c++14 -I.
