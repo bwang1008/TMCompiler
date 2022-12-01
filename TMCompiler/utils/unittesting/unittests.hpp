@@ -22,7 +22,7 @@ int numFailingAsserts = 0;
 	void FUNCTION_NAME ()
 
 #define FAIL_ASSERT() \
-	std::cout << "Assert failed in " << __FILE__ << " in " << __func__ << "()" << " on line " << __LINE__ << std::endl;
+	std::cout << "Assert failed in " << __FILE__ << " in " << static_cast<const char*>(__func__) << "()" << " on line " << __LINE__ << std::endl;
 	
 
 #define ASSERT(BOOL_EXPR) \
