@@ -69,7 +69,7 @@ TestCasesSummary runAllTestCases() {
 		}
 		catch(const std::exception &e) {
 			++summary.numErrored;
-			summary.erroredFunctions.push_back(std::make_pair(functionName, e.what()));
+			summary.erroredFunctions.emplace_back(functionName, e.what());
 		}
 	}
 
@@ -97,16 +97,16 @@ int main() {
 		return 0;
 	}
 
-	if(summary.erroredFunctions.size() > 0) {
-		for(std::pair<std::string, std::string> result : summary.erroredFunctions) {
+	if(!summary.erroredFunctions.empty()) {
+		for(const std::pair<std::string, std::string>& result : summary.erroredFunctions) {
 			std::cout << result.first << " errored: " << std::endl << result.second << std::endl;
 		}
 
 		std::cout << outputSeparator << std::endl;
 	}
 
-	if(summary.failedFunctions.size() > 0) {
-		for(std::string result : summary.failedFunctions) {
+	if(!summary.failedFunctions.empty()) {
+		for(const std::string& result : summary.failedFunctions) {
 			std::cout << result << " failed" << std::endl;
 		}
 

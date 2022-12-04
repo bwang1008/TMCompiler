@@ -2,8 +2,8 @@
 #define TEXT_EDITOR_HPP
 
 #include <cstddef>	// std::size_t
-#include <set>		// std::set
 #include <map>		// std::map
+#include <set>		// std::set
 #include <string>	// std::string
 #include <utility>	// std::pair
 #include <vector>	// std::vector
@@ -11,76 +11,77 @@
 class TextEditor {
 public:
 	// constructor and convenience functions
-	TextEditor(const std::string& text);
-	std::string getText() const;
-	std::size_t lineNum() const;
-	std::size_t colNum() const;
+	explicit TextEditor(const std::string& text);
+	auto getText() const -> std::string;
+	auto lineNum() const -> std::size_t;
+	auto colNum() const -> std::size_t;
 
 	// cursor movement
-	TextEditor& down(const std::size_t num = 1);
-	TextEditor& left(const std::size_t num = 1);
-	TextEditor& right(const std::size_t num = 1);
-	TextEditor& up(const std::size_t num = 1);
+	auto down(std::size_t num = 1) -> TextEditor&;
+	auto left(std::size_t num = 1) -> TextEditor&;
+	auto right(std::size_t num = 1) -> TextEditor&;
+	auto up(std::size_t num = 1) -> TextEditor&;
 
-	TextEditor& goToLine(const std::size_t lineNumber);
-	TextEditor& goToRowCol(const std::size_t row, const std::size_t col);
-	TextEditor& absolutePosition(const std::size_t position);
+	auto goToLine(std::size_t lineNumber) -> TextEditor&;
+	auto goToRowCol(std::size_t row, std::size_t col) -> TextEditor&;
+	auto absolutePosition(std::size_t position) -> TextEditor&;
 
-	TextEditor& setMark(const std::string& label = "");
+	auto setMark(const std::string& label = "") -> TextEditor&;
 
 	// range
-	TextEditor& find(const char character);
-	TextEditor& find(const std::string& pattern);
-	TextEditor& findPrev(const char character);
-	TextEditor& findPrev(const std::string& pattern);
+	auto find(char character) -> TextEditor&;
+	auto find(const std::string& pattern) -> TextEditor&;
+	auto findPrev(char character) -> TextEditor&;
+	auto findPrev(const std::string& pattern) -> TextEditor&;
 
-	TextEditor& til(const char character);
-	TextEditor& til(const std::string& pattern);
-	TextEditor& tilPrev(const char character);
-	TextEditor& tilPrev(const std::string& pattern);
+	auto til(char character) -> TextEditor&;
+	auto til(const std::string& pattern) -> TextEditor&;
+	auto tilPrev(char character) -> TextEditor&;
+	auto tilPrev(const std::string& pattern) -> TextEditor&;
 
-	TextEditor& aWord();
-	TextEditor& aLine();
+	auto aWord() -> TextEditor&;
+	auto aLine() -> TextEditor&;
 
 	// range convenience function
-	TextEditor& startOfLine(const bool startOfNonBlank = true);
-	TextEditor& endOfLine(const bool endOfNonBlank = true);
-	TextEditor& firstLine();
-	TextEditor& lastLine();
+	auto startOfLine(bool startOfNonBlank = true) -> TextEditor&;
+	auto endOfLine(bool endOfNonBlank = true) -> TextEditor&;
+	auto firstLine() -> TextEditor&;
+	auto lastLine() -> TextEditor&;
 
-	TextEditor& beginNextWord();
-	TextEditor& beginCurrWord();
-	TextEditor& endOfWord();
+	auto beginNextWord() -> TextEditor&;
+	auto beginCurrWord() -> TextEditor&;
+	auto endOfWord() -> TextEditor&;
 
-	TextEditor& opposite();
-	TextEditor& toMark(const std::string& label = "");
+	auto opposite() -> TextEditor&;
+	auto toMark(const std::string& label = "") -> TextEditor&;
 
 	// visual
-	TextEditor& visual();
+	auto visual() -> TextEditor&;
 
 	// actions: substitute, delete, insert
-	TextEditor& insert(const std::string& additionalText);
-	TextEditor& insertLine(const std::string& additionalText,
-						   const bool above = false);
-	TextEditor& insertInBeginningOfEachLine(const std::string& additionalText);
+	auto insert(const std::string& additionalText) -> TextEditor&;
+	auto insertLine(const std::string& additionalText, bool above = false)
+		-> TextEditor&;
+	auto insertInBeginningOfEachLine(const std::string& additionalText)
+		-> TextEditor&;
 
-	TextEditor& append(const std::string& additionalText);
+	auto append(const std::string& additionalText) -> TextEditor&;
 
-	TextEditor& change(const std::string& additionalText);
-	TextEditor& changeLine(const std::string& additionalText);
-	TextEditor& changeChar(const std::string& additionalText);
-	TextEditor& deleteText();
-	TextEditor& deleteChar();
-	TextEditor& deleteLine();
-	TextEditor& replace(const std::string& oldPattern,
-						const std::string& newPattern);
-	TextEditor& copy();
-	TextEditor& paste();
-	TextEditor& toggleCase();
+	auto change(const std::string& additionalText) -> TextEditor&;
+	auto changeLine(const std::string& additionalText) -> TextEditor&;
+	auto changeChar(const std::string& additionalText) -> TextEditor&;
+	auto deleteText() -> TextEditor&;
+	auto deleteChar() -> TextEditor&;
+	auto deleteLine() -> TextEditor&;
+	auto replace(const std::string& oldPattern, const std::string& newPattern)
+		-> TextEditor&;
+	auto copy() -> TextEditor&;
+	auto paste() -> TextEditor&;
+	auto toggleCase() -> TextEditor&;
 
 	// extraneous functions
-	TextEditor& stripWhiteSpace(const bool begin = true, const bool end = true);
-	TextEditor& joinNextLine();
+	auto stripWhiteSpace(bool begin = true, bool end = true) -> TextEditor&;
+	auto joinNextLine() -> TextEditor&;
 
 private:
 	// class constants
@@ -90,23 +91,26 @@ private:
 
 	// data representation
 	std::string text;
-	std::size_t cursor;			// 0 <= cursor <= text.size() (fence-post around letters)
+	std::size_t
+		cursor;	 // 0 <= cursor <= text.size() (fence-post around letters)
 	std::map<std::string, std::size_t> markLocations;
 	bool visualMode;
 	std::pair<std::size_t, std::size_t> visualRange;
 	std::string copyBuffer;
 
 	// helper functions
-	std::pair<std::size_t, std::size_t> getRowCol() const;
-	void finishAction();
+	auto getRowCol() const -> std::pair<std::size_t, std::size_t>;
+	auto finishAction() -> void;
 
-	bool onLastLine() const;
-	bool stringMatches(const std::string& pattern, const std::size_t index) const;
-	std::size_t searchFor(const std::string& searchText,
-						  const std::size_t searchIndex,
-						  const bool backwards = false) const;
-	std::size_t searchForWhitespace(const std::size_t searchIndex, const bool backwards = false) const;
-	std::size_t searchForNonWhitespace(const std::size_t searchIndex, const bool backwards = false) const;
+	auto onLastLine() const -> bool;
+	auto stringMatches(const std::string& pattern, std::size_t index) const
+		-> bool;
+	auto searchFor(const std::string& searchText, std::size_t searchIndex,
+				   bool backwards = false) const -> std::size_t;
+	auto searchForWhitespace(std::size_t searchIndex,
+							 bool backwards = false) const -> std::size_t;
+	auto searchForNonWhitespace(std::size_t searchIndex,
+								bool backwards = false) const -> std::size_t;
 };
 
 #endif
