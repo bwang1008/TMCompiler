@@ -13,6 +13,6 @@ public:
 	void addArgument(const Argument argument);
 	void parseCommandLine(const int argc, const char** argv);
 	Argument get(std::string name);
-}
+};
 
 #endif

@@ -14,25 +14,24 @@ const std::set<std::pair<char, char> > TextEditor::OPPOSITES = {{'(', ')'}, {'['
 TextEditor::TextEditor(const std::string& text)
 	: text{text},
 	  cursor{0},
-	  markLocations{},
 	  visualMode{false},
 	  visualRange{std::make_pair(std::size_t{0}, std::size_t{0})},
 	  copyBuffer{""} {
 }
 
-std::string TextEditor::getText() const {
+auto TextEditor::getText() const -> std::string {
 	return text;
 }
 
-std::size_t TextEditor::lineNum() const {
+auto TextEditor::lineNum() const -> std::size_t {
 	return std::get<0>(getRowCol());
 }
 
-std::size_t TextEditor::colNum() const {
+auto TextEditor::colNum() const -> std::size_t {
 	return std::get<1>(getRowCol());
 }
 
-TextEditor& TextEditor::down(const std::size_t num) {
+auto TextEditor::down(const std::size_t num) -> TextEditor& {
 	std::size_t currCol = colNum();
 
 	for(std::size_t i = 0; i < num; ++i) {
@@ -45,7 +44,7 @@ TextEditor& TextEditor::down(const std::size_t num) {
 	return right(currCol);
 }
 
-TextEditor& TextEditor::left(const std::size_t num) {
+auto TextEditor::left(const std::size_t num) -> TextEditor& {
 	for(std::size_t i = 0; i < num; ++i) {
 		if(cursor > 0) {
 			--cursor;
@@ -55,7 +54,7 @@ TextEditor& TextEditor::left(const std::size_t num) {
 	return *this;
 }
 
-TextEditor& TextEditor::right(const std::size_t num) {
+auto TextEditor::right(const std::size_t num) -> TextEditor& {
 	for(std::size_t i = 0; i < num; ++i) {
 		if(cursor < text.size()) {
 			++cursor;
@@ -65,7 +64,7 @@ TextEditor& TextEditor::right(const std::size_t num) {
 	return *this;
 }
 
-TextEditor& TextEditor::up(const std::size_t num) {
+auto TextEditor::up(const std::size_t num) -> TextEditor& {
 	std::size_t currCol = colNum();
 	for(std::size_t i = 0; i < num; ++i) {
 		cursor = searchFor(std::string(1, NEWLINE), cursor, true);
@@ -78,11 +77,11 @@ TextEditor& TextEditor::up(const std::size_t num) {
 	return *this;
 }
 
-TextEditor& TextEditor::goToLine(const std::size_t lineNumber) {
+auto TextEditor::goToLine(const std::size_t lineNumber) -> TextEditor& {
 	return goToRowCol(lineNumber, 0);
 }
 
-TextEditor& TextEditor::goToRowCol(const std::size_t row, const std::size_t col) {
+auto TextEditor::goToRowCol(const std::size_t row, const std::size_t col) -> TextEditor& {
 	std::size_t currRow = 0;
 	std::size_t currCol = 0;
 	
@@ -99,36 +98,36 @@ TextEditor& TextEditor::goToRowCol(const std::size_t row, const std::size_t col)
 	return *this;
 }
 
-TextEditor& TextEditor::absolutePosition(const std::size_t position) {
+auto TextEditor::absolutePosition(const std::size_t position) -> TextEditor& {
 	cursor = std::min(position, text.size());
 	return *this;
 }
 
-TextEditor& TextEditor::setMark(const std::string& label) {
+auto TextEditor::setMark(const std::string& label) -> TextEditor& {
 	return *this;
 }
 
-TextEditor& TextEditor::find(const char character) {
+auto TextEditor::find(const char character) -> TextEditor& {
 	cursor = searchFor(std::string(1, character), cursor);
 	return *this;
 }
 
-TextEditor& TextEditor::find(const std::string& pattern) {
+auto TextEditor::find(const std::string& pattern) -> TextEditor& {
 	cursor = searchFor(pattern, cursor);
 	return *this;
 }
 
-TextEditor& TextEditor::findPrev(const char character) {
+auto TextEditor::findPrev(const char character) -> TextEditor& {
 	cursor = searchFor(std::string(1, character), cursor, true);
 	return *this;
 }
 
-TextEditor& TextEditor::findPrev(const std::string& pattern) {
+auto TextEditor::findPrev(const std::string& pattern) -> TextEditor& {
 	cursor = searchFor(pattern, cursor, true);
 	return *this;
 }
 
-TextEditor& TextEditor::til(const char character) {
+auto TextEditor::til(const char character) -> TextEditor& {
 	std::size_t searchIndex = searchFor(std::string(1, character), cursor);
 	if(cursor != searchIndex) {
 		cursor = searchIndex - 1;
@@ -137,7 +136,7 @@ TextEditor& TextEditor::til(const char character) {
 	return *this;
 }
 
-TextEditor& TextEditor::til(const std::string& pattern) {
+auto TextEditor::til(const std::string& pattern) -> TextEditor& {
 	std::size_t searchIndex = searchFor(pattern, cursor);
 	if(cursor != searchIndex) {
 		cursor = searchIndex - 1;
@@ -146,7 +145,7 @@ TextEditor& TextEditor::til(const std::string& pattern) {
 	return *this;
 }
 
-TextEditor& TextEditor::tilPrev(const char character) {
+auto TextEditor::tilPrev(const char character) -> TextEditor& {
 	std::size_t searchIndex = searchFor(std::string(1, character), cursor, true);
 	if(cursor != searchIndex) {
 		cursor = searchIndex + 1;
@@ -155,7 +154,7 @@ TextEditor& TextEditor::tilPrev(const char character) {
 	return *this;
 }
 
-TextEditor& TextEditor::tilPrev(const std::string& pattern) {
+auto TextEditor::tilPrev(const std::string& pattern) -> TextEditor& {
 	std::size_t searchIndex = searchFor(pattern, cursor, true);
 	if(cursor != searchIndex) {
 		cursor = searchIndex + 1;
@@ -164,7 +163,7 @@ TextEditor& TextEditor::tilPrev(const std::string& pattern) {
 	return *this;
 }
 
-TextEditor& TextEditor::aWord() {
+auto TextEditor::aWord() -> TextEditor& {
 	if(WHITESPACE.find(text[cursor]) == WHITESPACE.end()) {
 		// if not on whitespace, go to beginning of current word
 		beginCurrWord();
@@ -177,7 +176,7 @@ TextEditor& TextEditor::aWord() {
 	return *this;
 }
 
-TextEditor& TextEditor::aLine() {
+auto TextEditor::aLine() -> TextEditor& {
 	startOfLine();
 	visualRange.first = cursor;
 	
@@ -187,15 +186,15 @@ TextEditor& TextEditor::aLine() {
 	return *this;
 }
 
-TextEditor& TextEditor::startOfLine(const bool startOfNonBlank) {
-	if(text.size() == 0) {
+auto TextEditor::startOfLine(const bool startOfNonBlank) -> TextEditor& {
+	if(text.empty()) {
 		cursor = 0;
 		return *this;
 	}
 
 	std::size_t prevNewline = searchFor(std::string(1, NEWLINE), cursor, true);
 	if(startOfNonBlank) {
-		cursor = searchForNonWhitespace(prevNewline, cursor);
+		cursor = searchForNonWhitespace(prevNewline, true);
 	}
 	else {
 		cursor = prevNewline + 1;
@@ -204,7 +203,7 @@ TextEditor& TextEditor::startOfLine(const bool startOfNonBlank) {
 	return *this;
 }
 
-TextEditor& TextEditor::endOfLine(const bool endOfNonBlank) {
+auto TextEditor::endOfLine(const bool endOfNonBlank) -> TextEditor& {
 	std::size_t nextNewline = searchFor(std::string(1, NEWLINE), cursor);
 	if(endOfNonBlank) {
 		cursor = searchForNonWhitespace(nextNewline, true);
@@ -216,13 +215,13 @@ TextEditor& TextEditor::endOfLine(const bool endOfNonBlank) {
 	return *this;
 }
 
-TextEditor& TextEditor::firstLine() {
+auto TextEditor::firstLine() -> TextEditor& {
 	cursor = 0;
 	return *this;
 }
 
-TextEditor& TextEditor::lastLine() {
-	if(text.size() == 0) {
+auto TextEditor::lastLine() -> TextEditor& {
+	if(text.empty()) {
 		cursor = 0;
 		return *this;
 	}
@@ -234,14 +233,14 @@ TextEditor& TextEditor::lastLine() {
 	return *this;
 }
 
-TextEditor& TextEditor::beginNextWord() {
+auto TextEditor::beginNextWord() -> TextEditor& {
 	std::size_t whitespacePosition = searchForWhitespace(cursor);
 	cursor = searchForNonWhitespace(whitespacePosition);
 	return *this;
 }
 
-TextEditor& TextEditor::beginCurrWord() {
-	if(text.size() == 0) {
+auto TextEditor::beginCurrWord() -> TextEditor& {
+	if(text.empty()) {
 		return *this;
 	}
 	
@@ -257,8 +256,8 @@ TextEditor& TextEditor::beginCurrWord() {
 }
 
 
-TextEditor& TextEditor::endOfWord() {
-	if(text.size() == 0) {
+auto TextEditor::endOfWord() -> TextEditor& {
+	if(text.empty()) {
 		return *this;
 	}
 
@@ -274,8 +273,8 @@ TextEditor& TextEditor::endOfWord() {
 	return *this;
 }
 
-TextEditor& TextEditor::opposite() {
-	if(text.size() == 0) {
+auto TextEditor::opposite() -> TextEditor& {
+	if(text.empty()) {
 		return *this;
 	}
 
@@ -292,11 +291,11 @@ TextEditor& TextEditor::opposite() {
 	return *this;
 }
 
-TextEditor& TextEditor::toMark(const std::string& label) {
+auto TextEditor::toMark(const std::string& label) -> TextEditor& {
 	return *this;
 }
 
-TextEditor& TextEditor::visual() {
+auto TextEditor::visual() -> TextEditor& {
 	visualMode = !visualMode;
 	
 	if(visualMode) {
@@ -306,13 +305,13 @@ TextEditor& TextEditor::visual() {
 	return *this;
 }
 
-TextEditor& TextEditor::insert(const std::string& additionalText) {
+auto TextEditor::insert(const std::string& additionalText) -> TextEditor& {
 	text.insert(cursor, additionalText);
 	return *this;
 }
 
-TextEditor& TextEditor::insertLine(const std::string& additionalText,
-								  const bool above) {
+auto TextEditor::insertLine(const std::string& additionalText,
+								  const bool above) -> TextEditor& {
 
 	std::size_t insertIndex = 0;
 	if(above) {
@@ -330,55 +329,55 @@ TextEditor& TextEditor::insertLine(const std::string& additionalText,
 	return *this;
 }
 
-TextEditor& TextEditor::insertInBeginningOfEachLine(
-	const std::string& additionalText) {
+auto TextEditor::insertInBeginningOfEachLine(
+	const std::string& additionalText) -> TextEditor& {
 	return *this;
 }
 
-TextEditor& TextEditor::append(const std::string& additionalText) {
+auto TextEditor::append(const std::string& additionalText) -> TextEditor& {
 	return *this;
 }
 
-TextEditor& TextEditor::change(const std::string& additionalText) {
+auto TextEditor::change(const std::string& additionalText) -> TextEditor& {
 	return *this;
 }
-TextEditor& TextEditor::changeLine(const std::string& additionalText) {
+auto TextEditor::changeLine(const std::string& additionalText) -> TextEditor& {
 	return *this;
 }
-TextEditor& TextEditor::changeChar(const std::string& additionalText) {
+auto TextEditor::changeChar(const std::string& additionalText) -> TextEditor& {
 	return *this;
 }
-TextEditor& TextEditor::deleteText() {
+auto TextEditor::deleteText() -> TextEditor& {
 	return *this;
 }
-TextEditor& TextEditor::deleteChar() {
+auto TextEditor::deleteChar() -> TextEditor& {
 	return *this;
 }
-TextEditor& TextEditor::deleteLine() {
+auto TextEditor::deleteLine() -> TextEditor& {
 	return *this;
 }
-TextEditor& TextEditor::replace(const std::string& oldPattern,
-							   const std::string& newPattern) {
+auto TextEditor::replace(const std::string& oldPattern,
+							   const std::string& newPattern) -> TextEditor& {
 	return *this;
 }
-TextEditor& TextEditor::copy() {
+auto TextEditor::copy() -> TextEditor& {
 	return *this;
 }
-TextEditor& TextEditor::paste() {
+auto TextEditor::paste() -> TextEditor& {
 	return *this;
 }
-TextEditor& TextEditor::toggleCase() {
-	return *this;
-}
-
-TextEditor& TextEditor::stripWhiteSpace(const bool begin, const bool end) {
-	return *this;
-}
-TextEditor& TextEditor::joinNextLine() {
+auto TextEditor::toggleCase() -> TextEditor& {
 	return *this;
 }
 
-std::pair<std::size_t, std::size_t> TextEditor::getRowCol() const {
+auto TextEditor::stripWhiteSpace(const bool begin, const bool end) -> TextEditor& {
+	return *this;
+}
+auto TextEditor::joinNextLine() -> TextEditor& {
+	return *this;
+}
+
+auto TextEditor::getRowCol() const -> std::pair<std::size_t, std::size_t> {
 	std::size_t row = 0;
 	std::size_t col = 0;
 	for(std::size_t i = 0; i < cursor; ++i) {
@@ -397,14 +396,14 @@ void TextEditor::finishAction() {
 	visualMode = false;
 }
 
-bool TextEditor::onLastLine() const {
+auto TextEditor::onLastLine() const -> bool {
 	std::size_t newlineLocation = searchFor(std::string(1, NEWLINE), cursor);
 	// if cursor was at end, or you did not find a new line at index
 	return newlineLocation == text.size() || text[newlineLocation] != NEWLINE;
 }
 
-bool TextEditor::stringMatches(const std::string& pattern,
-							   const std::size_t index) const {
+auto TextEditor::stringMatches(const std::string& pattern,
+							   const std::size_t index) const -> bool {
 	if(index + pattern.size() > text.size()) {
 		return false;
 	}
@@ -418,9 +417,9 @@ bool TextEditor::stringMatches(const std::string& pattern,
 	return true;
 }
 
-std::size_t TextEditor::searchFor(const std::string& pattern,
+auto TextEditor::searchFor(const std::string& pattern,
 								  const std::size_t searchIndex,
-								  const bool backwards) const {
+								  const bool backwards) const -> std::size_t {
 	if(backwards) {
 		for(std::size_t searchCandidate = searchIndex; searchCandidate--;) {
 			if(stringMatches(pattern, searchCandidate)) {
@@ -440,9 +439,9 @@ std::size_t TextEditor::searchFor(const std::string& pattern,
 	return searchIndex;
 }
 
-std::size_t TextEditor::searchForWhitespace(
+auto TextEditor::searchForWhitespace(
 								  const std::size_t searchIndex,
-								  const bool backwards) const {
+								  const bool backwards) const -> std::size_t {
 	if(backwards) {
 		for(std::size_t searchCandidate = searchIndex; searchCandidate--;) {
 			if(WHITESPACE.find(text[searchIndex]) != WHITESPACE.end()) {
@@ -462,9 +461,9 @@ std::size_t TextEditor::searchForWhitespace(
 	return searchIndex;
 }
 
-std::size_t TextEditor::searchForNonWhitespace(
+auto TextEditor::searchForNonWhitespace(
 								  const std::size_t searchIndex,
-								  const bool backwards) const {
+								  const bool backwards) const -> std::size_t {
 	if(backwards) {
 		for(std::size_t searchCandidate = searchIndex; searchCandidate--;) {
 			if(WHITESPACE.find(text[searchIndex]) == WHITESPACE.end()) {
