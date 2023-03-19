@@ -14,5 +14,8 @@
 # CMAKE build folder
 build*/
 
+# VSCode
+.vscode
+
 # Vim swap file
 *.swp
