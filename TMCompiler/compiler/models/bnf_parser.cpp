@@ -58,7 +58,7 @@ auto find_next_unescaped_string(const std::string& text,
  */
 auto text_matches_pattern(const std::string& text, const std::string& pattern,
 						  const std::size_t pos) -> bool {
-	return pos + pattern.size() < text.size() &&
+	return pos + pattern.size() <= text.size() &&
 		   text.substr(pos, pattern.size()) == pattern;
 }
 
@@ -115,7 +115,7 @@ auto parse_symbol(const std::string& bnf_contents,
 	std::size_t symbol_contents_size = 0;
 	std::size_t end_position = symbol_contents_start;
 
-	while(end_position + symbol_end.size() - 1 < bnf_contents.size() &&
+	while(end_position + symbol_end.size() <= bnf_contents.size() &&
 		  bnf_contents.substr(end_position, symbol_end.size()) != symbol_end) {
 		if(bnf_contents[end_position] == '\\' &&
 		   end_position + 1 < bnf_contents.size() &&
@@ -162,6 +162,7 @@ auto parse_rules(std::ifstream& bnf_file_stream) -> Rules {
 			bnf_contents += "\n";
 		}
 	} catch(const std::ifstream::failure& ios_exception) {
+		bnf_file_stream.close();
 		throw ios_exception;
 	}
 
@@ -282,6 +283,7 @@ auto parse_rules(const std::string& bnf_contents) -> Rules {
 		}
 	}
 
+	// add last rule
 	if(!current_replacements.empty()) {
 		rules[current_left.get_name()].insert(
 			rules[current_left.get_name()].end(), current_replacements.begin(),

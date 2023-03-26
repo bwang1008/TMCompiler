@@ -7,7 +7,7 @@
 #include <utility>
 #include <vector>
 
-// represent <abc> and "abc"
+// represent <abc> and "abc" in BNF file
 class Symbol {
 private:
 	std::string name;
@@ -22,14 +22,13 @@ public:
 // represent <abc> "def" | "ghi" <jkl>
 using ReplacementAlternatives = std::vector<std::vector<Symbol> >;
 
-// represent <A> ::= <abc> "def" | "ghi" <jkl>
-using Rule = std::pair<std::string, ReplacementAlternatives>;
-
 // represent many lines of the form <A> ::= <abc> "def" | "ghi" <jkl>
 using Rules = std::map<std::string, ReplacementAlternatives>;
 
 namespace BnfParser {
-// use in Grammar's init: rules = BnfParser::parse_rules(std::ifstream("C.bnf"))
+// use in Grammar's init:
+// std::ifstream file("C.bnf");
+// rules = BnfParser::parse_rules(file);
 auto parse_rules(std::ifstream& bnf_file_stream) -> Rules;
 auto parse_rules(const std::string& bnf_contents) -> Rules;
 
