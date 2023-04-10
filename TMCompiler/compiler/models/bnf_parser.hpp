@@ -39,6 +39,6 @@ const std::string bnf_nonterminal_start = std::string("<");
 const std::string bnf_nonterminal_end = std::string(">");
 const std::string bnf_replacement_separation = std::string("::=");
 const std::string bnf_choice = std::string("|");
-};	// namespace BnfParser
+}  // namespace BnfParser
 
 #endif

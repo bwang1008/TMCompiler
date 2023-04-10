@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+set -euo pipefail
+
 # usage:
 # $ ./diagnostic.sh <file_name>
 # Example:

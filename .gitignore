@@ -7,6 +7,9 @@
 # Compiled Static libraries
 *.a
 
+# generated Make recipes
+*.d
+
 # Executables
 *.exe
 *.out
