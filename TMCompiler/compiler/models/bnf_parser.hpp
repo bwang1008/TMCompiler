@@ -8,15 +8,21 @@
 #include <vector>
 
 // represent <abc> and "abc" in BNF file
-class Symbol {
-private:
-	std::string name;
-	bool terminal{false};
+// class Symbol {
+// private:
+// std::string name;
+// bool terminal{false};
 
-public:
-	Symbol();
-	Symbol(std::string name, bool terminal);
-	auto get_name() -> std::string;
+// public:
+// Symbol();
+// Symbol(std::string name, bool terminal);
+// auto get_name() -> std::string;
+// auto get_terminal() -> bool;
+// };
+// using Symbol = std::pair<std::string, bool>;
+struct Symbol {
+	std::string value;
+	bool terminal;
 };
 
 // represent <abc> "def" | "ghi" <jkl>

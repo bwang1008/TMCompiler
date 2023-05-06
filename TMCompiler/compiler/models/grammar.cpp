@@ -7,22 +7,20 @@
 #include <unordered_set>
 #include <vector>
 
-#include <iostream>
+#include <TMCompiler/compiler/models/bnf_parser.hpp>  // Symbol
+#include <TMCompiler/compiler/models/tokenizer.hpp>	  // Token
 
-#include <TMCompiler/compiler/models/bnf_parser.hpp>
-
-Grammar::Grammar(std::ifstream& bnf_file): default_start("") {
+Grammar::Grammar(std::ifstream& bnf_file) : default_start("") {
 	if(!bnf_file.is_open()) {
 		throw std::invalid_argument("Unable to open grammar file");
 	}
 
 	rules = BnfParser::parse_rules(bnf_file);
-
 }
 
 // LR parsing? Earley parsing?
 AbstractSyntaxTreeNode Grammar::parse_helper(const std::vector<char>& program,
-											int cursor, Symbol symbol) {
+											 int cursor, Symbol symbol) {
 }
 
 AbstractSyntaxTree Grammar::parse(const std::vector<char>& program) {

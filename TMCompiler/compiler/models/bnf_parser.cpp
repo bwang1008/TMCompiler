@@ -14,6 +14,9 @@ Symbol::Symbol(std::string name, const bool terminal)
 auto Symbol::get_name() -> std::string {
 	return name;
 }
+auto Symbol::get_terminal() -> bool {
+	return terminal;
+}
 
 namespace BnfParser {
 
