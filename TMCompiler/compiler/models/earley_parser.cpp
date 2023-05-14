@@ -7,9 +7,16 @@
 #include <regex>
 #include <string>
 #include <vector>
+#include <stdexcept>
 
 #include <TMCompiler/compiler/models/bnf_parser.hpp>  // Symbol
 #include <TMCompiler/compiler/models/tokenizer.hpp>	  // Token
+
+struct FlippedEarleyItem {
+	std::size_t rule;
+	std::size_t end;
+	std::size_t next;
+};
 
 /**
  * Equality of EarleyItem: used to ensure uniqueness in Earley state sets
@@ -185,4 +192,106 @@ auto build_earley_items(std::vector<EarleyRule> grammar_rules,
 	}
 
 	return earley_sets;
+}
+
+/**
+ * Change the meaning of Earley state sets: instead of storing the end position
+ * explicitly, store the start position explicitly. This allows parsing from
+ * the beginning of input, instead from the end.
+ * @param earley_sets: Earley state sets to swap start and end positions
+ * @return same Earley sets, just stored in a different way
+ */
+auto flip_earley_sets(std::vector<std::vector<EarleyItem> > earley_sets) -> std::vector<std::vector<FlippedEarleyItem> > {
+	std::vector<std::vector<FlippedEarleyItem> > swapped(earley_sets.size());
+	for(std::size_t i = 0; i < earley_sets.size(); ++i) {
+		for(EarleyItem item : earley_sets[i]) {
+			FlippedEarleyItem same_item { item.rule, i, item.next };
+			swapped[item.start].push_back(same_item);
+		}
+	}
+
+	return swapped;
+}
+
+/**
+ * Once the Earley state sets have been created, find the item that corresponds
+ * to the highest-level rule that applies to the input tokens
+ * @param earley_sets: created Earley state sets
+ * @param grammar_rules: global set of grammar rules that is being used
+ * @param default_start: first production rule that applies to input
+ * @return FlippedEarleyItem that corresponds to highest-level rule
+ */
+auto find_top_item(std::vector<std::vector<FlippedEarleyItem> > earley_sets, std::vector<EarleyRule> grammar_rules, std::string default_start) -> FlippedEarleyItem {
+	if(earley_sets.size() == 0) {
+		throw std::invalid_argument("Earley state sets cannot be empty");
+	}
+
+	for(FlippedEarleyItem item : earley_sets.front()) {
+		EarleyRule rule = grammar_rules[item.rule];
+		if(item.end + 1 == earley_sets.size() && rule.production.value == default_start) {
+			return item;
+		}
+	}
+
+	throw std::logic_error("No successful parse of tokens");	
+}
+
+/**
+ *
+ */
+auto dfs(std::vector<std::vector<FlippedEarleyItem> > earley_sets, std::vector<EarleyRule> grammar_rules, std::vector<FlippedEarleyItem>& path, FlippedEarleyItem curr_node) -> bool {
+	path.push_back(curr_node);
+
+	EarleyRule rule = grammar_rules[curr_node.rule];
+	if(curr_node.next == rule.replacement.size()) {
+		return true;
+	}
+
+	// now that you accepted the rule, and the dot in the rule is not at the end,
+	// move the dot one step forward in the rule: find all next EarleyItems 
+	// with the same rule, but the dot is one more forward, and recurse on DFS
+	for(FlippedEarleyItem potential_child : earley_sets[curr_node.end]) {
+		if(potential_child.rule == curr_node.rule && potential_child.next == 1 + curr_node.next) {
+			bool child_search_result = dfs(earley_sets, grammar_rules, path, potential_child);
+			if(child_search_result) {
+				return true;
+			}
+		}
+	}
+
+	// didn't have any valid children. Thus, this current node is not valid either
+	path.pop_back();
+	return false;
+}
+
+/**
+ *
+ */
+auto find_rule_steps(std::vector<std::vector<EarleyItem> > earley_sets, std::vector<EarleyRule> grammar_rules, FlippedEarleyItem item) -> std::vector<FlippedEarleyItem> {
+	std::vector<FlippedEarleyItem> children_path;
+	dfs(earley_sets, grammar_rules, children_path, item);
+
+	return children;
+}
+
+/**
+ * Build the parse tree given the Earley state sets.
+ */
+auto build_earley_parse_tree(std::vector<std::vector<EarleyItem> > earley_sets, std::vector<EarleyRule> grammar_rules, std::string default_start) -> std::vector<std::pair<FlippedEarleyItem, std::size_t> > {
+	std::vector<std::vector<FlippedEarleyItem> > flipped_earley_sets = flip_earley_sets(earley_sets);
+	FlippedEarleyItem top = find_top_item(flipped_earley_sets, grammar_rules, default_start);
+
+	std::vector<std::pair<FlippedEarleyItem, std::size_t> > tree;
+	tree.emplace_back(top, 0);
+
+	for(std::size_t location = 0; location < tree.size(); ++location) {
+		FlippedEarleyItem item = tree[location].first;
+		std::vector<FlippedEarleyItem> children = find_rule_steps(item);
+
+		for(FlippedEarleyItem child : children) {
+			tree.emplace_back(child, location);
+		}
+	}
+
+	return tree;
 }
