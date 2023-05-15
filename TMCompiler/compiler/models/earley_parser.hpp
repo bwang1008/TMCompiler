@@ -19,6 +19,12 @@ struct EarleyRule {
 	std::vector<Symbol> replacement;
 };
 
+struct FlippedEarleyItem {
+	std::size_t rule;
+	std::size_t end;
+	std::size_t next;
+};
+
 /**
  * Build up the entire Earley state sets from a given input and set of
  * grammar rules. From it, backtrack from the end to find the parse of
@@ -36,5 +42,11 @@ auto build_earley_items(std::vector<EarleyRule> grammar_rules,
 						std::vector<Token> inputs,
 						const std::string& default_start)
 	-> std::vector<std::vector<EarleyItem> >;
+
+auto build_earley_parse_tree(
+	const std::vector<std::vector<EarleyItem> >& earley_sets,
+	const std::vector<EarleyRule>& grammar_rules,
+	const std::string& default_start)
+	-> std::vector<std::pair<FlippedEarleyItem, std::size_t> >;
 
 #endif
