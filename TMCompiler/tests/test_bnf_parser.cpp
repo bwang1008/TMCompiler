@@ -21,46 +21,46 @@ TEST_CASE(test0) {
 			ASSERT(rhs.size() == 2);
 
 			ASSERT(rhs[0].size() == 3);
-			ASSERT(rhs[0][0].get_name() == "M");
-			ASSERT(rhs[0][1].get_name() == "*");
-			ASSERT(rhs[0][2].get_name() == "T");
+			ASSERT(rhs[0][0].value == "M");
+			ASSERT(rhs[0][1].value == "*");
+			ASSERT(rhs[0][2].value == "T");
 
 			ASSERT(rhs[1].size() == 1);
-			ASSERT(rhs[1][0].get_name() == "T");
+			ASSERT(rhs[1][0].value == "T");
 		}
 		else if(index == 1) {
 			ASSERT(lhs == "P");
 			ASSERT(rhs.size() == 1);
 			ASSERT(rhs[0].size() == 1);
-			ASSERT(rhs[0][0].get_name() == "S");
+			ASSERT(rhs[0][0].value == "S");
 		}
 		else if(index == 2) {
 			ASSERT(lhs == "S");
 			ASSERT(rhs.size() == 2);
 
 			ASSERT(rhs[0].size() == 3);
-			ASSERT(rhs[0][0].get_name() == "S");
-			ASSERT(rhs[0][1].get_name() == "+");
-			ASSERT(rhs[0][2].get_name() == "M");
+			ASSERT(rhs[0][0].value == "S");
+			ASSERT(rhs[0][1].value == "+");
+			ASSERT(rhs[0][2].value == "M");
 
 			ASSERT(rhs[1].size() == 1);
-			ASSERT(rhs[1][0].get_name() == "M");
+			ASSERT(rhs[1][0].value == "M");
 		}
 		else if(index == 3) {
 			ASSERT(lhs == "T");
 			ASSERT(rhs.size() == 4);
 
 			ASSERT(rhs[0].size() == 1);
-			ASSERT(rhs[0][0].get_name() == "1");
+			ASSERT(rhs[0][0].value == "1");
 
 			ASSERT(rhs[1].size() == 1);
-			ASSERT(rhs[1][0].get_name() == "2");
+			ASSERT(rhs[1][0].value == "2");
 
 			ASSERT(rhs[2].size() == 1);
-			ASSERT(rhs[2][0].get_name() == "3");
+			ASSERT(rhs[2][0].value == "3");
 
 			ASSERT(rhs[3].size() == 1);
-			ASSERT(rhs[3][0].get_name() == "4");
+			ASSERT(rhs[3][0].value == "4");
 		}
 
 		++index;

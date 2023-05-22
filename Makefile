@@ -2,11 +2,13 @@
 # References: https://codingnest.com/basic-makefiles/
 
 ### USER DEFINED VARIABLES
-SOURCES = TMCompiler/tests/test_bnf_parser.cpp TMCompiler/compiler/models/bnf_parser.cpp
+SOURCES = TMCompiler/tests/test_bnf_parser.cpp TMCompiler/compiler/models/bnf_parser.cpp TMCompiler/utils/logger/logger.cpp
+# SOURCES = main.cpp TMCompiler/compiler/models/earley_parser.cpp TMCompiler/compiler/models/tokenizer.cpp
+
 OBJECTS = $(SOURCES:.cpp=.o)
 
 # see https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
-WARNINGS += -Werror 				# warnings become errors
+# WARNINGS += -Werror 				# warnings become errors
 WARNINGS += -Wpedantic  			# strict ISO C++
 WARNINGS += -pedantic-errors    	# depends on c++ standard used
 WARNINGS += -Wall 					# enable many other warnings
@@ -22,7 +24,7 @@ WARNINGS := $(shell echo $(WARNINGS) | sed -e "s/\s+/ /g")
 ### C++ SPECIFIC MAKE VARIABLES
 CXX = g++ # g++ 9.4.0
 CPPFLAGS = -I.
-CXXFLAGS = -std=c++11 $(WARNINGS) -MMD -MP
+CXXFLAGS = -std=c++14 $(WARNINGS) -MMD -MP
 
 ### MAKE RECIPES
 .PHONY: clean

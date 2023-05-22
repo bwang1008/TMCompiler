@@ -6,18 +6,6 @@
 #include <unordered_set>
 #include <utility>	// std::pair, std::move
 
-Symbol::Symbol() : name{""} {
-}
-Symbol::Symbol(std::string name, const bool terminal)
-	: name{std::move(name)}, terminal{terminal} {
-}
-auto Symbol::get_name() -> std::string {
-	return name;
-}
-auto Symbol::get_terminal() -> bool {
-	return terminal;
-}
-
 namespace BnfParser {
 
 // from https://en.cppreference.com/w/cpp/language/escape
@@ -141,7 +129,7 @@ auto parse_symbol(const std::string& bnf_contents,
 	// found symbol_end
 	Symbol parsed_symbol = {
 		bnf_contents.substr(symbol_contents_start, symbol_contents_size),
-		is_terminal};
+		is_terminal };
 	return std::make_pair(parsed_symbol, end_position + symbol_end.size());
 }
 
@@ -264,8 +252,8 @@ auto parse_rules(const std::string& bnf_contents) -> Rules {
 		   tokens[i + 1] == BnfParser::bnf_replacement_separation) {
 			// current rule ends; new rule started
 			if(!current_replacements.empty()) {
-				rules[current_left.get_name()].insert(
-					rules[current_left.get_name()].end(),
+				rules[current_left.value].insert(
+					rules[current_left.value].end(),
 					current_replacements.begin(), current_replacements.end());
 			}
 
@@ -288,8 +276,8 @@ auto parse_rules(const std::string& bnf_contents) -> Rules {
 
 	// add last rule
 	if(!current_replacements.empty()) {
-		rules[current_left.get_name()].insert(
-			rules[current_left.get_name()].end(), current_replacements.begin(),
+		rules[current_left.value].insert(
+			rules[current_left.value].end(), current_replacements.begin(),
 			current_replacements.end());
 	}
 	return rules;

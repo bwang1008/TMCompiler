@@ -22,7 +22,7 @@
 // using Symbol = std::pair<std::string, bool>;
 struct Symbol {
 	std::string value;
-	bool terminal;
+	bool terminal{false};
 };
 
 // represent <abc> "def" | "ghi" <jkl>
