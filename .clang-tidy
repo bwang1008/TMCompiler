@@ -111,7 +111,7 @@ CheckOptions:
   - key:             cppcoreguidelines-explicit-virtual-functions.OverrideSpelling
     value:           override
   - key:             cppcoreguidelines-macro-usage.AllowedRegexp
-    value:           '^DEBUG_*'
+    value:           '^LOG'
   - key:             cppcoreguidelines-macro-usage.CheckCapsOnly
     value:           '0'
   - key:             cppcoreguidelines-macro-usage.IgnoreCommandLineMacros
