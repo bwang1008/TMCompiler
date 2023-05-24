@@ -5,6 +5,8 @@
  * for use in development and debugging in lieu of print statements.
  */
 
+#include <chrono>	 // std::chrono
+#include <ctime>	 // std::ctime
 #include <iomanip>	 // std::setw, std::left, std::right
 #include <iostream>	 // std::cout, std::endl
 #include <map>		 // std::map
@@ -65,18 +67,37 @@ auto set_level(const std::string& level_name) -> void {
 }
 
 /**
+ * Retrieve the current time as a string in format hh:mm:ss.
+ */
+auto get_current_time() -> std::string {
+	const std::chrono::time_point<std::chrono::system_clock> current_time =
+		std::chrono::system_clock::now();
+	const std::time_t current_time_2 =
+		std::chrono::system_clock::to_time_t(current_time);
+	const std::string current_time_textual{std::ctime(&current_time_2)};
+
+	// format like
+	// Www Mmm dd hh:mm:ss yyyy\n
+	// 0    5    0123456789
+	// see https://en.cppreference.com/w/cpp/chrono/c/ctime
+
+	const std::size_t hour_start_location = 11;
+	const std::size_t time_format_width = 8;
+
+	return current_time_textual.substr(hour_start_location, time_format_width);
+}
+
+/**
  * Prints out formatted custom message at specified logging level.
  *
  * @param level: one of DEBUG, INFO, WARNING, ERROR, CRITICAL
  * @param message: custom string to be printed
  * @param file_name: name of the file in which logging macro appears in
  * @param line_number: line number in file of logging call
- * @param time: time of execution of logging in format hh:mm:ss
  * @return void
  */
 auto log(const std::string& level, const std::string& message,
-		 const char* file_name, const int line_number, const char* time)
-	-> void {
+		 const char* file_name, const int line_number) -> void {
 	// ignore low-level logs
 	if(current_level > get_importance(level)) {
 		return;
@@ -100,7 +121,7 @@ auto log(const std::string& level, const std::string& message,
 
 	// print message with color and formatting
 	std::cout << "[";
-	std::cout << time;
+	std::cout << get_current_time();
 	std::cout << " ";
 	std::cout << level_mapping.at(level).color_info;
 	std::cout << std::left << std::setw(max_level_name_size)

@@ -37,8 +37,7 @@
  * [22:54:10 CRITICAL     logging.cpp:88   ] this is critical
  * [22:54:10 INFO         logging.cpp:89   ] END
  */
-#define LOG(level, message) \
-	Logger::log(level, message, __FILE__, __LINE__, __TIME__);
+#define LOG(level, message) Logger::log(level, message, __FILE__, __LINE__)
 
 namespace Logger {
 
@@ -50,11 +49,10 @@ namespace Logger {
  * @param message: custom string to be printed
  * @param file_name: name of the file in which logging macro appears in
  * @param line_number: line number in file of logging call
- * @param time: time of execution of logging in format hh:mm:ss
  * @return void
  */
 auto log(const std::string& level, const std::string& message,
-		 const char* file_name, int line_number, const char* time) -> void;
+		 const char* file_name, int line_number) -> void;
 
 /**
  * Sets the current logging level. Logging calls that are below the
