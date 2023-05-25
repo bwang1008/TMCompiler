@@ -46,7 +46,8 @@ auto build_earley_items(std::vector<EarleyRule> grammar_rules,
 auto build_earley_parse_tree(
 	const std::vector<std::vector<EarleyItem> >& earley_sets,
 	const std::vector<EarleyRule>& grammar_rules,
+	const std::vector<Token>& input_tokens,
 	const std::string& default_start)
-	-> std::vector<std::pair<FlippedEarleyItem, std::size_t> >;
+	-> std::vector<std::tuple<FlippedEarleyItem, std::size_t, std::size_t> >;
 
 #endif

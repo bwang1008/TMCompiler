@@ -2,8 +2,8 @@
 # References: https://codingnest.com/basic-makefiles/
 
 ### USER DEFINED VARIABLES
-SOURCES = TMCompiler/tests/test_bnf_parser.cpp TMCompiler/compiler/models/bnf_parser.cpp TMCompiler/utils/logger/logger.cpp
-# SOURCES = main.cpp TMCompiler/compiler/models/earley_parser.cpp TMCompiler/compiler/models/tokenizer.cpp
+# SOURCES = TMCompiler/tests/test_bnf_parser.cpp TMCompiler/compiler/models/bnf_parser.cpp TMCompiler/utils/logger/logger.cpp
+SOURCES = main.cpp TMCompiler/compiler/models/earley_parser.cpp TMCompiler/compiler/models/tokenizer.cpp TMCompiler/utils/logger/logger.cpp
 
 OBJECTS = $(SOURCES:.cpp=.o)
 
