@@ -84,15 +84,15 @@ std::vector<EarleyRule> get_grammar_rules() {
 std::vector<Token> get_inputs() {
 	std::vector<Token> inputs;
 
-	inputs.push_back(Token ("what?", "1"));
-	inputs.push_back(Token ("what?", "+"));
-	inputs.push_back(Token ("what?", "("));
-	inputs.push_back(Token ("what?", "2"));
-	inputs.push_back(Token ("what?", "*"));
-	inputs.push_back(Token ("what?", "3"));
-	inputs.push_back(Token ("what?", "-"));
-	inputs.push_back(Token ("what?", "4"));
-	inputs.push_back(Token ("what?", ")"));
+	inputs.push_back(Token{"?", "1", 0, 0});
+	inputs.push_back(Token{"?", "+", 0, 1});
+	inputs.push_back(Token{"?", "(", 0, 2});
+	inputs.push_back(Token{"?", "2", 0, 3});
+	inputs.push_back(Token{"?", "*", 0, 4});
+	inputs.push_back(Token{"?", "3", 0, 5});
+	inputs.push_back(Token{"?", "-", 0, 6});
+	inputs.push_back(Token{"?", "4", 0, 7});
+	inputs.push_back(Token{"?", ")", 0, 8});
 
 	return inputs;
 }
@@ -164,7 +164,7 @@ void attempt_parse() {
 
 	std::cout << "TOKENS:" << std::endl;
 	for(std::size_t i = 0; i < inputs.size(); ++i) {
-		std::cout << inputs[i].get_value();
+		std::cout << inputs[i].value;
 	}
 	std::cout << std::endl;
 	for(std::size_t i = 0; i < inputs.size(); ++i) {

@@ -9,13 +9,7 @@
 
 #include <TMCompiler/compiler/models/bnf_parser.hpp>
 
-class Token {
-public:
-	Token(std::string type, std::string value);
-	auto get_type() const -> std::string;
-	auto get_value() const -> std::string;
-
-private:
+struct Token {
 	std::string type;
 	std::string value;
 	int program_line_number;

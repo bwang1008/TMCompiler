@@ -4,20 +4,17 @@
 #include <string>
 #include <vector>
 
-Token::Token(std::string type, std::string value)
-	: type(type),
-	  value(value),
-	  program_line_number(0),
-	  start_position_of_token_in_program_line(0) {
-}
+// Token::Token(std::string type, std::string value)
+	// : type(type),
+	  // value(value),
+	  // program_line_number(0),
+	  // start_position_of_token_in_program_line(0) {
+// }
 
-auto Token::get_type() const -> std::string {
-	return type;
-}
+// Token::Token(const std::string value): value(value), program_line_number{0}, start_position_of_token_in_program_line{0} {
 
-auto Token::get_value() const -> std::string {
-	return value;
-}
+// }
+
 /*
 std::vector<Token> Tokenizer::tokenize(const std::string &programText) {
 	std::vector<Token> tokens;

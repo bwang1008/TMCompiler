@@ -68,7 +68,7 @@ auto equals(const EarleyItem item1, const EarleyItem item2) -> bool {
  */
 auto matches(const Symbol& predicted, const Token& actual) -> bool {
 	// return predicted.value == actual.get_value();
-	return std::regex_match(actual.get_value(), std::regex(predicted.value));
+	return std::regex_match(actual.value, std::regex(predicted.value));
 }
 
 /**
