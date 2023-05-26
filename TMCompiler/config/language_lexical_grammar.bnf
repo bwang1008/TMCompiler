@@ -1,0 +1,50 @@
+# reference from https://learn.microsoft.com/en-us/cpp/c-language/lexical-grammar?view=msvc-170
+
+# <token> ::= <identifier> | <keyword> | <constant> | <punctuator> | <comment>
+
+<tokens> ::= <token>
+	| <token> <tokens>
+	| <token> <token-delimiter> <tokens>
+
+<token> ::= <keyword>
+	| <identifier> 
+	| <constant>
+	| <punctuator>
+
+<token-delimiter> ::= <whitespace>
+
+<keyword> ::= "void"
+	| "int"
+	| "bool"
+	| "for"
+	| "while"
+	| "if"
+	| "else"
+	| "break"
+	| "continue"
+	| "return"
+
+<identifier> ::=
+	<identifier-nondigit>
+	| <identifier> <identifier-nondigit>
+	| <identifier> <digit>
+
+<constant> ::= <integer-constant>
+	| <boolean-constant>
+
+<integer-constant> ::= <nonzero-digit> | <integer-constant> <digit>
+<boolean-constant> ::= "true" | "false"
+
+<punctuator> ::= "[" | "]" | "(" | ")" | "{" | "}" | "*" | "+" | "-" | "!" | "/" | "%" | "<" | ">" | "<=" | ">=" | "==" | "!=" | "^" | "&&" | "||" | ";" | "=" | "*=" | "/=" | "%=" | "+=" | "-=" | "&=" | "^=" | "|=" | ","
+
+# utility
+<whitespace> ::= <whitespace-chars> | <whitespace> <whitespace-chars>
+<whitespace-chars> ::= " " | "\n" | "\t"
+<identifier-nondigit> ::= <nondigit>
+<nondigit> ::= "_" | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
+<nonzero-digit> ::= "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+<digit> ::= "0" | <nonzero-digit>
+
+# regex ones
+# <token-delimiter> ::= "\w+"
+# <identifier> ::= "[a-zA-Z_][a-zA-Z0-9_]*"

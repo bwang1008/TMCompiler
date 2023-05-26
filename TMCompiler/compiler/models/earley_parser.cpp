@@ -67,8 +67,8 @@ auto equals(const EarleyItem item1, const EarleyItem item2) -> bool {
  * return true iff actual is an instance of predicted
  */
 auto matches(const Symbol& predicted, const Token& actual) -> bool {
-	// return predicted.value == actual.get_value();
-	return std::regex_match(actual.value, std::regex(predicted.value));
+	return predicted.value == actual.value;
+	// return std::regex_match(actual.value, std::regex(predicted.value));
 }
 
 /**
@@ -111,6 +111,10 @@ void complete(std::vector<std::vector<EarleyItem> >& earley_sets,
 	for(EarleyItem candidate : prev_earley_set) {
 		// find rules that have <finished> production next to their dot
 		EarleyRule candidate_rule = grammar_rules[candidate.rule];
+
+		if(candidate.next == candidate_rule.replacement.size()) {
+			continue;
+		}
 
 		Symbol actual = candidate_rule.replacement[candidate.next];
 
@@ -199,11 +203,22 @@ auto build_earley_items(std::vector<EarleyRule> grammar_rules,
 	// earley_items
 	for(std::size_t i = 0; i < earley_sets.size(); ++i) {
 		for(std::size_t j = 0; j < earley_sets[i].size(); ++j) {
+			// std::cout << "i = " << i << " j = " << j << std::endl;
+			// std::cout << "Now earley_sets[" << i << "] size = " << earley_sets[i].size() << std::endl;
+
 			EarleyItem item = earley_sets[i][j];
 			EarleyRule rule = grammar_rules[item.rule];
 
+			// std::cout << "Calling item = {" << item.rule << ", " << item.start << ", " << item.next << "}" << std::endl;
+			// std::cout << "Rule = " << rule.production.value << " -> ";
+			// for(std::size_t k = 0; k < rule.replacement.size(); ++k) {
+				// std::cout << rule.replacement[k].value << " ";
+			// }
+			// std::cout << std::endl;
+
 			// if EarleyRule ends in dot, COMPLETE
 			if(item.next == rule.replacement.size()) {
+				// std::cout << "CALLING COMPLETE" << std::endl;
 				complete(earley_sets, i, grammar_rules, item);
 				continue;
 			}
@@ -211,14 +226,18 @@ auto build_earley_items(std::vector<EarleyRule> grammar_rules,
 			Symbol next_symbol = rule.replacement[item.next];
 			// if next token after dot is terminal, SCAN
 			if(next_symbol.terminal) {
+				// std::cout << "CALLING SCAN" << std::endl;
 				scan(earley_sets, i, item, next_symbol, inputs[i]);
 			}
 			// if next token after dot is non-terminal, PREDICT
 			else {
+				// std::cout << "CALLING PREDICT" << std::endl;
 				predict(earley_sets, i, grammar_rules, next_symbol);
 			}
 		}
 	}
+
+	std::cout << "Finish building earley_sets" << std::endl;
 
 	return earley_sets;
 }
@@ -285,7 +304,7 @@ auto find_top_item(std::vector<std::vector<FlippedEarleyItem> > earley_sets,
  */
 auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 		 const std::vector<EarleyRule>& grammar_rules,
-		 const std::vector<Token>& input_tokens, const EarleyRule& parent_rule,
+		 const std::vector<Token>& input_tokens, const FlippedEarleyItem& parent_item, const EarleyRule& parent_rule,
 		 const std::size_t parent_rule_dot, const std::size_t token_location,
 		 std::vector<std::pair<FlippedEarleyItem, std::size_t> >& path)
 	-> bool {
@@ -296,19 +315,34 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 	   << ", path history size=" << path.size() << ")";
 	LOG("DEBUG", ss.str());
 
-	// finished if dot at right-most of parent_rule
+	// finished if dot at right-most of parent_rule,
+	// and last child ends at parent_rule's end
 	if(parent_rule_dot == parent_rule.replacement.size()) {
-		LOG("DEBUG",
-			"Parent rule dot has moved to right most of parent_rule! Huzzah!");
-		return true;
+		
+		if(token_location == parent_item.end) {
+			LOG("DEBUG", "Parent rule dot has moved to right most of parent_rule! Huzzah!");
+			return true;
+		}
+
+		LOG("DEBUG", "Despite getting to last dot, token end does not match :(");
+
+		return false;
 	}
 
 	Symbol next_rule_symbol = parent_rule.replacement[parent_rule_dot];
 
+	ss.str("");
+	ss << "next_rule_symbol = " << next_rule_symbol.value;
+	LOG("DEBUG", ss.str());
+
 	// if next part of rule is a terminal, check if it matches the token
 	if(next_rule_symbol.terminal) {
+
+		LOG("DEBUG", "Searching for terminal");
+
 		// if no more tokens, bad parse
 		if(token_location >= input_tokens.size()) {
+			LOG("DEBUG", "No more tokens to parse :/");
 			return false;
 		}
 
@@ -316,11 +350,15 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 			matches(next_rule_symbol, input_tokens[token_location]);
 
 		if(!match_result) {
+			LOG("DEBUG", "Token no match terminal symbol");
 			return false;
 		}
 
-		return dfs(earley_sets, grammar_rules, input_tokens, parent_rule,
+		return dfs(earley_sets, grammar_rules, input_tokens, parent_item, parent_rule,
 				   1 + parent_rule_dot, 1 + token_location, path);
+	}
+	else {
+		LOG("DEBUG", "Not searching for terminal");
 	}
 
 	// next part of rule is non-terminal:
@@ -335,8 +373,12 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 			   next_rule_symbol.terminal) {
 			path.emplace_back(possible_child, token_location);
 
+			ss.str("");
+			ss << "Try recursing on this child item: {" << possible_child.rule << ", " << possible_child.end << ", " << possible_child.next << "}";
+			LOG("DEBUG", ss.str());
+
 			bool child_ret =
-				dfs(earley_sets, grammar_rules, input_tokens, parent_rule,
+				dfs(earley_sets, grammar_rules, input_tokens, parent_item, parent_rule,
 					1 + parent_rule_dot, possible_child.end, path);
 
 			if(child_ret) {
@@ -367,7 +409,7 @@ auto find_rule_steps(
 	EarleyRule parent_rule = grammar_rules[item.rule];
 	std::vector<std::pair<FlippedEarleyItem, std::size_t> > children_path;
 	bool search_result = dfs(earley_sets, grammar_rules, input_tokens,
-							 parent_rule, 0, item_start, children_path);
+							 item, parent_rule, 0, item_start, children_path);
 
 	if(!search_result) {
 		LOG("CRITICAL", "No match found in dfs");
@@ -392,7 +434,7 @@ auto build_earley_parse_tree(
 	const std::vector<EarleyRule>& grammar_rules,
 	const std::vector<Token>& input_tokens, const std::string& default_start)
 	-> std::vector<std::tuple<FlippedEarleyItem, std::size_t, std::size_t> > {
-	Logger::set_level("INFO");
+	// Logger::set_level("DEBUG");
 	LOG("INFO", "Construct Parse Tree");
 
 	std::vector<std::vector<FlippedEarleyItem> > flipped_earley_sets =
