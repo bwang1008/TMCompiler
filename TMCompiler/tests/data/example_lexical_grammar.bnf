@@ -1,0 +1,4 @@
+# Reference: https://learn.microsoft.com/en-us/cpp/c-language/lexical-grammar?view=msvc-170
+
+<token> ::= "\d+" | "+" | "*"
+<token-separator> ::= "\s+"
