@@ -14,7 +14,7 @@
 #include <vector>
 
 #include <TMCompiler/compiler/models/bnf_parser.hpp>  // Symbol
-#include <TMCompiler/compiler/models/tokenizer.hpp>	  // Token
+#include <TMCompiler/compiler/models/token.hpp>		// Token
 #include <TMCompiler/utils/logger/logger.hpp>		  // Logger
 
 auto rule_to_string(const EarleyRule& rule) -> std::string {
@@ -304,10 +304,13 @@ auto find_top_item(std::vector<std::vector<FlippedEarleyItem> > earley_sets,
  */
 auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 		 const std::vector<EarleyRule>& grammar_rules,
-		 const std::vector<Token>& input_tokens, const FlippedEarleyItem& parent_item, const EarleyRule& parent_rule,
+		 const std::vector<Token>& input_tokens, const FlippedEarleyItem& parent_item,
 		 const std::size_t parent_rule_dot, const std::size_t token_location,
 		 std::vector<std::pair<FlippedEarleyItem, std::size_t> >& path)
 	-> bool {
+	
+	const EarleyRule parent_rule = grammar_rules[parent_item.rule];
+
 	std::stringstream ss;
 	ss << "Call DFS(parent_rule=" << rule_to_string(parent_rule)
 	   << ", parent_rule_dot=" << parent_rule_dot
@@ -354,7 +357,7 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 			return false;
 		}
 
-		return dfs(earley_sets, grammar_rules, input_tokens, parent_item, parent_rule,
+		return dfs(earley_sets, grammar_rules, input_tokens, parent_item,
 				   1 + parent_rule_dot, 1 + token_location, path);
 	}
 	else {
@@ -378,7 +381,7 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 			LOG("DEBUG", ss.str());
 
 			bool child_ret =
-				dfs(earley_sets, grammar_rules, input_tokens, parent_item, parent_rule,
+				dfs(earley_sets, grammar_rules, input_tokens, parent_item,
 					1 + parent_rule_dot, possible_child.end, path);
 
 			if(child_ret) {
@@ -406,10 +409,10 @@ auto find_rule_steps(
 	const std::vector<Token>& input_tokens, FlippedEarleyItem item,
 	std::size_t item_start)
 	-> std::vector<std::pair<FlippedEarleyItem, std::size_t> > {
-	EarleyRule parent_rule = grammar_rules[item.rule];
+
 	std::vector<std::pair<FlippedEarleyItem, std::size_t> > children_path;
-	bool search_result = dfs(earley_sets, grammar_rules, input_tokens,
-							 item, parent_rule, 0, item_start, children_path);
+	const bool search_result = dfs(earley_sets, grammar_rules, input_tokens,
+							 item, 0, item_start, children_path);
 
 	if(!search_result) {
 		LOG("CRITICAL", "No match found in dfs");
@@ -456,12 +459,12 @@ auto build_earley_parse_tree(
 	tree.emplace_back(top, 0, 0);
 
 	for(std::size_t location = 0; location < tree.size(); ++location) {
-		FlippedEarleyItem item = std::get<0>(tree[location]);
+		const FlippedEarleyItem item = std::get<0>(tree[location]);
 
 		LOG("DEBUG",
 			std::string("Finding rule steps for item ") + item_to_string(item));
 
-		std::vector<std::pair<FlippedEarleyItem, std::size_t> > children =
+		const std::vector<std::pair<FlippedEarleyItem, std::size_t> > children =
 			find_rule_steps(flipped_earley_sets, grammar_rules, input_tokens,
 							item, std::get<1>(tree[location]));
 

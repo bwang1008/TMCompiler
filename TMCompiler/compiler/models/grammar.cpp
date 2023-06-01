@@ -8,7 +8,7 @@
 #include <vector>
 
 #include <TMCompiler/compiler/models/bnf_parser.hpp>  // Symbol
-#include <TMCompiler/compiler/models/tokenizer.hpp>	  // Token
+#include <TMCompiler/compiler/models/token.hpp>	  // Token
 
 Grammar::Grammar(std::ifstream& bnf_file) : default_start("") {
 	if(!bnf_file.is_open()) {

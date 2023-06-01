@@ -7,7 +7,7 @@
 
 #include <TMCompiler/compiler/models/bnf_parser.hpp>  // Symbol
 #include <TMCompiler/compiler/models/earley_parser.hpp>
-#include <TMCompiler/compiler/models/tokenizer.hpp>	  // Token
+#include <TMCompiler/compiler/models/token.hpp>	  // Token
 
 std::vector<EarleyRule> get_grammar_rules() {
 	std::vector<EarleyRule> grammar_rules;
@@ -269,23 +269,23 @@ void parse_actual_file() {
 	std::cout << std::endl;
 
 	// std::string input{"int x = 5;"};
-	std::string input{"for(int i = 5; i < 10; ++i) { print(i); }"};
-	std::vector<Token> inputs;
+	std::string input{"for(int i = 5; i < 10; i+=1) { print(i); }"};
+	std::vector<Token> tokens;
 	for(std::size_t i = 0; i < input.size(); ++i) {
 		Token k{"?", input.substr(i, 1), 0, (int) i};
-		inputs.push_back(k);
+		tokens.push_back(k);
 	}
 
 	std::cout << "Generated tokens" << std::endl;
 
 	std::cout << "TOKENS:" << std::endl;
-	for(std::size_t i = 0; i < inputs.size(); ++i) {
-		std::cout << "Token " << i << ": " << inputs[i].value << std::endl;
+	for(std::size_t i = 0; i < tokens.size(); ++i) {
+		std::cout << "Token " << i << ": " << tokens[i].value << std::endl;
 	}
 
 	std::string default_start{"tokens"};
 
-	std::vector<std::vector<EarleyItem> > items = build_earley_items(earley_rules, inputs, default_start);
+	std::vector<std::vector<EarleyItem> > items = build_earley_items(earley_rules, tokens, default_start);
 
 	std::cout << "Finished building earley sets" << std::endl;
 
@@ -305,22 +305,22 @@ void parse_actual_file() {
 
 	std::cout << "======================================================" << std::endl;
 
-	std::vector<std::tuple<FlippedEarleyItem, std::size_t, std::size_t> > tree = build_earley_parse_tree(items, earley_rules, inputs, default_start);
+	std::vector<std::tuple<FlippedEarleyItem, std::size_t, std::size_t> > tree = build_earley_parse_tree(items, earley_rules, tokens, default_start);
 
 	for(std::size_t i = 0; i < tree.size(); ++i) {
 		std::cout << i << ": " << "{ " << std::get<0>(tree[i]).rule << ", " << std::get<0>(tree[i]).end << ", " << std::get<0>(tree[i]).next << "} " << " starting from " << std::get<1>(tree[i]) << " parent " << std::get<2>(tree[i]) << std::endl; 
 	}
 
-	print_tree(inputs, tree);
+	print_tree(tokens, tree);
 
 }
 
 void attempt_parse() {
 	std::vector<EarleyRule> grammar_rules = get_grammar_rules();
-	std::vector<Token> inputs = get_inputs();
+	std::vector<Token> tokens = get_inputs();
 	std::string default_start = "Sum";
 
-	std::vector<std::vector<EarleyItem> > items = build_earley_items(grammar_rules, inputs, default_start);
+	std::vector<std::vector<EarleyItem> > items = build_earley_items(grammar_rules, tokens, default_start);
 
 	std::cout << "Finished building earley sets" << std::endl;
 
@@ -340,18 +340,18 @@ void attempt_parse() {
 
 	std::cout << "======================================================" << std::endl;
 
-	std::vector<std::tuple<FlippedEarleyItem, std::size_t, std::size_t> > tree = build_earley_parse_tree(items, grammar_rules, inputs, default_start);
+	std::vector<std::tuple<FlippedEarleyItem, std::size_t, std::size_t> > tree = build_earley_parse_tree(items, grammar_rules, tokens, default_start);
 
 	for(std::size_t i = 0; i < tree.size(); ++i) {
 		std::cout << i << ": " << "{ " << std::get<0>(tree[i]).rule << ", " << std::get<0>(tree[i]).end << ", " << std::get<0>(tree[i]).next << "} " << " starting from " << std::get<1>(tree[i]) << " parent " << std::get<2>(tree[i]) << std::endl; 
 	}
 
 	std::cout << "TOKENS:" << std::endl;
-	for(std::size_t i = 0; i < inputs.size(); ++i) {
-		std::cout << inputs[i].value;
+	for(std::size_t i = 0; i < tokens.size(); ++i) {
+		std::cout << tokens[i].value;
 	}
 	std::cout << std::endl;
-	for(std::size_t i = 0; i < inputs.size(); ++i) {
+	for(std::size_t i = 0; i < tokens.size(); ++i) {
 		std::cout << (i % 10);
 	}
 	std::cout << std::endl;
