@@ -38,8 +38,8 @@ struct FlippedEarleyItem {
  * token[i]. The last state set that has a finished rule and starts from
  * the beginning, is a valid grammar parse of the input tokens.
  */
-auto build_earley_items(std::vector<EarleyRule> grammar_rules,
-						std::vector<Token> inputs,
+auto build_earley_items(const std::vector<EarleyRule>& grammar_rules,
+						const std::vector<Token>& inputs,
 						const std::string& default_start)
 	-> std::vector<std::vector<EarleyItem> >;
 

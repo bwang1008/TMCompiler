@@ -8,6 +8,7 @@
 #include <TMCompiler/compiler/models/bnf_parser.hpp>  // Symbol
 #include <TMCompiler/compiler/models/earley_parser.hpp>
 #include <TMCompiler/compiler/models/token.hpp>	  // Token
+#include <TMCompiler/utils/logger/logger.hpp>
 
 std::vector<EarleyRule> get_grammar_rules() {
 	std::vector<EarleyRule> grammar_rules;
@@ -237,13 +238,13 @@ void print_tree(std::vector<Token> tokens, std::vector<std::tuple<FlippedEarleyI
 
 void parse_actual_file() {
 	std::ifstream input_bnf("language_lexical_grammar.bnf");
-	Rules rules = BnfParser::parse_rules(input_bnf);
+	const Rules rules = BnfParser::parse_rules(input_bnf);
 
 	std::cout << "Parsed BNF rules" << std::endl;
 
 	std::vector<EarleyRule> earley_rules;
 
-	for(std::map<std::string, std::vector<std::vector<Symbol> > >::iterator it = rules.begin(); it != rules.end(); ++it) {
+	for(std::map<std::string, std::vector<std::vector<Symbol> > >::const_iterator it = rules.cbegin(); it != rules.cend(); ++it) {
 		const std::string lhs = it->first;
 		ReplacementAlternatives rhs = it->second;
 
@@ -257,7 +258,7 @@ void parse_actual_file() {
 
 	std::cout << "num rules = " << earley_rules.size() << std::endl;
 	for(std::size_t i = 0; i < earley_rules.size(); ++i) {
-		EarleyRule rule = earley_rules[i];
+		const EarleyRule rule = earley_rules[i];
 		std::cout << i << ": " << rule.production.value << " -> ";
 		for(std::size_t j = 0; j < rule.replacement.size(); ++j) {
 			std::cout << rule.replacement[j].value << " ";
@@ -269,7 +270,7 @@ void parse_actual_file() {
 	std::cout << std::endl;
 
 	// std::string input{"int x = 5;"};
-	std::string input{"for(int i = 5; i < 10; i+=1) { print(i); }"};
+	const std::string input{"for(int i = 5; i < 10; i+=1) { print(i); }"};
 	std::vector<Token> tokens;
 	for(std::size_t i = 0; i < input.size(); ++i) {
 		Token k{"?", input.substr(i, 1), 0, (int) i};
