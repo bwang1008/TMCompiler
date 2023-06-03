@@ -25,6 +25,13 @@ struct FlippedEarleyItem {
 	std::size_t next;
 };
 
+struct SubParse {
+	std::size_t rule;
+	std::size_t start;
+	std::size_t end;
+	std::size_t parent;
+};
+
 /**
  * Build up the entire Earley state sets from a given input and set of
  * grammar rules. From it, backtrack from the end to find the parse of
@@ -64,6 +71,6 @@ auto build_earley_parse_tree(
 	const std::vector<EarleyRule>& grammar_rules,
 	const std::vector<Token>& input_tokens,
 	const std::string& default_start)
-	-> std::vector<std::tuple<FlippedEarleyItem, std::size_t, std::size_t> >;
+	-> std::vector<SubParse>;
 
 #endif

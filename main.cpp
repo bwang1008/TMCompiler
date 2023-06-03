@@ -136,7 +136,7 @@ void printItem(std::vector<EarleyRule> grammar_rules, EarleyItem item) {
 	std::cout << std::endl;
 }
 
-void print_tree(std::vector<Token> tokens, std::vector<std::tuple<FlippedEarleyItem, std::size_t, std::size_t> > tree) {
+void print_tree(std::vector<Token> tokens, std::vector<SubParse> tree) {
 	const std::size_t fence_length = 2;
 
 	std::size_t size = tokens.size();
@@ -175,10 +175,10 @@ void print_tree(std::vector<Token> tokens, std::vector<std::tuple<FlippedEarleyI
 	std::size_t index = 0;
 
 	for(std::size_t i = 0; i < tree.size(); ++i) {
-		std::tuple<FlippedEarleyItem, std::size_t, std::size_t> what = tree[i];
+		SubParse what = tree[i];
 
-		std::size_t start = std::get<1>(what);
-		std::size_t end = std::get<0>(what).end;
+		std::size_t start = what.start;
+		std::size_t end = what.end;
 
 		// std::cout << "setting " << start << " " << end << std::endl;
 		// std::cout << "so go from [" << 4 * start << ", " << 4 * end << "]" << std::endl;
@@ -209,7 +209,7 @@ void print_tree(std::vector<Token> tokens, std::vector<std::tuple<FlippedEarleyI
 		line_chars[fence_length * start] = '|';
 		line_chars[fence_length * end] = '|';
 
-		rule_nums.push_back(std::get<0>(what).rule);
+		rule_nums.push_back(what.rule);
 
 		index = fence_length * end;
 	}
@@ -269,8 +269,8 @@ void parse_actual_file() {
 
 	std::cout << std::endl;
 
-	// std::string input{"int x = 5;"};
-	const std::string input{"for(int i = 5; i < 10; i+=1) { print(i); }"};
+	const std::string input{"int x = 5;"};
+	// const std::string input{"for(int i = 5; i < 10; i+=1) { print(i); }"};
 	std::vector<Token> tokens;
 	for(std::size_t i = 0; i < input.size(); ++i) {
 		Token k{"?", input.substr(i, 1), 0, (int) i};
@@ -306,10 +306,10 @@ void parse_actual_file() {
 
 	std::cout << "======================================================" << std::endl;
 
-	std::vector<std::tuple<FlippedEarleyItem, std::size_t, std::size_t> > tree = build_earley_parse_tree(items, earley_rules, tokens, default_start);
+	std::vector<SubParse> tree = build_earley_parse_tree(items, earley_rules, tokens, default_start);
 
 	for(std::size_t i = 0; i < tree.size(); ++i) {
-		std::cout << i << ": " << "{ " << std::get<0>(tree[i]).rule << ", " << std::get<0>(tree[i]).end << ", " << std::get<0>(tree[i]).next << "} " << " starting from " << std::get<1>(tree[i]) << " parent " << std::get<2>(tree[i]) << std::endl; 
+		std::cout << i << ": " << "{ " << tree[i].rule << ", " << tree[i].end << "} " << " starting from " << tree[i].start << " parent= " << tree[i].parent << std::endl; 
 	}
 
 	print_tree(tokens, tree);
@@ -341,10 +341,10 @@ void attempt_parse() {
 
 	std::cout << "======================================================" << std::endl;
 
-	std::vector<std::tuple<FlippedEarleyItem, std::size_t, std::size_t> > tree = build_earley_parse_tree(items, grammar_rules, tokens, default_start);
+	std::vector<SubParse> tree = build_earley_parse_tree(items, grammar_rules, tokens, default_start);
 
 	for(std::size_t i = 0; i < tree.size(); ++i) {
-		std::cout << i << ": " << "{ " << std::get<0>(tree[i]).rule << ", " << std::get<0>(tree[i]).end << ", " << std::get<0>(tree[i]).next << "} " << " starting from " << std::get<1>(tree[i]) << " parent " << std::get<2>(tree[i]) << std::endl; 
+		std::cout << i << ": " << "{ " << tree[i].rule << ", " << tree[i].end << "} " << " starting from " << tree[i].start << " parent= " << tree[i].parent << std::endl; 
 	}
 
 	std::cout << "TOKENS:" << std::endl;
@@ -369,6 +369,8 @@ void attempt_parse() {
 }
 
 int main() {
+	Logger::set_level("DEBUG");
+
 	std::cout << "BEGIN" << std::endl;
 	// attempt_parse();
 	parse_actual_file();
