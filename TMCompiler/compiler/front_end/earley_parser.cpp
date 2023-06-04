@@ -13,7 +13,7 @@
 #include <utility>
 #include <vector>
 
-#include <TMCompiler/compiler/models/bnf_parser.hpp>  // Symbol
+#include <TMCompiler/compiler/models/symbol.hpp>  // Symbol
 #include <TMCompiler/compiler/models/token.hpp>		  // Token
 #include <TMCompiler/utils/logger/logger.hpp>		  // Logger
 

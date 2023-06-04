@@ -7,23 +7,7 @@
 #include <utility>
 #include <vector>
 
-// represent <abc> and "abc" in BNF file
-// class Symbol {
-// private:
-// std::string name;
-// bool terminal{false};
-
-// public:
-// Symbol();
-// Symbol(std::string name, bool terminal);
-// auto get_name() -> std::string;
-// auto get_terminal() -> bool;
-// };
-// using Symbol = std::pair<std::string, bool>;
-struct Symbol {
-	std::string value;
-	bool terminal{false};
-};
+#include <TMCompiler/compiler/models/symbol.hpp>
 
 // represent <abc> "def" | "ghi" <jkl>
 using ReplacementAlternatives = std::vector<std::vector<Symbol> >;

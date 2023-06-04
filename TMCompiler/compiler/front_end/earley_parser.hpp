@@ -5,8 +5,12 @@
 #ifndef EARLEY_PARSER_HPP
 #define EARLEY_PARSER_HPP
 
-#include <TMCompiler/compiler/models/bnf_parser.hpp>  // Symbol
-#include <TMCompiler/compiler/models/token.hpp>		  // Token
+#include <cstddef>	// std::size_t
+#include <string>	// std::string
+#include <vector>	// std::vector
+
+#include <TMCompiler/compiler/models/symbol.hpp>  // Symbol
+#include <TMCompiler/compiler/models/token.hpp>	  // Token
 
 struct EarleyItem {
 	std::size_t rule;	// index of rule in list of rules in Grammar

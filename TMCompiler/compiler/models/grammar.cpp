@@ -7,7 +7,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include <TMCompiler/compiler/models/bnf_parser.hpp>  // Symbol
+#include <TMCompiler/compiler/models/symbol.hpp>  // Symbol
 #include <TMCompiler/compiler/models/token.hpp>	  // Token
 
 Grammar::Grammar(std::ifstream& bnf_file) : default_start("") {
