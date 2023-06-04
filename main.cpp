@@ -237,7 +237,7 @@ void print_tree(std::vector<Token> tokens, std::vector<SubParse> tree) {
 }
 
 void parse_actual_file() {
-	std::ifstream input_bnf("language_lexical_grammar.bnf");
+	std::ifstream input_bnf("TMCompiler/config/language_lexical_grammar.bnf");
 	const Rules rules = BnfParser::parse_rules(input_bnf);
 
 	std::cout << "Parsed BNF rules" << std::endl;
