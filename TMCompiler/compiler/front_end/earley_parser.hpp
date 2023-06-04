@@ -9,7 +9,7 @@
 #include <string>	// std::string
 #include <vector>	// std::vector
 
-#include <TMCompiler/compiler/models/symbol.hpp>  // Symbol
+#include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
 #include <TMCompiler/compiler/models/token.hpp>	  // Token
 
 struct EarleyItem {
@@ -19,8 +19,8 @@ struct EarleyItem {
 };
 
 struct EarleyRule {
-	Symbol production;
-	std::vector<Symbol> replacement;
+	GrammarSymbol production;
+	std::vector<GrammarSymbol> replacement;
 };
 
 struct FlippedEarleyItem {

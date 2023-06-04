@@ -1,11 +1,11 @@
 #ifndef GRAMMAR_HPP
 #define GRAMMAR_HPP
 
-#include <string>
-#include <unordered_map>
-#include <utility>
-#include <vector>
-#include <fstream>
+#include <string>		// std::string
+#include <vector>		// std::vector
+#include <fstream>		// std::ifstream
+
+#include <TMCompiler/compiler/models/grammar_symbol.hpp>	// GrammarSymbol
 
 // requires C++17
 // see
@@ -30,7 +30,7 @@ private:
 	std::string default_start;
 
 	AbstractSyntaxTreeNode parse_helper(const std::vector<char>& program,
-									   int cursor, Symbol symbol);
+									   int cursor, GrammarSymbol symbol);
 };
 
 #endif

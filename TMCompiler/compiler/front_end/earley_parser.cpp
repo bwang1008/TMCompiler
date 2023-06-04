@@ -13,7 +13,7 @@
 #include <utility>
 #include <vector>
 
-#include <TMCompiler/compiler/models/symbol.hpp>  // Symbol
+#include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
 #include <TMCompiler/compiler/models/token.hpp>		  // Token
 #include <TMCompiler/utils/logger/logger.hpp>		  // Logger
 
@@ -62,11 +62,11 @@ auto equals(const EarleyItem item1, const EarleyItem item2) -> bool {
  * Check if a given input symbol matches a symbol that a rule predicts.
  * For instance, is "103" really a "Number" symbol?
  * We use regex to determine if the input token is a valid symbol
- * @param predicted: Symbol that grammar rule predicts is next
+ * @param predicted: GrammarSymbol that grammar rule predicts is next
  * @param actual: Token input that is scanned next
  * return true iff actual is an instance of predicted
  */
-auto matches(const Symbol& predicted, const Token& actual) -> bool {
+auto matches(const GrammarSymbol& predicted, const Token& actual) -> bool {
 	return predicted.value == actual.value;
 	// return std::regex_match(actual.value, std::regex(predicted.value));
 }
@@ -103,7 +103,7 @@ void complete(std::vector<std::vector<EarleyItem> >& earley_sets,
 			  const std::vector<EarleyRule>& grammar_rules,
 			  const EarleyItem item) {
 	const EarleyRule finished_rule = grammar_rules[item.rule];
-	const Symbol finished_production = finished_rule.production;
+	const GrammarSymbol finished_production = finished_rule.production;
 
 	// find who generated this finished_rule. That previous rule has made a step
 	// forward
@@ -117,7 +117,7 @@ void complete(std::vector<std::vector<EarleyItem> >& earley_sets,
 			continue;
 		}
 
-		const Symbol actual = candidate_rule.replacement[candidate.next];
+		const GrammarSymbol actual = candidate_rule.replacement[candidate.next];
 
 		if(actual.value == finished_production.value &&
 		   actual.terminal == finished_production.terminal) {
@@ -141,7 +141,7 @@ void complete(std::vector<std::vector<EarleyItem> >& earley_sets,
 void scan(std::vector<std::vector<EarleyItem> >& earley_sets,
 		  const std::size_t current_earley_set_index,
 		  const EarleyItem item,
-		  const Symbol& predicted,
+		  const GrammarSymbol& predicted,
 		  const Token& actual) {
 	if(matches(predicted, actual)) {
 		const EarleyItem next_item{item.rule, item.start, 1 + item.next};
@@ -154,7 +154,7 @@ void scan(std::vector<std::vector<EarleyItem> >& earley_sets,
  * Predict step of Earley parsing. When the rule's next symbol is a
  * non-terminal symbol, add on another Earley Item to the current
  * Earley set, to signify that we later want to "recurse" down
- * the rule to check if the subrule / next Symbol holds
+ * the rule to check if the subrule / next GrammarSymbol holds
  * @param earley_sets: global EarleyItems at each iteration / input token
  * @param current_earley_set_index: index of token we are currently parsing
  * @param grammar_rules: global set of grammar rules that is being used
@@ -165,7 +165,7 @@ void scan(std::vector<std::vector<EarleyItem> >& earley_sets,
 void predict(std::vector<std::vector<EarleyItem> >& earley_sets,
 			 const std::size_t current_earley_set_index,
 			 const std::vector<EarleyRule>& grammar_rules,
-			 const Symbol& production) {
+			 const GrammarSymbol& production) {
 	for(std::size_t i = 0; i < grammar_rules.size(); ++i) {
 		if(grammar_rules[i].production.value == production.value) {
 			const EarleyItem item{i, current_earley_set_index, 0};
@@ -216,7 +216,7 @@ auto build_earley_items(const std::vector<EarleyRule>& grammar_rules,
 				continue;
 			}
 
-			const Symbol next_symbol = rule.replacement[item.next];
+			const GrammarSymbol next_symbol = rule.replacement[item.next];
 
 			if(next_symbol.terminal) {
 				// if next token after dot is terminal, SCAN
@@ -355,7 +355,7 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 	}
 
 	// for instance, get "Vegetable" from "Salad -> Vegetable + Dressing"
-	const Symbol next_rule_symbol = parent_rule.replacement[parent_rule_dot];
+	const GrammarSymbol next_rule_symbol = parent_rule.replacement[parent_rule_dot];
 
 	ss.str("");
 	ss << "next_rule_symbol = " << next_rule_symbol.value;

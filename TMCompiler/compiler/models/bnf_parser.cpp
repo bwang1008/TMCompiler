@@ -1,10 +1,14 @@
 #include "bnf_parser.hpp"
 
 #include <cctype>  // std::isspace
+#include <cstddef>	// std::size_t
 #include <stdexcept>
 #include <string>
 #include <unordered_set>
 #include <utility>	// std::pair, std::move
+#include <vector>	// std::vector
+
+#include <TMCompiler/compiler/models/grammar_symbol.hpp>	// GrammarSymbol
 
 namespace BnfParser {
 
@@ -62,7 +66,7 @@ auto text_matches_pattern(const std::string& text, const std::string& pattern,
  */
 auto parse_symbol(const std::string& bnf_contents,
 				  const std::size_t start_index)
-	-> std::pair<Symbol, std::size_t> {
+	-> std::pair<GrammarSymbol, std::size_t> {
 	if(start_index >= bnf_contents.size()) {
 		throw std::invalid_argument(
 			std::string("Trying to read bnf_contents at position ") +
@@ -100,7 +104,7 @@ auto parse_symbol(const std::string& bnf_contents,
 	// start_index <- A
 	// symbol_contents_start <- B
 	// end_position <- C
-	// return pair(Symbol(abcdef), D)
+	// return pair(GrammarSymbol(abcdef), D)
 
 	const std::size_t symbol_contents_start = start_index + symbol_start.size();
 	std::size_t symbol_contents_size = 0;
@@ -127,7 +131,7 @@ auto parse_symbol(const std::string& bnf_contents,
 	}
 
 	// found symbol_end
-	Symbol parsed_symbol = {
+	GrammarSymbol parsed_symbol = {
 		bnf_contents.substr(symbol_contents_start, symbol_contents_size),
 		is_terminal };
 	return std::make_pair(parsed_symbol, end_position + symbol_end.size());
@@ -243,7 +247,7 @@ auto parse_rules(const std::string& bnf_contents) -> Rules {
 	// separate out into different rules:
 	// there is one nonterminal symbol before a ::=
 	Rules rules;
-	Symbol current_left;
+	GrammarSymbol current_left;
 	ReplacementAlternatives current_replacements;
 
 	for(std::size_t i = 0; i < tokens.size(); ++i) {
@@ -261,13 +265,13 @@ auto parse_rules(const std::string& bnf_contents) -> Rules {
 			current_replacements.clear();
 		} else if(token == BnfParser::bnf_choice) {
 			// start new rule replacement
-			current_replacements.push_back(std::vector<Symbol>());
+			current_replacements.push_back(std::vector<GrammarSymbol>());
 		} else if(token != BnfParser::bnf_replacement_separation) {
 			// add to last rule replacement if see a symbol
-			Symbol current_symbol = parse_symbol(token, 0).first;
+			GrammarSymbol current_symbol = parse_symbol(token, 0).first;
 
 			if(current_replacements.empty()) {
-				current_replacements.push_back(std::vector<Symbol>());
+				current_replacements.push_back(std::vector<GrammarSymbol>());
 			}
 
 			current_replacements.back().push_back(current_symbol);

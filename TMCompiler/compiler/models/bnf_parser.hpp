@@ -7,10 +7,10 @@
 #include <utility>
 #include <vector>
 
-#include <TMCompiler/compiler/models/symbol.hpp>
+#include <TMCompiler/compiler/models/grammar_symbol.hpp>	// GrammarSymbol
 
 // represent <abc> "def" | "ghi" <jkl>
-using ReplacementAlternatives = std::vector<std::vector<Symbol> >;
+using ReplacementAlternatives = std::vector<std::vector<GrammarSymbol> >;
 
 // represent many lines of the form <A> ::= <abc> "def" | "ghi" <jkl>
 using Rules = std::map<std::string, ReplacementAlternatives>;
