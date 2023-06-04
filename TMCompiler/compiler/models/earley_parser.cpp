@@ -213,12 +213,12 @@ auto build_earley_items(const std::vector<EarleyRule>& grammar_rules,
 
 			const Symbol next_symbol = rule.replacement[item.next];
 
-			// if next token after dot is terminal, SCAN
 			if(next_symbol.terminal) {
+				// if next token after dot is terminal, SCAN
 				scan(earley_sets, i, item, next_symbol, inputs[i]);
 			}
-			// if next token after dot is non-terminal, PREDICT
 			else {
+				// if next token after dot is non-terminal, PREDICT
 				predict(earley_sets, i, grammar_rules, next_symbol);
 			}
 		}
@@ -240,7 +240,6 @@ auto filter_out_partial_parses(const std::vector<std::vector<EarleyItem> >& earl
 
 	for(std::size_t i = 0; i < earley_sets.size(); ++i) {
 		for(const EarleyItem item : earley_sets[i]) {
-
 			const EarleyRule rule = grammar_rules[item.rule];
 			if(rule.replacement.size() == item.next) {
 				filtered[i].push_back(item);
@@ -283,11 +282,12 @@ auto find_top_item(const std::vector<std::vector<FlippedEarleyItem> >& earley_se
 				   const std::vector<EarleyRule>& grammar_rules,
 				   const std::string& default_start) -> FlippedEarleyItem {
 	if(earley_sets.empty()) {
-		throw std::invalid_argument("Earley state sets cannot be empty");
+		throw std::invalid_argument("There is no parse if the Earley state sets are empty");
 	}
 
 	for(const FlippedEarleyItem item : earley_sets.front()) {
 		const EarleyRule rule = grammar_rules[item.rule];
+		// earley_sets.size() is 1 more than number of tokens
 		if(item.end + 1 == earley_sets.size() &&
 		   rule.production.value == default_start) {
 			return item;
@@ -298,12 +298,28 @@ auto find_top_item(const std::vector<std::vector<FlippedEarleyItem> >& earley_se
 }
 
 /**
- * Given a current EarleyItem, recursively find its next child. "Next" referring
- * to the same rule, but with the dot advanced one step.
+ * Given a current EarleyItem, recursively find its next child.
+ *
+ * "Next" refers to the sub-rule of the parent at its dot. For instance, if
+ * parent_item refers to the rule "Salad -> Vegetables + Dressing", then one
+ * iteration of this function before recursing might try adding the sub-rule
+ * "Vegetables -> Cabbage". In the recursive call, if "Cabbage" doesn't match
+ * with the input tokens, then the parent call rejects this sub-rule and tries
+ * another one, like "Vegetables -> Lettuce". Once the recursive calls finish
+ * successfully, path gets populated with [("Vegetables -> Lettuce", 3), 
+ * ("Dressing -> Range", 8)], where the number refers to which token position
+ * marks the start of that rule.
+ *
  * @param earley_sets: created Earley state sets
  * @param grammar_rules: global set of grammar rules that is being used
- * @param path: past history that led to the current node
- * @param curr_node: current EarleyItem to search its children
+ * @param input_tokens: list of tokens / words from the input being parsed
+ * @param parent_item: the rule which we want to find its sub-rules
+ * @param parent_rule_dot: in the RHS of the parent_item rule, which child
+ *		are we looking at now
+ * @param token_location: index of input_tokens. Everything before has been
+ *		parsed already.
+ * @param path: current list of sub-rules of parent_item. When the recursive
+ *		call finishes, this path will be populated
  * @return true iff there is a path from curr_node to its last child
  */
 auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
@@ -328,6 +344,7 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 		return token_location == parent_item.end;
 	}
 
+	// for instance, get "Vegetable" from "Salad -> Vegetable + Dressing"
 	const Symbol next_rule_symbol = parent_rule.replacement[parent_rule_dot];
 
 	ss.str("");
@@ -349,25 +366,23 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 			return false;
 		}
 
+		// terminal symbol matches token, so continue recursing down rule
 		return dfs(earley_sets, grammar_rules, input_tokens, parent_item,
 				   1 + parent_rule_dot, 1 + token_location, path);
 	}
 
 	// next part of rule is non-terminal:
-	// check all possible children where the rule's dot
-	// is located
+	// check all possible children where the rule's dot is located
+	// Ex: if next_symbol_rule is "Vegetable", find all rules starting with it,
+	// like "Vegetable -> Cabbage" and "Vegetable -> Lettuce". Try adding each
+	// to path and recurse to see if it offers a valid parse.
 
 	for(const FlippedEarleyItem possible_child : earley_sets[token_location]) {
 		const EarleyRule possible_child_rule = grammar_rules[possible_child.rule];
 
 		if(possible_child_rule.production.value == next_rule_symbol.value &&
-		   possible_child_rule.production.terminal ==
-			   next_rule_symbol.terminal) {
+		   possible_child_rule.production.terminal == next_rule_symbol.terminal) {
 			path.emplace_back(possible_child, token_location);
-
-			ss.str("");
-			ss << "Try recursing on this child item: {" << possible_child.rule << ", " << possible_child.end << ", " << possible_child.next << "}";
-			LOG("DEBUG", ss.str());
 
 			const bool child_ret =
 				dfs(earley_sets, grammar_rules, input_tokens, parent_item,
@@ -381,6 +396,7 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 		}
 	}
 
+	// none of the parses here work
 	return false;
 }
 
@@ -388,8 +404,9 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
  * Wrapper function for dfs.
  * @param earley_sets: created Earley state sets
  * @param grammar_rules: global set of grammar rules that is being used
- * @param item: EarleyItem to find its path from start to finish, as dot
- * advances from beginning of rule to end of rule
+ * @param input_tokens: list of tokens / words from the input being parsed
+ * @param item: FlippedEarleyItem to find its path from start to finish, as dot
+ *		advances from beginning of rule to end of rule
  * @return list of item's path / children
  */
 auto find_rule_steps(
@@ -404,11 +421,8 @@ auto find_rule_steps(
 							 item, 0, item_start, children_path);
 
 	if(!search_result) {
-		LOG("CRITICAL", "No match found in dfs");
+		LOG("CRITICAL", "No partial parses for rule");
 	}
-
-	// dfs returns parent + children. Return only children
-	// children_path.erase(children_path.begin());
 
 	return children_path;
 }
@@ -417,9 +431,11 @@ auto find_rule_steps(
  * Build the parse tree given the Earley state sets.
  * @param earley_sets: created Earley state sets
  * @param grammar_rules: global set of grammar rules that is being used
+ * @param input_tokens: list of tokens / words from the input being parsed
  * @param default_start: the top symbol of the parse; which production
- * rule in grammar_rules should start parsing the input
- * @return list of EarleyItems, each with an index pointing to its parent
+ *		rule in grammar_rules should start parsing the input
+ * @return list of SubParse, each with a range of tokens its rule covers, and
+ *		an index of its parent SubParse
  */
 auto build_earley_parse_tree(
 	const std::vector<std::vector<EarleyItem> >& earley_sets,
@@ -428,6 +444,8 @@ auto build_earley_parse_tree(
 	-> std::vector<SubParse> {
 
 	LOG("INFO", "Constructing Parse Tree");
+
+	std::vector<SubParse> tree;
 
 	const std::vector<std::vector<EarleyItem> > filtered = filter_out_partial_parses(earley_sets, grammar_rules);
 	const std::vector<std::vector<FlippedEarleyItem> > flipped_earley_sets = flip_earley_sets(filtered);
@@ -439,35 +457,24 @@ auto build_earley_parse_tree(
 			LOG("DEBUG", item_to_string(item));
 		}
 	}
-	LOG("DEBUG", "-------------------------------");
 
+	// add top-level parse to tree
 	const FlippedEarleyItem top = find_top_item(flipped_earley_sets, grammar_rules, default_start);
-	const SubParse top_sub_parse = {top.rule, 0, top.end, 0};
 
-	// LOG("DEBUG", "top = " + item_to_string(top));
+	// the top-level parse covers tokensin range [0, top.end). No parent.
+	tree.push_back(SubParse{top.rule, 0, top.end, 0});
 
-	// std::vector<std::tuple<FlippedEarleyItem, std::size_t, std::size_t> > tree;
-	std::vector<SubParse> tree;
-	// tree.emplace_back(top, 0, 0);
-	tree.push_back(top_sub_parse);
-
-
+	// for each rule in tree, add its subrules into tree, to be processed later
 	for(std::size_t location = 0; location < tree.size(); ++location) {
-		// const FlippedEarleyItem item = std::get<0>(tree[location]);
 		const SubParse current_sub_parse = tree[location];
 		const FlippedEarleyItem item = {current_sub_parse.rule, current_sub_parse.end, 0};
-
-		// LOG("DEBUG",
-			// std::string("Finding rule steps for item ") + item_to_string(item));
 
 		const std::vector<std::pair<FlippedEarleyItem, std::size_t> > children =
 			find_rule_steps(flipped_earley_sets, grammar_rules, input_tokens,
 							item, tree[location].start);
 
 		for(const std::pair<FlippedEarleyItem, std::size_t> child : children) {
-			const SubParse child_sub_parse = {child.first.rule, child.second, child.first.end, location};
-			// tree.emplace_back(child.first, child.second, location);
-			tree.push_back(child_sub_parse);
+			tree.push_back(SubParse{child.first.rule, child.second, child.first.end, location});
 		}
 	}
 
