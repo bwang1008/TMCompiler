@@ -436,6 +436,7 @@ auto find_rule_steps(
 	FlippedEarleyItem item,
 	std::size_t item_start)
 	-> std::vector<std::pair<FlippedEarleyItem, std::size_t> > {
+
 	std::vector<std::pair<FlippedEarleyItem, std::size_t> > children_path;
 	const bool search_result = dfs(earley_sets,
 								   grammar_rules,
