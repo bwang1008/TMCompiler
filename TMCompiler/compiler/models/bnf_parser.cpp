@@ -1,21 +1,35 @@
 #include "bnf_parser.hpp"
 
-#include <cctype>  // std::isspace
-#include <cstddef>	// std::size_t
-#include <stdexcept>
-#include <string>
-#include <unordered_set>
-#include <utility>	// std::pair, std::move
-#include <vector>	// std::vector
+#include <cctype>		  // std::isspace
+#include <cstddef>		  // std::size_t
+#include <fstream>		  // std::ifstream
+#include <stdexcept>	  // std::invalid_argument
+#include <string>		  // std::string, std::to_string, std::getline
+#include <unordered_set>  // std::unordered_set
+#include <utility>		  // std::pair, std::make_pair
+#include <vector>		  // std::vector
 
-#include <TMCompiler/compiler/models/grammar_symbol.hpp>	// GrammarSymbol
+#include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
 
 namespace BnfParser {
 
 // from https://en.cppreference.com/w/cpp/language/escape
-const std::unordered_set<char> escaped_characters = {
-	'\'', '\"', '?', '\\', 'a', 'b', 'f', 'n',
-	'r',  't',	'v', 'o',  'x', 'u', 'U', 'N'};
+const std::unordered_set<char> escaped_characters = {'\'',
+													 '\"',
+													 '?',
+													 '\\',
+													 'a',
+													 'b',
+													 'f',
+													 'n',
+													 'r',
+													 't',
+													 'v',
+													 'o',
+													 'x',
+													 'u',
+													 'U',
+													 'N'};
 
 /**
  * Finds the next pattern within text starting from pos.
@@ -51,7 +65,8 @@ auto find_next_unescaped_string(const std::string& text,
  * @param pos: index in text to start searching for pattern
  * @return true if pattern exists in text at pos; false otherwise
  */
-auto text_matches_pattern(const std::string& text, const std::string& pattern,
+auto text_matches_pattern(const std::string& text,
+						  const std::string& pattern,
 						  const std::size_t pos) -> bool {
 	return pos + pattern.size() <= text.size() &&
 		   text.substr(pos, pattern.size()) == pattern;
@@ -79,8 +94,8 @@ auto parse_symbol(const std::string& bnf_contents,
 	std::string symbol_end;
 	bool is_terminal = false;
 
-	if(text_matches_pattern(bnf_contents, BnfParser::bnf_terminal_start,
-							start_index)) {
+	if(text_matches_pattern(
+		   bnf_contents, BnfParser::bnf_terminal_start, start_index)) {
 		symbol_start = BnfParser::bnf_terminal_start;
 		symbol_end = BnfParser::bnf_terminal_end;
 		is_terminal = true;
@@ -133,7 +148,7 @@ auto parse_symbol(const std::string& bnf_contents,
 	// found symbol_end
 	GrammarSymbol parsed_symbol = {
 		bnf_contents.substr(symbol_contents_start, symbol_contents_size),
-		is_terminal };
+		is_terminal};
 	return std::make_pair(parsed_symbol, end_position + symbol_end.size());
 }
 
@@ -197,8 +212,8 @@ auto tokenize(const std::string& bnf_contents) -> std::vector<std::string> {
 			// found "::="
 			tokens.push_back(BnfParser::bnf_replacement_separation);
 			curr_index += BnfParser::bnf_replacement_separation.size();
-		} else if(text_matches_pattern(bnf_contents, BnfParser::bnf_choice,
-									   curr_index)) {
+		} else if(text_matches_pattern(
+					  bnf_contents, BnfParser::bnf_choice, curr_index)) {
 			// found "|"
 			tokens.push_back(BnfParser::bnf_choice);
 			curr_index += BnfParser::bnf_choice.size();
@@ -258,7 +273,8 @@ auto parse_rules(const std::string& bnf_contents) -> Rules {
 			if(!current_replacements.empty()) {
 				rules[current_left.value].insert(
 					rules[current_left.value].end(),
-					current_replacements.begin(), current_replacements.end());
+					current_replacements.begin(),
+					current_replacements.end());
 			}
 
 			current_left = parse_symbol(token, 0).first;
@@ -280,9 +296,9 @@ auto parse_rules(const std::string& bnf_contents) -> Rules {
 
 	// add last rule
 	if(!current_replacements.empty()) {
-		rules[current_left.value].insert(
-			rules[current_left.value].end(), current_replacements.begin(),
-			current_replacements.end());
+		rules[current_left.value].insert(rules[current_left.value].end(),
+										 current_replacements.begin(),
+										 current_replacements.end());
 	}
 	return rules;
 }
