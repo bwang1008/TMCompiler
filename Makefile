@@ -3,7 +3,10 @@
 
 ### USER DEFINED VARIABLES
 # SOURCES = TMCompiler/tests/test_bnf_parser.cpp TMCompiler/compiler/models/bnf_parser.cpp TMCompiler/utils/logger/logger.cpp
-SOURCES = main.cpp TMCompiler/compiler/models/earley_parser.cpp TMCompiler/compiler/models/tokenizer.cpp TMCompiler/compiler/models/bnf_parser.cpp TMCompiler/utils/logger/logger.cpp
+SOURCES = main.cpp
+SOURCES += TMCompiler/compiler/front_end/earley_parser.cpp
+SOURCES += TMCompiler/compiler/models/bnf_parser.cpp
+SOURCES += TMCompiler/utils/logger/logger.cpp
 
 OBJECTS = $(SOURCES:.cpp=.o)
 
@@ -22,7 +25,8 @@ WARNINGS += -Wuninitialized 		# use without initialization
 WARNINGS := $(shell echo $(WARNINGS) | sed -e "s/\s+/ /g")
 
 ### C++ SPECIFIC MAKE VARIABLES
-CXX = g++ # g++ 9.4.0
+# g++ 9.4.0
+CXX = g++
 CPPFLAGS = -I.
 CXXFLAGS = -std=c++14 $(WARNINGS) -MMD -MP
 
