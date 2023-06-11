@@ -22,3 +22,6 @@ build*/
 
 # Vim swap file
 *.swp
+
+# Python virtual environment
+.venv/
