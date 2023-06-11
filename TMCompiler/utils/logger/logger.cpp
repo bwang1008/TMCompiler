@@ -139,3 +139,13 @@ auto log(const std::string& level, const std::string& message,
 }
 
 }  // namespace Logger
+
+// int main() {
+	// Logger::set_level("DEBUG");
+	// LOG("INFO", "BEGIN");
+	// LOG("DEBUG", "this is debug");
+	// LOG("WARNING", "this is warning");
+	// LOG("ERROR", "this is error");
+	// LOG("CRITICAL", "this is critical");
+	// LOG("INFO", "END");
+// }

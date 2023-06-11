@@ -3,10 +3,13 @@
 
 ### USER DEFINED VARIABLES
 # SOURCES = TMCompiler/tests/test_bnf_parser.cpp TMCompiler/compiler/models/bnf_parser.cpp TMCompiler/utils/logger/logger.cpp
-SOURCES = main.cpp
-SOURCES += TMCompiler/compiler/front_end/earley_parser.cpp
-SOURCES += TMCompiler/compiler/models/bnf_parser.cpp
+# SOURCES = main.cpp
+# SOURCES += TMCompiler/compiler/front_end/earley_parser.cpp
+# SOURCES += TMCompiler/compiler/models/bnf_parser.cpp
 SOURCES += TMCompiler/utils/logger/logger.cpp
+
+SOURCES += TMCompiler/utils/unittesting/unittests.cpp
+SOURCES += TMCompiler/tests/test_unittesting.cpp
 
 OBJECTS = $(SOURCES:.cpp=.o)
 
@@ -20,6 +23,7 @@ WARNINGS += -Wfloat-equal 			# do not use equality on floating-points
 WARNINGS += -Wmissing-braces 		# initalizers have proper braces
 WARNINGS += -Wmissing-include-dirs 	# if include directory not valid
 WARNINGS += -Wuninitialized 		# use without initialization
+WARNINGS += -fno-common 			# prevent tentative definitions
 
 # reformat whitespace in WARNINGS list
 WARNINGS := $(shell echo $(WARNINGS) | sed -e "s/\s+/ /g")
