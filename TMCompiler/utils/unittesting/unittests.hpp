@@ -16,16 +16,19 @@ extern int numFailingAsserts;
 extern std::map<std::string, FunctionPointer> NAMES_TO_FUNCTIONS;
 
 // assigns function to global map. runs before main by using comma operator
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define REGISTER_TEST(FUNCTION_NAME)     \
 	int DUMMY_REGISTER_##FUNCTION_NAME = \
 		(NAMES_TO_FUNCTIONS[#FUNCTION_NAME] = &(FUNCTION_NAME), 0)
 
 // declare the function, register it, then define
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define TEST_CASE(FUNCTION_NAME)  \
 	void FUNCTION_NAME();         \
 	REGISTER_TEST(FUNCTION_NAME); \
 	void FUNCTION_NAME()
 
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define FAIL_ASSERT()                                       \
 	std::cout << "Assert failed in " << __FILE__ << " in "  \
 			  << static_cast<const char*>(__func__) << "()" \
