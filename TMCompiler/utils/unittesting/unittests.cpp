@@ -1,8 +1,8 @@
 #include "unittests.hpp"
 
-#include <iostream>		// std::cout, std::endl
-#include <string>		// std::string
-#include <utility>		// std::pair
+#include <iostream>	 // std::cout, std::endl
+#include <string>	 // std::string
+#include <utility>	 // std::pair
 
 int numPassingAsserts = 0;
 int numFailingAsserts = 0;
@@ -13,8 +13,7 @@ void ASSERT(const bool test_expression) {
 	if(!test_expression) {
 		++numFailingAsserts;
 		FAIL_ASSERT();
-	}
-	else {
+	} else {
 		++numPassingAsserts;
 	}
 }
@@ -106,4 +105,3 @@ auto main() -> int {
 
 	return 0;
 }
-
