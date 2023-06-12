@@ -1,4 +1,6 @@
+import datetime
 import glob
+import os
 import subprocess
 
 from rich import print
@@ -52,12 +54,54 @@ def check_clang_format(files):
 
 
 def check_clang_tidy(files):
+    # read cache
+    cache_lines = []
+    cache_file_name = "cache_tidy.txt"
+
+    try:
+        with open(cache_file_name, "r") as f:
+            cache_lines = f.readlines()
+    except:
+        pass
+
+    previous_bad_files = set()
+    past_run_time = datetime.datetime.min
+    if len(cache_lines):
+        # first line is timezone
+        past_run_time = datetime.datetime.fromisoformat(cache_lines[0].strip())
+        for i in range(1, len(cache_lines)):
+            previous_bad_files.add(cache_lines[i].strip())
+
+    # if clang-tidy file changed, always re-run
+    clang_tidy_mtime = datetime.datetime.fromtimestamp(os.path.getmtime(".clang-tidy"))
+    clang_tidy_changed = (clang_tidy_mtime > past_run_time)
+
     needs_changing = []
     for file_name in track(files, description="Checking clang-tidy..."):
+
+        file_mtime = datetime.datetime.fromtimestamp(os.path.getmtime(file_name))
+
+        #  print(f"consider file {file_name}: has mtime {file_mtime}: is less than past run time? {file_mtime < past_run_time}")
+        if not clang_tidy_changed and file_mtime < past_run_time:
+            if file_name in previous_bad_files:
+                needs_changing.append(file_name)
+            continue
+
         if needs_to_run_clang_tidy(file_name):
             needs_changing.append(file_name)
 
     needs_changing.sort()
+
+    # write to cache
+    with open(cache_file_name, "w") as f:
+        # write current timestamp
+        f.write(datetime.datetime.now().isoformat())
+        f.write("\n")
+
+        for file_name in needs_changing:
+            f.write(file_name)
+            f.write("\n")
+
 
     if len(needs_changing):
         print(Panel.fit('\n'.join(needs_changing), title="Please run clang-tidy on these files"))

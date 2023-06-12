@@ -25,3 +25,6 @@ build*/
 
 # Python virtual environment
 .venv/
+
+# cache
+cache_tidy.txt
