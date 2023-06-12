@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <TMCompiler/compiler/models/bnf_parser.hpp>
+#include <TMCompiler/compiler/front_end/bnf_parser.hpp>
 #include <TMCompiler/utils/unittesting/unittests.hpp>
 
 TEST_CASE(test0) {

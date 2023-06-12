@@ -9,7 +9,7 @@
 #include <utility>		  // std::pair, std::make_pair
 #include <vector>		  // std::vector
 
-#include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
+#include <TMCompiler/compiler/front_end/grammar_symbol.hpp>  // GrammarSymbol
 
 namespace BnfParser {
 
