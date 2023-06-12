@@ -14,8 +14,8 @@
 #include <vector>
 
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
-#include <TMCompiler/compiler/models/token.hpp>		  // Token
-#include <TMCompiler/utils/logger/logger.hpp>		  // Logger
+#include <TMCompiler/compiler/models/token.hpp>			  // Token
+#include <TMCompiler/utils/logger/logger.hpp>			  // Logger
 
 auto rule_to_string(const EarleyRule& rule) -> std::string {
 	std::stringstream ss;
@@ -355,7 +355,8 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 	}
 
 	// for instance, get "Vegetable" from "Salad -> Vegetable + Dressing"
-	const GrammarSymbol next_rule_symbol = parent_rule.replacement[parent_rule_dot];
+	const GrammarSymbol next_rule_symbol =
+		parent_rule.replacement[parent_rule_dot];
 
 	ss.str("");
 	ss << "next_rule_symbol = " << next_rule_symbol.value;
@@ -436,7 +437,6 @@ auto find_rule_steps(
 	FlippedEarleyItem item,
 	std::size_t item_start)
 	-> std::vector<std::pair<FlippedEarleyItem, std::size_t> > {
-
 	std::vector<std::pair<FlippedEarleyItem, std::size_t> > children_path;
 	const bool search_result = dfs(earley_sets,
 								   grammar_rules,

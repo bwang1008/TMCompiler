@@ -58,7 +58,8 @@ TEST_CASE(test9) {
 	const int factorial3 = 6;
 	const int factorial4 = 24;
 	const int factorial5 = 120;
-	std::vector<int> answers = {factorial0, factorial1, factorial2, factorial3,	factorial4, factorial5};
+	std::vector<int> answers = {
+		factorial0, factorial1, factorial2, factorial3, factorial4, factorial5};
 	for(std::size_t i = 0; i < answers.size(); ++i) {
 		ASSERT(factorial(i) == answers[i]);
 	}

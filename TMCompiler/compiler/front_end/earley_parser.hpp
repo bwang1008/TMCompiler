@@ -10,7 +10,7 @@
 #include <vector>	// std::vector
 
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
-#include <TMCompiler/compiler/models/token.hpp>	  // Token
+#include <TMCompiler/compiler/models/token.hpp>			  // Token
 
 struct EarleyItem {
 	std::size_t rule;	// index of rule in list of rules in Grammar

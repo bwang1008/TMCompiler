@@ -51,8 +51,10 @@ namespace Logger {
  * @param line_number: line number in file of logging call
  * @return void
  */
-auto log(const std::string& level, const std::string& message,
-		 const char* file_name, int line_number) -> void;
+auto log(const std::string& level,
+		 const std::string& message,
+		 const char* file_name,
+		 int line_number) -> void;
 
 /**
  * Sets the current logging level. Logging calls that are below the

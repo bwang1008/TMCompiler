@@ -3,8 +3,8 @@
 #include <string>
 #include <vector>
 
-#include <TMCompiler/utils/unittesting/unittests.hpp>
 #include <TMCompiler/compiler/models/bnf_parser.hpp>
+#include <TMCompiler/utils/unittesting/unittests.hpp>
 
 TEST_CASE(test0) {
 	std::ifstream input_bnf("TMCompiler/tests/data/example_grammar.bnf");
@@ -13,7 +13,10 @@ TEST_CASE(test0) {
 	ASSERT(rules.size() == 4);
 
 	int index = 0;
-	for(std::map<std::string, std::vector<std::vector<Symbol> > >::iterator it = rules.begin(); it != rules.end(); ++it) {
+	for(std::map<std::string, std::vector<std::vector<Symbol> > >::iterator it =
+			rules.begin();
+		it != rules.end();
+		++it) {
 		const std::string lhs = it->first;
 		ReplacementAlternatives rhs = it->second;
 		if(index == 0) {
@@ -27,14 +30,12 @@ TEST_CASE(test0) {
 
 			ASSERT(rhs[1].size() == 1);
 			ASSERT(rhs[1][0].value == "T");
-		}
-		else if(index == 1) {
+		} else if(index == 1) {
 			ASSERT(lhs == "P");
 			ASSERT(rhs.size() == 1);
 			ASSERT(rhs[0].size() == 1);
 			ASSERT(rhs[0][0].value == "S");
-		}
-		else if(index == 2) {
+		} else if(index == 2) {
 			ASSERT(lhs == "S");
 			ASSERT(rhs.size() == 2);
 
@@ -45,8 +46,7 @@ TEST_CASE(test0) {
 
 			ASSERT(rhs[1].size() == 1);
 			ASSERT(rhs[1][0].value == "M");
-		}
-		else if(index == 3) {
+		} else if(index == 3) {
 			ASSERT(lhs == "T");
 			ASSERT(rhs.size() == 4);
 

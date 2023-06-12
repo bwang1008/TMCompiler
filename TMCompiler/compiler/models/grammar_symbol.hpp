@@ -1,7 +1,7 @@
 #ifndef GRAMMAR_SYMBOL
 #define GRAMMAR_SYMBOL
 
-#include <string>	// std::string
+#include <string>  // std::string
 
 // represent <abc> and "abc" in BNF file
 struct GrammarSymbol {

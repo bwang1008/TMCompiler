@@ -1,11 +1,11 @@
 #ifndef GRAMMAR_HPP
 #define GRAMMAR_HPP
 
-#include <string>		// std::string
-#include <vector>		// std::vector
-#include <fstream>		// std::ifstream
+#include <fstream>	// std::ifstream
+#include <string>	// std::string
+#include <vector>	// std::vector
 
-#include <TMCompiler/compiler/models/grammar_symbol.hpp>	// GrammarSymbol
+#include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
 
 // requires C++17
 // see
@@ -24,13 +24,13 @@ public:
 	Grammar(std::ifstream& bnf_file);
 	AbstractSyntaxTree parse(const std::vector<char>& program);
 
-
 private:
 	Rules rules;
 	std::string default_start;
 
 	AbstractSyntaxTreeNode parse_helper(const std::vector<char>& program,
-									   int cursor, GrammarSymbol symbol);
+										int cursor,
+										GrammarSymbol symbol);
 };
 
 #endif
