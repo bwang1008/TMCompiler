@@ -6,7 +6,7 @@
 #include <vector>
 
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
-#include <TMCompiler/compiler/models/bnf_parser.hpp>
+#include <TMCompiler/compiler/front_end/bnf_parser.hpp>
 #include <TMCompiler/compiler/front_end/earley_parser.hpp>
 #include <TMCompiler/compiler/models/token.hpp>	  // Token
 #include <TMCompiler/utils/logger/logger.hpp>
