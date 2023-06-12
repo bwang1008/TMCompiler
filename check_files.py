@@ -45,7 +45,10 @@ def check_clang_format(files):
 
     needs_changing.sort()
 
-    print(Panel.fit('\n'.join(needs_changing), title="Please run clang-format on these files"))
+    if len(needs_changing):
+        print(Panel.fit('\n'.join(needs_changing), title="Please run clang-format on these files"))
+    else:
+        print("All files formatted!")
 
 
 def check_clang_tidy(files):
@@ -56,7 +59,10 @@ def check_clang_tidy(files):
 
     needs_changing.sort()
 
-    print(Panel.fit('\n'.join(needs_changing), title="Please run clang-tidy on these files"))
+    if len(needs_changing):
+        print(Panel.fit('\n'.join(needs_changing), title="Please run clang-tidy on these files"))
+    else:
+        print("All files have been run with clang-tidy!")
 
 
 def main():
