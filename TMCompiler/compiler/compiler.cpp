@@ -11,31 +11,34 @@
 #include <TMCompiler/compiler/models/grammar.hpp>	// Grammar
 #include <TMCompiler/compiler/models/token.hpp>		// Token
 #include <TMCompiler/compiler/front_end/earley_parser.hpp>		// EarleyRule, SubParse
+#include <TMCompiler/util/logger/logger.hpp>
 
 Compiler::Compiler(std::ifstream& lexical_bnf, std::ifstream& syntax_bnf) : lexical_grammar(lexical_bnf), syntactical_grammar(syntax_bnf) {
 
 }
 
-auto Compiler::compile(std::ifstream& program_file) const -> void {
+auto Compiler::compile(const std::string file_name) const -> void {
+	LOG("INFO", std::string("Compiling ") + file_name);
+
+	std::ifstream program_file{file_name};
 	if(!program_file.is_open()) {
-		throw std::invalid_argument("Unable to open program_file");
+		LOG("ERROR", std::string("Unable to open file ") + file_name);
+		throw std::invalid_argument(std::string("Unable to open file ") + file_name);
 	}
 
-	std::vector<char> letters;	
+	std::string program_text;
 	std::string line;
 	while(std::getline(program_file, line)) {
-		for(const char letter : line) {
-			letters.push_back(letter);
-		}
+		program_file.append(line);
+		program_file.append("\n");
 	}
 
 	program_file.close();
 
-	const std::string program_text(letters.begin(), letters.end());
-	compile(program_text);
+	compile_text(program_text);
 }
 
-auto Compiler::compile(const std::string program_text) const -> void {
+auto Compiler::compile_text(const std::string program_text) const -> void {
 	// split program_text into individual letters
 	std::vector<Token> letters;
 	for(std::size_t index = 0, line_number = 0, col_number = 0; index < program_text.size(); ++index, ++col_number) {

@@ -12,8 +12,8 @@
 class Compiler {
 public:
 	Compiler(std::ifstream& lexical_bnf, std::ifstream& syntax_bnf);
-	auto compile(std::ifstream& program_file) const -> void;
-	auto compile(const std::string program_text) const -> void;
+	auto compile(const std::string file_name) const -> void;
+	auto compile_text(const std::string program_text) const -> void;
 
 private:
 	Grammar lexical_grammar;
