@@ -18,11 +18,11 @@ Compiler::Compiler(std::ifstream& lexical_bnf, std::ifstream& syntax_bnf) : lexi
 }
 
 auto Compiler::compile(const std::string file_name) const -> void {
-	LOG("INFO", std::string("Compiling ") + file_name);
+	LOG("INFO") << "Compiling " << file_name << std::endl;
 
 	std::ifstream program_file{file_name};
 	if(!program_file.is_open()) {
-		LOG("ERROR", std::string("Unable to open file ") + file_name);
+		LOG("ERROR") << "Unable to open file " << file_name << std::endl;
 		throw std::invalid_argument(std::string("Unable to open file ") + file_name);
 	}
 

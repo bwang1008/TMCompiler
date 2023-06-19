@@ -228,7 +228,7 @@ auto build_earley_items(const std::vector<EarleyRule>& grammar_rules,
 		}
 	}
 
-	LOG("INFO", "Finish building earley_sets");
+	LOG("INFO") << "Finish building earley_sets" << std::endl;
 
 	return earley_sets;
 }
@@ -341,12 +341,10 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 	-> bool {
 	const EarleyRule parent_rule = grammar_rules[parent_item.rule];
 
-	std::stringstream ss;
-	ss << "Call DFS(parent_rule=" << rule_to_string(parent_rule)
+	LOG("DEBUG") << "Call DFS(parent_rule=" << rule_to_string(parent_rule)
 	   << ", parent_rule_dot=" << parent_rule_dot
 	   << ", token_location=" << token_location
-	   << ", path history size=" << path.size() << ")";
-	LOG("DEBUG", ss.str());
+	   << ", path history size=" << path.size() << ")" << std::endl;
 
 	// finished if dot at right-most of parent_rule,
 	// and last child ends at parent_rule's end
@@ -358,9 +356,7 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 	const GrammarSymbol next_rule_symbol =
 		parent_rule.replacement[parent_rule_dot];
 
-	ss.str("");
-	ss << "next_rule_symbol = " << next_rule_symbol.value;
-	LOG("DEBUG", ss.str());
+	LOG("DEBUG") << next_rule_symbol.value << std::endl;
 
 	// if next part of rule is a terminal, check if it matches the token
 	if(next_rule_symbol.terminal) {
@@ -447,7 +443,7 @@ auto find_rule_steps(
 								   children_path);
 
 	if(!search_result) {
-		LOG("CRITICAL", "No partial parses for rule");
+		LOG("CRITICAL") << "No partial parses for rule" << std::endl;
 	}
 
 	return children_path;
@@ -468,7 +464,7 @@ auto build_earley_parse_tree(
 	const std::vector<EarleyRule>& grammar_rules,
 	const std::vector<Token>& input_tokens,
 	const std::string& default_start) -> std::vector<SubParse> {
-	LOG("INFO", "Constructing Parse Tree");
+	LOG("INFO") << "Constructing Parse Tree" << std::endl;
 
 	std::vector<SubParse> tree;
 
@@ -477,11 +473,11 @@ auto build_earley_parse_tree(
 	const std::vector<std::vector<FlippedEarleyItem> > flipped_earley_sets =
 		flip_earley_sets(filtered);
 
-	LOG("DEBUG", "flipped_earley_sets = ");
+	LOG("DEBUG") << "flipped_earley_sets = " << std::endl;
 	for(std::size_t i = 0; i < flipped_earley_sets.size(); ++i) {
-		LOG("DEBUG", "\nstarts with " + std::to_string(i));
+		LOG("DEBUG") << "starts with " << i << std::endl;
 		for(FlippedEarleyItem item : flipped_earley_sets[i]) {
-			LOG("DEBUG", item_to_string(item));
+			LOG("DEBUG") << item_to_string(item) << std::endl;
 		}
 	}
 
