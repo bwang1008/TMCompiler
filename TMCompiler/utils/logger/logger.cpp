@@ -5,66 +5,16 @@
  * for use in development and debugging in lieu of print statements.
  */
 
-#include <chrono>	 // std::chrono
-#include <ctime>	 // std::ctime
-#include <iomanip>	 // std::setw, std::left, std::right
-#include <iostream>	 // std::cout, std::endl
-#include <map>		 // std::map
-#include <string>	 // std::string
+#include <chrono>	  // std::chrono
+#include <ctime>	  // std::ctime
+#include <iomanip>	  // std::setw, std::left, std::right
+#include <iostream>	  // std::cout, std::endl
+#include <map>		  // std::map
+#include <stdexcept>  // std::invalid_argument
+#include <string>	  // std::string
 
-namespace Logger {
-
-/**
- * Information associated with each logging level.
- * pretty_name: name of the level, like "WARNING"
- * importance: integer of how important. Higher values are more important.
- * color_info: terminal codes for printing out color
- */
-struct LevelInfo {
-	std::string pretty_name;
-	int importance;
-	std::string color_info;
-};
-
-/**
- * List out what logging levels are allowed, as well as each level of
- * importance and color information for printing
- */
-const std::map<std::string, LevelInfo> level_mapping{
-	{"DEBUG", LevelInfo{"DEBUG", 10, "\033[34m"}},
-	{"INFO", LevelInfo{"INFO", 20, ""}},
-	{"WARNING", LevelInfo{"WARNING", 30, "\033[33m"}},
-	{"ERROR", LevelInfo{"ERROR", 40, "\033[1;31m"}},
-	{"CRITICAL", LevelInfo{"CRITICAL", 50, "\033[1;31;46m"}},
-	{"NONE", LevelInfo{"NONE", 1000, ""}},
-};
-
-/**
- * Set the default logging level at INFO.
- */
-int current_level = level_mapping.at("INFO").importance;
-
-/**
- * Getter function for retrieving the relative importance of
- * a given logging level.
- *
- * @param level_name: one of DEBUG, INFO, WARNING, ERROR, CRITICAL, NONE
- * @return integer of relative importance of level
- */
-auto get_importance(const std::string& level_name) -> int {
-	return level_mapping.at(level_name).importance;
-}
-
-/**
- * Setter function for the current logging level. Setting "WARNING"
- * will show all "WARNING", "ERROR", and "CRITICAL" logs.
- *
- * @param level_name: one of DEBUG, INFO, WARNING, ERROR, CRITICAL, NONE
- * @return void
- */
-auto set_level(const std::string& level_name) -> void {
-	current_level = get_importance(level_name);
-}
+// one global logger
+Logger logger{};
 
 /**
  * Retrieve the current time as a string in format hh:mm:ss.
@@ -88,20 +38,29 @@ auto get_current_time() -> std::string {
 }
 
 /**
- * Prints out formatted custom message at specified logging level.
+ * Constructor. Default logging level at INFO.
+ */
+Logger::Logger()
+	: desired_output_level(level_mapping.at("INFO").importance),
+	  message_level(std::string("INFO")) {
+}
+
+/**
+ * Pretty-print start of each log.
  *
+ * Example: [15:37:02 WARNING    main.cpp:15  ]
  * @param level: one of DEBUG, INFO, WARNING, ERROR, CRITICAL
- * @param message: custom string to be printed
  * @param file_name: name of the file in which logging macro appears in
  * @param line_number: line number in file of logging call
  * @return void
  */
-auto log(const std::string& level,
-		 const std::string& message,
-		 const char* file_name,
-		 const int line_number) -> void {
-	// ignore low-level logs
-	if(current_level > get_importance(level)) {
+auto Logger::log_prefix(const std::string& level,
+						const char* file_name,
+						int line_number) -> void {
+	message_level = level;
+
+	// do not log messages beneath the desired level
+	if(desired_output_level > Logger::get_importance(message_level)) {
 		return;
 	}
 
@@ -118,14 +77,11 @@ auto log(const std::string& level,
 			? nice_file_name
 			: nice_file_name.substr(1 + last_slash);
 
-	// terminal code for resetting color/formatting to normal
-	const std::string reset{"\033[0m"};
-
 	// print message with color and formatting
+	std::cout << level_mapping.at(level).color_info;
 	std::cout << "[";
 	std::cout << get_current_time();
 	std::cout << " ";
-	std::cout << level_mapping.at(level).color_info;
 	std::cout << std::left << std::setw(max_level_name_size)
 			  << level_mapping.at(level).pretty_name;
 	std::cout << " ";
@@ -133,21 +89,58 @@ auto log(const std::string& level,
 			  << truncated_file_name;
 	std::cout << ":";
 	std::cout << std::left << std::setw(max_line_number_size) << line_number;
-	std::cout << reset << "] ";
-	std::cout << level_mapping.at(level).color_info;
-	std::cout << message;
-	std::cout << reset;
-	std::cout << std::endl;
+	std::cout << "] ";
 }
 
-}  // namespace Logger
+/**
+ * Getter function for retrieving the relative importance of
+ * a given logging level.
+ *
+ * @param level_name: one of DEBUG, INFO, WARNING, ERROR, CRITICAL, NONE
+ * @return integer of relative importance of level
+ */
+auto Logger::get_importance(const std::string& level_name) -> int {
+	if(level_mapping.find(level_name) == level_mapping.end()) {
+		throw std::invalid_argument(std::string("No logging level named ") +
+									level_name);
+	}
+	return level_mapping.at(level_name).importance;
+}
 
-// int main() {
-// Logger::set_level("DEBUG");
-// LOG("INFO", "BEGIN");
-// LOG("DEBUG", "this is debug");
-// LOG("WARNING", "this is warning");
-// LOG("ERROR", "this is error");
-// LOG("CRITICAL", "this is critical");
-// LOG("INFO", "END");
-// }
+/**
+ * Setter function for the current logging level. For example, setting "WARNING"
+ * will show all "WARNING", "ERROR", and "CRITICAL" logs.
+ *
+ * @param level_name: one of DEBUG, INFO, WARNING, ERROR, CRITICAL, NONE
+ * @return void
+ */
+auto Logger::set_level(const std::string& level_name) -> void {
+	desired_output_level = get_importance(level_name);
+}
+
+// special functions to allow something like "logger << std::endl;"
+// see
+// https://stackoverflow.com/questions/16444119/how-to-write-a-function-wrapper-for-cout-that-allows-for-expressive-syntax
+auto Logger::operator<<(std::ostream& (*f)(std::ostream&)) -> Logger& {
+	if(desired_output_level <= Logger::get_importance(message_level)) {
+		f(std::cout);
+	}
+
+	return *this;
+}
+
+auto Logger::operator<<(std::ostream& (*f)(std::ios&)) -> Logger& {
+	if(desired_output_level <= Logger::get_importance(message_level)) {
+		f(std::cout);
+	}
+
+	return *this;
+}
+
+auto Logger::operator<<(std::ostream& (*f)(std::ios_base&)) -> Logger& {
+	if(desired_output_level <= Logger::get_importance(message_level)) {
+		f(std::cout);
+	}
+
+	return *this;
+}
