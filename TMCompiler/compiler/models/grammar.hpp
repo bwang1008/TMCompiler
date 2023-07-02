@@ -22,15 +22,15 @@ struct AbstractSyntaxTree {
 class Grammar {
 public:
 	explicit Grammar(std::ifstream& bnf_file);
-	auto parse(const std::vector<char>& program) -> AbstractSyntaxTree;
+	auto parse(const std::vector<char>& program) -> std::vector<SubParse>;
 
 private:
 	Rules rules;
 	std::string default_start;
 
-	auto parse_helper(const std::vector<char>& program,
-										int cursor,
-										GrammarSymbol symbol) -> AbstractSyntaxTreeNode;
+	// auto parse_helper(const std::vector<char>& program,
+										// int cursor,
+										// GrammarSymbol symbol) -> AbstractSyntaxTreeNode;
 };
 
 #endif

@@ -15,6 +15,8 @@ public:
 	auto compile(const std::string file_name) const -> void;
 	auto compile_text(const std::string program_text) const -> void;
 
+	auto generate_parse_tree(const std::string program_text) -> std::vector<SubParse>;
+
 private:
 	Grammar lexical_grammar;
 	Grammar syntactical_grammar;

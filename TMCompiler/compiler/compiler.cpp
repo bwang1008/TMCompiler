@@ -35,10 +35,26 @@ auto Compiler::compile(const std::string file_name) const -> void {
 
 	program_file.close();
 
+	// TODO: should compile_text be responsible for writing out to files?
 	compile_text(program_text);
+
+	LOG("INFO") << "Compilation finished!" << std::endl;
 }
 
 auto Compiler::compile_text(const std::string program_text) const -> void {
+	// 1. Front-end: tokenization and parsing of program_text
+	std::vector<SubParse> parse_tree = generate_parse_tree(program_text);
+
+	// 2. Middle-end: type-checking, identifiers are declared, functions that are called exist, main exists
+	LOG("INFO") << "Performing standard checks" << std::endl;
+	// TODO: implement middle-end
+
+	// 3. Back-end: convert parse_tree into architecture-specific representation / code-generation
+	LOG("INFO") << "Pass to backend " << "Multitape Turing Machine" << std::endl;
+	// TODO:  implement back-ends
+}
+
+auto Compiler::generate_parse_tree(const std::string program_text) const -> std::vetor<SubParse> {
 	// split program_text into individual letters
 	std::vector<Token> letters;
 	for(std::size_t index = 0, line_number = 0, col_number = 0; index < program_text.size(); ++index, ++col_number) {
@@ -52,14 +68,15 @@ auto Compiler::compile_text(const std::string program_text) const -> void {
 	}
 
 	// retrieve words from letters
+	LOG("INFO") << "Tokenizing input" << std::endl;
 	std::vector<SubParse> parse_tree_lexical = lexical_grammar.parse(letters);
 	std::vector<Tokens> words = tokenize(parse_tree_lexical);
 
 	// obtain parse tree
+	LOG("INFO") << "Parsing tokens into parse tree" << std::endl;
 	std::vector<SubParse> parse_tree_syntactical = syntactical_grammar.parse(words);
 
-	// pass to back-end handler
-
+	return parse_tree_syntactical;
 }
 
 /**
@@ -100,7 +117,7 @@ auto Compiler::tokenize(const std::vector<SubParse>& parse_tree, const std::vect
 			}
 		}
 
-		throw std::exception("bad");
+		throw std::exception("Unrecognized token at index " + std::string(index));
 	}
 
 	return result;

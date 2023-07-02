@@ -24,9 +24,8 @@ AbstractSyntaxTreeNode Grammar::parse_helper(const std::vector<char>& program,
 											 GrammarSymbol symbol) {
 }
 
-AbstractSyntaxTree Grammar::parse(const std::vector<char>& program) {
-	AbstractSyntaxTree ast{
-		// parse_helper(program, 0, symbol_mapping[default_start])
-	};
-	return ast;
+auto Grammar::parse(const std::vector<char>& program) -> std::vector<SubParse> {
+
+
+
 }
