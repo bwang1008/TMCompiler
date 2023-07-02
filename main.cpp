@@ -370,7 +370,7 @@ void attempt_parse() {
 }
 
 int main() {
-	Logger::set_level("DEBUG");
+	logger.set_level("DEBUG");
 
 	std::cout << "BEGIN" << std::endl;
 	// attempt_parse();
