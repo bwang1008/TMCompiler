@@ -25,7 +25,4 @@ AbstractSyntaxTreeNode Grammar::parse_helper(const std::vector<char>& program,
 }
 
 auto Grammar::parse(const std::vector<char>& program) -> std::vector<SubParse> {
-
-
-
 }

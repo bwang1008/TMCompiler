@@ -342,9 +342,9 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 	const EarleyRule parent_rule = grammar_rules[parent_item.rule];
 
 	LOG("DEBUG") << "Call DFS(parent_rule=" << rule_to_string(parent_rule)
-	   << ", parent_rule_dot=" << parent_rule_dot
-	   << ", token_location=" << token_location
-	   << ", path history size=" << path.size() << ")" << std::endl;
+				 << ", parent_rule_dot=" << parent_rule_dot
+				 << ", token_location=" << token_location
+				 << ", path history size=" << path.size() << ")" << std::endl;
 
 	// finished if dot at right-most of parent_rule,
 	// and last child ends at parent_rule's end

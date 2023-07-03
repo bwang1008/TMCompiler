@@ -29,8 +29,8 @@ private:
 	std::string default_start;
 
 	// auto parse_helper(const std::vector<char>& program,
-										// int cursor,
-										// GrammarSymbol symbol) -> AbstractSyntaxTreeNode;
+	// int cursor,
+	// GrammarSymbol symbol) -> AbstractSyntaxTreeNode;
 };
 
 #endif
