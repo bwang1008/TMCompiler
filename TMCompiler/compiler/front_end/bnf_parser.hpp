@@ -8,19 +8,17 @@
 #include <vector>
 
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
+#include <TMCompiler/compiler/models/rule.hpp>		// Rule
 
 // represent <abc> "def" | "ghi" <jkl>
 using ReplacementAlternatives = std::vector<std::vector<GrammarSymbol> >;
-
-// represent many lines of the form <A> ::= <abc> "def" | "ghi" <jkl>
-using Rules = std::map<std::string, ReplacementAlternatives>;
 
 namespace BnfParser {
 // use in Grammar's init:
 // std::ifstream file("C.bnf");
 // rules = BnfParser::parse_rules(file);
-auto parse_rules(std::ifstream& bnf_file_stream) -> Rules;
-auto parse_rules(const std::string& bnf_contents) -> Rules;
+auto parse_rules(std::ifstream& bnf_file_stream) -> std::vector<Rule>;
+auto parse_rules(const std::string& bnf_contents) -> std::vector<Rule>;
 
 const std::string bnf_comment_start = std::string("#");
 const std::string bnf_terminal_start = std::string("\"");

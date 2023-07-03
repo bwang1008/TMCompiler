@@ -153,12 +153,12 @@ auto parse_symbol(const std::string& bnf_contents,
 }
 
 /**
- * Reads a BNF file and returns the rules listed as a Rules object
+ * Reads a BNF file and returns a list of rules
  *
  * @param bnf_file_stream: BNF file to read from
- * @return Rules object representing the replacement rules in the BNF file
+ * @return vector of rules representing the replacement rules in the BNF file
  */
-auto parse_rules(std::ifstream& bnf_file_stream) -> Rules {
+auto parse_rules(std::ifstream& bnf_file_stream) -> std::vector<Rule> {
 	if(!bnf_file_stream.is_open()) {
 		throw std::invalid_argument("Unable to open BNF file");
 	}
@@ -253,15 +253,15 @@ auto tokenize(const std::string& bnf_contents) -> std::vector<std::string> {
  * Returns rules listed in the string containing BNF contents
  *
  * @param bnf_contents lines of BNf file concatenated by newlines
- * @return Rules object representing the replacement rules in the BNF file
+ * @return vector of Rule representing the replacement rules in the BNF file
  */
-auto parse_rules(const std::string& bnf_contents) -> Rules {
+auto parse_rules(const std::string& bnf_contents) -> std::vector<Rule> {
 	// tokenize string into list of words
 	const std::vector<std::string> tokens = tokenize(bnf_contents);
 
 	// separate out into different rules:
 	// there is one nonterminal symbol before a ::=
-	Rules rules;
+	std::vector<Rule> rules;
 	GrammarSymbol current_left;
 	ReplacementAlternatives current_replacements;
 
@@ -270,11 +270,8 @@ auto parse_rules(const std::string& bnf_contents) -> Rules {
 		if(i + 1 < tokens.size() &&
 		   tokens[i + 1] == BnfParser::bnf_replacement_separation) {
 			// current rule ends; new rule started
-			if(!current_replacements.empty()) {
-				rules[current_left.value].insert(
-					rules[current_left.value].end(),
-					current_replacements.begin(),
-					current_replacements.end());
+			for(std::vector<GrammarSymbol> replacement : current_replacements) {
+				rules.push_back(Rule{current_left, replacement});
 			}
 
 			current_left = parse_symbol(token, 0).first;
@@ -295,11 +292,10 @@ auto parse_rules(const std::string& bnf_contents) -> Rules {
 	}
 
 	// add last rule
-	if(!current_replacements.empty()) {
-		rules[current_left.value].insert(rules[current_left.value].end(),
-										 current_replacements.begin(),
-										 current_replacements.end());
+	for(std::vector<GrammarSymbol> replacement : current_replacements) {
+		rules.push_back(Rule{current_left, replacement});
 	}
+
 	return rules;
 }
 

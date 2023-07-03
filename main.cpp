@@ -240,21 +240,11 @@ void print_tree(std::vector<Token> tokens, std::vector<SubParse> tree) {
 
 void parse_actual_file() {
 	std::ifstream input_bnf("TMCompiler/config/language_lexical_grammar.bnf");
-	const Rules rules = BnfParser::parse_rules(input_bnf);
+	const std::vector<Rule> rules = BnfParser::parse_rules(input_bnf);
 
 	std::cout << "Parsed BNF rules" << std::endl;
 
-	std::vector<Rule> earley_rules;
-
-	for(std::map<std::string, std::vector<std::vector<GrammarSymbol> > >::const_iterator it = rules.cbegin(); it != rules.cend(); ++it) {
-		const std::string lhs = it->first;
-		ReplacementAlternatives rhs = it->second;
-
-		for(std::size_t i = 0; i < rhs.size(); ++i) {
-			Rule earley_rule {GrammarSymbol{lhs, false}, rhs[i]};
-			earley_rules.push_back(earley_rule);
-		}
-	}
+	std::vector<Rule> earley_rules = rules;
 
 	std::cout << "generated Rules" << std::endl;
 
