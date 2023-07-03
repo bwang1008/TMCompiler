@@ -17,7 +17,7 @@
 #include <TMCompiler/compiler/models/token.hpp>			  // Token
 #include <TMCompiler/utils/logger/logger.hpp>			  // Logger
 
-auto rule_to_string(const EarleyRule& rule) -> std::string {
+auto rule_to_string(const Rule& rule) -> std::string {
 	std::stringstream ss;
 	ss << "Rule[" << rule.production.value << " -> ";
 	for(std::size_t k = 0; k < rule.replacement.size(); ++k) {
@@ -100,9 +100,9 @@ void add_earley_item_to_set(std::vector<EarleyItem>& earley_set,
  */
 void complete(std::vector<std::vector<EarleyItem> >& earley_sets,
 			  const std::size_t current_earley_set_index,
-			  const std::vector<EarleyRule>& grammar_rules,
+			  const std::vector<Rule>& grammar_rules,
 			  const EarleyItem item) {
-	const EarleyRule finished_rule = grammar_rules[item.rule];
+	const Rule finished_rule = grammar_rules[item.rule];
 	const GrammarSymbol finished_production = finished_rule.production;
 
 	// find who generated this finished_rule. That previous rule has made a step
@@ -111,7 +111,7 @@ void complete(std::vector<std::vector<EarleyItem> >& earley_sets,
 
 	for(const EarleyItem candidate : prev_earley_set) {
 		// find rules that have <finished> production next to their dot
-		const EarleyRule candidate_rule = grammar_rules[candidate.rule];
+		const Rule candidate_rule = grammar_rules[candidate.rule];
 
 		if(candidate.next == candidate_rule.replacement.size()) {
 			continue;
@@ -164,7 +164,7 @@ void scan(std::vector<std::vector<EarleyItem> >& earley_sets,
  */
 void predict(std::vector<std::vector<EarleyItem> >& earley_sets,
 			 const std::size_t current_earley_set_index,
-			 const std::vector<EarleyRule>& grammar_rules,
+			 const std::vector<Rule>& grammar_rules,
 			 const GrammarSymbol& production) {
 	for(std::size_t i = 0; i < grammar_rules.size(); ++i) {
 		if(grammar_rules[i].production.value == production.value) {
@@ -187,7 +187,7 @@ void predict(std::vector<std::vector<EarleyItem> >& earley_sets,
  * token[i]. The last state set that has a finished rule and starts from
  * the beginning, is a valid grammar parse of the input tokens.
  */
-auto build_earley_items(const std::vector<EarleyRule>& grammar_rules,
+auto build_earley_items(const std::vector<Rule>& grammar_rules,
 						const std::vector<Token>& inputs,
 						const std::string& default_start)
 	-> std::vector<std::vector<EarleyItem> > {
@@ -208,9 +208,9 @@ auto build_earley_items(const std::vector<EarleyRule>& grammar_rules,
 	for(std::size_t i = 0; i < earley_sets.size(); ++i) {
 		for(std::size_t j = 0; j < earley_sets[i].size(); ++j) {
 			const EarleyItem item = earley_sets[i][j];
-			const EarleyRule rule = grammar_rules[item.rule];
+			const Rule rule = grammar_rules[item.rule];
 
-			// if EarleyRule ends in dot, COMPLETE
+			// if Rule ends in dot, COMPLETE
 			if(item.next == rule.replacement.size()) {
 				complete(earley_sets, i, grammar_rules, item);
 				continue;
@@ -241,13 +241,13 @@ auto build_earley_items(const std::vector<EarleyRule>& grammar_rules,
  */
 auto filter_out_partial_parses(
 	const std::vector<std::vector<EarleyItem> >& earley_sets,
-	const std::vector<EarleyRule>& grammar_rules)
+	const std::vector<Rule>& grammar_rules)
 	-> std::vector<std::vector<EarleyItem> > {
 	std::vector<std::vector<EarleyItem> > filtered(earley_sets.size());
 
 	for(std::size_t i = 0; i < earley_sets.size(); ++i) {
 		for(const EarleyItem item : earley_sets[i]) {
-			const EarleyRule rule = grammar_rules[item.rule];
+			const Rule rule = grammar_rules[item.rule];
 			if(rule.replacement.size() == item.next) {
 				filtered[i].push_back(item);
 			}
@@ -287,7 +287,7 @@ auto flip_earley_sets(const std::vector<std::vector<EarleyItem> >& earley_sets)
  */
 auto find_top_item(
 	const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
-	const std::vector<EarleyRule>& grammar_rules,
+	const std::vector<Rule>& grammar_rules,
 	const std::string& default_start) -> FlippedEarleyItem {
 	if(earley_sets.empty()) {
 		throw std::invalid_argument(
@@ -295,7 +295,7 @@ auto find_top_item(
 	}
 
 	for(const FlippedEarleyItem item : earley_sets.front()) {
-		const EarleyRule rule = grammar_rules[item.rule];
+		const Rule rule = grammar_rules[item.rule];
 		// earley_sets.size() is 1 more than number of tokens
 		if(item.end + 1 == earley_sets.size() &&
 		   rule.production.value == default_start) {
@@ -332,14 +332,14 @@ auto find_top_item(
  * @return true iff there is a path from curr_node to its last child
  */
 auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
-		 const std::vector<EarleyRule>& grammar_rules,
+		 const std::vector<Rule>& grammar_rules,
 		 const std::vector<Token>& input_tokens,
 		 const FlippedEarleyItem& parent_item,
 		 const std::size_t parent_rule_dot,
 		 const std::size_t token_location,
 		 std::vector<std::pair<FlippedEarleyItem, std::size_t> >& path)
 	-> bool {
-	const EarleyRule parent_rule = grammar_rules[parent_item.rule];
+	const Rule parent_rule = grammar_rules[parent_item.rule];
 
 	LOG("DEBUG") << "Call DFS(parent_rule=" << rule_to_string(parent_rule)
 				 << ", parent_rule_dot=" << parent_rule_dot
@@ -389,7 +389,7 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 	// to path and recurse to see if it offers a valid parse.
 
 	for(const FlippedEarleyItem possible_child : earley_sets[token_location]) {
-		const EarleyRule possible_child_rule =
+		const Rule possible_child_rule =
 			grammar_rules[possible_child.rule];
 
 		if(possible_child_rule.production.value == next_rule_symbol.value &&
@@ -428,7 +428,7 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
  */
 auto find_rule_steps(
 	const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
-	const std::vector<EarleyRule>& grammar_rules,
+	const std::vector<Rule>& grammar_rules,
 	const std::vector<Token>& input_tokens,
 	FlippedEarleyItem item,
 	std::size_t item_start)
@@ -461,7 +461,7 @@ auto find_rule_steps(
  */
 auto build_earley_parse_tree(
 	const std::vector<std::vector<EarleyItem> >& earley_sets,
-	const std::vector<EarleyRule>& grammar_rules,
+	const std::vector<Rule>& grammar_rules,
 	const std::vector<Token>& input_tokens,
 	const std::string& default_start) -> std::vector<SubParse> {
 	LOG("INFO") << "Constructing Parse Tree" << std::endl;

@@ -8,10 +8,11 @@
 #include <string>	  // std::string, std::getline
 #include <vector>	  // std::vector
 
-#include <TMCompiler/compiler/front_end/earley_parser.hpp>	// EarleyRule, SubParse
+#include <TMCompiler/compiler/front_end/earley_parser.hpp>	// SubParse
 #include <TMCompiler/compiler/models/grammar.hpp>			// Grammar
 #include <TMCompiler/compiler/models/token.hpp>				// Token
 #include <TMCompiler/util/logger/logger.hpp>
+#include <TMCompiler/compiler/models/rule.hpp>		// Rule
 
 Compiler::Compiler(std::ifstream& lexical_bnf, std::ifstream& syntax_bnf)
 	: lexical_grammar(lexical_bnf), syntactical_grammar(syntax_bnf) {
@@ -92,7 +93,7 @@ auto Compiler::generate_parse_tree(const std::string program_text) const
  * Given a parse tree built from Earley parsing of letters from program.
  */
 auto Compiler::tokenize(const std::vector<SubParse>& parse_tree,
-						const std::vector<EarleyRule>& grammar_rules)
+						const std::vector<Rule>& grammar_rules)
 	-> std::vector<Token> {
 	const std::set<std::string> tokens{
 		"keyword", "identifier", "constant", "punctuator"};

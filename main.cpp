@@ -5,14 +5,15 @@
 #include <tuple>
 #include <vector>
 
-#include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
 #include <TMCompiler/compiler/front_end/bnf_parser.hpp>
 #include <TMCompiler/compiler/front_end/earley_parser.hpp>
+#include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
+#include <TMCompiler/compiler/models/rule.hpp>	// Rule
 #include <TMCompiler/compiler/models/token.hpp>	  // Token
 #include <TMCompiler/utils/logger/logger.hpp>
 
-std::vector<EarleyRule> get_grammar_rules() {
-	std::vector<EarleyRule> grammar_rules;
+std::vector<Rule> get_grammar_rules() {
+	std::vector<Rule> grammar_rules;
 	
 	GrammarSymbol sum {"Sum", false};
 	GrammarSymbol product {"Product", false};
@@ -27,14 +28,14 @@ std::vector<EarleyRule> get_grammar_rules() {
 	rhs.push_back(GrammarSymbol{"[+-]", true});
 	rhs.push_back(product);
 
-	EarleyRule rule0 {sum, rhs};
+	Rule rule0 {sum, rhs};
 	grammar_rules.push_back(rule0);
 
 	// 1: Sum -> Product
 	rhs.clear();
 	rhs.push_back(product);
 
-	EarleyRule rule1 {sum, rhs};
+	Rule rule1 {sum, rhs};
 	grammar_rules.push_back(rule1);
 
 	// 2: Product -> Product [*/] Factor
@@ -43,14 +44,14 @@ std::vector<EarleyRule> get_grammar_rules() {
 	rhs.push_back(GrammarSymbol{"[*/]", true});
 	rhs.push_back(factor);
 
-	EarleyRule rule2 {product, rhs};
+	Rule rule2 {product, rhs};
 	grammar_rules.push_back(rule2);
 
 	// 3: Product -> Factor
 	rhs.clear();
 	rhs.push_back(factor);
 
-	EarleyRule rule3 {product, rhs};
+	Rule rule3 {product, rhs};
 	grammar_rules.push_back(rule3);
 
 	// 4: Factor -> '(' Sum ')'
@@ -59,14 +60,14 @@ std::vector<EarleyRule> get_grammar_rules() {
 	rhs.push_back(sum);
 	rhs.push_back(GrammarSymbol{"\\)", true});
 
-	EarleyRule rule4 {factor, rhs};
+	Rule rule4 {factor, rhs};
 	grammar_rules.push_back(rule4);
 
 	// 5: Factory -> Number
 	rhs.clear();
 	rhs.push_back(number);
 
-	EarleyRule rule5 {factor, rhs};
+	Rule rule5 {factor, rhs};
 	grammar_rules.push_back(rule5);
 
 	// 6: Number -> [0-9] Number
@@ -74,14 +75,14 @@ std::vector<EarleyRule> get_grammar_rules() {
 	rhs.push_back(GrammarSymbol{"[0-9]", true});
 	rhs.push_back(number);
 
-	EarleyRule rule6 {number, rhs};
+	Rule rule6 {number, rhs};
 	grammar_rules.push_back(rule6);
 
 	// 7: Number -> [0-9]
 	rhs.clear();
 	rhs.push_back(GrammarSymbol{"[0-9]", true});
 
-	EarleyRule rule7 {number, rhs};
+	Rule rule7 {number, rhs};
 	grammar_rules.push_back(rule7);
 	
 	return grammar_rules;
@@ -103,13 +104,13 @@ std::vector<Token> get_inputs() {
 	return inputs;
 }
 
-void printItem(std::vector<EarleyRule> grammar_rules, EarleyItem item) {
+void printItem(std::vector<Rule> grammar_rules, EarleyItem item) {
 	// std::cout << "{ rule = " << item.rule << ", start = " << item.start << ", next = " << item.next << "}" << std::endl;
 	
 	int max_width = 55;
 	int total_length = 0;
 	
-	EarleyRule rule = grammar_rules[item.rule];
+	Rule rule = grammar_rules[item.rule];
 	std::cout << rule.production.value << " -> ";
 	total_length += (rule.production.value.size()) + 4;
 
@@ -243,23 +244,23 @@ void parse_actual_file() {
 
 	std::cout << "Parsed BNF rules" << std::endl;
 
-	std::vector<EarleyRule> earley_rules;
+	std::vector<Rule> earley_rules;
 
 	for(std::map<std::string, std::vector<std::vector<GrammarSymbol> > >::const_iterator it = rules.cbegin(); it != rules.cend(); ++it) {
 		const std::string lhs = it->first;
 		ReplacementAlternatives rhs = it->second;
 
 		for(std::size_t i = 0; i < rhs.size(); ++i) {
-			EarleyRule earley_rule {GrammarSymbol{lhs, false}, rhs[i]};
+			Rule earley_rule {GrammarSymbol{lhs, false}, rhs[i]};
 			earley_rules.push_back(earley_rule);
 		}
 	}
 
-	std::cout << "generated EarleyRules" << std::endl;
+	std::cout << "generated Rules" << std::endl;
 
 	std::cout << "num rules = " << earley_rules.size() << std::endl;
 	for(std::size_t i = 0; i < earley_rules.size(); ++i) {
-		const EarleyRule rule = earley_rules[i];
+		const Rule rule = earley_rules[i];
 		std::cout << i << ": " << rule.production.value << " -> ";
 		for(std::size_t j = 0; j < rule.replacement.size(); ++j) {
 			std::cout << rule.replacement[j].value << " ";
@@ -318,7 +319,7 @@ void parse_actual_file() {
 }
 
 void attempt_parse() {
-	std::vector<EarleyRule> grammar_rules = get_grammar_rules();
+	std::vector<Rule> grammar_rules = get_grammar_rules();
 	std::vector<Token> tokens = get_inputs();
 	std::string default_start = "Sum";
 

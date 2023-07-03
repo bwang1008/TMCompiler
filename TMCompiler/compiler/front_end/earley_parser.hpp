@@ -11,7 +11,7 @@
 
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
 #include <TMCompiler/compiler/models/token.hpp>			  // Token
-#include <TMCompiler/compiler/models/rule.hpp>		// EarleyRule
+#include <TMCompiler/compiler/models/rule.hpp>		// Rule
 
 struct EarleyItem {
 	std::size_t rule;	// index of rule in list of rules in Grammar
@@ -45,7 +45,7 @@ struct SubParse {
  * token[i]. The last state set that has a finished rule and starts from
  * the beginning, is a valid grammar parse of the input tokens.
  */
-auto build_earley_items(const std::vector<EarleyRule>& grammar_rules,
+auto build_earley_items(const std::vector<Rule>& grammar_rules,
 						const std::vector<Token>& inputs,
 						const std::string& default_start)
 	-> std::vector<std::vector<EarleyItem> >;
@@ -64,7 +64,7 @@ auto build_earley_items(const std::vector<EarleyRule>& grammar_rules,
  */
 auto build_earley_parse_tree(
 	const std::vector<std::vector<EarleyItem> >& earley_sets,
-	const std::vector<EarleyRule>& grammar_rules,
+	const std::vector<Rule>& grammar_rules,
 	const std::vector<Token>& input_tokens,
 	const std::string& default_start) -> std::vector<SubParse>;
 
