@@ -11,16 +11,12 @@
 
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
 #include <TMCompiler/compiler/models/token.hpp>			  // Token
+#include <TMCompiler/compiler/models/rule.hpp>		// EarleyRule
 
 struct EarleyItem {
 	std::size_t rule;	// index of rule in list of rules in Grammar
 	std::size_t start;	// index of token where partial match started
 	std::size_t next;	// location of dot in right-hand side of rule
-};
-
-struct EarleyRule {
-	GrammarSymbol production;
-	std::vector<GrammarSymbol> replacement;
 };
 
 struct FlippedEarleyItem {
