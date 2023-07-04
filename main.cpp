@@ -265,7 +265,7 @@ void parse_actual_file() {
 	// const std::string input{"for(int i = 5; i < 10; i+=1) { print(i); }"};
 	std::vector<Token> tokens;
 	for(std::size_t i = 0; i < input.size(); ++i) {
-		Token k{"?", input.substr(i, 1), 0, (int) i};
+		Token k{"?", input.substr(i, 1), 0, i};
 		tokens.push_back(k);
 	}
 

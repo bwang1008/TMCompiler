@@ -13,8 +13,8 @@
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
 #include <TMCompiler/compiler/models/token.hpp>			  // Token
 
-Grammar::Grammar(std::ifstream& bnf_file, std::string default_start)
-	: default_start(std::move(default_start)) {
+Grammar::Grammar(std::ifstream& bnf_file, std::string top_symbol)
+	: default_start(std::move(top_symbol)) {
 	if(!bnf_file.is_open()) {
 		throw std::invalid_argument("Unable to open grammar file");
 	}

@@ -77,7 +77,7 @@ def check_clang_tidy(files):
     clang_tidy_changed = (clang_tidy_mtime > past_run_time)
 
     needs_changing = []
-    for file_name in track(files, description="Checking clang-tidy..."):
+    for file_name in track(files, description="Checking clang-tidy...  "):
 
         file_mtime = datetime.datetime.fromtimestamp(os.path.getmtime(file_name))
 

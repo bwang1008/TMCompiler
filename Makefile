@@ -6,6 +6,8 @@
 SOURCES = main.cpp
 SOURCES += TMCompiler/compiler/front_end/earley_parser.cpp
 SOURCES += TMCompiler/compiler/front_end/bnf_parser.cpp
+SOURCES += TMCompiler/compiler/models/grammar.cpp
+SOURCES += TMCompiler/compiler/compiler.cpp
 SOURCES += TMCompiler/utils/logger/logger.cpp
 
 # SOURCES += TMCompiler/utils/unittesting/unittests.cpp
