@@ -1,24 +1,26 @@
 #include "unittests.hpp"
 
-#include <iostream>	 // std::cout, std::endl
-#include <string>	 // std::string
-#include <utility>	 // std::pair
+#include <exception>  // std::exception
+#include <iostream>	  // std::cout, std::endl
+#include <list>		  // std::list
+#include <map>		  // std::map
+#include <string>	  // std::string
+#include <utility>	  // std::pair
 
-int numPassingAsserts = 0;
-int numFailingAsserts = 0;
+int num_passing_asserts = 0;
+int num_failing_asserts = 0;
 
 std::map<std::string, FunctionPointer> NAMES_TO_FUNCTIONS;
 
-void ASSERT(const bool test_expression) {
-	if(!test_expression) {
-		++numFailingAsserts;
-		FAIL_ASSERT();
-	} else {
-		++numPassingAsserts;
-	}
-}
+struct TestCasesSummary {
+	int num_passed{0};
+	int num_failed{0};
+	int num_errored{0};
+	std::list<std::string> failed_functions;
+	std::list<std::pair<std::string, std::string> > errored_functions;
+};
 
-auto runAllTestCases() -> TestCasesSummary {
+auto run_all_test_cases() -> TestCasesSummary {
 	TestCasesSummary summary;
 
 	for(const std::pair<const std::string, FunctionPointer>& it :
@@ -27,19 +29,19 @@ auto runAllTestCases() -> TestCasesSummary {
 		const FunctionPointer func = it.second;
 
 		try {
-			const int prevFailingAsserts = numFailingAsserts;
+			const int prev_failing_asserts = num_failing_asserts;
 			func();
-			const bool passed = (numFailingAsserts == prevFailingAsserts);
+			const bool passed = (num_failing_asserts == prev_failing_asserts);
 
 			if(passed) {
-				++summary.numPassed;
+				++summary.num_passed;
 			} else {
-				++summary.numFailed;
-				summary.failedFunctions.push_back(function_name);
+				++summary.num_failed;
+				summary.failed_functions.push_back(function_name);
 			}
 		} catch(const std::exception& e) {
-			++summary.numErrored;
-			summary.erroredFunctions.emplace_back(function_name, e.what());
+			++summary.num_errored;
+			summary.errored_functions.emplace_back(function_name, e.what());
 		}
 	}
 
@@ -48,60 +50,60 @@ auto runAllTestCases() -> TestCasesSummary {
 
 auto main() -> int {
 	// NAMES_TO_FUNCTIONS initialized and filled by this point
-	const TestCasesSummary summary = runAllTestCases();
+	const TestCasesSummary summary = run_all_test_cases();
 
-	const std::string outputSeparator =
+	const std::string output_separator =
 		"----------------------------------------";
-	const int numTestCases =
-		summary.numPassed + summary.numFailed + summary.numErrored;
+	const int num_test_cases =
+		summary.num_passed + summary.num_failed + summary.num_errored;
 
-	if(numTestCases == 0) {
+	if(num_test_cases == 0) {
 		std::cout << "There are 0 test cases." << std::endl;
 		return 0;
 	}
 
-	std::cout << outputSeparator << std::endl;
+	std::cout << output_separator << std::endl;
 
-	if(summary.numPassed == numTestCases) {
-		std::cout << "All " << numTestCases << " test cases passed!"
+	if(summary.num_passed == num_test_cases) {
+		std::cout << "All " << num_test_cases << " test cases passed!"
 				  << std::endl;
-		std::cout << "All " << numPassingAsserts << " asserts passed!"
+		std::cout << "All " << num_passing_asserts << " asserts passed!"
 				  << std::endl;
-		std::cout << outputSeparator << std::endl;
+		std::cout << output_separator << std::endl;
 		return 0;
 	}
 
-	if(!summary.erroredFunctions.empty()) {
+	if(!summary.errored_functions.empty()) {
 		for(const std::pair<std::string, std::string>& result :
-			summary.erroredFunctions) {
+			summary.errored_functions) {
 			std::cout << result.first << " errored: " << std::endl
 					  << result.second << std::endl;
 		}
 
-		std::cout << outputSeparator << std::endl;
+		std::cout << output_separator << std::endl;
 	}
 
-	if(!summary.failedFunctions.empty()) {
-		for(const std::string& result : summary.failedFunctions) {
+	if(!summary.failed_functions.empty()) {
+		for(const std::string& result : summary.failed_functions) {
 			std::cout << result << " failed" << std::endl;
 		}
 
-		std::cout << outputSeparator << std::endl;
+		std::cout << output_separator << std::endl;
 	}
 
-	std::cout << "Number of tests passed      : " << summary.numPassed
+	std::cout << "Number of tests passed      : " << summary.num_passed
 			  << std::endl;
-	std::cout << "Number of tests failed      : " << summary.numFailed
+	std::cout << "Number of tests failed      : " << summary.num_failed
 			  << std::endl;
-	std::cout << "Number of tests errored     : " << summary.numErrored
+	std::cout << "Number of tests errored     : " << summary.num_errored
 			  << std::endl;
-	std::cout << outputSeparator << std::endl;
+	std::cout << output_separator << std::endl;
 
-	std::cout << "Number of passing asserts   : " << numPassingAsserts
+	std::cout << "Number of passing asserts   : " << num_passing_asserts
 			  << std::endl;
-	std::cout << "Number of failing asserts   : " << numFailingAsserts
+	std::cout << "Number of failing asserts   : " << num_failing_asserts
 			  << std::endl;
-	std::cout << outputSeparator << std::endl;
+	std::cout << output_separator << std::endl;
 
 	return 0;
 }

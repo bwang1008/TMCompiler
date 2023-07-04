@@ -107,8 +107,8 @@ std::vector<Token> get_inputs() {
 void printItem(std::vector<Rule> grammar_rules, EarleyItem item) {
 	// std::cout << "{ rule = " << item.rule << ", start = " << item.start << ", next = " << item.next << "}" << std::endl;
 	
-	int max_width = 55;
-	int total_length = 0;
+	const std::size_t max_width = 55;
+	std::size_t total_length = 0;
 	
 	Rule rule = grammar_rules[item.rule];
 	std::cout << rule.production.value << " -> ";
