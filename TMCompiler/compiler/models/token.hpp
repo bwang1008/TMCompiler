@@ -3,13 +3,14 @@
 #ifndef TOKENIZER_HPP
 #define TOKENIZER_HPP
 
-#include <string>
+#include <cstddef>	// std::size_t
+#include <string>	// std::string
 
 struct Token {
 	std::string type;
 	std::string value;
-	int program_line_number;
-	int start_position_of_token_in_program_line;
+	std::size_t program_line_number;
+	std::size_t start_position_of_token_in_program_line;
 };
 
 #endif

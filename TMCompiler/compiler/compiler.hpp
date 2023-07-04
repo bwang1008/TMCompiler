@@ -12,18 +12,17 @@
 class Compiler {
 public:
 	Compiler(std::ifstream& lexical_bnf, std::ifstream& syntax_bnf);
-	auto compile(const std::string file_name) const -> void;
-	auto compile_text(const std::string program_text) const -> void;
+	auto compile(const std::string& file_name) const -> void;
+	auto compile_text(const std::string& program_text) const -> void;
 
-	auto generate_parse_tree(const std::string program_text)
+	auto generate_parse_tree(const std::string& program_text) const
 		-> std::vector<SubParse>;
 
 private:
 	Grammar lexical_grammar;
 	Grammar syntactical_grammar;
 
-	auto tokenize(const std::vector<SubParse>& parse_tree,
-				  const std::vector<Rule>& grammar_rules)
+	auto tokenize(const std::vector<SubParse>& parse_tree) const
 		-> std::vector<Token>;
 };
 
