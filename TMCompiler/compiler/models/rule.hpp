@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include <TMCompiler/compiler/models/grammar_symbol.hpp>	// GrammarSymbol
+#include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
 
 struct Rule {
 	GrammarSymbol production;

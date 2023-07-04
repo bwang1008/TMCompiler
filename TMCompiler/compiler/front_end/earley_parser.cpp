@@ -7,7 +7,7 @@
 #include <iostream>
 #include <regex>
 #include <sstream>
-#include <stdexcept>
+#include <stdexcept>  // std::invalid_argument
 #include <string>
 #include <tuple>
 #include <utility>
@@ -389,8 +389,7 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 	// to path and recurse to see if it offers a valid parse.
 
 	for(const FlippedEarleyItem possible_child : earley_sets[token_location]) {
-		const Rule possible_child_rule =
-			grammar_rules[possible_child.rule];
+		const Rule possible_child_rule = grammar_rules[possible_child.rule];
 
 		if(possible_child_rule.production.value == next_rule_symbol.value &&
 		   possible_child_rule.production.terminal ==

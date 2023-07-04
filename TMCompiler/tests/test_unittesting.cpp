@@ -5,7 +5,7 @@
 // run from TMCompiler root:
 // g++ -std=c++11 -I. TMCompiler/tests/test_unittesting.cpp
 
-int factorial(int n) {
+auto factorial(int n) -> int {
 	int prod = 1;
 	for(int i = 2; i <= n; ++i) {
 		prod *= i;
@@ -27,23 +27,31 @@ TEST_CASE(test2) {
 }
 
 TEST_CASE(test3) {
-	ASSERT(factorial(3) == 6);
+	const int fac3 = 6;
+	ASSERT(factorial(3) == fac3);
 }
 
 TEST_CASE(test4) {
-	ASSERT(factorial(4) == 24);
+	const int fac4 = 24;
+	ASSERT(factorial(4) == fac4);
 }
 
 TEST_CASE(test5) {
-	ASSERT(factorial(5) == 120);
+	const int test_arg = 5;
+	const int fac5 = 120;
+	ASSERT(factorial(test_arg) == fac5);
 }
 
 TEST_CASE(test6) {
-	ASSERT(factorial(6) == 720);
+	const int test_arg = 6;
+	const int fac6 = 720;
+	ASSERT(factorial(test_arg) == fac6);
 }
 
 TEST_CASE(test7) {
-	ASSERT(factorial(7) == 5040);
+	const int test_arg = 7;
+	const int fac7 = 5040;
+	ASSERT(factorial(test_arg) == fac7);
 }
 
 TEST_CASE(test8) {

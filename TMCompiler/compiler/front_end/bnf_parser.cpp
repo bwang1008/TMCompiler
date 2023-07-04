@@ -270,7 +270,8 @@ auto parse_rules(const std::string& bnf_contents) -> std::vector<Rule> {
 		if(i + 1 < tokens.size() &&
 		   tokens[i + 1] == BnfParser::bnf_replacement_separation) {
 			// current rule ends; new rule started
-			for(std::vector<GrammarSymbol> replacement : current_replacements) {
+			for(const std::vector<GrammarSymbol>& replacement :
+				current_replacements) {
 				rules.push_back(Rule{current_left, replacement});
 			}
 
@@ -292,7 +293,7 @@ auto parse_rules(const std::string& bnf_contents) -> std::vector<Rule> {
 	}
 
 	// add last rule
-	for(std::vector<GrammarSymbol> replacement : current_replacements) {
+	for(const std::vector<GrammarSymbol>& replacement : current_replacements) {
 		rules.push_back(Rule{current_left, replacement});
 	}
 

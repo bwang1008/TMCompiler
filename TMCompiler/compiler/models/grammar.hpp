@@ -6,9 +6,9 @@
 #include <vector>	// std::vector
 
 #include <TMCompiler/compiler/front_end/earley_parser.hpp>	// SubParse
-#include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
-#include <TMCompiler/compiler/models/rule.hpp>	// Rule
-#include <TMCompiler/compiler/models/token.hpp>		// Token
+#include <TMCompiler/compiler/models/grammar_symbol.hpp>	// GrammarSymbol
+#include <TMCompiler/compiler/models/rule.hpp>				// Rule
+#include <TMCompiler/compiler/models/token.hpp>				// Token
 
 // requires C++17
 // see
@@ -25,7 +25,8 @@ struct AbstractSyntaxTree {
 class Grammar {
 public:
 	explicit Grammar(std::ifstream& bnf_file, std::string default_start);
-	auto parse(const std::vector<Token>& input_tokens) const -> std::vector<SubParse>;
+	auto parse(const std::vector<Token>& input_tokens) const
+		-> std::vector<SubParse>;
 	auto get_rules() const -> std::vector<Rule>;
 
 private:

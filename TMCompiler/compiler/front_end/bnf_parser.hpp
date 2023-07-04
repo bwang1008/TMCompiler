@@ -8,7 +8,7 @@
 #include <vector>
 
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
-#include <TMCompiler/compiler/models/rule.hpp>		// Rule
+#include <TMCompiler/compiler/models/rule.hpp>			  // Rule
 
 // represent <abc> "def" | "ghi" <jkl>
 using ReplacementAlternatives = std::vector<std::vector<GrammarSymbol> >;

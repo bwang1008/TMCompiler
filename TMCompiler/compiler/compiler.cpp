@@ -10,12 +10,13 @@
 
 #include <TMCompiler/compiler/front_end/earley_parser.hpp>	// SubParse
 #include <TMCompiler/compiler/models/grammar.hpp>			// Grammar
-#include <TMCompiler/compiler/models/rule.hpp>		// Rule
+#include <TMCompiler/compiler/models/rule.hpp>				// Rule
 #include <TMCompiler/compiler/models/token.hpp>				// Token
 #include <TMCompiler/utils/logger/logger.hpp>
 
 Compiler::Compiler(std::ifstream& lexical_bnf, std::ifstream& syntax_bnf)
-	: lexical_grammar(lexical_bnf, "tokens"), syntactical_grammar(syntax_bnf, "???") {
+	: lexical_grammar(lexical_bnf, "tokens"),
+	  syntactical_grammar(syntax_bnf, "???") {
 }
 
 auto Compiler::compile(const std::string& file_name) const -> void {
@@ -37,7 +38,8 @@ auto Compiler::compile(const std::string& file_name) const -> void {
 
 	program_file.close();
 
-	// TODO(bwang1008): should compile_text be responsible for writing out to files?
+	// TODO(bwang1008): should compile_text be responsible for writing out to
+	// files?
 	compile_text(program_text);
 
 	LOG("INFO") << "Compilation finished!" << std::endl;
@@ -130,7 +132,7 @@ auto Compiler::tokenize(const std::vector<SubParse>& parse_tree) const
 		}
 
 		throw std::invalid_argument("Unrecognized token at index " +
-							 std::to_string(index));
+									std::to_string(index));
 	}
 
 	return result;
