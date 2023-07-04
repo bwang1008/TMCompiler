@@ -1,5 +1,5 @@
 ---
-Checks:          'clang-diagnostic-*,clang-analyzer-*,*,-llvm-header-guard,-fuchsia-trailing-return,-fuchsia-default-arguments-calls,-fuchsia-statically-constructed-objects,-fuchsia-default-arguments-declarations,-cert-err58-cpp,-hicpp-use-auto,-modernize-use-auto,-google-runtime-references,-fuchsia-overloaded-operator'
+Checks:          'clang-diagnostic-*,clang-analyzer-*,*,-llvm-header-guard,-fuchsia-trailing-return,-fuchsia-default-arguments-calls,-fuchsia-statically-constructed-objects,-fuchsia-default-arguments-declarations,-cert-err58-cpp,-hicpp-use-auto,-modernize-use-auto,-google-runtime-references,-fuchsia-overloaded-operator,-cppcoreguidelines-macro-usage'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
