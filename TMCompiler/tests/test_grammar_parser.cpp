@@ -6,7 +6,7 @@
 // g++ -std=c++11 -I. TMCompiler/tests/test_grammar_parser.cpp
 
 TEST_CASE(test0) {
-	Grammar grammar = read_grammar("data/example_grammar.bnf")
+	Grammar grammar = read_grammar("data/example_grammar.bnf");
 
-		ASSERT(0 == 0);
+	ASSERT(0 == 0);
 }
