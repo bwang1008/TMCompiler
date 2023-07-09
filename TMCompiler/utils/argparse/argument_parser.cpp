@@ -1,3 +1,6 @@
+#include <fstream>	// std::ifstream
+#include <string>	// std::string
+
 #include "argument.hpp"
 
 // void ArgumentParser::ArgumentParser();

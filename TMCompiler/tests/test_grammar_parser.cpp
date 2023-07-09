@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include <TMCompiler/compiler/front_end/read_grammar.hpp>  // read_grammar()
 #include <TMCompiler/utils/unittesting/unittests.hpp>
 

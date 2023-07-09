@@ -6,10 +6,12 @@
  */
 
 #include <chrono>	  // std::chrono
+#include <cstddef>	  // std::size_t
 #include <ctime>	  // std::ctime
-#include <iomanip>	  // std::setw, std::left, std::right
+#include <iomanip>	  // std::setw
+#include <ios>		  // std::ios, std::ios_base, std::left, std::right
 #include <iostream>	  // std::cout, std::endl
-#include <map>		  // std::map
+#include <ostream>	  // std::ostream
 #include <stdexcept>  // std::invalid_argument
 #include <string>	  // std::string
 

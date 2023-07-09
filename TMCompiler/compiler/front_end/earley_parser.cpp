@@ -4,12 +4,12 @@
  */
 #include "earley_parser.hpp"
 
+#include <cstddef>	// std::size_t
 #include <iostream>
 #include <regex>
 #include <sstream>
 #include <stdexcept>  // std::invalid_argument
 #include <string>
-#include <tuple>
 #include <utility>
 #include <vector>
 

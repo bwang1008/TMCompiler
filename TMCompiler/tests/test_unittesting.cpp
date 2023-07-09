@@ -1,4 +1,6 @@
-#include <vector>
+#include <cstddef>	  // std::size_t
+#include <stdexcept>  // std::runtime_error
+#include <vector>	  // std::vector
 
 #include <TMCompiler/utils/unittesting/unittests.hpp>
 

@@ -2,9 +2,7 @@
 #define BNF_PARSER_HPP
 
 #include <fstream>
-#include <map>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol

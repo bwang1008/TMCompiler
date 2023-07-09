@@ -1,8 +1,9 @@
 #include "compiler.hpp"
 
 #include <algorithm>  // std::max
-#include <exception>  // std::exception
+#include <cstddef>	  // std::size_t
 #include <fstream>	  // std::ifstream
+#include <iostream>	  // std::endl
 #include <set>		  // std::set
 #include <stdexcept>  // std::invalid_argument
 #include <string>	  // std::string, std::getline
