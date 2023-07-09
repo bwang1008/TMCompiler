@@ -78,18 +78,31 @@ auto Logger::log_prefix(const std::string& level,
 			: nice_file_name.substr(1 + last_slash);
 
 	// print message with color and formatting
-	std::cout << level_mapping.at(level).color_info;
+	std::cout << reset_color;
 	std::cout << "[";
+
+	std::cout << time_color;
 	std::cout << get_current_time();
-	std::cout << " ";
+
+	std::cout << reset_color;
+	std::cout << " | ";
+
+	std::cout << level_mapping.at(level).color_info;
 	std::cout << std::left << std::setw(max_level_name_size)
 			  << level_mapping.at(level).pretty_name;
-	std::cout << " ";
+
+	std::cout << reset_color;
+	std::cout << " | ";
+
+	std::cout << file_color;
 	std::cout << std::right << std::setw(max_file_name_size)
 			  << truncated_file_name;
 	std::cout << ":";
 	std::cout << std::left << std::setw(max_line_number_size) << line_number;
+
+	std::cout << reset_color;
 	std::cout << "] ";
+	std::cout << level_mapping.at(level).color_info;
 }
 
 /**

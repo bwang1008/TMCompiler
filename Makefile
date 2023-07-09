@@ -4,17 +4,17 @@
 ### USER DEFINED VARIABLES
 # SOURCES = TMCompiler/tests/test_bnf_parser.cpp TMCompiler/compiler/models/bnf_parser.cpp TMCompiler/utils/logger/logger.cpp
 
-# SOURCES = main.cpp
-# SOURCES += TMCompiler/compiler/front_end/earley_parser.cpp
-# SOURCES += TMCompiler/compiler/front_end/bnf_parser.cpp
-# SOURCES += TMCompiler/compiler/models/grammar.cpp
-# SOURCES += TMCompiler/compiler/compiler.cpp
-# SOURCES += TMCompiler/utils/logger/logger.cpp
-
-SOURCES += TMCompiler/utils/unittesting/unittests.cpp
-SOURCES += TMCompiler/tests/test_unittesting.cpp
-# SOURCES += TMCompiler/tests/test_bnf_parser.cpp
+SOURCES = main.cpp
+SOURCES += TMCompiler/compiler/front_end/earley_parser.cpp
 SOURCES += TMCompiler/compiler/front_end/bnf_parser.cpp
+SOURCES += TMCompiler/compiler/models/grammar.cpp
+SOURCES += TMCompiler/compiler/compiler.cpp
+SOURCES += TMCompiler/utils/logger/logger.cpp
+
+# SOURCES += TMCompiler/utils/unittesting/unittests.cpp
+# SOURCES += TMCompiler/tests/test_unittesting.cpp
+# SOURCES += TMCompiler/tests/test_bnf_parser.cpp
+# SOURCES += TMCompiler/compiler/front_end/bnf_parser.cpp
 
 OBJECTS = $(SOURCES:.cpp=.o)
 

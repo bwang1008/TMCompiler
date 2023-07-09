@@ -58,19 +58,28 @@ struct LevelInfo {
 
 /**
  * List out what logging levels are allowed, as well as each level of
- * importance and color information for printing
+ * importance and color information for printing.
+ *
+ * Note that \033 is the ASCII for Escape
+ *
+ * https://chrisyeh96.github.io/2020/03/28/terminal-colors.html
  */
 const std::map<std::string, LevelInfo> level_mapping{
-	{"DEBUG", LevelInfo{"DEBUG", 10, "\033[34m"}},
-	{"INFO", LevelInfo{"INFO", 20, "\033[0m"}},
-	{"WARNING", LevelInfo{"WARNING", 30, "\033[33m"}},
-	{"ERROR", LevelInfo{"ERROR", 40, "\033[1;31m"}},
-	{"CRITICAL", LevelInfo{"CRITICAL", 50, "\033[1;31;46m"}},
-	{"NONE", LevelInfo{"NONE", 1000, ""}},
+	{"DEBUG", LevelInfo{"DEBUG", 10, "\033[34m"}},		// blue
+	{"INFO", LevelInfo{"INFO", 20, "\033[0m"}},			// reset to default
+	{"WARNING", LevelInfo{"WARNING", 30, "\033[33m"}},	// yellow
+	{"ERROR", LevelInfo{"ERROR", 40, "\033[1;31m"}},	// red
+	{"CRITICAL",
+	 LevelInfo{"CRITICAL", 50, "\033[1;31;46m"}},  // refd font, cyan background
+	{"NONE", LevelInfo{"NONE", 1000, "\033[0m"}},  // reset to default
 };
 
 // terminal code for resetting color/formatting to normal
 const std::string reset_color{"\033[0m"};
+
+// terminal code for setting color of timestamp and file name in logs
+const std::string time_color{"\033[32m"};  // green
+const std::string file_color{"\033[35m"};  // magenta
 
 class Logger {
 public:
@@ -102,6 +111,8 @@ public:
 
 	// see
 	// https://stackoverflow.com/questions/16444119/how-to-write-a-function-wrapper-for-cout-that-allows-for-expressive-syntax
+	// ex: << takes in a parameter (like std::endl), which is a function pointer
+	// f that takes in a parameter std::ios&, and retuns a std::ostream&
 	auto operator<<(std::ostream& (*f)(std::ostream&)) -> Logger&;
 	auto operator<<(std::ostream& (*f)(std::ios&)) -> Logger&;
 	auto operator<<(std::ostream& (*f)(std::ios_base&)) -> Logger&;
