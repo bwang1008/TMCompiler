@@ -26,5 +26,8 @@ build*/
 # Python virtual environment
 .venv/
 
+# Python byte-compiled
+__pycache__/
+
 # cache
 cache_tidy.txt
