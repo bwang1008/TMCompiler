@@ -1,5 +1,5 @@
 ---
-Checks:          'clang-diagnostic-*,clang-analyzer-*,*,-llvm-header-guard,-fuchsia-trailing-return,-fuchsia-default-arguments-calls,-fuchsia-statically-constructed-objects,-fuchsia-default-arguments-declarations,-cert-err58-cpp,-hicpp-use-auto,-modernize-use-auto,-google-runtime-references,-fuchsia-overloaded-operator,-cppcoreguidelines-macro-usage'
+Checks:          'clang-diagnostic-*,clang-analyzer-*,*,-llvm-header-guard,-fuchsia-trailing-return,-cppcoreguidelines-macro-usage,-fuchsia-statically-constructed-objects,-fuchsia-default-arguments-calls,-fuchsia-overloaded-operator,-cert-err58-cpp'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
@@ -110,12 +110,6 @@ CheckOptions:
     value:           '1'
   - key:             cppcoreguidelines-explicit-virtual-functions.OverrideSpelling
     value:           override
-  - key:             cppcoreguidelines-macro-usage.AllowedRegexp
-    value:           '^LOG'
-  - key:             cppcoreguidelines-macro-usage.CheckCapsOnly
-    value:           '0'
-  - key:             cppcoreguidelines-macro-usage.IgnoreCommandLineMacros
-    value:           '1'
   - key:             cppcoreguidelines-no-malloc.Allocations
     value:           '::malloc;::calloc'
   - key:             cppcoreguidelines-no-malloc.Deallocations
@@ -172,6 +166,8 @@ CheckOptions:
     value:           ''
   - key:             google-runtime-int.UnsignedTypePrefix
     value:           uint
+  - key:             google-runtime-references.WhiteListTypes
+    value:           ''
   - key:             hicpp-braces-around-statements.ShortStatementLines
     value:           '0'
   - key:             hicpp-function-size.BranchThreshold
@@ -212,6 +208,10 @@ CheckOptions:
     value:           '1'
   - key:             hicpp-uppercase-literal-suffix.NewSuffixes
     value:           ''
+  - key:             hicpp-use-auto.MinTypeNameLength
+    value:           '5'
+  - key:             hicpp-use-auto.RemoveStars
+    value:           '0'
   - key:             hicpp-use-emplace.ContainersWithPushBack
     value:           '::std::vector;::std::list;::std::deque'
   - key:             hicpp-use-emplace.SmartPointers
@@ -282,6 +282,10 @@ CheckOptions:
     value:           llvm
   - key:             modernize-replace-random-shuffle.IncludeStyle
     value:           llvm
+  - key:             modernize-use-auto.MinTypeNameLength
+    value:           '5'
+  - key:             modernize-use-auto.RemoveStars
+    value:           '0'
   - key:             modernize-use-default-member-init.IgnoreMacros
     value:           '1'
   - key:             modernize-use-default-member-init.UseAssignment
