@@ -5,10 +5,10 @@
 # SOURCES = TMCompiler/tests/test_bnf_parser.cpp TMCompiler/compiler/models/bnf_parser.cpp TMCompiler/utils/logger/logger.cpp
 
 SOURCES = main.cpp
-SOURCES += TMCompiler/compiler/front_end/earley_parser.cpp
-SOURCES += TMCompiler/compiler/front_end/bnf_parser.cpp
-SOURCES += TMCompiler/compiler/models/grammar.cpp
 SOURCES += TMCompiler/compiler/compiler.cpp
+SOURCES += TMCompiler/compiler/front_end/bnf_parser.cpp
+SOURCES += TMCompiler/compiler/front_end/earley_parser.cpp
+SOURCES += TMCompiler/compiler/models/grammar.cpp
 SOURCES += TMCompiler/utils/logger/logger.cpp
 
 # SOURCES += TMCompiler/utils/unittesting/unittests.cpp
@@ -68,14 +68,12 @@ CPPFLAGS = -I.
 CXXFLAGS = -std=c++14 $(WARNINGS) -MMD -MP
 
 ### MAKE RECIPES
-.PHONY: test.out clean
-
-run_test: test.out
-	./test.out
+.PHONY: clean
 
 # link object files to create executable
 test.out: $(OBJECTS)
-	$(CXX) $(OBJECTS) -o test.out
+	$(CXX) $(OBJECTS) -o $@
+	@echo "Generated executable $@"
 
 # remove executables, object files, and .d files generated from compilation
 clean:
