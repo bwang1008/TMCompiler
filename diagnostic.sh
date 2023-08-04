@@ -17,7 +17,7 @@ set -euo pipefail
 # fuchsia-trailing-return: warns about trailing return types, when I want to use it
 # fuchsia-statically-constructed-objects: forbids global objects, even though I do have global variables
 # fuchsia-default-arguments-calls: forbids calling functions with default arguments
-# fuchsia-overloaded-operator: forbids overloading operators like <<               what?? this isn't in the list
+# fuchsia-overloaded-operator: forbids overloading operators like <<
 # cert-err58-cpp: warns about global variables with static storage that may throw an exception, even though I do use global variables
 # cppcoreguidelines-macro-usage: forbids function-like macros, but I need it for logging and unittests
 
