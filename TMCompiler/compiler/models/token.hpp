@@ -1,4 +1,5 @@
-// given source code of program, generate tokens / words, without comments
+// Tokens represent words / lexeme: for instance "x+=5"
+// split into the tokens "x", "+=", "5"
 
 #ifndef TOKENIZER_HPP
 #define TOKENIZER_HPP
