@@ -2,8 +2,6 @@
 # References: https://codingnest.com/basic-makefiles/
 
 ### USER DEFINED VARIABLES
-# SOURCES = TMCompiler/tests/test_bnf_parser.cpp TMCompiler/compiler/models/bnf_parser.cpp TMCompiler/utils/logger/logger.cpp
-
 SOURCES = main.cpp
 SOURCES += TMCompiler/compiler/compiler.cpp
 SOURCES += TMCompiler/compiler/front_end/bnf_parser.cpp
