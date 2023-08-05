@@ -1,15 +1,11 @@
 # TMCompiler
 
-This project converts a very restricted subset of C++ code into a multi-tape Turing Machine representation.
+This project implements a compiler that translates a program with C-like syntax into a multi-tape Turing Machine.
 
-In a Theory of Compuation course, we learn that "any program written in a Turing-Complete programming language, like C++, can be simulated by an equivalent Turing Machine". We learn that because Turing-Complete programming languages can simulate a Turing Machine, then the Turing-Church thesis implies these two computing models (the Turing-Complete language and the Turing Machine) are Turing equivalent, in the sense that they compute the same functions.
-
-However, I find that the statement "for any given C++ program, I can build an equivalent Turing Machine that computes the same thing" is much more incredulous than the statement "I can write a C++ program that can simulate a Turing Machine". This project serves to demonstrate a watered-down version of the first statement by constructing an explicit multi-tape Turing Machine from a given program written in a restricted subset of C++.
- 
-The current project version is 1.0.
+The Turing-completeness of a programming language implies the set of computable functions that can be computed by the programming language, is the same as that of a Turing Machine. In other words, for any well-formed program in the programming language, there is an equivalent Turing Machine that computes the same function! This project demonstrates this statement by explicitly constructing a multi-tape, 3-symbol Turing Machine from a given program written with C-like syntax.
 
 ## Installation
-1. This project is meant to run through command-line on a Linux or Mac machine (sorry Windows!). Ensure you have the following installed: git, CMake, Make, and a C++ compiler. You can check this through `git --version`, `cmake --version`, `make --version`, and `g++ --version` (if you use `g++`).
+1. This project is meant to run through command-line on a Linux or Mac machine (sorry Windows!). Ensure you have the following installed: git, CMake, Make, and a C++ compiler. You can check this through `git --version`, `cmake --version`, `make --version`, and `g++ --version` (if you use `g++` for your C++ compiler).
 2. Open a terminal and change to a preferred directory to install the project. Then run each command below one-by-one:
 ```sh
 git clone https://github.com/bwang1008/TMCompiler.git
