@@ -40,8 +40,8 @@
  * [22:54:10 ERROR        logging.cpp:87   ] this is error
  * [22:54:10 CRITICAL     logging.cpp:88   ] this is critical
  */
-#define LOG(level)                                \
-	logger.log_prefix(level, __FILE__, __LINE__); \
+#define LOG(level)                                          \
+	logger.log_prefix(level, __FILE__, __LINE__, __func__); \
 	logger
 
 /**
@@ -99,7 +99,8 @@ public:
 	 */
 	auto log_prefix(const std::string& level,
 					const char* file_name,
-					int line_number) -> void;
+					int line_number,
+					const std::string& func_name) -> void;
 
 	/**
 	 * Output operator, like std::cout's.
