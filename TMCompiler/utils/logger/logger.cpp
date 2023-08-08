@@ -69,7 +69,6 @@ auto Logger::log_prefix(const std::string& level,
 
 	// widths for each section to maintain constant beginning width of each log
 	const std::size_t max_level_name_size = 8;
-	const std::size_t max_file_name_size = 15;
 
 	// output only the file_name, without parent directories
 	const std::string nice_file_name = std::string(file_name);
@@ -97,8 +96,7 @@ auto Logger::log_prefix(const std::string& level,
 	std::cout << " | ";
 
 	std::cout << file_color;
-	std::cout << std::right << std::setw(max_file_name_size)
-			  << truncated_file_name;
+	std::cout << truncated_file_name;
 	std::cout << ":";
 	std::cout << func_name;
 	std::cout << ":";
