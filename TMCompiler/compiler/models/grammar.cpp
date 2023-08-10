@@ -51,14 +51,13 @@ auto Grammar::get_rules() const -> std::vector<Rule> {
  * @param special_tokens: a list of strings to change in current rules
  */
 auto Grammar::mark_special_symbols_as_terminal(
-	const std::set<std::string> special_tokens) -> void {
-	for(std::size_t i = 0; i < rules.size(); ++i) {
-		if(special_tokens.find(rules[i].production.value) !=
-		   special_tokens.end()) {
-			rules[i].production.terminal = true;
+	const std::set<std::string>& special_tokens) -> void {
+	for(Rule& rule : rules) {
+		if(special_tokens.find(rule.production.value) != special_tokens.end()) {
+			rule.production.terminal = true;
 		}
 
-		for(GrammarSymbol& symbol : rules[i].replacement) {
+		for(GrammarSymbol& symbol : rule.replacement) {
 			if(special_tokens.find(symbol.value) != special_tokens.end()) {
 				symbol.terminal = true;
 			}
