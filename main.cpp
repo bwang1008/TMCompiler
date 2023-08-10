@@ -12,6 +12,8 @@
 #include <TMCompiler/compiler/models/token.hpp>	  // Token
 #include <TMCompiler/utils/logger/logger.hpp>
 
+#include <TMCompiler/compiler/compiler.hpp>
+
 std::vector<Rule> get_grammar_rules() {
 	std::vector<Rule> grammar_rules;
 	
@@ -261,8 +263,8 @@ void parse_actual_file() {
 
 	std::cout << std::endl;
 
-	const std::string input{"int x = 5;"};
-	// const std::string input{"for(int i = 5; i < 10; i+=1) { print(i); }"};
+	// const std::string input{"int x = 5;"};
+	const std::string input{"for(int i = 5; i < 10; i+=1) { print(i); }"};
 	std::vector<Token> tokens;
 	for(std::size_t i = 0; i < input.size(); ++i) {
 		Token k{"?", input.substr(i, 1), 0, i};
@@ -360,12 +362,24 @@ void attempt_parse() {
 	std::cout << "7: Number -> [0-9]" << std::endl;
 }
 
+void trial() {
+	std::ifstream lexical_bnf("TMCompiler/config/language_lexical_grammar.bnf");
+	std::ifstream syntax_bnf("TMCompiler/config/language_grammar.bnf");
+
+	Compiler compiler(lexical_bnf, syntax_bnf);
+
+	std::string program_text{"int x = 5;"};
+
+	compiler.compile_text(program_text);
+}
+
 int main() {
 	logger.set_level("DEBUG");
 
 	std::cout << "BEGIN" << std::endl;
 	// attempt_parse();
-	parse_actual_file();
+	// parse_actual_file();
+	trial();
 	std::cout << "DONE" << std::endl;
 
 	return 0;
