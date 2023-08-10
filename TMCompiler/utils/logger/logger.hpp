@@ -80,6 +80,7 @@ const std::string reset_color{"\033[0m"};
 // terminal code for setting color of timestamp and file name in logs
 const std::string time_color{"\033[32m"};  // green
 const std::string file_color{"\033[35m"};  // magenta
+const std::string func_color{"\033[36m"};  // light blue
 
 class Logger {
 public:

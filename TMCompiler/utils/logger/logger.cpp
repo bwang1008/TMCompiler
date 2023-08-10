@@ -98,8 +98,10 @@ auto Logger::log_prefix(const std::string& level,
 	std::cout << file_color;
 	std::cout << truncated_file_name;
 	std::cout << ":";
+	std::cout << func_color;
 	std::cout << func_name;
 	std::cout << ":";
+	std::cout << file_color;
 	std::cout << line_number;
 
 	std::cout << reset_color;
