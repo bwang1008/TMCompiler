@@ -18,64 +18,75 @@
 	# | <token> <token-delimiter> <tokens>
 
 <tokens> ::= <tokens-no-whitespace-prefix>
-	| <whitespace> <tokens-no-whitespace-prefix>
+		   | <whitespace> <tokens-no-whitespace-prefix>
 
 <tokens-no-whitespace-prefix> ::= <keyword>
-	| <keyword> <punctuator>
-	| <keyword> <punctuator> <tokens>
-	| <keyword> <token-delimiter>
-	| <keyword> <token-delimiter> <tokens>
-	| <identifier>
-	| <identifier> <punctuator>
-	| <identifier> <punctuator> <tokens>
-	| <identifier> <token-delimiter>
-	| <identifier> <token-delimiter> <tokens>
-	| <constant>
-	| <constant> <punctuator>
-	| <constant> <punctuator> <tokens>
-	| <constant> <token-delimiter>
-	| <constant> <token-delimiter> <tokens>
-	| <punctuator>
-	| <punctuator> <tokens>
+								| <keyword> <punctuator>
+								| <keyword> <punctuator> <tokens>
+								| <keyword> <token-delimiter>
+								| <keyword> <token-delimiter> <tokens>
+								| <identifier>
+								| <identifier> <punctuator>
+								| <identifier> <punctuator> <tokens>
+								| <identifier> <token-delimiter>
+								| <identifier> <token-delimiter> <tokens>
+								| <constant>
+								| <constant> <punctuator>
+								| <constant> <punctuator> <tokens>
+								| <constant> <token-delimiter>
+								| <constant> <token-delimiter> <tokens>
+								| <punctuator>
+								| <punctuator> <tokens>
 
 <token> ::= <keyword>
-	| <identifier> 
-	| <constant>
-	| <punctuator>
+		  | <identifier> 
+		  | <constant>
+		  | <punctuator>
 
 <token-delimiter> ::= <whitespace>
 
 <keyword> ::= "v" "o" "i" "d"
-	| "i" "n" "t"
-	| "b" "o" "o" "l"
-	| "f" "o" "r"
-	| "w" "h" "i" "l" "e"
-	| "i" "f"
-	| "e" "l" "s" "e"
-	| "b" "r" "e" "a" "k"
-	| "c" "o" "n" "t" "i" "n" "u" "e"
-	| "r" "e" "t" "u" "r" "n"
+			| "i" "n" "t"
+			| "b" "o" "o" "l"
+			| "f" "o" "r"
+			| "w" "h" "i" "l" "e"
+			| "i" "f"
+			| "e" "l" "s" "e"
+			| "b" "r" "e" "a" "k"
+			| "c" "o" "n" "t" "i" "n" "u" "e"
+			| "r" "e" "t" "u" "r" "n"
 
-<identifier> ::=
-	<identifier-nondigit>
-	| <identifier> <identifier-nondigit>
-	| <identifier> <digit>
+<identifier> ::= <identifier-nondigit>
+			   | <identifier> <identifier-nondigit>
+			   | <identifier> <digit>
 
 <constant> ::= <integer-constant>
-	| <boolean-constant>
+			 | <boolean-constant>
 
-<integer-constant> ::= <nonzero-digit> | <integer-constant> <digit>
-<boolean-constant> ::= "t" "r" "u" "e" | "f" "a" "l" "s" "e"
+<integer-constant> ::= <nonzero-digit>
+					 | <integer-constant> <digit>
+
+<boolean-constant> ::= "t" "r" "u" "e"
+					 | "f" "a" "l" "s" "e"
 
 <punctuator> ::= "[" | "]" | "(" | ")" | "{" | "}" | "*" | "+" | "-" | "!" | "/" | "%" | "<" | ">" | "<" "=" | ">" "=" | "=" "=" | "!" "=" | "^" | "&" "&" | "|" "|" | ";" | "=" | "*" "=" | "/" "=" | "%" "=" | "+" "=" | "-" "=" | "&" "=" | "^" "=" | "|" "=" | ","
 
 # utility
-<whitespace> ::= <whitespace-chars> | <whitespace> <whitespace-chars>
-<whitespace-chars> ::= " " | "\n" | "\t"
+<whitespace> ::= <whitespace-chars>
+			   | <whitespace> <whitespace-chars>
+
+<whitespace-chars> ::= " "
+					 | "\n"
+					 | "\t"
+
 <identifier-nondigit> ::= <nondigit>
+
 <nondigit> ::= "_" | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
+
 <nonzero-digit> ::= "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
-<digit> ::= "0" | <nonzero-digit>
+
+<digit> ::= "0"
+		  | <nonzero-digit>
 
 # regex ones
 # <token-delimiter> ::= "\w+"
