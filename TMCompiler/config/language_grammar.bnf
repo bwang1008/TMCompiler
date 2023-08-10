@@ -1,0 +1,134 @@
+# reference https://cs.wmich.edu/~gupta/teaching/cs4851/sumII06/The%20syntax%20of%20C%20in%20Backus-Naur%20form.htm
+<compilation-unit> ::= <function-definitions>
+
+# Functions
+
+<function-definitions> ::= <function-definition>
+						 | <function-definition> <function-definitions>
+
+<function-definition> ::= <return-type> <identifier> "(" <parameter-list> ")" <compound-statement>
+						| <return-type> <identifier> "(" ")" <compound-statement>
+
+<built-in-types> ::= "int"
+				   | "bool"
+
+<return-type> ::= "void"
+			    | <built-in-types>
+
+<parameter-list> ::= <parameter-declaration>
+				   | <parameter-declaration> "," <parameter-list>
+
+<parameter-declaration> ::= <built-in-types> <identifier>
+
+# Statements
+
+<statements> ::= <statement>
+			   | <statement> <statements>
+
+<statement> ::= <declaration-statement>
+			  | <expression-statement>
+			  | <compound-statement>
+			  | <selection-statement>
+			  | <iteration-statement>
+			  | <jump-statement>
+
+<declaration-statement> ::= <parameter-declaration> ";"
+
+<expression-statement> ::= ";"
+						 | <expression> ";"
+
+<compound-statement> ::= "{" "}"
+					   | "{" <statements> "}"
+
+<selection-statement> ::= "if" "(" <expression> ")" <statement>
+						| "if" "(" <expression> ")" <statement> "else" <statement>
+
+<iteration-statement> ::= "while" "(" <expression> ")" <statement>
+						| "do" <statement> "while" "(" <expression> ")" ";"
+						| "for" "(" <expression> ";" <expression> ";" <expression> ")" <statement>
+
+<jump-statement> ::= "continue" ";"
+				   | "break" ";"
+				   | "return" <expression-statement>
+
+
+# Expressions
+
+# to preserve order of operations, we start from lowest-precedence to highest
+# see https://introcs.cs.princeton.edu/java/11precedence/
+# mostly from https://cs.wmich.edu/~gupta/teaching/cs4850/sumII06/The%20syntax%20of%20C%20in%20Backus-Naur%20form.htm
+<expression> ::= <assignment-expression>
+
+# assignment-expression means an assignment, or anything with higher precedence
+# purposely different from C BNF: C uses <unary-expression> <assignment-operations> <assignment-expression>
+# this is because this grammar does not have ++ nor --
+<assignment-expression> ::= <conditional-expression>
+						  | <postfix-expression> <assignment-operator> <assignment-expression>
+
+<assignment-operator> ::= "="
+						| "*="
+						| "/="
+						| "%="
+						| "+="
+						| "-="
+						| "&="
+						| "^="
+						| "|="
+
+<conditional-expression> ::= <logical-or-expression>
+						   | <logical-or-expression> "?" <expression> ":" <conditional-expression>
+
+<logical-or-expression> ::= <logical-and-expression>
+						  | <logical-or-expression> "||" <logical-and-expression>
+
+<logical-and-expression> ::= <bitwise-or-expression>
+						   | <logical-and-expression> "&&" <bitwise-or-expression>
+
+<bitwise-or-expression> ::= <xor-expression>
+						  | <bitwise-or-expression> "|" <xor-expression>
+
+<xor-expression> ::= <bitwise-and-expression>
+				   | <xor-expression> "^" <bitwise-and-expression>
+
+<bitwise-and-expression> ::= <equality-expression>
+						   | <bitwise-and-expression> "^" <equality-expression>
+
+<equality-expression> ::= <relational-expression>
+						| <equality-expression> "==" <relational-expression>
+						| <equality-expression> "!=" <relational-expression>
+
+
+<relational-expression> ::= <additive-expression>
+						  | <relation-expression> "<" <additive-expression>
+						  | <relation-expression> ">" <additive-expression>
+						  | <relation-expression> "<=" <additive-expression>
+						  | <relation-expression> ">=" <additive-expression>
+ 
+<additive-expression> ::= <multiplicative-expression>
+						| <additive-expression> "+" <multiplicative-expression>
+						| <additive-expression> "-" <multiplicative-expression>
+
+<multiplicative-expression> ::= <unary-expression>
+							  | <multiplicative-expression> "*" <unary-expression>
+							  | <multiplicative-expression> "/" <unary-expression>
+							  | <multiplicative-expression> "%" <unary-expression>
+
+<unary-expression> ::= <postfix-expression>
+					 | <unary-operator> <multiplicative-expression>
+
+<unary-operator> ::= "+"
+				   | "-"
+				   | "!"
+
+<postfix-expression> ::= <primary-expression>
+					   | <postfix-expression "[" <expression> "]"
+					   | <postfix-expression "(" ")"
+					   | <postfix-expression "(" <argument-list> ")"
+
+<argument-list> ::= <expression>
+				  | <expression> "," <argument-list>
+
+<primary-expression> ::= <identifier>
+					   | <constant>
+					   | "(" <expression> ")"
+
