@@ -97,11 +97,6 @@ auto Compiler::generate_parse_tree(const std::string& program_text) const
 	LOG("INFO") << "Tokenizing input" << std::endl;
 	std::vector<SubParse> parse_tree_lexical = lexical_grammar.parse(letters);
 
-	for(SubParse sp : parse_tree_lexical) {
-		LOG("DEBUG") << "{" << sp.rule << ", " << sp.start << ", " << sp.end
-					 << ", " << sp.parent << "}" << std::endl;
-	}
-
 	LOG("INFO") << "Turn character subparses into tokens" << std::endl;
 	std::vector<Token> words = tokenize(parse_tree_lexical, program_text);
 
@@ -136,24 +131,15 @@ auto Compiler::tokenize(const std::vector<SubParse>& parse_tree,
 	while(index < end) {
 		const std::size_t old_index = index;
 
-		LOG("DEBUG") << "index = " << index << std::endl;
-
 		for(SubParse subparse : parse_tree) {
 			if(subparse.start == index) {
-				LOG("DEBUG") << "SubParse{" << subparse.rule << ", "
-							 << subparse.start << ", " << subparse.end << ", "
-							 << subparse.parent << "}" << std::endl;
 				const std::string production =
 					grammar_rules[subparse.rule].production.value;
-
-				LOG("DEBUG") << "production = " << production << std::endl;
 
 				if(token_delimiter.find(production) != token_delimiter.end()) {
 					// found a whitespace; do not need to put token-delimiter in
 					// list of tokens
 					index = subparse.end;
-
-					LOG("DEBUG") << "opt1: index now = " << index << std::endl;
 					break;
 				}
 
@@ -165,8 +151,6 @@ auto Compiler::tokenize(const std::vector<SubParse>& parse_tree,
 						0,
 						0});
 					index = subparse.end;
-
-					LOG("DEBUG") << "opt2: index now = " << index << std::endl;
 					break;
 				}
 			}
@@ -179,12 +163,6 @@ auto Compiler::tokenize(const std::vector<SubParse>& parse_tree,
 			throw std::invalid_argument("Unrecognized token at index " +
 										std::to_string(index));
 		}
-	}
-
-	LOG("INFO") << "Let's see our word tokens!" << std::endl;
-	for(Token t : result) {
-		LOG("DEBUG") << "Token{" << t.type << ", " << t.value << "}"
-					 << std::endl;
 	}
 
 	return result;

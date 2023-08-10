@@ -112,8 +112,6 @@ auto complete(std::vector<std::vector<EarleyItem> >& earley_sets,
 	// forward
 	const std::vector<EarleyItem> prev_earley_set = earley_sets[item.start];
 
-	LOG("DEBUG") << "In complete()" << std::endl;
-
 	for(const EarleyItem candidate : prev_earley_set) {
 		// find rules that have <finished> production next to their dot
 		const Rule candidate_rule = grammar_rules[candidate.rule];
@@ -128,9 +126,6 @@ auto complete(std::vector<std::vector<EarleyItem> >& earley_sets,
 		   actual.terminal == finished_production.terminal) {
 			const EarleyItem next_item{
 				candidate.rule, candidate.start, 1 + candidate.next};
-			LOG("DEBUG") << "Complete wants to add next_item = rule "
-						 << next_item.rule << ", start = " << next_item.start
-						 << ", next = " << next_item.next << std::endl;
 			add_earley_item_to_set(earley_sets[current_earley_set_index],
 								   next_item);
 		}
@@ -203,25 +198,9 @@ auto build_earley_items(const std::vector<Rule>& grammar_rules,
 
 	LOG("INFO") << "Building Earley sets" << std::endl;
 
-	LOG("DEBUG") << "\tGrammar rules" << std::endl;
-	std::size_t rule_index = 0;
-	for(Rule r : grammar_rules) {
-		LOG("DEBUG") << "rule" << rule_index << "(" << r.production.value << ":"
-					 << std::endl;
-		for(GrammarSymbol s : r.replacement) {
-			LOG("DEBUG") << "\t" << s.value << std::endl;
-		}
-		LOG("DEBUG") << ")" << std::endl;
-		rule_index += 1;
-	}
-
-	LOG("DEBUG") << "number of tokens = " << inputs.size() << std::endl;
-	LOG("DEBUG") << "default_start = " << default_start << std::endl;
-
 	// initialize first state
 	for(std::size_t i = 0; i < grammar_rules.size(); ++i) {
 		if(grammar_rules[i].production.value == default_start) {
-			LOG("DEBUG") << "initialize: add on rule " << i << std::endl;
 			const EarleyItem item{i, 0, 0};
 			add_earley_item_to_set(earley_sets[0], item);
 		}
@@ -232,54 +211,28 @@ auto build_earley_items(const std::vector<Rule>& grammar_rules,
 	// for each earley_set, starting from 0 and working up, parse all
 	// earley_items
 	for(std::size_t i = 0; i < earley_sets.size(); ++i) {
-		LOG("DEBUG") << "Earley Loop i = " << i << std::endl;
 		for(std::size_t j = 0; j < earley_sets[i].size(); ++j) {
 			const EarleyItem item = earley_sets[i][j];
 			const Rule rule = grammar_rules[item.rule];
 
-			LOG("DEBUG") << "Consider Item("
-						 << "rule " << item.rule << ", "
-						 << "start = " << item.start << ", "
-						 << "next = " << item.next << ")" << std::endl;
-			LOG("DEBUG") << "Which corresponds to rule("
-						 << rule.production.value << " -> " << std::endl;
-
 			// if Rule ends in dot, COMPLETE
 			if(item.next == rule.replacement.size()) {
-				LOG("DEBUG") << "indeed complete" << std::endl;
 				complete(earley_sets, i, grammar_rules, item);
 				continue;
 			}
 
 			const GrammarSymbol next_symbol = rule.replacement[item.next];
-			LOG("DEBUG") << "Look at next predicted symbol of rule: "
-						 << next_symbol.value << std::endl;
-
 			if(next_symbol.terminal) {
 				// if next token after dot is terminal, SCAN
-				LOG("DEBUG") << "Terminal!" << std::endl;
 				scan(earley_sets, i, item, next_symbol, inputs[i]);
 			} else {
 				// if next token after dot is non-terminal, PREDICT
-				LOG("DEBUG") << "Non-terminal!" << std::endl;
 				predict(earley_sets, i, grammar_rules, next_symbol);
 			}
 		}
 	}
 
 	LOG("INFO") << "Finish building earley_sets" << std::endl;
-
-	LOG("DEBUG") << "Let's take a look at the built earley_sets:" << std::endl;
-	for(std::size_t i = 0; i < earley_sets.size(); ++i) {
-		LOG("DEBUG") << "set[" << i << "]:" << std::endl;
-		for(EarleyItem item : earley_sets[i]) {
-			LOG("DEBUG") << "\t"
-						 << "Item("
-						 << "rule " << item.rule << ", "
-						 << "start = " << item.start << ", "
-						 << "next = " << item.next << ")" << std::endl;
-		}
-	}
 
 	return earley_sets;
 }
@@ -407,8 +360,6 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 	// for instance, get "Vegetable" from "Salad -> Vegetable + Dressing"
 	const GrammarSymbol next_rule_symbol =
 		parent_rule.replacement[parent_rule_dot];
-
-	LOG("DEBUG") << next_rule_symbol.value << std::endl;
 
 	// if next part of rule is a terminal, check if it matches the token
 	if(next_rule_symbol.terminal) {
