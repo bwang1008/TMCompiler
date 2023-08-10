@@ -368,7 +368,8 @@ void trial() {
 
 	Compiler compiler(lexical_bnf, syntax_bnf);
 
-	std::string program_text{"int x = 5;"};
+	// std::string program_text{"int x = 5;"};
+	std::string program_text{"void foo() {}"};
 
 	compiler.compile_text(program_text);
 }
@@ -376,11 +377,11 @@ void trial() {
 int main() {
 	logger.set_level("DEBUG");
 
-	std::cout << "BEGIN" << std::endl;
+	LOG("INFO") << "BEGIN" << std::endl;
 	// attempt_parse();
 	// parse_actual_file();
 	trial();
-	std::cout << "DONE" << std::endl;
+	LOG("INFO") << "DONE" << std::endl;
 
 	return 0;
 }

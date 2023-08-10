@@ -22,7 +22,7 @@ private:
 	Grammar lexical_grammar;
 	Grammar syntactical_grammar;
 
-	auto tokenize(const std::vector<SubParse>& parse_tree) const
+	auto tokenize(const std::vector<SubParse>& parse_tree, const std::string& program_text) const
 		-> std::vector<Token>;
 };
 

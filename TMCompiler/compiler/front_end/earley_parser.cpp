@@ -6,7 +6,6 @@
 
 #include <cstddef>	// std::size_t
 #include <iostream>
-#include <regex>
 #include <sstream>
 #include <stdexcept>  // std::invalid_argument
 #include <string>
@@ -61,14 +60,18 @@ auto equals(const EarleyItem item1, const EarleyItem item2) -> bool {
 /**
  * Check if a given input symbol matches a symbol that a rule predicts.
  * For instance, is "103" really a "Number" symbol?
- * We use regex to determine if the input token is a valid symbol
  * @param predicted: GrammarSymbol that grammar rule predicts is next
  * @param actual: Token input that is scanned next
  * return true iff actual is an instance of predicted
  */
 auto matches(const GrammarSymbol& predicted, const Token& actual) -> bool {
+	// special symbols, like <identifier>, matches if the token type
+	// ("identifier") is what the BNF predicted as <identifier>
+	if(predicted.value == actual.type) {
+		return true;
+	}
+
 	return predicted.value == actual.value;
-	// return std::regex_match(actual.value, std::regex(predicted.value));
 }
 
 /**
@@ -77,8 +80,8 @@ auto matches(const GrammarSymbol& predicted, const Token& actual) -> bool {
  * @param earley_set: list of elements
  * @param item: element to add to the list
  */
-void add_earley_item_to_set(std::vector<EarleyItem>& earley_set,
-							const EarleyItem item) {
+auto add_earley_item_to_set(std::vector<EarleyItem>& earley_set,
+							const EarleyItem item) -> void {
 	// if duplicate found in set, do nothing
 	for(const EarleyItem element : earley_set) {
 		if(equals(element, item)) {
@@ -98,16 +101,18 @@ void add_earley_item_to_set(std::vector<EarleyItem>& earley_set,
  * to parse the input
  * @param item: Earley item that is finished. Use to find prev rule
  */
-void complete(std::vector<std::vector<EarleyItem> >& earley_sets,
+auto complete(std::vector<std::vector<EarleyItem> >& earley_sets,
 			  const std::size_t current_earley_set_index,
 			  const std::vector<Rule>& grammar_rules,
-			  const EarleyItem item) {
+			  const EarleyItem item) -> void {
 	const Rule finished_rule = grammar_rules[item.rule];
 	const GrammarSymbol finished_production = finished_rule.production;
 
 	// find who generated this finished_rule. That previous rule has made a step
 	// forward
 	const std::vector<EarleyItem> prev_earley_set = earley_sets[item.start];
+
+	LOG("DEBUG") << "In complete()" << std::endl;
 
 	for(const EarleyItem candidate : prev_earley_set) {
 		// find rules that have <finished> production next to their dot
@@ -123,6 +128,7 @@ void complete(std::vector<std::vector<EarleyItem> >& earley_sets,
 		   actual.terminal == finished_production.terminal) {
 			const EarleyItem next_item{
 				candidate.rule, candidate.start, 1 + candidate.next};
+			LOG("DEBUG") << "Complete wants to add next_item = rule " << next_item.rule << ", start = " << next_item.start << ", next = " << next_item.next << std::endl;
 			add_earley_item_to_set(earley_sets[current_earley_set_index],
 								   next_item);
 		}
@@ -138,11 +144,11 @@ void complete(std::vector<std::vector<EarleyItem> >& earley_sets,
  * @param predicted: next symbol in rule
  * @param actual: input token to match with predicted symbol
  */
-void scan(std::vector<std::vector<EarleyItem> >& earley_sets,
+auto scan(std::vector<std::vector<EarleyItem> >& earley_sets,
 		  const std::size_t current_earley_set_index,
 		  const EarleyItem item,
 		  const GrammarSymbol& predicted,
-		  const Token& actual) {
+		  const Token& actual) -> void {
 	if(matches(predicted, actual)) {
 		const EarleyItem next_item{item.rule, item.start, 1 + item.next};
 		add_earley_item_to_set(earley_sets[1 + current_earley_set_index],
@@ -162,10 +168,10 @@ void scan(std::vector<std::vector<EarleyItem> >& earley_sets,
  * We want to "recurse" down the current rule, to see if the input here
  * matches this production rule
  */
-void predict(std::vector<std::vector<EarleyItem> >& earley_sets,
+auto predict(std::vector<std::vector<EarleyItem> >& earley_sets,
 			 const std::size_t current_earley_set_index,
 			 const std::vector<Rule>& grammar_rules,
-			 const GrammarSymbol& production) {
+			 const GrammarSymbol& production) -> void {
 	for(std::size_t i = 0; i < grammar_rules.size(); ++i) {
 		if(grammar_rules[i].production.value == production.value) {
 			const EarleyItem item{i, current_earley_set_index, 0};
@@ -193,9 +199,26 @@ auto build_earley_items(const std::vector<Rule>& grammar_rules,
 	-> std::vector<std::vector<EarleyItem> > {
 	std::vector<std::vector<EarleyItem> > earley_sets(1 + inputs.size());
 
+	LOG("INFO") << "Building Earley sets" << std::endl;
+
+	LOG("DEBUG") << "\tGrammar rules" << std::endl;
+	std::size_t rule_index = 0;
+	for(Rule r : grammar_rules) {
+		LOG("DEBUG") << "rule" << rule_index << "(" << r.production.value << ":" << std::endl;
+		for(GrammarSymbol s : r.replacement) {
+			LOG("DEBUG") << "\t" << s.value << std::endl;
+		}
+		LOG("DEBUG") << ")" << std::endl;
+		rule_index += 1;
+	}
+
+	LOG("DEBUG") << "number of tokens = " << inputs.size() << std::endl;
+	LOG("DEBUG") << "default_start = " << default_start << std::endl;
+
 	// initialize first state
 	for(std::size_t i = 0; i < grammar_rules.size(); ++i) {
 		if(grammar_rules[i].production.value == default_start) {
+			LOG("DEBUG") << "initialize: add on rule " << i << std::endl;
 			const EarleyItem item{i, 0, 0};
 			add_earley_item_to_set(earley_sets[0], item);
 		}
@@ -206,29 +229,46 @@ auto build_earley_items(const std::vector<Rule>& grammar_rules,
 	// for each earley_set, starting from 0 and working up, parse all
 	// earley_items
 	for(std::size_t i = 0; i < earley_sets.size(); ++i) {
+		LOG("DEBUG") << "Earley Loop i = " << i << std::endl;
 		for(std::size_t j = 0; j < earley_sets[i].size(); ++j) {
 			const EarleyItem item = earley_sets[i][j];
 			const Rule rule = grammar_rules[item.rule];
 
+			LOG("DEBUG") << "Consider Item(" << "rule " << item.rule << ", " << "start = " << item.start << ", " << "next = " << item.next << ")" << std::endl;
+			LOG("DEBUG") << "Which corresponds to rule(" << rule.production.value << " -> " << std::endl;
+
 			// if Rule ends in dot, COMPLETE
 			if(item.next == rule.replacement.size()) {
+				LOG("DEBUG") << "indeed complete" << std::endl;
 				complete(earley_sets, i, grammar_rules, item);
 				continue;
 			}
 
 			const GrammarSymbol next_symbol = rule.replacement[item.next];
+			LOG("DEBUG") << "Look at next predicted symbol of rule: " << next_symbol.value << std::endl;
+
 
 			if(next_symbol.terminal) {
 				// if next token after dot is terminal, SCAN
+				LOG("DEBUG") << "Terminal!" << std::endl;
 				scan(earley_sets, i, item, next_symbol, inputs[i]);
 			} else {
 				// if next token after dot is non-terminal, PREDICT
+				LOG("DEBUG") << "Non-terminal!" << std::endl;
 				predict(earley_sets, i, grammar_rules, next_symbol);
 			}
 		}
 	}
 
 	LOG("INFO") << "Finish building earley_sets" << std::endl;
+
+	LOG("DEBUG") << "Let's take a look at the built earley_sets:" << std::endl;
+	for(std::size_t i = 0; i < earley_sets.size(); ++i) {
+		LOG("DEBUG") << "set[" << i << "]:" << std::endl;
+		for(EarleyItem item : earley_sets[i]) {
+			LOG("DEBUG") << "\t" << "Item(" << "rule " << item.rule << ", " << "start = " << item.start << ", " << "next = " << item.next << ")" << std::endl;
+		}
+	}
 
 	return earley_sets;
 }
@@ -303,6 +343,7 @@ auto find_top_item(
 		}
 	}
 
+	LOG("ERROR") << "No successful parse of tokens" << std::endl;
 	throw std::logic_error("No successful parse of tokens");
 }
 
