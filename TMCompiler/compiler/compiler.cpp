@@ -98,7 +98,8 @@ auto Compiler::generate_parse_tree(const std::string& program_text) const
 	std::vector<SubParse> parse_tree_lexical = lexical_grammar.parse(letters);
 
 	for(SubParse sp : parse_tree_lexical) {
-		LOG("DEBUG") << "{" << sp.rule << ", " << sp.start << ", " << sp.end << ", " << sp.parent << "}" << std::endl;
+		LOG("DEBUG") << "{" << sp.rule << ", " << sp.start << ", " << sp.end
+					 << ", " << sp.parent << "}" << std::endl;
 	}
 
 	LOG("INFO") << "Turn character subparses into tokens" << std::endl;
@@ -115,7 +116,8 @@ auto Compiler::generate_parse_tree(const std::string& program_text) const
 /**
  * Given a parse tree built from Earley parsing of letters from program.
  */
-auto Compiler::tokenize(const std::vector<SubParse>& parse_tree, const std::string& program_text) const
+auto Compiler::tokenize(const std::vector<SubParse>& parse_tree,
+						const std::string& program_text) const
 	-> std::vector<Token> {
 	const std::set<std::string> tokens{
 		"keyword", "identifier", "constant", "punctuator"};
@@ -132,15 +134,15 @@ auto Compiler::tokenize(const std::vector<SubParse>& parse_tree, const std::stri
 	std::size_t index = 0;
 
 	while(index < end) {
-
 		const std::size_t old_index = index;
 
 		LOG("DEBUG") << "index = " << index << std::endl;
 
 		for(SubParse subparse : parse_tree) {
 			if(subparse.start == index) {
-
-				LOG("DEBUG") << "SubParse{" << subparse.rule << ", " << subparse.start << ", " << subparse.end << ", " << subparse.parent << "}" << std::endl;
+				LOG("DEBUG") << "SubParse{" << subparse.rule << ", "
+							 << subparse.start << ", " << subparse.end << ", "
+							 << subparse.parent << "}" << std::endl;
 				const std::string production =
 					grammar_rules[subparse.rule].production.value;
 
@@ -156,7 +158,12 @@ auto Compiler::tokenize(const std::vector<SubParse>& parse_tree, const std::stri
 				}
 
 				if(tokens.find(production) != tokens.end()) {
-					result.push_back(Token{production, program_text.substr(subparse.start, subparse.end - subparse.start), 0, 0});
+					result.push_back(Token{
+						production,
+						program_text.substr(subparse.start,
+											subparse.end - subparse.start),
+						0,
+						0});
 					index = subparse.end;
 
 					LOG("DEBUG") << "opt2: index now = " << index << std::endl;
@@ -167,7 +174,8 @@ auto Compiler::tokenize(const std::vector<SubParse>& parse_tree, const std::stri
 
 		// no token starts at index
 		if(index == old_index) {
-			LOG("ERROR") << "Unrecognized token at index " << index << std::endl;
+			LOG("ERROR") << "Unrecognized token at index " << index
+						 << std::endl;
 			throw std::invalid_argument("Unrecognized token at index " +
 										std::to_string(index));
 		}
@@ -175,7 +183,8 @@ auto Compiler::tokenize(const std::vector<SubParse>& parse_tree, const std::stri
 
 	LOG("INFO") << "Let's see our word tokens!" << std::endl;
 	for(Token t : result) {
-		LOG("DEBUG") << "Token{" << t.type << ", " << t.value << "}" << std::endl;
+		LOG("DEBUG") << "Token{" << t.type << ", " << t.value << "}"
+					 << std::endl;
 	}
 
 	return result;

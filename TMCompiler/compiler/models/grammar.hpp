@@ -29,7 +29,8 @@ public:
 	auto parse(const std::vector<Token>& input_tokens) const
 		-> std::vector<SubParse>;
 	auto get_rules() const -> std::vector<Rule>;
-	auto mark_special_symbols_as_terminal(const std::set<std::string> special_tokens) -> void;
+	auto mark_special_symbols_as_terminal(
+		const std::set<std::string> special_tokens) -> void;
 
 private:
 	std::vector<Rule> rules;

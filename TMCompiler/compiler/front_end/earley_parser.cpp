@@ -128,7 +128,9 @@ auto complete(std::vector<std::vector<EarleyItem> >& earley_sets,
 		   actual.terminal == finished_production.terminal) {
 			const EarleyItem next_item{
 				candidate.rule, candidate.start, 1 + candidate.next};
-			LOG("DEBUG") << "Complete wants to add next_item = rule " << next_item.rule << ", start = " << next_item.start << ", next = " << next_item.next << std::endl;
+			LOG("DEBUG") << "Complete wants to add next_item = rule "
+						 << next_item.rule << ", start = " << next_item.start
+						 << ", next = " << next_item.next << std::endl;
 			add_earley_item_to_set(earley_sets[current_earley_set_index],
 								   next_item);
 		}
@@ -204,7 +206,8 @@ auto build_earley_items(const std::vector<Rule>& grammar_rules,
 	LOG("DEBUG") << "\tGrammar rules" << std::endl;
 	std::size_t rule_index = 0;
 	for(Rule r : grammar_rules) {
-		LOG("DEBUG") << "rule" << rule_index << "(" << r.production.value << ":" << std::endl;
+		LOG("DEBUG") << "rule" << rule_index << "(" << r.production.value << ":"
+					 << std::endl;
 		for(GrammarSymbol s : r.replacement) {
 			LOG("DEBUG") << "\t" << s.value << std::endl;
 		}
@@ -234,8 +237,12 @@ auto build_earley_items(const std::vector<Rule>& grammar_rules,
 			const EarleyItem item = earley_sets[i][j];
 			const Rule rule = grammar_rules[item.rule];
 
-			LOG("DEBUG") << "Consider Item(" << "rule " << item.rule << ", " << "start = " << item.start << ", " << "next = " << item.next << ")" << std::endl;
-			LOG("DEBUG") << "Which corresponds to rule(" << rule.production.value << " -> " << std::endl;
+			LOG("DEBUG") << "Consider Item("
+						 << "rule " << item.rule << ", "
+						 << "start = " << item.start << ", "
+						 << "next = " << item.next << ")" << std::endl;
+			LOG("DEBUG") << "Which corresponds to rule("
+						 << rule.production.value << " -> " << std::endl;
 
 			// if Rule ends in dot, COMPLETE
 			if(item.next == rule.replacement.size()) {
@@ -245,8 +252,8 @@ auto build_earley_items(const std::vector<Rule>& grammar_rules,
 			}
 
 			const GrammarSymbol next_symbol = rule.replacement[item.next];
-			LOG("DEBUG") << "Look at next predicted symbol of rule: " << next_symbol.value << std::endl;
-
+			LOG("DEBUG") << "Look at next predicted symbol of rule: "
+						 << next_symbol.value << std::endl;
 
 			if(next_symbol.terminal) {
 				// if next token after dot is terminal, SCAN
@@ -266,7 +273,11 @@ auto build_earley_items(const std::vector<Rule>& grammar_rules,
 	for(std::size_t i = 0; i < earley_sets.size(); ++i) {
 		LOG("DEBUG") << "set[" << i << "]:" << std::endl;
 		for(EarleyItem item : earley_sets[i]) {
-			LOG("DEBUG") << "\t" << "Item(" << "rule " << item.rule << ", " << "start = " << item.start << ", " << "next = " << item.next << ")" << std::endl;
+			LOG("DEBUG") << "\t"
+						 << "Item("
+						 << "rule " << item.rule << ", "
+						 << "start = " << item.start << ", "
+						 << "next = " << item.next << ")" << std::endl;
 		}
 	}
 
