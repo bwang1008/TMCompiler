@@ -63,8 +63,8 @@
 <constant> ::= <integer-constant>
 			 | <boolean-constant>
 
-<integer-constant> ::= <nonzero-digit>
-					 | <integer-constant> <digit>
+<integer-constant> ::= <digit>
+					 | <nonzero-digit> <integer-constant>
 
 <boolean-constant> ::= "t" "r" "u" "e"
 					 | "f" "a" "l" "s" "e"
