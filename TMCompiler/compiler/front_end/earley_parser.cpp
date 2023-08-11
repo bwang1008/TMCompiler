@@ -146,7 +146,7 @@ auto scan(std::vector<std::vector<EarleyItem> >& earley_sets,
 		  const EarleyItem item,
 		  const GrammarSymbol& predicted,
 		  const Token& actual) -> void {
-	if(matches(predicted, actual)) {
+	if(matches(predicted, actual) && 1 + current_earley_set_index < earley_sets.size()) {
 		const EarleyItem next_item{item.rule, item.start, 1 + item.next};
 		add_earley_item_to_set(earley_sets[1 + current_earley_set_index],
 							   next_item);
