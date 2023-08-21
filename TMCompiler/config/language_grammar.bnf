@@ -1,38 +1,50 @@
 # reference https://cs.wmich.edu/~gupta/teaching/cs4851/sumII06/The%20syntax%20of%20C%20in%20Backus-Naur%20form.htm
+# and https://cs.au.dk/~amoeller/RegAut/JavaBNF.html
 <compilation-unit> ::= <function-definitions>
 
-# Functions
+### Functions
 
 <function-definitions> ::= <function-definition>
 						 | <function-definition> <function-definitions>
 
-<function-definition> ::= <return-type> <identifier> "(" <parameter-list> ")" <compound-statement>
-						| <return-type> <identifier> "(" ")" <compound-statement>
+<function-definition> ::= <function-header> <compound-statement>
 
-<built-in-types> ::= "int"
-				   | "bool"
+<function-header> ::= <return-type> <identifier> "(" ")"
+					| <return-type> <identifier> "(" <formal-parameter-list> ")"
+
+<formal-parameter-list> ::= <formal-parameter>
+						  | <formal-parameter> "," <formal-parameter-list>
+
+<formal-parameter> ::= <type> <identifier>
 
 <return-type> ::= "void"
-			    | <built-in-types>
+			    | <type>
 
-<parameter-list> ::= <parameter-declaration>
-				   | <parameter-declaration> "," <parameter-list>
+<type> ::= <built-in-type>
 
-<parameter-declaration> ::= <built-in-types> <identifier>
+<built-in-type> ::= "int"
+				   | "bool"
 
-# Statements
+### Statements
 
 <statements> ::= <statement>
 			   | <statement> <statements>
 
-<statement> ::= <declaration-statement>
-			  | <expression-statement>
-			  | <compound-statement>
-			  | <selection-statement>
-			  | <iteration-statement>
-			  | <jump-statement>
+<statement> ::= <local-variable-declaration-statement>
+				| <expression-statement>
+				| <compound-statement>
+				| <selection-statement>
+				| <iteration-statement>
+				| <jump-statement>
 
-<declaration-statement> ::= <parameter-declaration> ";"
+# ex: int x, y = 0, z;
+<local-variable-declaration-statement> ::= <local-variable-declaration> ";"
+<local-variable-declaration> ::= <type> <variable-declarators>
+<variable-declarators> ::= <variable-declarator>
+						 | <variable-declarator> "," <variable-declarators>
+# ex: y = 0
+<variable-declarator> ::= <identifier>
+					   | <identifier> "=" <expression>
 
 <expression-statement> ::= ";"
 						 | <expression> ";"
@@ -52,7 +64,7 @@
 				   | "return" <expression-statement>
 
 
-# Expressions
+### Expressions
 
 # to preserve order of operations, we start from lowest-precedence to highest
 # see https://introcs.cs.princeton.edu/java/11precedence/
@@ -63,27 +75,31 @@
 # purposely different from C BNF: C uses <unary-expression> <assignment-operations> <assignment-expression>
 # this is because this grammar does not have ++ nor --
 <assignment-expression> ::= <conditional-expression>
-						  | <postfix-expression> <assignment-operator> <assignment-expression>
+						  | <left-hand-side> <assignment-operator> <assignment-expression>
+
+<left-hand-side> ::= <identifier>
+				   | <identifier> "[" <expression> "]"
 
 <assignment-operator> ::= "="
-						| "*="
-						| "/="
-						| "%="
-						| "+="
-						| "-="
-						| "&="
-						| "^="
-						| "|="
+						| "*" "="
+						| "/" "="
+						| "%" "="
+						| "+" "="
+						| "-" "="
+						| "&" "="
+						| "^" "="
+						| "|" "="
 
 <conditional-expression> ::= <logical-or-expression>
 						   | <logical-or-expression> "?" <expression> ":" <conditional-expression>
 
 <logical-or-expression> ::= <logical-and-expression>
-						  | <logical-or-expression> "||" <logical-and-expression>
+						  | <logical-or-expression> "|" "|" <logical-and-expression>
 
 <logical-and-expression> ::= <bitwise-or-expression>
-						   | <logical-and-expression> "&&" <bitwise-or-expression>
+						   | <logical-and-expression> "&" "&" <bitwise-or-expression>
 
+# ???
 <bitwise-or-expression> ::= <xor-expression>
 						  | <bitwise-or-expression> "|" <xor-expression>
 
@@ -94,15 +110,15 @@
 						   | <bitwise-and-expression> "^" <equality-expression>
 
 <equality-expression> ::= <relational-expression>
-						| <equality-expression> "==" <relational-expression>
-						| <equality-expression> "!=" <relational-expression>
+						| <equality-expression> "=" "=" <relational-expression>
+						| <equality-expression> "!" "=" <relational-expression>
 
 
 <relational-expression> ::= <additive-expression>
 						  | <relation-expression> "<" <additive-expression>
 						  | <relation-expression> ">" <additive-expression>
-						  | <relation-expression> "<=" <additive-expression>
-						  | <relation-expression> ">=" <additive-expression>
+						  | <relation-expression> "<" "=" <additive-expression>
+						  | <relation-expression> ">" "=" <additive-expression>
  
 <additive-expression> ::= <multiplicative-expression>
 						| <additive-expression> "+" <multiplicative-expression>
