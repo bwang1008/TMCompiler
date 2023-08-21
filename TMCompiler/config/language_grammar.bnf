@@ -57,7 +57,16 @@
 
 <iteration-statement> ::= "while" "(" <expression> ")" <statement>
 						| "do" <statement> "while" "(" <expression> ")" ";"
-						| "for" "(" <expression> ";" <expression> ";" <expression> ")" <statement>
+						| "for" "(" <for-init> ";" <expression> ";" <expression> ")" <statement>
+
+<for-init> ::= <local-variable-declaration>
+			 | <statement-expression-list>
+
+<statement-expression-list> ::= <statement-expression>
+							| <statement-expression> <statement-expression-list>
+
+<statement-expression> ::= <assignment-expression>
+						 | <method-invocation>
 
 <jump-statement> ::= "continue" ";"
 				   | "break" ";"
@@ -115,10 +124,10 @@
 
 
 <relational-expression> ::= <additive-expression>
-						  | <relation-expression> "<" <additive-expression>
-						  | <relation-expression> ">" <additive-expression>
-						  | <relation-expression> "<" "=" <additive-expression>
-						  | <relation-expression> ">" "=" <additive-expression>
+						  | <relational-expression> "<" <additive-expression>
+						  | <relational-expression> ">" <additive-expression>
+						  | <relational-expression> "<" "=" <additive-expression>
+						  | <relational-expression> ">" "=" <additive-expression>
  
 <additive-expression> ::= <multiplicative-expression>
 						| <additive-expression> "+" <multiplicative-expression>
@@ -138,8 +147,10 @@
 
 <postfix-expression> ::= <primary-expression>
 					   | <postfix-expression "[" <expression> "]"
-					   | <postfix-expression "(" ")"
-					   | <postfix-expression "(" <argument-list> ")"
+					   | <method-invocation>
+
+<method-invocation> ::= <postfix-expression "(" ")"
+					  | <postfix-expression "(" <argument-list> ")"
 
 <argument-list> ::= <expression>
 				  | <expression> "," <argument-list>
