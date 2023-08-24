@@ -67,7 +67,7 @@
 			 | <boolean-constant>
 
 <integer-constant> ::= <digit>
-					 | <nonzero-digit> <integer-constant>
+					 | <nonzero-digit> <digits>
 
 <boolean-constant> ::= "t" "r" "u" "e"
 					 | "f" "a" "l" "s" "e"
@@ -90,6 +90,9 @@
 
 <digit> ::= "0"
 		  | <nonzero-digit>
+
+<digits> ::= <digit>
+		   | <digit> <digits>
 
 # regex ones
 # <token-delimiter> ::= "\w+"
