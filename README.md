@@ -14,7 +14,7 @@ cd TMCompiler
 make
 ```
 
-This downloads the git repository from Github, creates and populates a `build` directory, and then finally compiles the source code in the project to generate executables. The final step may take a while.
+This downloads the git repository from Github and compiles the source code in the project to generate executables. The final step may take a while.
 
 ## Project Structure
 - `TMCompiler/compiler/` is the part responsible for parsing source code and translating to a Turing Machine specification
