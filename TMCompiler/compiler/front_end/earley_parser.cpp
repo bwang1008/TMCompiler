@@ -146,7 +146,8 @@ auto scan(std::vector<std::vector<EarleyItem> >& earley_sets,
 		  const EarleyItem item,
 		  const GrammarSymbol& predicted,
 		  const Token& actual) -> void {
-	if(matches(predicted, actual) && 1 + current_earley_set_index < earley_sets.size()) {
+	if(matches(predicted, actual) &&
+	   1 + current_earley_set_index < earley_sets.size()) {
 		const EarleyItem next_item{item.rule, item.start, 1 + item.next};
 		add_earley_item_to_set(earley_sets[1 + current_earley_set_index],
 							   next_item);
@@ -349,9 +350,9 @@ auto dfs(const std::vector<std::vector<FlippedEarleyItem> >& earley_sets,
 	const Rule parent_rule = grammar_rules[parent_item.rule];
 
 	// LOG("DEBUG") << "Call DFS(parent_rule=" << rule_to_string(parent_rule)
-				 // << ", parent_rule_dot=" << parent_rule_dot
-				 // << ", token_location=" << token_location
-				 // << ", path history size=" << path.size() << ")" << std::endl;
+	// << ", parent_rule_dot=" << parent_rule_dot
+	// << ", token_location=" << token_location
+	// << ", path history size=" << path.size() << ")" << std::endl;
 
 	// finished if dot at right-most of parent_rule,
 	// and last child ends at parent_rule's end
@@ -488,7 +489,8 @@ auto build_earley_parse_tree(
 	LOG("DEBUG") << "Tokens = " << std::endl;
 	std::size_t token_index = 0;
 	for(Token t : input_tokens) {
-		LOG("DEBUG") << "\t" << "Token " << token_index << "(" << t.type << ", " << t.value << ")" << std::endl;
+		LOG("DEBUG") << "\t" << "Token " << token_index << "(" << t.type << ", "
+	<< t.value << ")" << std::endl;
 		++token_index;
 	}
 	*/
