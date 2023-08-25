@@ -21,6 +21,8 @@ Compiler::Compiler(std::ifstream& lexical_bnf, std::ifstream& syntax_bnf)
 	// modify rules for special tokens
 	// for instance, <identifier> becomes terminal
 	// instead of non-terminal
+	//
+	// TODO(bwang): make this automatic, by comparing leaves in syntax with lexical
 	const std::set<std::string> special_tokens{
 		"keyword", "identifier", "constant", "punctuator"};
 	syntactical_grammar.mark_special_symbols_as_terminal(special_tokens);
@@ -57,7 +59,7 @@ auto Compiler::compile_text(const std::string& program_text) const -> void {
 	std::vector<SubParse> parse_tree = generate_parse_tree(program_text);
 
 	// 2. Middle-end: type-checking, identifiers are declared, functions that
-	// are called exist, main exists
+	// are called exist, main exists, no double declaration
 	LOG("INFO") << "Performing standard checks" << std::endl;
 	// TODO(bwang1008): implement middle-end
 	//
@@ -77,8 +79,9 @@ auto Compiler::generate_parse_tree(const std::string& program_text) const
 	-> std::vector<SubParse> {
 	// split program_text into individual letters
 
-	LOG("INFO") << "Generate char tokens" << std::endl;
+	LOG("INFO") << "Generating character tokens" << std::endl;
 
+	// TODO(bwang): move this to a function
 	std::vector<Token> letters;
 	for(std::size_t index = 0, line_number = 0, col_number = 0;
 		index < program_text.size();
@@ -99,6 +102,13 @@ auto Compiler::generate_parse_tree(const std::string& program_text) const
 
 	LOG("INFO") << "Turn character subparses into tokens" << std::endl;
 	std::vector<Token> words = tokenize(parse_tree_lexical, program_text);
+
+	LOG("DEBUG") << "Tokens = " << std::endl;
+	for(Token t : words) {
+		LOG("DEBUG") << "\t" << "token(" << t.type << ", " << t.value << ")" << std::endl;
+	}
+
+	// throw std::invalid_argument("just stopping cuz");
 
 	// obtain parse tree
 	LOG("INFO") << "Parsing tokens into parse tree" << std::endl;

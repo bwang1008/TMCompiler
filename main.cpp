@@ -265,8 +265,11 @@ void parse_actual_file() {
 
 	// const std::string input{"int x = 5;"};
 	// const std::string input{"for(int i = 5; i < 10; i+=1) { print(i); }"};
-	//                       01234567890123456789012345678901
-	const std::string input{"int compute(int y) { return 0; }"};	// segmentation fault
+	// const std::string input{"int compute(int y) { return 0; }"};
+
+	//                       01234567890123456789012345678901234567890123456789012345
+	const std::string input{"void foo() {  for ( int i = 0; i < 10; i += 1) {  }  } "};
+
 	std::vector<Token> tokens;
 	for(std::size_t i = 0; i < input.size(); ++i) {
 		Token k{"?", input.substr(i, 1), 0, i};
@@ -370,19 +373,14 @@ void trial() {
 
 	Compiler compiler(lexical_bnf, syntax_bnf);
 
-	// std::string program_text{"void foo() {}"};
-	// std::string program_text{"int compute(int y) { return 5; }"};
-	// std::string program_text{"int compute(int y) { return 5; }"};	// segmentation fault
-	// std::string program_text{"int compute(int y) { return 5; }"};	// segmentation fault
-	//						  01234567890123456789012345678901
-	std::string program_text{"int compute(int y) { return 0; }"};	// segmentation fault
+	std::string program_text{"?"};
+	program_text = "int foo() { int count = 0; for(int i = 0; i < 10; i +=1) { for(int j = 0; j < 100; j += 5) { count += 1; } }  return count; }";
 
 	compiler.compile_text(program_text);
 }
 
 int main() {
-	logger.set_level("DEBUG");
-	// logger.set_level("INFO");
+	logger.set_level("INFO");
 
 	LOG("INFO") << "BEGIN" << std::endl;
 	// attempt_parse();
