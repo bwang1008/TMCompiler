@@ -9,6 +9,10 @@ SOURCES += TMCompiler/compiler/front_end/earley_parser.cpp
 SOURCES += TMCompiler/compiler/models/grammar.cpp
 SOURCES += TMCompiler/utils/logger/logger.cpp
 
+# testing
+# SOURCES += TMCompiler/utils/unittesting/unittests.cpp
+# SOURCES += TMCompiler/tests/test_compiler.cpp
+
 # SOURCES += TMCompiler/utils/unittesting/unittests.cpp
 # SOURCES += TMCompiler/tests/test_unittesting.cpp
 # SOURCES += TMCompiler/tests/test_bnf_parser.cpp
