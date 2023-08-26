@@ -10,23 +10,23 @@
 #include <vector>		  // std::vector
 
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
-#include <TMCompiler/utils/logger/logger.hpp>	// logger
+#include <TMCompiler/utils/logger/logger.hpp>			  // logger
 
 namespace BnfParser {
 
 // from https://en.cppreference.com/w/cpp/language/escape
 const std::unordered_map<char, char> escaped_characters = {{'\'', '\''},
-	{'\"', '\"'},
-	{'?', '\?'},
-	{'\\', '\\'},
-	{'f', '\f'},
-	{'n', '\n'},
-	{'r', '\r'},
-	{'t', '\t'}};
+														   {'\"', '\"'},
+														   {'?', '\?'},
+														   {'\\', '\\'},
+														   {'f', '\f'},
+														   {'n', '\n'},
+														   {'r', '\r'},
+														   {'t', '\t'}};
 
 /**
- * One pass of converting a string with backslashes, replacing escaped characters
- * with their true escaped version.
+ * One pass of converting a string with backslashes, replacing escaped
+ * characters with their true escaped version.
  *
  * For instance, when reading in the terminal symbol "\t" in a BNF, reading
  * in the BNF file results in the two characters "\" and "t". However,
@@ -43,23 +43,25 @@ auto interpret_backslashes(const std::string& text) -> std::string {
 
 	for(std::size_t i = 0; i < text.size(); ++i) {
 		if(text[i] == '\\') {
-			if(i + 1 < text.size() && escaped_characters.find(text[i + 1]) != escaped_characters.end()) {
-				// if i at '\', and i+1 at 'n', then add '\n' newline char, advance 2
+			if(i + 1 < text.size() && escaped_characters.find(text[i + 1]) !=
+										  escaped_characters.end()) {
+				// if i at '\', and i+1 at 'n', then add '\n' newline char,
+				// advance 2
 				final_characters.push_back(escaped_characters.at(text[i + 1]));
 				++i;
-			} 
-			else if(i + 1 < text.size()) {
+			} else if(i + 1 < text.size()) {
 				// illegal escape sequence
-				LOG("CRITICAL") << "Illegal escape sequence used in BNF: \\" << text[i + 1] << std::endl;
-				throw std::invalid_argument("Illegal escape sequence used in BNF");
-			}
-			else {
+				LOG("CRITICAL") << "Illegal escape sequence used in BNF: \\"
+								<< text[i + 1] << std::endl;
+				throw std::invalid_argument(
+					"Illegal escape sequence used in BNF");
+			} else {
 				// symbol ended in backslash
-				LOG("CRITICAL") << "Symbols should not end in backslash" << std::endl;
+				LOG("CRITICAL")
+					<< "Symbols should not end in backslash" << std::endl;
 				throw std::invalid_argument("BNF symbol ended in backslash");
 			}
-		}
-		else {
+		} else {
 			final_characters.push_back(text[i]);
 		}
 	}
@@ -182,10 +184,9 @@ auto parse_symbol(const std::string& bnf_contents,
 	}
 
 	// found symbol_end
-	const std::string sanitized_name = interpret_backslashes(bnf_contents.substr(symbol_contents_start, symbol_contents_size));
-	GrammarSymbol parsed_symbol = {
-		sanitized_name,
-		is_terminal};
+	const std::string sanitized_name = interpret_backslashes(
+		bnf_contents.substr(symbol_contents_start, symbol_contents_size));
+	GrammarSymbol parsed_symbol = {sanitized_name, is_terminal};
 	return std::make_pair(parsed_symbol, end_position + symbol_end.size());
 }
 
