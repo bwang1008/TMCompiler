@@ -375,12 +375,14 @@ void trial() {
 
 	std::string program_text{"?"};
 	program_text = "int foo() { int count = 0; for(int i = 0; i < 10; i +=1) { for(int j = 0; j < 100; j += 5) { count += 1; } }  return count; }";
+	program_text = "int main() {\n\treturn 0;}";
 
 	compiler.compile_text(program_text);
+	// compiler.compile("sample_program.cpp");
 }
 
 int main() {
-	logger.set_level("INFO");
+	logger.set_level("DEBUG");
 
 	LOG("INFO") << "BEGIN" << std::endl;
 	// attempt_parse();
