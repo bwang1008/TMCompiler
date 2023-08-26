@@ -146,11 +146,11 @@
 				   | "!"
 
 <postfix-expression> ::= <primary-expression>
-					   | <postfix-expression "[" <expression> "]"
+					   | <postfix-expression> "[" <expression> "]"
 					   | <method-invocation>
 
-<method-invocation> ::= <postfix-expression "(" ")"
-					  | <postfix-expression "(" <argument-list> ")"
+<method-invocation> ::= <postfix-expression> "(" ")"
+					  | <postfix-expression> "(" <argument-list> ")"
 
 <argument-list> ::= <expression>
 				  | <expression> "," <argument-list>

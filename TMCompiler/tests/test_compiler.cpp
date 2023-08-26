@@ -205,3 +205,15 @@ TEST_CASE(newline_and_tabs) {
 
 	ASSERT(1 == 1);
 }
+
+TEST_CASE(method_invocation) {
+	logger.set_level("NONE");
+	std::ifstream lex_bnf("TMCompiler/config/language_lexical_grammar.bnf");
+	std::ifstream syn_bnf("TMCompiler/config/language_grammar.bnf");
+
+	Compiler compiler(lex_bnf, syn_bnf);
+	const std::string program_text{"void foo() {}  void main() { foo(); }"};
+	compiler.compile_text(program_text);
+
+	ASSERT(1 == 1);
+}

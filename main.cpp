@@ -374,11 +374,10 @@ void trial() {
 	Compiler compiler(lexical_bnf, syntax_bnf);
 
 	std::string program_text{"?"};
-	program_text = "int foo() { int count = 0; for(int i = 0; i < 10; i +=1) { for(int j = 0; j < 100; j += 5) { count += 1; } }  return count; }";
-	program_text = "int main() {\n\treturn 0;}";
+	program_text = "void foo() {}  void main() { foo(); }";
 
 	compiler.compile_text(program_text);
-	// compiler.compile("sample_program.cpp");
+	// compiler.compile("sample_program_2.cpp");
 }
 
 int main() {
