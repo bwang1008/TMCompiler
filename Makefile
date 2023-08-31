@@ -12,11 +12,8 @@ SOURCES += TMCompiler/utils/logger/logger.cpp
 # testing
 # SOURCES += TMCompiler/utils/unittesting/unittests.cpp
 # SOURCES += TMCompiler/tests/test_compiler.cpp
-
-# SOURCES += TMCompiler/utils/unittesting/unittests.cpp
 # SOURCES += TMCompiler/tests/test_unittesting.cpp
 # SOURCES += TMCompiler/tests/test_bnf_parser.cpp
-# SOURCES += TMCompiler/compiler/front_end/bnf_parser.cpp
 
 OBJECTS = $(SOURCES:.cpp=.o)
 
