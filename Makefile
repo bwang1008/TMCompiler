@@ -87,7 +87,7 @@ test.out: $(TEST_OBJECTS) $(LIB_OBJECTS)
 
 # remove executables, object files, and .d files generated from compilation
 clean:
-	rm -f test.out $(OBJECTS) $(OBJECTS:.o=.d)
+	rm -f tmc test.out $(OBJECTS) $(OBJECTS:.o=.d)
 
 # generate implicit C++ recipes that specify what files are needed to generate each .o file
 -include $(OBJECTS:.o=.d)
