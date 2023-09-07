@@ -376,8 +376,8 @@ void trial() {
 	std::string program_text{"?"};
 	program_text = "void foo() {}  void main() { foo(); }";
 
-	compiler.compile_text(program_text);
-	// compiler.compile("sample_program.cpp");
+	// compiler.compile_text(program_text);
+	compiler.compile("sample_program.cpp");
 }
 
 int main() {
