@@ -2,20 +2,25 @@
 # References: https://codingnest.com/basic-makefiles/
 
 ### USER DEFINED VARIABLES
-SOURCES = main.cpp
-SOURCES += TMCompiler/compiler/compiler.cpp
-SOURCES += TMCompiler/compiler/front_end/bnf_parser.cpp
-SOURCES += TMCompiler/compiler/front_end/earley_parser.cpp
-SOURCES += TMCompiler/compiler/models/grammar.cpp
-SOURCES += TMCompiler/utils/logger/logger.cpp
+TMC_BINARY_SOURCES = main.cpp
+
+LIB_SOURCES = TMCompiler/compiler/compiler.cpp
+LIB_SOURCES += TMCompiler/compiler/front_end/bnf_parser.cpp
+LIB_SOURCES += TMCompiler/compiler/front_end/earley_parser.cpp
+LIB_SOURCES += TMCompiler/compiler/models/grammar.cpp
+LIB_SOURCES += TMCompiler/utils/logger/logger.cpp
 
 # testing
-# SOURCES += TMCompiler/utils/unittesting/unittests.cpp
-# SOURCES += TMCompiler/tests/test_compiler.cpp
-# SOURCES += TMCompiler/tests/test_unittesting.cpp
-# SOURCES += TMCompiler/tests/test_bnf_parser.cpp
+TEST_SOURCES = TMCompiler/utils/unittesting/unittests.cpp
+TEST_SOURCES += TMCompiler/tests/test_compiler.cpp
+TEST_SOURCES += TMCompiler/tests/test_unittesting.cpp
+TEST_SOURCES += TMCompiler/tests/test_bnf_parser.cpp
 
-OBJECTS = $(SOURCES:.cpp=.o)
+TMC_BINARY_OBJECTS = $(TMC_BINARY_SOURCES:.cpp=.o)
+LIB_OBJECTS = $(LIB_SOURCES:.cpp=.o)
+TEST_OBJECTS = $(TEST_SOURCES:.cpp=.o)
+
+OBJECTS = $(TMC_BINARY_OBJECTS) $(LIB_OBJECTS) $(TEST_OBJECTS)
 
 # see https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
 # WARNINGS += -Werror 				# warnings become errors
@@ -67,12 +72,18 @@ CPPFLAGS = -I.
 CXXFLAGS = -std=c++14 $(WARNINGS) -MMD -MP
 
 ### MAKE RECIPES
-.PHONY: clean
+.PHONY: all clean
+
+all: tmc test.out
 
 # link object files to create executable
-test.out: $(OBJECTS)
-	$(CXX) $(OBJECTS) -o $@
-	@echo "Generated executable $@"
+tmc: $(TMC_BINARY_OBJECTS) $(LIB_OBJECTS)
+	$(CXX) $^ -o $@
+	@echo "\033[32mGenerated executable \033[1m$@\033[0m"
+
+test.out: $(TEST_OBJECTS) $(LIB_OBJECTS)
+	$(CXX) $^ -o $@
+	@echo "\033[32mGenerated executable \033[1m$@\033[0m"
 
 # remove executables, object files, and .d files generated from compilation
 clean:
