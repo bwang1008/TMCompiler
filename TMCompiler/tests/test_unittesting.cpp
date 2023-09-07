@@ -16,52 +16,52 @@ auto factorial(std::size_t n) -> std::size_t {
 	return prod;
 }
 
-TEST_CASE(test0) {
-	ASSERT(factorial(0) == 2);
+TEST_CASE(test_unittesting_0) {
+	ASSERT(factorial(0) == 1);
 }
 
-TEST_CASE(test1) {
+TEST_CASE(test_unittesting_1) {
 	ASSERT(factorial(1) == 1);
 }
 
-TEST_CASE(test2) {
+TEST_CASE(test_unittesting_2) {
 	ASSERT(factorial(2) == 2);
 }
 
-TEST_CASE(test3) {
+TEST_CASE(test_unittesting_3) {
 	const std::size_t fac3 = 6;
 	ASSERT(factorial(3) == fac3);
 }
 
-TEST_CASE(test4) {
+TEST_CASE(test_unittesting_4) {
 	const std::size_t fac4 = 24;
 	ASSERT(factorial(4) == fac4);
 }
 
-TEST_CASE(test5) {
+TEST_CASE(test_unittesting_5) {
 	const std::size_t test_arg = 5;
 	const std::size_t fac5 = 120;
 	ASSERT(factorial(test_arg) == fac5);
 }
 
-TEST_CASE(test6) {
+TEST_CASE(test_unittesting_6) {
 	const std::size_t test_arg = 6;
 	const std::size_t fac6 = 720;
 	ASSERT(factorial(test_arg) == fac6);
 }
 
-TEST_CASE(test7) {
+TEST_CASE(test_unittesting_7) {
 	const std::size_t test_arg = 7;
 	const std::size_t fac7 = 5040;
 	ASSERT(factorial(test_arg) == fac7);
 }
 
-TEST_CASE(test8) {
+TEST_CASE(test_unittesting_8) {
 	// throw std::runtime_error("Gak!");
 	ASSERT(true);
 }
 
-TEST_CASE(test9) {
+TEST_CASE(test_unittesting_9) {
 	const std::size_t factorial0 = 1;
 	const std::size_t factorial1 = 1;
 	const std::size_t factorial2 = 2;
