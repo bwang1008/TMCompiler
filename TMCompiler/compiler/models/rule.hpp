@@ -1,7 +1,7 @@
 #ifndef RULE_HPP
 #define RULE_HPP
 
-#include <vector>
+#include <vector>	// std::vector
 
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
 
