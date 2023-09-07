@@ -33,9 +33,10 @@ auto get_current_time() -> std::string {
 	// 0    5    0123456789
 	// see https://en.cppreference.com/w/cpp/chrono/c/ctime
 
-	const std::size_t hour_start_location = 11;
-	const std::size_t time_format_width = 8;
+	const std::size_t hour_start_location = std::string("Www Mmm dd ").size();
+	const std::size_t time_format_width = std::string("HH:MM:SS").size();
 
+	// extract out HH:MM:SS as string
 	return current_time_textual.substr(hour_start_location, time_format_width);
 }
 
