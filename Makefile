@@ -1,4 +1,4 @@
-# To run tests, run "make run_test"
+# Run 'make' to generate both 'tmc' and 'test.out' binaries.
 # References: https://codingnest.com/basic-makefiles/
 
 ### USER DEFINED VARIABLES
