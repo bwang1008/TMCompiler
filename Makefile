@@ -96,12 +96,13 @@ all: $(BINARIES)
 # will expand a second time (using $@ to be tmc/test) to become $(tmc_OBJECTS)
 # and $(test_OBJECTS) for output files 'tmc' and 'test' respectively.
 .SECONDEXPANSION:
-# link object files to create executable
+# link object files to create executable: for instance, to create tmc, run
+# 'g++ main.o TMCompiler/compiler/compiler.o ... -o tmc'
 $(BINARIES): $$($$@_OBJECTS) $$(lib_OBJECTS)
 	$(CXX) $^ -o $@
 	@echo "\033[32mGenerated executable \033[1;33m$@\033[0m"
 
-# remove executables, object files, and .d files generated from compilation
+# run 'make clean' to remove executables, object files, and .d files generated from compilation
 clean:
 	rm -f $(BINARIES) $(OBJECTS) $(OBJECTS:.o=.d)
 
