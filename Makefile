@@ -74,20 +74,20 @@ CXXFLAGS = -std=c++14 $(WARNINGS) -MMD -MP
 ### MAKE RECIPES
 .PHONY: all clean
 
-all: tmc test.out
+all: tmc test
 
 # link object files to create executable
 tmc: $(TMC_BINARY_OBJECTS) $(LIB_OBJECTS)
 	$(CXX) $^ -o $@
 	@echo "\033[32mGenerated executable \033[1m$@\033[0m"
 
-test.out: $(TEST_OBJECTS) $(LIB_OBJECTS)
+test: $(TEST_OBJECTS) $(LIB_OBJECTS)
 	$(CXX) $^ -o $@
 	@echo "\033[32mGenerated executable \033[1m$@\033[0m"
 
 # remove executables, object files, and .d files generated from compilation
 clean:
-	rm -f tmc test.out $(OBJECTS) $(OBJECTS:.o=.d)
+	rm -f tmc test $(OBJECTS) $(OBJECTS:.o=.d)
 
 # generate implicit C++ recipes that specify what files are needed to generate each .o file
 -include $(OBJECTS:.o=.d)
