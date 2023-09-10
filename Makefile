@@ -1,29 +1,41 @@
-# Run 'make' to generate both 'tmc' and 'test.out' binaries.
+# Run 'make' to compile source files and generate
+# 'tmc' and 'test' binaries.
+#
+# Once generated, run via './tmc' and `./test'.
+# Run 'make clean' to clean up generated binaries and files.
 # References: https://codingnest.com/basic-makefiles/
 
 ### USER DEFINED VARIABLES
-TMC_BINARY_SOURCES = main.cpp
 
-LIB_SOURCES = TMCompiler/compiler/compiler.cpp
-LIB_SOURCES += TMCompiler/compiler/front_end/bnf_parser.cpp
-LIB_SOURCES += TMCompiler/compiler/front_end/earley_parser.cpp
-LIB_SOURCES += TMCompiler/compiler/models/grammar.cpp
-LIB_SOURCES += TMCompiler/utils/logger/logger.cpp
+# list of source files, divided by binary and general library source files
+# tmc is the compiler binary
+tmc_SOURCES = main.cpp
 
-# testing
-TEST_SOURCES = TMCompiler/utils/unittesting/unittests.cpp
-TEST_SOURCES += TMCompiler/tests/test_compiler.cpp
-TEST_SOURCES += TMCompiler/tests/test_unittesting.cpp
-TEST_SOURCES += TMCompiler/tests/test_bnf_parser.cpp
+# lib are all other files that do not have a main function
+lib_SOURCES = TMCompiler/compiler/compiler.cpp
+lib_SOURCES += TMCompiler/compiler/front_end/bnf_parser.cpp
+lib_SOURCES += TMCompiler/compiler/front_end/earley_parser.cpp
+lib_SOURCES += TMCompiler/compiler/models/grammar.cpp
+lib_SOURCES += TMCompiler/utils/logger/logger.cpp
 
-TMC_BINARY_OBJECTS = $(TMC_BINARY_SOURCES:.cpp=.o)
-LIB_OBJECTS = $(LIB_SOURCES:.cpp=.o)
-TEST_OBJECTS = $(TEST_SOURCES:.cpp=.o)
+# test runs testcases from lib
+test_SOURCES = TMCompiler/utils/unittesting/unittests.cpp
+test_SOURCES += TMCompiler/tests/test_compiler.cpp
+test_SOURCES += TMCompiler/tests/test_unittesting.cpp
+test_SOURCES += TMCompiler/tests/test_bnf_parser.cpp
 
-OBJECTS = $(TMC_BINARY_OBJECTS) $(LIB_OBJECTS) $(TEST_OBJECTS)
+# for each .cpp file, like main.cpp, define it's corresponding object file,
+# such as main.o
+tmc_OBJECTS = $(tmc_SOURCES:.cpp=.o)
+lib_OBJECTS = $(lib_SOURCES:.cpp=.o)
+test_OBJECTS = $(test_SOURCES:.cpp=.o)
 
+# all object files and list of binaries to generate
+OBJECTS = $(tmc_OBJECTS) $(lib_OBJECTS) $(test_OBJECTS)
+BINARIES = tmc test
+
+# GCC compilation warnings list
 # see https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
-# WARNINGS += -Werror 				# warnings become errors
 WARNINGS += -Wall 					# enable many other warnings
 WARNINGS += -Wextra 				# more warnings
 WARNINGS += -Wpedantic  			# strict ISO C++
@@ -61,8 +73,8 @@ WARNINGS += -fno-common 			# prevent tentative definitions
 # reformat whitespace in WARNINGS list
 WARNINGS := $(shell echo $(WARNINGS) | sed -e "s/\s+/ /g")
 
-### C++ SPECIFIC MAKE VARIABLES
-# g++ 9.4.0
+### C++-SPECIFIC MAKE VARIABLES
+# currently using g++ version 9.4.0
 CXX = g++
 
 # search current directory (root of project) for include paths
@@ -74,20 +86,24 @@ CXXFLAGS = -std=c++14 $(WARNINGS) -MMD -MP
 ### MAKE RECIPES
 .PHONY: all clean
 
-all: tmc test
+# leave as first target: running 'make' will generate both
+# 'tmc' and 'test' binaries
+all: $(BINARIES)
 
+# See https://make.mad-scientist.net/secondary-expansion/
+# Specifying SECONDEXPANSION lets Make know to first expand values
+# in pre-requisites (i.e. from $$($$@_OBJECTS) to $($@_OBJECTS)), then
+# will expand a second time (using $@ to be tmc/test) to become $(tmc_OBJECTS)
+# and $(test_OBJECTS) for output files 'tmc' and 'test' respectively.
+.SECONDEXPANSION:
 # link object files to create executable
-tmc: $(TMC_BINARY_OBJECTS) $(LIB_OBJECTS)
+$(BINARIES): $$($$@_OBJECTS) $$(lib_OBJECTS)
 	$(CXX) $^ -o $@
-	@echo "\033[32mGenerated executable \033[1m$@\033[0m"
-
-test: $(TEST_OBJECTS) $(LIB_OBJECTS)
-	$(CXX) $^ -o $@
-	@echo "\033[32mGenerated executable \033[1m$@\033[0m"
+	@echo "\033[32mGenerated executable \033[1;33m$@\033[0m"
 
 # remove executables, object files, and .d files generated from compilation
 clean:
-	rm -f tmc test $(OBJECTS) $(OBJECTS:.o=.d)
+	rm -f $(BINARIES) $(OBJECTS) $(OBJECTS:.o=.d)
 
 # generate implicit C++ recipes that specify what files are needed to generate each .o file
 -include $(OBJECTS:.o=.d)
