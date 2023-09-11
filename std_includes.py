@@ -25,6 +25,7 @@ includes_provides = {
         "sstream": ["std::stringstream"],
         "stdexcept": ["std::invalid_argument", "std::logic_error", "std::runtime_error"],
         "string": ["std::string", "std::to_string", "std::getline"],
+        "unordered_map": ["std::unordered_map"],
         "unordered_set": ["std::unordered_set"],
         "utility": ["std::make_pair", "std::pair", "std::move"],
         "vector": ["std::vector"],
