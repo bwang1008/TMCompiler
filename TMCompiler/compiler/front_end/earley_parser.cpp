@@ -310,7 +310,7 @@ auto find_top_item(
 		}
 	}
 
-	LOG("ERROR") << "No successful parse of tokens" << std::endl;
+	LOG("CRITICAL") << "No successful parse of tokens" << std::endl;
 	throw std::logic_error("No successful parse of tokens");
 }
 
@@ -449,6 +449,7 @@ auto find_rule_steps(
 
 	if(!search_result) {
 		LOG("CRITICAL") << "No partial parses for rule" << std::endl;
+		throw std::logic_error("No successful parse of tokens");
 	}
 
 	return children_path;
