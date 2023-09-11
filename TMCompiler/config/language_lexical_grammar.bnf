@@ -21,23 +21,23 @@
 		   | <tokens-with-optional-whitespace-prefix> <whitespace>
 
 <tokens-with-optional-whitespace-prefix> ::= <tokens-no-whitespace-prefix>
-										   | <whitespace> <tokens-no-whitespace-prefix>
+										   | <token-delimiter> <tokens-no-whitespace-prefix>
 
 <tokens-no-whitespace-prefix> ::= <keyword>
 								| <keyword> <punctuator>
 								| <keyword> <punctuator> <tokens-with-optional-whitespace-prefix>
 								| <keyword> <token-delimiter>
-								| <keyword> <token-delimiter> <tokens-with-optional-whitespace-prefix>
+								| <keyword> <token-delimiter> <tokens-no-whitespace-prefix>
 								| <identifier>
 								| <identifier> <punctuator>
 								| <identifier> <punctuator> <tokens-with-optional-whitespace-prefix>
 								| <identifier> <token-delimiter>
-								| <identifier> <token-delimiter> <tokens-with-optional-whitespace-prefix>
+								| <identifier> <token-delimiter> <tokens-no-whitespace-prefix>
 								| <constant>
 								| <constant> <punctuator>
 								| <constant> <punctuator> <tokens-with-optional-whitespace-prefix>
 								| <constant> <token-delimiter>
-								| <constant> <token-delimiter> <tokens-with-optional-whitespace-prefix>
+								| <constant> <token-delimiter> <tokens-no-whitespace-prefix>
 								| <punctuator>
 								| <punctuator> <tokens-with-optional-whitespace-prefix>
 
