@@ -10,7 +10,7 @@
 #include <ctime>	  // std::ctime
 #include <iomanip>	  // std::setw
 #include <ios>		  // std::ios, std::ios_base, std::left, std::right
-#include <iostream>	  // std::cout, std::endl
+#include <iostream>	  // std::clog, std::endl
 #include <ostream>	  // std::ostream
 #include <stdexcept>  // std::invalid_argument
 #include <string>	  // std::string
@@ -80,34 +80,34 @@ auto Logger::log_prefix(const std::string& level,
 			: nice_file_name.substr(1 + last_slash);
 
 	// print message with color and formatting
-	std::cout << reset_color;
-	std::cout << "[";
+	std::clog << reset_color;
+	std::clog << "[ ";
 
-	std::cout << time_color;
-	std::cout << get_current_time();
+	std::clog << time_color;
+	std::clog << get_current_time();
 
-	std::cout << reset_color;
-	std::cout << " | ";
+	std::clog << reset_color;
+	std::clog << " | ";
 
-	std::cout << level_mapping.at(level).color_info;
-	std::cout << std::left << std::setw(max_level_name_size)
+	std::clog << level_mapping.at(level).color_info;
+	std::clog << std::left << std::setw(max_level_name_size)
 			  << level_mapping.at(level).pretty_name;
 
-	std::cout << reset_color;
-	std::cout << " | ";
+	std::clog << reset_color;
+	std::clog << " | ";
 
-	std::cout << file_color;
-	std::cout << truncated_file_name;
-	std::cout << ":";
-	std::cout << func_color;
-	std::cout << func_name;
-	std::cout << ":";
-	std::cout << file_color;
-	std::cout << line_number;
+	std::clog << file_color;
+	std::clog << truncated_file_name;
+	std::clog << ":";
+	std::clog << func_color;
+	std::clog << func_name;
+	std::clog << ":";
+	std::clog << file_color;
+	std::clog << line_number;
 
-	std::cout << reset_color;
-	std::cout << "] ";
-	std::cout << level_mapping.at(level).color_info;
+	std::clog << reset_color;
+	std::clog << "] ";
+	std::clog << level_mapping.at(level).color_info;
 }
 
 /**
@@ -141,7 +141,7 @@ auto Logger::set_level(const std::string& level_name) -> void {
 // https://stackoverflow.com/questions/16444119/how-to-write-a-function-wrapper-for-cout-that-allows-for-expressive-syntax
 auto Logger::operator<<(std::ostream& (*f)(std::ostream&)) -> Logger& {
 	if(desired_output_level <= Logger::get_importance(message_level)) {
-		f(std::cout);
+		f(std::clog);
 	}
 
 	return *this;
@@ -149,7 +149,7 @@ auto Logger::operator<<(std::ostream& (*f)(std::ostream&)) -> Logger& {
 
 auto Logger::operator<<(std::ostream& (*f)(std::ios&)) -> Logger& {
 	if(desired_output_level <= Logger::get_importance(message_level)) {
-		f(std::cout);
+		f(std::clog);
 	}
 
 	return *this;
@@ -157,7 +157,7 @@ auto Logger::operator<<(std::ostream& (*f)(std::ios&)) -> Logger& {
 
 auto Logger::operator<<(std::ostream& (*f)(std::ios_base&)) -> Logger& {
 	if(desired_output_level <= Logger::get_importance(message_level)) {
-		f(std::cout);
+		f(std::clog);
 	}
 
 	return *this;
