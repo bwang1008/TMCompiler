@@ -7,10 +7,10 @@
 #include <utility>	// std::move
 #include <vector>
 
-#include <TMCompiler/compiler/front_end/bnf_parser.hpp>	 // BnfParser
-#include <TMCompiler/compiler/front_end/earley_parser.hpp>	// build_earley_items, build_earley_parse_tree, EarleyItem, SubParse
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
 #include <TMCompiler/compiler/models/token.hpp>			  // Token
+#include <TMCompiler/compiler/parser/earley_parser.hpp>	 // build_earley_items, build_earley_parse_tree, EarleyItem, SubParse
+#include <TMCompiler/compiler/utils/bnf_parser.hpp>	 // BnfParser
 
 Grammar::Grammar(std::ifstream& bnf_file, std::string top_symbol)
 	: default_start(std::move(top_symbol)) {

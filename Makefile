@@ -13,8 +13,8 @@ tmc_SOURCES = main.cpp
 
 # lib are all other files that do not have a main function
 lib_SOURCES = TMCompiler/compiler/compiler.cpp
-lib_SOURCES += TMCompiler/compiler/front_end/bnf_parser.cpp
-lib_SOURCES += TMCompiler/compiler/front_end/earley_parser.cpp
+lib_SOURCES += TMCompiler/compiler/utils/bnf_parser.cpp
+lib_SOURCES += TMCompiler/compiler/parser/earley_parser.cpp
 lib_SOURCES += TMCompiler/compiler/models/grammar.cpp
 lib_SOURCES += TMCompiler/utils/logger/logger.cpp
 

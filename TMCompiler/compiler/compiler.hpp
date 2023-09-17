@@ -13,9 +13,9 @@
 #include <string>	// std::string
 #include <vector>	// std::vector
 
-#include <TMCompiler/compiler/front_end/earley_parser.hpp>	// SubParse
-#include <TMCompiler/compiler/models/grammar.hpp>			// Grammar
-#include <TMCompiler/compiler/models/token.hpp>				// Token
+#include <TMCompiler/compiler/models/grammar.hpp>		 // Grammar
+#include <TMCompiler/compiler/models/token.hpp>			 // Token
+#include <TMCompiler/compiler/parser/earley_parser.hpp>	 // SubParse
 
 class Compiler {
 public:

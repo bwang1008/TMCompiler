@@ -4,7 +4,6 @@ This directory contains core data structures and related algorithms needed to im
 Most header files (`*.hpp` file) is accompanied by an implementation file (`*.cpp` file) of the same name.
 
 ## Files
-- `bnf_parser`: functionality to read and parse BNF grammar files into data structures
 - `grammar`: data structure that provides a `parse` wrapper function, to parse a program by a specific grammar
 - `earley_parser`: functionality to parse input tokens by a specific grammar
 - `token`: data structure to read in an input program and generate tokens, to be parsed later

@@ -15,8 +15,8 @@ project(TMCompiler
 add_executable(tmc
 	main.cpp
 	TMCompiler/compiler/compiler.cpp
-	TMCompiler/compiler/front_end/bnf_parser.cpp
-	TMCompiler/compiler/front_end/earley_parser.cpp
+	TMCompiler/compiler/utils/bnf_parser.cpp
+	TMCompiler/compiler/parser/earley_parser.cpp
 	TMCompiler/compiler/models/grammar.cpp
 	TMCompiler/utils/logger/logger.cpp
 )

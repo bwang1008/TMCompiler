@@ -3,9 +3,9 @@
 #include <string>	// std::string
 #include <vector>	// std::vector
 
-#include <TMCompiler/compiler/front_end/bnf_parser.hpp>
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
 #include <TMCompiler/compiler/models/rule.hpp>			  // Rule
+#include <TMCompiler/compiler/utils/bnf_parser.hpp>		  // BnfParser
 #include <TMCompiler/utils/unittesting/unittests.hpp>	  // TEST_CASE, ASSERT
 
 TEST_CASE(test0) {

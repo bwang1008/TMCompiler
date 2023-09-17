@@ -73,7 +73,8 @@ const std::map<std::string, LevelInfo> level_mapping{
 	{"WARNING", LevelInfo{"WARNING", 30, "\033[33m"}},	// yellow
 	{"ERROR", LevelInfo{"ERROR", 40, "\033[1;31m"}},	// bold red
 	{"CRITICAL",
-	 LevelInfo{"CRITICAL", 50, "\033[1;31;46m"}},  // bold red font, cyan background
+	 LevelInfo{
+		 "CRITICAL", 50, "\033[1;31;46m"}},	 // bold red font, cyan background
 	{"NONE", LevelInfo{"NONE", 1000, "\033[0m"}},  // reset to default
 };
 

@@ -17,10 +17,10 @@
 #include <string>	  // std::string, std::getline
 #include <vector>	  // std::vector
 
-#include <TMCompiler/compiler/front_end/earley_parser.hpp>	// SubParse
-#include <TMCompiler/compiler/models/rule.hpp>				// Rule
-#include <TMCompiler/compiler/models/token.hpp>				// Token
-#include <TMCompiler/utils/logger/logger.hpp>				// LOG
+#include <TMCompiler/compiler/models/rule.hpp>			 // Rule
+#include <TMCompiler/compiler/models/token.hpp>			 // Token
+#include <TMCompiler/compiler/parser/earley_parser.hpp>	 // SubParse
+#include <TMCompiler/utils/logger/logger.hpp>			 // LOG
 
 /**
  * Constructor for Compiler class.
