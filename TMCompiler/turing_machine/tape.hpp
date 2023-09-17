@@ -4,17 +4,17 @@
 #include <cstddef>	// std::size_t
 #include <vector>	// std::vector
 
-#include "TMCompiler/src/turing-machine/shift.hpp"
-#include "TMCompiler/src/turing-machine/symbol.hpp"
+#include "TMCompiler/turing_machine/shift.hpp"
+#include "TMCompiler/turing_machine/symbol.hpp"
 
 using Symbol = char;
 
 class Tape {
 public:
 	Tape();
-	Symbol read() const;
-	void write(Symbol symbol) const;
-	void shiftHead(Shift shift) const;
+	auto read() -> Symbol const;
+	auto write(Symbol symbol) -> void const;
+	auto shiftHead(Shift shift) -> void const;
 
 private:
 	std::vector<Symbol> cells;

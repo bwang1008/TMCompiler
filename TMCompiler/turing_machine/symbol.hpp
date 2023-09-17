@@ -1,6 +1,6 @@
 #ifndef SHIFT_HPP
 #define SHIFT_HPP
 
-struct Shift {};
+struct Symbol {};
 
 #endif

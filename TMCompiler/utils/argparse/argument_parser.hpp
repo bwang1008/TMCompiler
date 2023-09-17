@@ -4,15 +4,15 @@
 #include <fstream>	// std::ifstream
 #include <string>
 
-#include "TMCompiler/src/argparse/argument.hpp"
+#include "TMCompiler/utils/argparse/argument.hpp"  // Argument
 
 class ArgumentParser {
 public:
 	ArgumentParser();
-	ArgumentParser(const std::ifstream& argumentsFile);
-	void addArgument(const Argument argument);
-	void parseCommandLine(const int argc, const char** argv);
-	Argument get(std::string name);
+	explicit ArgumentParser(const std::ifstream& argumentsFile);
+	void addArgument(Argument argument);
+	void parseCommandLine(int argc, const char** argv);
+	auto get(std::string name) -> Argument;
 };
 
 #endif
