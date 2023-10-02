@@ -85,8 +85,9 @@ auto find_next_unescaped_string(const std::string& text,
 								const std::size_t pos) -> std::size_t {
 	std::size_t find_pos = pos;
 	bool search_current = true;
+
 	do {
-		find_pos = text.find(pattern, find_pos + ((search_current) ? 1 : 0));
+		find_pos = text.find(pattern, find_pos + ((search_current) ? 0 : 1));
 		search_current = false;
 	} while(pattern.size() == 1 && find_pos != std::string::npos &&
 			find_pos > 0 && text[find_pos - 1] == '\\' &&
