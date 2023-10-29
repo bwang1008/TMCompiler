@@ -79,8 +79,9 @@ auto convert_token_rules_to_regexes(const std::vector<Rule>& rules)
 			if(token_type_to_regex_string.find(token_type) ==
 			   token_type_to_regex_string.end()) {
 				throw std::invalid_argument(
-					"Lexical grammar states a token can have type " +
-					token_type + ", but no production <" + token_type +
+					std::string("Lexical grammar states a token can have type ")
+						.append(token_type) +
+					", but no production <" + token_type +
 					"> ::= \"...\" was found");
 			}
 
