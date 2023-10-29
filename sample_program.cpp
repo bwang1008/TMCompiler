@@ -14,6 +14,7 @@ int foo(int x) {
 	return foo(x - 1);
 }
 
+// main program
 int main() {
 	int ans = foo(32);
 
