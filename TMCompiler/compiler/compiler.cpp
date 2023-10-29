@@ -171,7 +171,7 @@ auto Compiler::generate_parse_tree(const std::string& program_text) const
  * would look like [([0, 11) is a subparse of tokens), ([0, 3) is a valid
  * subparse of a keyword), ([0, 1) is a valid letter), ...]. After tokenizing,
  * this should return [Token(keyword, "int"), Token(identifier, "x"),
- * Token(punctuator, "="), * Token(constant, "123"), Token(punctuator, ",")].
+ * Token(punctuator, "="), * Token(constant, "123"), Token(punctuator, ";")].
  */
 auto Compiler::tokenize(const std::vector<SubParse>& parse_tree,
 						const std::string& program_text) const
