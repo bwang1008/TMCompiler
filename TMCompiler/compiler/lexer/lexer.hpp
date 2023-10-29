@@ -1,6 +1,39 @@
 #ifndef LEXER_HPP
 #define LEXER_HPP
 
+/**
+ * The Lexer class implements a scanner that tokenizes a given string into
+ * individual tokens / words, based on a list of regular-expressions in a BNF
+ * configuration file.
+ *
+ * The BNF file must have the following structure:
+ *		- a "token" production to a list of token-type productions
+ *		- a production for every token-type, that leads to one regular
+ *expression
+ *
+ * For instance, the following is a valid BNF configuration:
+ * <token> ::= <whitespace>
+ *           | <identifier>
+ * <whitespace> ::= "\s+"
+ * <identifier> ::= "[a-zA-Z][a-zA-Z0-9]*"
+ *
+ * This tells the lexer that there are two kinds of tokens: whitespace and
+ * identifiers, based on the corresponding regular-expression.
+ *
+ * One way to use the lexer is as follows:
+ *
+ * Lexer lexer{"TMCompiler/config/regex_lexical_grammar.bnf"};
+ * lexer.set_text("int foo");
+ * while(lexer.has_next_token()) {
+ *		Token token = lexer.get_next_token();
+ * }
+ *
+ * which will parse out the following tokens:
+ * Token{"keyword", "int", 0, 0};
+ * Token{"whitespace", " ", 0, 3};
+ * Token{"identifier", "foo", 0, 4};
+ */
+
 #include <regex>	// std::regex
 #include <string>	// std::string
 #include <utility>	// std::pair
