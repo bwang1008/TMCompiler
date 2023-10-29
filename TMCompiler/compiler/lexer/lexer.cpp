@@ -208,7 +208,7 @@ auto Lexer::get_next_token() -> Token {
 			}
 
 			// update current position in text
-			cursor += matched.size();
+			cursor += static_cast<unsigned int>(matched.size());
 
 			return Token{token_type, matched, row, col};
 		}
