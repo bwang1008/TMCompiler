@@ -31,7 +31,7 @@
  * ]
  *
  * @param rules: list of Rule objects from a BNF file, containing some
- * productions of non-terminal "token", as well as some productions of 
+ * productions of non-terminal "token", as well as some productions of
  * non-terminal token-types to their respective terminal regular-expression
  * @return: a list of (token-type, regex) pairs in the order found in rules
  */
@@ -53,7 +53,7 @@ auto convert_token_rules_to_regexes(const std::vector<Rule>& rules)
 					"the regex of the token pattern");
 			}
 
-			// found <whitespace> ::= "\s+"
+			// found <whitespace> ::= "\s+"; store as "whitespace" -> "\s+"
 			token_type_to_regex_string[rule.production.value] =
 				replacement.at(0).value;
 		}
@@ -69,10 +69,21 @@ auto convert_token_rules_to_regexes(const std::vector<Rule>& rules)
 	// order (token_type, token_regex) based on order in list of rules
 	std::vector<std::pair<std::string, std::regex> > token_regexes;
 
+	// find instances of Rule("token", "whitespace"),
+	// Rule("token", "identifier"), ...
 	for(const Rule& rule : rules) {
 		if(rule.production.value == "token") {
 			// add ("whitespace", std::regex("\s+"))
 			const std::string token_type = rule.replacement[0].value;
+
+			if(token_type_to_regex_string.find(token_type) ==
+			   token_type_to_regex_string.end()) {
+				throw std::invalid_argument(
+					"Lexical grammar states a token can have type " +
+					token_type + ", but no production <" + token_type +
+					"> ::= \"...\" was found");
+			}
+
 			const std::string token_regex =
 				token_type_to_regex_string[token_type];
 			token_regexes.emplace_back(token_type, std::regex(token_regex));
@@ -129,10 +140,12 @@ auto Lexer::set_text(std::string text_to_read) -> void {
  * token starting at that position.
  */
 auto Lexer::has_next_token() const -> bool {
+	// if there are no more characters to read, no more tokens
 	if(cursor >= text.size()) {
 		return false;
 	}
 
+	// try matching every token_type's regex at current position
 	for(const std::pair<std::string, std::regex>& token_type_regex :
 		token_regexes) {
 		std::smatch match_result;
@@ -170,6 +183,7 @@ auto Lexer::has_next_token() const -> bool {
  * @return: a token at the current position of text
  */
 auto Lexer::get_next_token() -> Token {
+	// try matching every token_type's regex at current position
 	for(const std::pair<std::string, std::regex>& token_type_regex :
 		token_regexes) {
 		std::smatch match_result;
@@ -178,9 +192,11 @@ auto Lexer::get_next_token() -> Token {
 							 match_result,
 							 token_type_regex.second) &&
 		   match_result.position() == 0) {
+			// found match!
 			const std::string token_type = token_type_regex.first;
 			const std::string matched = match_result.str();
 
+			// update column and row position
 			for(const char c : matched) {
 				if(c == '\n') {
 					++row;
@@ -190,6 +206,7 @@ auto Lexer::get_next_token() -> Token {
 				}
 			}
 
+			// update current position in text
 			cursor += matched.size();
 
 			return Token{token_type, matched, row, col};
