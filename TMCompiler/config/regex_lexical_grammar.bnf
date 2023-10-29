@@ -1,0 +1,30 @@
+# reference from https://gist.github.com/arslancharyev31/c48d18d8f917ffe217a0e23eb3535957
+
+<token> ::= <whitespace>
+		  | <line-comment>
+		  | <block-comment>
+		  | <keyword>
+		  | <integer-constant>
+		  | <boolean-constant>
+		  | <identifier>
+		  | <punctuator>
+
+<whitespace> ::= "\s+"
+
+# line-comments start with // and end with newline
+<line-comment> ::= "//[^\n\r]+[\n\r]"
+
+# block-comments start with /* and end with */. In between is (not */)
+# every section looks like (at least one non-star,non-slash), then a star, a slash, or nothing
+# /\* matches /*
+# (A|B)* matches A or B any number of times
+# [^*/]+ matches at least one character that is not * or /
+# \*? matches 0 or 1 star (*)
+# /? matches 0 or 1 forward slash
+# \*/ matches */
+<block-comment> ::= "/\*([^*/]+\*?|[^*/]+/?)*\*/"
+<keyword> ::= "(void|int|bool|for|while|if|else|break|continue|return)"
+<integer-constant> ::= "\d+"
+<boolean-constant> ::= "(true|false)"
+<identifier> ::= "[a-zA-Z][a-zA-Z0-9]*"
+<punctuator> ::= "(\[|\]|\(|\)|\{|\}|\*|\+|-|!|/|%|<|>|\^|;|=|,|&|\|)"
