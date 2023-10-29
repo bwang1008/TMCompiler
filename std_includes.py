@@ -7,7 +7,7 @@ from rich.progress import track
 from check_files import c_plus_plus_files
 
 includes_provides = {
-        "algorithm": ["std::max"],
+        "algorithm": ["std::max", "std::min"],
         "cctype": ["std::isspace"],
         "chrono": ["std::chrono"],
         "cstddef": ["std::size_t"],
@@ -16,14 +16,14 @@ includes_provides = {
         "fstream": ["std::ifstream"],
         "iomanip": ["std::setw"],
         "ios": ["std::ios", "std::ios_base", "std::left", "std::right"],
-        "iostream": ["std::cout", "std::endl"],
+        "iostream": ["std::cout", "std::endl", "std::clog"],
         "list": ["std::list"],
         "map": ["std::map"],
         "ostream": ["std::ostream"],
-        "regex": ["std::regex", "std::regex_match"],
+        "regex": ["std::regex", "std::regex_match", "std::regex_search", "std::smatch"],
         "set": ["std::set"],
         "sstream": ["std::stringstream"],
-        "stdexcept": ["std::invalid_argument", "std::logic_error", "std::runtime_error"],
+        "stdexcept": ["std::invalid_argument", "std::logic_error", "std::runtime_error", "std::out_of_range"],
         "string": ["std::string", "std::to_string", "std::getline"],
         "unordered_map": ["std::unordered_map"],
         "unordered_set": ["std::unordered_set"],
@@ -136,15 +136,15 @@ def check_std_includes_in_file(file):
         panel_lines.append(f"Unused headers: {sorted(unused_headers)}")
 
     if len(panel_lines) > 0:
-        print(Panel.fit('\n'.join(panel_lines), title=file))
+        print(Panel.fit('\n'.join(panel_lines), title=file, border_style="dark_orange3"))
     else:
-        print(f"{file} standard includes OK")
+        print(f"{file} standard includes [yellow]OK")
 
 
 def check_std_includes():
     files = c_plus_plus_files()
 
-    for file_name in track(files, description="Checking standard includes..."):
+    for file_name in track(files, description=" Checking standard includes..."):
         check_std_includes_in_file(file_name)
 
 
