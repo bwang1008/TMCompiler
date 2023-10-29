@@ -20,6 +20,8 @@
  * This tells the lexer that there are two kinds of tokens: whitespace and
  * identifiers, based on the corresponding regular-expression.
  *
+ * The lexer will parse text in the order given by the productions of "token"
+ *
  * One way to use the lexer is as follows:
  *
  * Lexer lexer{"TMCompiler/config/regex_lexical_grammar.bnf"};
