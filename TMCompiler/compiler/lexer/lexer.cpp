@@ -15,6 +15,26 @@
 #include <TMCompiler/compiler/utils/bnf_parser.hpp>		  // BnfParser
 #include <TMCompiler/utils/logger/logger.hpp>			  // LOG
 
+/**
+ * Given a list of Rules, convert into a more usable list of token-productions.
+ *
+ * For instance, parameter "rules" may contain the following:
+ * Rule{"token" => "whitespace"}
+ * Rule{"token" => "identifier"}
+ * Rule{"identifier" => "[a-zA-Z][a-zA-Z0-9]*"
+ * Rule{"whitespace" => "\s+"}
+ *
+ * This function will return the following list:
+ * [
+ *	  ("whitespace", std::regex("\s+")),
+ *	  ("identifier", std::regex("[a-zA-Z][a-zA-Z0-9]*")),
+ * ]
+ *
+ * @param rules: list of Rule objects from a BNF file, containing some
+ * productions of non-terminal "token", as well as some productions of 
+ * non-terminal token-types to their respective terminal regular-expression
+ * @return: a list of (token-type, regex) pairs in the order found in rules
+ */
 auto convert_token_rules_to_regexes(const std::vector<Rule>& rules)
 	-> std::vector<std::pair<std::string, std::regex> > {
 	// store instances of "whitespace" -> "\s+"
@@ -62,6 +82,12 @@ auto convert_token_rules_to_regexes(const std::vector<Rule>& rules)
 	return token_regexes;
 }
 
+/**
+ * Constructor for Lexer class.
+ *
+ * @param lexcial_config_file: file path name of BNF file containing
+ * token-productions and token-type productions
+ */
 Lexer::Lexer(const std::string& lexical_config_file)
 	: text{""}, cursor{0}, row{0}, col{0} {
 	std::ifstream input_stream(lexical_config_file);
@@ -73,6 +99,16 @@ Lexer::Lexer(const std::string& lexical_config_file)
 	token_regexes = convert_token_rules_to_regexes(rules);
 }
 
+/**
+ * Setter method for which text to tokenize from
+ *
+ * For instance, setting text to be "int foo" and later calling
+ * get_next_token() might return Token("keyword", "int").
+ * This method resets the current read position of text to 0; ie the start of
+ * the text.
+ *
+ * @param text_to_read: string to tokenize from
+ */
 auto Lexer::set_text(std::string text_to_read) -> void {
 	text = std::move(text_to_read);
 	cursor = 0;
@@ -80,6 +116,18 @@ auto Lexer::set_text(std::string text_to_read) -> void {
 	col = 0;
 }
 
+/**
+ * Checks if there is a valid token to parse from the current position within
+ * text.
+ *
+ * For instance, if text was "int foo", and "int" was already tokenized, the
+ * current position would be at 3, the space. has_next_token() would return
+ * true because the space would match the "whitespace" token. This does not
+ * actually tokenize, and it does not affect the current position.
+ *
+ * @return: returns true iff at the current position in text, there is a valid
+ * token starting at that position.
+ */
 auto Lexer::has_next_token() -> bool {
 	if(cursor >= text.size()) {
 		return false;
@@ -103,6 +151,24 @@ auto Lexer::has_next_token() -> bool {
 	return false;
 }
 
+/**
+ * Parses the next valid token from text at the current position.
+ *
+ * After a token is parsed, the current position is moved to right after
+ * the parsed token. A std::out_of_range exception is throw if there is no
+ * valid next token to parse.
+ *
+ * For example, suppose text = "int foo", and get_next_token() has already
+ * been called twice and returned the tokens
+ * Token("keyword", "int") and Token("whitespace", " ").
+ * The current position is at position 4 at character 'f'.
+ * Calling get_next_token() would return Token("identifier", "foo").
+ *
+ * Note: The above example depends on the appropriate configuration in the BNF
+ * file. The tokens also have information about the line number and column.
+ *
+ * @return: a token at the current position of text
+ */
 auto Lexer::get_next_token() -> Token {
 	for(const std::pair<std::string, std::regex>& token_type_regex :
 		token_regexes) {
