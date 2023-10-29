@@ -1,6 +1,7 @@
 #include "lexer.hpp"
 
 #include <fstream>		  // std::ifstream
+#include <iostream>		  // std::endl
 #include <regex>		  // std::regex, std::regex_search, std::smatch
 #include <stdexcept>	  // std::invalid_argument, std::out_of_range
 #include <string>		  // std::string, std::to_string
@@ -12,6 +13,7 @@
 #include <TMCompiler/compiler/models/rule.hpp>			  // Rule
 #include <TMCompiler/compiler/models/token.hpp>			  // Token
 #include <TMCompiler/compiler/utils/bnf_parser.hpp>		  // BnfParser
+#include <TMCompiler/utils/logger/logger.hpp>			  // LOG
 
 auto convert_token_rules_to_regexes(const std::vector<Rule>& rules)
 	-> std::vector<std::pair<std::string, std::regex> > {
@@ -79,6 +81,10 @@ auto Lexer::set_text(std::string text_to_read) -> void {
 }
 
 auto Lexer::has_next_token() -> bool {
+	if(cursor >= text.size()) {
+		return false;
+	}
+
 	for(const std::pair<std::string, std::regex>& token_type_regex :
 		token_regexes) {
 		std::smatch match_result;
@@ -90,6 +96,9 @@ auto Lexer::has_next_token() -> bool {
 			return true;
 		}
 	}
+
+	LOG("WARNING") << "Text still has characters, but no token found at line "
+				   << 1 + row << ", col " << col << std::endl;
 
 	return false;
 }
