@@ -128,7 +128,7 @@ auto Lexer::set_text(std::string text_to_read) -> void {
  * @return: returns true iff at the current position in text, there is a valid
  * token starting at that position.
  */
-auto Lexer::has_next_token() -> bool {
+auto Lexer::has_next_token() const -> bool {
 	if(cursor >= text.size()) {
 		return false;
 	}

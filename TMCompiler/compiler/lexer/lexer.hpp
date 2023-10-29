@@ -47,7 +47,7 @@ class Lexer {
 public:
 	explicit Lexer(const std::string& lexical_config_file);
 	auto set_text(std::string text_to_read) -> void;
-	auto has_next_token() -> bool;
+	auto has_next_token() const -> bool;
 	auto get_next_token() -> Token;
 
 private:
