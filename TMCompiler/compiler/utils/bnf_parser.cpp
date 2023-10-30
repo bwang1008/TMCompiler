@@ -3,6 +3,7 @@
 #include <cctype>		  // std::isspace
 #include <cstddef>		  // std::size_t
 #include <fstream>		  // std::ifstream
+#include <iostream>		  // std::endl
 #include <stdexcept>	  // std::invalid_argument
 #include <string>		  // std::string, std::to_string, std::getline
 #include <unordered_map>  // std::unordered_map
