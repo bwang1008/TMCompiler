@@ -185,9 +185,9 @@ auto parse_symbol(const std::string& bnf_contents,
 	}
 
 	// found symbol_end
-	const std::string sanitized_name = interpret_backslashes(
-		bnf_contents.substr(symbol_contents_start, symbol_contents_size));
-	GrammarSymbol parsed_symbol = {sanitized_name, is_terminal};
+	const std::string symbol_contents =
+		bnf_contents.substr(symbol_contents_start, symbol_contents_size);
+	GrammarSymbol parsed_symbol = {symbol_contents, is_terminal};
 	return std::make_pair(parsed_symbol, end_position + symbol_end.size());
 }
 
