@@ -15,14 +15,15 @@
 <line-comment> ::= "//[^\n\r]+[\n\r]"
 
 # block-comments start with /* and end with */. In between is (not */)
-# every section looks like (at least one non-star,non-slash), then a star, a slash, or nothing
+# every section either starts without a star, or it starts with a star followed
+# by a non-star, or it is any number of stars and ends with */
 # /\* matches /*
 # (A|B)* matches A or B any number of times
-# [^*/]+ matches at least one character that is not * or /
-# \*? matches 0 or 1 star (*)
-# /? matches 0 or 1 forward slash
+# [^*]+ matches at least one character that is not *
+# \*+[^/] matches at least one star, then a character that is not /
+# \** matches 0 or more stars *
 # \*/ matches */
-<block-comment> ::= "/\*([^*/]+\*?|[^*/]+/?)*\*/"
+<block-comment> ::= "/\*([^*]+|\*+[^/])*\**\*/"
 <keyword> ::= "(void|int|bool|for|while|if|else|break|continue|return)"
 <integer-constant> ::= "\d+"
 <boolean-constant> ::= "(true|false)"
