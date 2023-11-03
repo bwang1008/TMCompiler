@@ -10,6 +10,7 @@ from rich.progress import track
 def c_plus_plus_files():
     cpp_files = glob.glob("TMCompiler/**/*.cpp", recursive=True)
     hpp_files = glob.glob("TMCompiler/**/*.hpp", recursive=True)
+    tpp_files = glob.glob("TMCompiler/**/*.tpp", recursive=True)
 
     return sorted(cpp_files + hpp_files)
 
