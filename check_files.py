@@ -106,7 +106,7 @@ def check_clang_tidy(files):
     if len(needs_changing):
         print(Panel.fit('\n'.join(needs_changing), title=" Please run clang-tidy on these files", border_style='red'))
     else:
-        print(Panel("All  files have been run with clang-tidy!", title='Status:', border_style='yellow'))
+        print(Panel.fit("All  files have been linted!", title='Status: 🎉', border_style='yellow'))
 
 
 def main():
