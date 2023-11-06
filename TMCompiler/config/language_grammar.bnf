@@ -108,7 +108,6 @@
 <logical-and-expression> ::= <bitwise-or-expression>
 						   | <logical-and-expression> "&" "&" <bitwise-or-expression>
 
-# ???
 <bitwise-or-expression> ::= <xor-expression>
 						  | <bitwise-or-expression> "|" <xor-expression>
 
@@ -116,12 +115,11 @@
 				   | <xor-expression> "^" <bitwise-and-expression>
 
 <bitwise-and-expression> ::= <equality-expression>
-						   | <bitwise-and-expression> "^" <equality-expression>
+						   | <bitwise-and-expression> "&" <equality-expression>
 
 <equality-expression> ::= <relational-expression>
 						| <equality-expression> "=" "=" <relational-expression>
 						| <equality-expression> "!" "=" <relational-expression>
-
 
 <relational-expression> ::= <additive-expression>
 						  | <relational-expression> "<" <additive-expression>
