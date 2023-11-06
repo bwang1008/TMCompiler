@@ -184,6 +184,8 @@ auto Lexer::has_next_token() const -> bool {
  * @return: a token at the current position of text
  */
 auto Lexer::get_next_token() -> Token {
+	std::vector<Token> candidate_tokens;
+
 	// try matching every token_type's regex at current position
 	for(const std::pair<std::string, std::regex>& token_type_regex :
 		token_regexes) {
@@ -198,19 +200,38 @@ auto Lexer::get_next_token() -> Token {
 			const std::string matched = match_result.str();
 
 			// update column and row position
+			unsigned int candidate_row = row;
+			unsigned int candidate_col = col;
+
 			for(const char c : matched) {
 				if(c == '\n') {
-					++row;
-					col = 0;
+					++candidate_row;
+					candidate_col = 0;
 				} else {
-					++col;
+					++candidate_col;
 				}
 			}
 
-			// update current position in text
-			cursor += static_cast<unsigned int>(matched.size());
+			candidate_tokens.push_back(
+				Token{token_type, matched, candidate_row, candidate_col});
+		}
+	}
 
-			return Token{token_type, matched, row, col};
+	// out of all possible ones, select the longest
+	std::size_t longest_match_size = 0;
+	for(const Token& candidate : candidate_tokens) {
+		longest_match_size =
+			std::max(candidate.value.size(), longest_match_size);
+	}
+
+	// break ties by whichever rule came first
+	for(const Token& candidate : candidate_tokens) {
+		if(candidate.value.size() == longest_match_size) {
+			// update current position in text
+			row = candidate.program_line_number;
+			col = candidate.start_position_of_token_in_program_line;
+			cursor += static_cast<unsigned int>(longest_match_size);
+			return candidate;
 		}
 	}
 
