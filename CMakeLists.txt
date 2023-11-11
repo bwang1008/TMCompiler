@@ -34,6 +34,11 @@ configure_file(
 	"${CMAKE_BINARY_DIR}/TMCompiler/config/language_grammar.bnf"
 	COPYONLY
 )
+configure_file(
+	"${CMAKE_SOURCE_DIR}/sample_program.cpp"
+	"${CMAKE_BINARY_DIR}/sample_program.cpp"
+	COPYONLY
+)
 
 # compile warnings
 set(WARNINGS
