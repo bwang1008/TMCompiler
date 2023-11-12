@@ -3,9 +3,9 @@
 
 #include <TMCompiler/compiler/lexer/lexer.hpp>		   // Lexer
 #include <TMCompiler/compiler/models/token.hpp>		   // Token
-#include <TMCompiler/utils/unittesting/unittests.hpp>  // TEST_CASE, ASSERT
+#include <catch2/catch_amalgamated.hpp>
 
-TEST_CASE(test_lexer_comment_0) {
+TEST_CASE("test_lexer_comment_0") {
 	Lexer lexer("TMCompiler/config/regex_lexical_grammar.bnf");
 
 	std::string program_text = "/**/";
@@ -17,11 +17,11 @@ TEST_CASE(test_lexer_comment_0) {
 		tokens.push_back(lexer.get_next_token());
 	}
 
-	ASSERT(tokens.size() == 1);
-	ASSERT(tokens[0].type == "block-comment");
+	REQUIRE(tokens.size() == 1);
+	REQUIRE(tokens[0].type == "block-comment");
 }
 
-TEST_CASE(test_lexer_comment_1) {
+TEST_CASE("test_lexer_comment_1") {
 	Lexer lexer("TMCompiler/config/regex_lexical_grammar.bnf");
 
 	std::string program_text = "/* */";
@@ -32,11 +32,11 @@ TEST_CASE(test_lexer_comment_1) {
 		tokens.push_back(lexer.get_next_token());
 	}
 
-	ASSERT(tokens.size() == 1);
-	ASSERT(tokens[0].type == "block-comment");
+	REQUIRE(tokens.size() == 1);
+	REQUIRE(tokens[0].type == "block-comment");
 }
 
-TEST_CASE(test_lexer_comment_2) {
+TEST_CASE("test_lexer_comment_2") {
 	Lexer lexer("TMCompiler/config/regex_lexical_grammar.bnf");
 
 	std::string program_text = "/***/";
@@ -47,11 +47,11 @@ TEST_CASE(test_lexer_comment_2) {
 		tokens.push_back(lexer.get_next_token());
 	}
 
-	ASSERT(tokens.size() == 1);
-	ASSERT(tokens[0].type == "block-comment");
+	REQUIRE(tokens.size() == 1);
+	REQUIRE(tokens[0].type == "block-comment");
 }
 
-TEST_CASE(test_lexer_comment_3) {
+TEST_CASE("test_lexer_comment_3") {
 	Lexer lexer("TMCompiler/config/regex_lexical_grammar.bnf");
 
 	std::string program_text = "/**********/";
@@ -62,11 +62,11 @@ TEST_CASE(test_lexer_comment_3) {
 		tokens.push_back(lexer.get_next_token());
 	}
 
-	ASSERT(tokens.size() == 1);
-	ASSERT(tokens[0].type == "block-comment");
+	REQUIRE(tokens.size() == 1);
+	REQUIRE(tokens[0].type == "block-comment");
 }
 
-TEST_CASE(test_lexer_comment_4) {
+TEST_CASE("test_lexer_comment_4") {
 	Lexer lexer("tmcompiler/config/regex_lexical_grammar.bnf");
 
 	std::string program_text = "/*/*/";
@@ -77,11 +77,11 @@ TEST_CASE(test_lexer_comment_4) {
 		tokens.push_back(lexer.get_next_token());
 	}
 
-	ASSERT(tokens.size() == 1);
-	ASSERT(tokens[0].type == "block-comment");
+	REQUIRE(tokens.size() == 1);
+	REQUIRE(tokens[0].type == "block-comment");
 }
 
-TEST_CASE(test_lexer_comment_5) {
+TEST_CASE("test_lexer_comment_5") {
 	Lexer lexer("TMCompiler/config/regex_lexical_grammar.bnf");
 
 	std::string program_text = "/*/////////////*/";
@@ -92,6 +92,6 @@ TEST_CASE(test_lexer_comment_5) {
 		tokens.push_back(lexer.get_next_token());
 	}
 
-	ASSERT(tokens.size() == 1);
-	ASSERT(tokens[0].type == "block-comment");
+	REQUIRE(tokens.size() == 1);
+	REQUIRE(tokens[0].type == "block-comment");
 }

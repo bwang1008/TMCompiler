@@ -20,11 +20,11 @@ lib_SOURCES += TMCompiler/compiler/utils/bnf_parser.cpp
 lib_SOURCES += TMCompiler/utils/logger/logger.cpp
 
 # test runs testcases from lib
-test_SOURCES = TMCompiler/utils/unittesting/unittests.cpp
-test_SOURCES += TMCompiler/tests/test_bnf_parser.cpp
+test_SOURCES = TMCompiler/tests/test_bnf_parser.cpp
 test_SOURCES += TMCompiler/tests/test_compiler.cpp
 test_SOURCES += TMCompiler/tests/test_lexer.cpp
 test_SOURCES += TMCompiler/tests/test_unittesting.cpp
+test_SOURCES += TMCompiler/utils/vendor/catch2/catch_amalgamated.cpp
 
 # for each .cpp file, like main.cpp, define it's corresponding object file,
 # such as main.o
@@ -80,7 +80,7 @@ WARNINGS := $(shell echo $(WARNINGS) | sed -e "s/\s+/ /g")
 CXX = g++
 
 # search current directory (root of project) for include paths
-CPPFLAGS = -I.
+CPPFLAGS = -I. -isystem TMCompiler/utils/vendor
 
 # use c++14 standard. MMD and MP to generate .d files for use by Make
 CXXFLAGS = -std=c++14 $(WARNINGS) -MMD -MP
