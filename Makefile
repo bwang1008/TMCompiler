@@ -24,17 +24,24 @@ test_SOURCES = TMCompiler/tests/test_bnf_parser.cpp
 test_SOURCES += TMCompiler/tests/test_compiler.cpp
 test_SOURCES += TMCompiler/tests/test_lexer.cpp
 test_SOURCES += TMCompiler/tests/test_unittesting.cpp
-test_SOURCES += TMCompiler/utils/vendor/catch2/catch_amalgamated.cpp
+
+test_LIBRARIES = catch2.a
+
+# static libaries from vendor
+catch2_SOURCES = TMCompiler/utils/vendor/catch2/catch_amalgamated.cpp
 
 # for each .cpp file, like main.cpp, define it's corresponding object file,
 # such as main.o
 tmc_OBJECTS = $(tmc_SOURCES:.cpp=.o)
 lib_OBJECTS = $(lib_SOURCES:.cpp=.o)
 test_OBJECTS = $(test_SOURCES:.cpp=.o)
+catch2_OBJECTS = $(catch2_SOURCES:.cpp=.o)
 
 # all object files and list of binaries to generate
-OBJECTS = $(tmc_OBJECTS) $(lib_OBJECTS) $(test_OBJECTS)
+OBJECTS = $(tmc_OBJECTS) $(lib_OBJECTS) $(test_OBJECTS) $(catch2_OBJECTS)
 BINARIES = tmc test
+
+STATIC_LIBRARIES = catch2.a
 
 # GCC compilation warnings list
 # see https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
@@ -85,6 +92,8 @@ CPPFLAGS = -I. -isystem TMCompiler/utils/vendor
 # use c++14 standard. MMD and MP to generate .d files for use by Make
 CXXFLAGS = -std=c++14 $(WARNINGS) -MMD -MP
 
+ARFLAGS = rcs
+
 ### MAKE RECIPES
 .PHONY: all clean
 
@@ -100,13 +109,25 @@ all: $(BINARIES)
 .SECONDEXPANSION:
 # link object files to create executable: for instance, to create tmc, run
 # 'g++ main.o TMCompiler/compiler/compiler.o ... -o tmc'
-$(BINARIES): $$($$@_OBJECTS) $$(lib_OBJECTS)
+$(BINARIES): $$($$@_OBJECTS) $$(lib_OBJECTS) $$($$@_LIBRARIES)
 	$(CXX) $^ -o $@
 	@echo "\033[32mGenerated executable \033[1;33m$@\033[0m"
 
+# Compile vendor source files:
+# to create catch2_amalgamated.o, use catch2_amalgamated.cpp.
+# Do not use WARNINGS to compile vendor library.
+$(catch2_OBJECTS): $$(subst .o,.cpp,$$@)
+	$(CXX) -c $^ -o $@
+
+# To create catch2.a, use prerequisites $($(subst .a,_OBJECTS,catch2.a)),
+# or $(catch2_OBJECTS), or TMCompiler/utils/vendor/catch2/catch2_amalgamated.o
+# Use archiver to generate static library
+$(STATIC_LIBRARIES): $$($$(subst .a,_OBJECTS,$$@))
+	$(AR) $(ARFLAGS) $@ $^
+
 # run 'make clean' to remove executables, object files, and .d files generated from compilation
 clean:
-	rm -f $(BINARIES) $(OBJECTS) $(OBJECTS:.o=.d)
+	rm -f $(BINARIES) $(OBJECTS) $(OBJECTS:.o=.d) $(STATIC_LIBRARIES)
 
 # generate implicit C++ recipes that specify what files are needed to generate each .o file
 -include $(OBJECTS:.o=.d)
