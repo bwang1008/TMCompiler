@@ -124,6 +124,7 @@ $(catch2_OBJECTS): $$(subst .o,.cpp,$$@)
 # Use archiver to generate static library
 $(STATIC_LIBRARIES): $$($$(subst .a,_OBJECTS,$$@))
 	$(AR) $(ARFLAGS) $@ $^
+	@echo "\033[32mGenerated static library \033[1;33m$@\033[0m"
 
 # run 'make clean' to remove executables, object files, and .d files generated from compilation
 clean:
