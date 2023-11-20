@@ -26,7 +26,6 @@ lib_SOURCES += TMCompiler/utils/logger/logger.cpp
 test_SOURCES = TMCompiler/tests/test_bnf_parser.cpp
 test_SOURCES += TMCompiler/tests/test_compiler.cpp
 test_SOURCES += TMCompiler/tests/test_lexer.cpp
-test_SOURCES += TMCompiler/tests/test_unittesting.cpp
 test_SOURCES += $(catch2_SOURCES)
 
 # for each .cpp file, like main.cpp, define it's corresponding object file,

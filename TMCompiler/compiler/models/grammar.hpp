@@ -11,18 +11,6 @@
 #include <TMCompiler/compiler/models/token.hpp>			  // Token
 #include <TMCompiler/compiler/parser/earley_parser.hpp>	  // SubParse
 
-// requires C++17
-// see
-// https://stackoverflow.com/questions/6517231/are-c-recursive-type-definitions-possible-in-particular-can-i-put-a-vectort
-struct AbstractSyntaxTreeNode {
-	std::string name;
-	std::vector<AbstractSyntaxTreeNode> children;
-};
-
-struct AbstractSyntaxTree {
-	AbstractSyntaxTreeNode root;
-};
-
 class Grammar {
 public:
 	explicit Grammar(const std::string& bnf_file, std::string top_symbol);
