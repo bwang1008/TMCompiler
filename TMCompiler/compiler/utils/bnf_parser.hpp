@@ -13,10 +13,9 @@ using ReplacementAlternatives = std::vector<std::vector<GrammarSymbol> >;
 
 namespace BnfParser {
 // use in Grammar's init:
-// std::ifstream file("C.bnf");
-// rules = BnfParser::parse_rules(file);
-auto parse_rules(std::ifstream& bnf_file_stream) -> std::vector<Rule>;
-auto parse_rules(const std::string& bnf_contents) -> std::vector<Rule>;
+// rules = BnfParser::parse_rules("C.bnf");
+auto parse_rules(const std::string& bnf_file) -> std::vector<Rule>;
+auto parse_rules_contents(const std::string& bnf_contents) -> std::vector<Rule>;
 
 const std::string bnf_comment_start = std::string("#");
 const std::string bnf_terminal_start = std::string("\"");

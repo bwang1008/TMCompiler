@@ -25,7 +25,7 @@ struct AbstractSyntaxTree {
 
 class Grammar {
 public:
-	explicit Grammar(std::ifstream& bnf_file, std::string top_symbol);
+	explicit Grammar(const std::string& bnf_file, std::string top_symbol);
 	auto parse(const std::vector<Token>& input_tokens) const
 		-> std::vector<SubParse>;
 	auto get_rules() const -> std::vector<Rule>;

@@ -9,7 +9,7 @@
 #include <catch2/catch_amalgamated.hpp>
 
 TEST_CASE("test0") {
-	std::ifstream input_bnf("TMCompiler/tests/data/example_grammar.bnf");
+	const std::string& input_bnf = "TMCompiler/tests/data/example_grammar.bnf";
 	std::vector<Rule> rules = BnfParser::parse_rules(input_bnf);
 
 	const std::size_t expected_num_rules = 9;

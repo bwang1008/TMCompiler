@@ -104,12 +104,7 @@ auto convert_token_rules_to_regexes(const std::vector<Rule>& rules)
  */
 Lexer::Lexer(const std::string& lexical_config_file)
 	: text{""}, cursor{0}, row{0}, col{0} {
-	std::ifstream input_stream(lexical_config_file);
-	if(!input_stream.is_open()) {
-		throw std::invalid_argument("Cannot open file " + lexical_config_file);
-	}
-
-	const std::vector<Rule> rules = BnfParser::parse_rules(input_stream);
+	const std::vector<Rule> rules = BnfParser::parse_rules(lexical_config_file);
 	token_regexes = convert_token_rules_to_regexes(rules);
 }
 

@@ -22,13 +22,13 @@ public:
 	/**
 	 * Constructor for Compiler class.
 	 *
-	 * @param lexical_bnf: input stream to BNF file specifying lexical grammar,
+	 * @param lexical_bnf: BNF file specifying lexical grammar,
 	 * i.e. how tokens are formed from letters
-	 * @param syntax_bnf: input stream to BNF file specifying syntactical
+	 * @param syntax_bnf: BNF file specifying syntactical
 	 * grammar, i.e. how each language construct is made up of smaller
 	 * constructs
 	 */
-	Compiler(std::ifstream& lexical_bnf, std::ifstream& syntax_bnf);
+	Compiler(const std::string& lexical_bnf, const std::string& syntax_bnf);
 
 	/**
 	 * Wrapper program that reads in source code from file_name and compiles the

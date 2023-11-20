@@ -195,12 +195,14 @@ auto parse_symbol(const std::string& bnf_contents,
 /**
  * Reads a BNF file and returns a list of rules
  *
- * @param bnf_file_stream: BNF file to read from
+ * @param bnf_file: BNF file to read from
  * @return vector of rules representing the replacement rules in the BNF file
  */
-auto parse_rules(std::ifstream& bnf_file_stream) -> std::vector<Rule> {
+auto parse_rules(const std::string& bnf_file) -> std::vector<Rule> {
+	std::ifstream bnf_file_stream{bnf_file};
+
 	if(!bnf_file_stream.is_open()) {
-		throw std::invalid_argument("Unable to open BNF file");
+		throw std::invalid_argument("Unable to open BNF file " + bnf_file);
 	}
 
 	std::string bnf_contents;
@@ -218,7 +220,7 @@ auto parse_rules(std::ifstream& bnf_file_stream) -> std::vector<Rule> {
 
 	bnf_file_stream.close();
 
-	return parse_rules(bnf_contents);
+	return parse_rules_contents(bnf_contents);
 }
 
 /**
@@ -295,7 +297,8 @@ auto tokenize(const std::string& bnf_contents) -> std::vector<std::string> {
  * @param bnf_contents lines of BNf file concatenated by newlines
  * @return vector of Rule representing the replacement rules in the BNF file
  */
-auto parse_rules(const std::string& bnf_contents) -> std::vector<Rule> {
+auto parse_rules_contents(const std::string& bnf_contents)
+	-> std::vector<Rule> {
 	// tokenize string into list of words
 	const std::vector<std::string> tokens = tokenize(bnf_contents);
 

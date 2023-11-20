@@ -29,12 +29,13 @@
  * non-terminals actually appear in the lexical BNF instead, like "identifier"
  * and "constants".
  *
- * @param lexical_bnf: input stream to BNF file specifying lexical grammar, i.e.
+ * @param lexical_bnf: BNF file specifying lexical grammar, i.e.
  * how tokens are formed from letters
- * @param syntax_bnf: input stream to BNF file specifying syntactical grammar,
+ * @param syntax_bnf: BNF file specifying syntactical grammar,
  * i.e. how each language construct is made up of smaller constructs
  */
-Compiler::Compiler(std::ifstream& lexical_bnf, std::ifstream& syntax_bnf)
+Compiler::Compiler(const std::string& lexical_bnf,
+				   const std::string& syntax_bnf)
 	: lexical_grammar(lexical_bnf, "tokens"),
 	  syntactical_grammar(syntax_bnf, "compilation-unit") {
 	// detect default start from both BNFs
