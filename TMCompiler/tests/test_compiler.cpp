@@ -6,8 +6,7 @@
 
 TEST_CASE("program_text_0") {
 	logger.set_level("NONE");
-	const std::string lex_bnf =
-		"TMCompiler/config/language_lexical_grammar.bnf";
+	const std::string lex_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
 	const std::string syn_bnf = "TMCompiler/config/language_grammar.bnf";
 
 	Compiler compiler(lex_bnf, syn_bnf);
@@ -19,8 +18,7 @@ TEST_CASE("program_text_0") {
 
 TEST_CASE("program_text_1") {
 	logger.set_level("NONE");
-	const std::string lex_bnf =
-		"TMCompiler/config/language_lexical_grammar.bnf";
+	const std::string lex_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
 	const std::string syn_bnf = "TMCompiler/config/language_grammar.bnf";
 
 	Compiler compiler(lex_bnf, syn_bnf);
@@ -32,8 +30,7 @@ TEST_CASE("program_text_1") {
 
 TEST_CASE("program_text_check_0") {
 	logger.set_level("NONE");
-	const std::string lex_bnf =
-		"TMCompiler/config/language_lexical_grammar.bnf";
+	const std::string lex_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
 	const std::string syn_bnf = "TMCompiler/config/language_grammar.bnf";
 
 	Compiler compiler(lex_bnf, syn_bnf);
@@ -45,8 +42,7 @@ TEST_CASE("program_text_check_0") {
 
 TEST_CASE("program_text_check_negative") {
 	logger.set_level("NONE");
-	const std::string lex_bnf =
-		"TMCompiler/config/language_lexical_grammar.bnf";
+	const std::string lex_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
 	const std::string syn_bnf = "TMCompiler/config/language_grammar.bnf";
 
 	Compiler compiler(lex_bnf, syn_bnf);
@@ -58,8 +54,7 @@ TEST_CASE("program_text_check_negative") {
 
 TEST_CASE("program_text_check_negative_basic_statement") {
 	logger.set_level("NONE");
-	const std::string lex_bnf =
-		"TMCompiler/config/language_lexical_grammar.bnf";
+	const std::string lex_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
 	const std::string syn_bnf = "TMCompiler/config/language_grammar.bnf";
 
 	Compiler compiler(lex_bnf, syn_bnf);
@@ -71,8 +66,7 @@ TEST_CASE("program_text_check_negative_basic_statement") {
 
 TEST_CASE("program_two_functions") {
 	logger.set_level("NONE");
-	const std::string lex_bnf =
-		"TMCompiler/config/language_lexical_grammar.bnf";
+	const std::string lex_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
 	const std::string syn_bnf = "TMCompiler/config/language_grammar.bnf";
 
 	Compiler compiler(lex_bnf, syn_bnf);
@@ -85,8 +79,7 @@ TEST_CASE("program_two_functions") {
 
 TEST_CASE("basic_statement") {
 	logger.set_level("NONE");
-	const std::string lex_bnf =
-		"TMCompiler/config/language_lexical_grammar.bnf";
+	const std::string lex_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
 	const std::string syn_bnf = "TMCompiler/config/language_grammar.bnf";
 
 	Compiler compiler(lex_bnf, syn_bnf);
@@ -98,8 +91,7 @@ TEST_CASE("basic_statement") {
 
 TEST_CASE("two_basic_statements") {
 	logger.set_level("NONE");
-	const std::string lex_bnf =
-		"TMCompiler/config/language_lexical_grammar.bnf";
+	const std::string lex_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
 	const std::string syn_bnf = "TMCompiler/config/language_grammar.bnf";
 
 	Compiler compiler(lex_bnf, syn_bnf);
@@ -112,8 +104,7 @@ TEST_CASE("two_basic_statements") {
 
 TEST_CASE("compound_operator") {
 	logger.set_level("NONE");
-	const std::string lex_bnf =
-		"TMCompiler/config/language_lexical_grammar.bnf";
+	const std::string lex_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
 	const std::string syn_bnf = "TMCompiler/config/language_grammar.bnf";
 
 	Compiler compiler(lex_bnf, syn_bnf);
@@ -125,8 +116,7 @@ TEST_CASE("compound_operator") {
 
 TEST_CASE("for_loop") {
 	logger.set_level("NONE");
-	const std::string lex_bnf =
-		"TMCompiler/config/language_lexical_grammar.bnf";
+	const std::string lex_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
 	const std::string syn_bnf = "TMCompiler/config/language_grammar.bnf";
 
 	Compiler compiler(lex_bnf, syn_bnf);
@@ -140,8 +130,7 @@ TEST_CASE("for_loop") {
 
 TEST_CASE("if_statement") {
 	logger.set_level("NONE");
-	const std::string lex_bnf =
-		"TMCompiler/config/language_lexical_grammar.bnf";
+	const std::string lex_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
 	const std::string syn_bnf = "TMCompiler/config/language_grammar.bnf";
 
 	Compiler compiler(lex_bnf, syn_bnf);
@@ -154,8 +143,7 @@ TEST_CASE("if_statement") {
 
 TEST_CASE("if_statement_no_bracket") {
 	logger.set_level("NONE");
-	const std::string lex_bnf =
-		"TMCompiler/config/language_lexical_grammar.bnf";
+	const std::string lex_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
 	const std::string syn_bnf = "TMCompiler/config/language_grammar.bnf";
 
 	Compiler compiler(lex_bnf, syn_bnf);
@@ -168,8 +156,7 @@ TEST_CASE("if_statement_no_bracket") {
 
 TEST_CASE("if_else_statement") {
 	logger.set_level("NONE");
-	const std::string lex_bnf =
-		"TMCompiler/config/language_lexical_grammar.bnf";
+	const std::string lex_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
 	const std::string syn_bnf = "TMCompiler/config/language_grammar.bnf";
 
 	Compiler compiler(lex_bnf, syn_bnf);
@@ -182,8 +169,7 @@ TEST_CASE("if_else_statement") {
 
 TEST_CASE("if_else_if_else_statement") {
 	logger.set_level("NONE");
-	const std::string lex_bnf =
-		"TMCompiler/config/language_lexical_grammar.bnf";
+	const std::string lex_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
 	const std::string syn_bnf = "TMCompiler/config/language_grammar.bnf";
 
 	Compiler compiler(lex_bnf, syn_bnf);
@@ -197,8 +183,7 @@ TEST_CASE("if_else_if_else_statement") {
 
 TEST_CASE("while_statement") {
 	logger.set_level("NONE");
-	const std::string lex_bnf =
-		"TMCompiler/config/language_lexical_grammar.bnf";
+	const std::string lex_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
 	const std::string syn_bnf = "TMCompiler/config/language_grammar.bnf";
 
 	Compiler compiler(lex_bnf, syn_bnf);
@@ -210,8 +195,7 @@ TEST_CASE("while_statement") {
 
 TEST_CASE("newline_and_tabs") {
 	logger.set_level("NONE");
-	const std::string lex_bnf =
-		"TMCompiler/config/language_lexical_grammar.bnf";
+	const std::string lex_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
 	const std::string syn_bnf = "TMCompiler/config/language_grammar.bnf";
 
 	Compiler compiler(lex_bnf, syn_bnf);
@@ -223,8 +207,7 @@ TEST_CASE("newline_and_tabs") {
 
 TEST_CASE("method_invocation") {
 	logger.set_level("NONE");
-	const std::string lex_bnf =
-		"TMCompiler/config/language_lexical_grammar.bnf";
+	const std::string lex_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
 	const std::string syn_bnf = "TMCompiler/config/language_grammar.bnf";
 
 	Compiler compiler(lex_bnf, syn_bnf);

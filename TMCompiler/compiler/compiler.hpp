@@ -27,7 +27,7 @@ public:
 	 * grammar, i.e. how each language construct is made up of smaller
 	 * constructs
 	 */
-	Compiler(const std::string& lexical_bnf, const std::string& syntax_bnf);
+	Compiler(std::string lexical_bnf, const std::string& syntax_bnf);
 
 	/**
 	 * Wrapper program that reads in source code from file_name and compiles the
@@ -47,10 +47,11 @@ public:
 	auto compile_text(const std::string& program_text) const -> void;
 
 private:
-	// programming language of source code can be described using 2 grammars:
-	// one for how to parse tokens / words from letters, and
-	// one for how to parse tokens into programming-language constructs
-	Grammar lexical_grammar;
+	// programming language of source code can be described using 2
+	// specifications: list of regexes for how to parse tokens / words from
+	// letters, and a gramamr for how to parse tokens into programming-language
+	// constructs
+	std::string lexical_file;
 	Grammar syntactical_grammar;
 
 	// convert lexical parse tree into list of tokens

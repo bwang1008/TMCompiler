@@ -34,9 +34,8 @@
  * @param syntax_bnf: BNF file specifying syntactical grammar,
  * i.e. how each language construct is made up of smaller constructs
  */
-Compiler::Compiler(const std::string& lexical_bnf,
-				   const std::string& syntax_bnf)
-	: lexical_grammar(lexical_bnf, "tokens"),
+Compiler::Compiler(std::string lexical_bnf, const std::string& syntax_bnf)
+	: lexical_file(std::move(lexical_bnf)),
 	  syntactical_grammar(syntax_bnf, "compilation-unit") {
 	// detect default start from both BNFs
 
@@ -127,7 +126,7 @@ auto Compiler::generate_parse_tree(const std::string& program_text) const
 		"whitespace", "line-comment", "block-commment"};
 
 	std::vector<Token> words;
-	Lexer lexer{"TMCompiler/config/regex_lexical_grammar.bnf"};
+	Lexer lexer{lexical_file};
 	lexer.set_text(program_text);
 
 	while(lexer.has_next_token()) {
