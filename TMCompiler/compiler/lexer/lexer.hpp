@@ -52,9 +52,9 @@ public:
 
 private:
 	std::string text;
-	unsigned int cursor;
-	unsigned int row;
-	unsigned int col;
+	std::size_t cursor;
+	std::size_t row;
+	std::size_t col;
 	std::vector<std::pair<std::string, std::regex> > token_regexes;
 };
 

@@ -147,10 +147,12 @@ auto Lexer::has_next_token() const -> bool {
 	for(const std::pair<std::string, std::regex>& token_type_regex :
 		token_regexes) {
 		std::smatch match_result;
-		if(std::regex_search(text.cbegin() + cursor,
-							 text.cend(),
-							 match_result,
-							 token_type_regex.second) &&
+		// cursor guaranteed between text.begin() and text.end()
+		if(std::regex_search(
+			   text.cbegin() + static_cast<std::ptrdiff_t>(cursor),
+			   text.cend(),
+			   match_result,
+			   token_type_regex.second) &&
 		   match_result.position() == 0) {
 			return true;
 		}
@@ -187,18 +189,20 @@ auto Lexer::get_next_token() -> Token {
 	for(const std::pair<std::string, std::regex>& token_type_regex :
 		token_regexes) {
 		std::smatch match_result;
-		if(std::regex_search(text.cbegin() + cursor,
-							 text.cend(),
-							 match_result,
-							 token_type_regex.second) &&
+		// cursor guaranteed between text.begin() and text.end()
+		if(std::regex_search(
+			   text.cbegin() + static_cast<std::ptrdiff_t>(cursor),
+			   text.cend(),
+			   match_result,
+			   token_type_regex.second) &&
 		   match_result.position() == 0) {
 			// found match!
 			const std::string token_type = token_type_regex.first;
 			const std::string matched = match_result.str();
 
 			// update column and row position
-			unsigned int candidate_row = row;
-			unsigned int candidate_col = col;
+			std::size_t candidate_row = row;
+			std::size_t candidate_col = col;
 
 			for(const char c : matched) {
 				if(c == '\n') {
@@ -227,7 +231,7 @@ auto Lexer::get_next_token() -> Token {
 			// update current position in text
 			row = candidate.program_line_number;
 			col = candidate.start_position_of_token_in_program_line;
-			cursor += static_cast<unsigned int>(longest_match_size);
+			cursor += longest_match_size;
 			return candidate;
 		}
 	}
