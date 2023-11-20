@@ -1,8 +1,8 @@
 #include <fstream>	// std::ifstream
 #include <string>	// std::string
 
-#include <TMCompiler/compiler/compiler.hpp>			   // Compiler
-#include <TMCompiler/utils/logger/logger.hpp>		   // logger
+#include <TMCompiler/compiler/compiler.hpp>	   // Compiler
+#include <TMCompiler/utils/logger/logger.hpp>  // logger
 #include <catch2/catch_amalgamated.hpp>
 
 TEST_CASE("program_text_0") {

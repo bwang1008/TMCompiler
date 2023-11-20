@@ -10,7 +10,6 @@ from rich.progress import track
 def c_plus_plus_files():
     cpp_files = glob.glob("TMCompiler/**/*.cpp", recursive=True)
     hpp_files = glob.glob("TMCompiler/**/*.hpp", recursive=True)
-    tpp_files = glob.glob("TMCompiler/**/*.tpp", recursive=True)
 
     exception_folders = [
             "TMCompiler/utils/vendor/**/*.cpp",
@@ -18,7 +17,7 @@ def c_plus_plus_files():
     ]
     exception_files = set(file for file_glob in exception_folders for file in glob.glob(file_glob, recursive=True))
 
-    return sorted(set(cpp_files + hpp_files + tpp_files) - exception_files)
+    return sorted(set(cpp_files + hpp_files) - exception_files)
 
 def get_file_contents(file_name):
     file_contents = ""
@@ -40,7 +39,7 @@ def needs_to_run_clang_format(file_name):
 def needs_to_run_clang_tidy(file_name):
     file_contents = get_file_contents(file_name)
 
-    result = subprocess.run(["clang-tidy", file_name, "-config=", "-header-filter=.*", "--quiet", "--", "-std=c++14", "-I."], capture_output=True)
+    result = subprocess.run(["clang-tidy", file_name, "-config=", "-header-filter=.*", "--quiet", "--", "-std=c++14", "-I.", "-isystem", "TMCompiler/utils/vendor"], capture_output=True)
     output = result.stdout.decode("utf-8")
 
     return len(output) != 0

@@ -1,8 +1,8 @@
 #include <string>  // std::string
 #include <vector>  // std::vector
 
-#include <TMCompiler/compiler/lexer/lexer.hpp>		   // Lexer
-#include <TMCompiler/compiler/models/token.hpp>		   // Token
+#include <TMCompiler/compiler/lexer/lexer.hpp>	 // Lexer
+#include <TMCompiler/compiler/models/token.hpp>	 // Token
 #include <catch2/catch_amalgamated.hpp>
 
 TEST_CASE("test_lexer_comment_0") {

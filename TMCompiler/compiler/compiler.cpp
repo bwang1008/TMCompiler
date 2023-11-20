@@ -47,8 +47,11 @@ Compiler::Compiler(std::ifstream& lexical_bnf, std::ifstream& syntax_bnf)
 	//
 	// TODO(bwang): make this automatic, by comparing leaves in syntax with
 	// lexical
-	const std::set<std::string> special_tokens{
-		"keyword", "identifier", "integer-constant", "boolean-constant", "punctuator"};
+	const std::set<std::string> special_tokens{"keyword",
+											   "identifier",
+											   "integer-constant",
+											   "boolean-constant",
+											   "punctuator"};
 	syntactical_grammar.mark_special_symbols_as_terminal(special_tokens);
 }
 
@@ -121,7 +124,8 @@ auto Compiler::generate_parse_tree(const std::string& program_text) const
 	-> std::vector<SubParse> {
 	LOG("INFO") << "Tokenizing input" << std::endl;
 
-	const std::set<std::string> ignored_token_types{"whitespace", "line-comment", "block-commment"};
+	const std::set<std::string> ignored_token_types{
+		"whitespace", "line-comment", "block-commment"};
 
 	std::vector<Token> words;
 	Lexer lexer{"TMCompiler/config/regex_lexical_grammar.bnf"};
