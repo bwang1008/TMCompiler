@@ -8,8 +8,6 @@
 
 #include "compiler.hpp"
 
-#include <algorithm>  // std::max
-#include <cstddef>	  // std::size_t
 #include <fstream>	  // std::ifstream
 #include <iostream>	  // std::endl
 #include <set>		  // std::set
