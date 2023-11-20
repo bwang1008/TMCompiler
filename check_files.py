@@ -12,7 +12,13 @@ def c_plus_plus_files():
     hpp_files = glob.glob("TMCompiler/**/*.hpp", recursive=True)
     tpp_files = glob.glob("TMCompiler/**/*.tpp", recursive=True)
 
-    return sorted(cpp_files + hpp_files)
+    exception_folders = [
+            "TMCompiler/utils/vendor/**/*.cpp",
+            "TMCompiler/utils/vendor/**/*.hpp",
+    ]
+    exception_files = set(file for file_glob in exception_folders for file in glob.glob(file_glob, recursive=True))
+
+    return sorted(set(cpp_files + hpp_files + tpp_files) - exception_files)
 
 def get_file_contents(file_name):
     file_contents = ""
