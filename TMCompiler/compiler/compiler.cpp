@@ -17,6 +17,7 @@
 #include <string>	  // std::string, std::getline
 #include <vector>	  // std::vector
 
+#include <TMCompiler/compiler/lexer/lexer.hpp>
 #include <TMCompiler/compiler/models/rule.hpp>			 // Rule
 #include <TMCompiler/compiler/models/token.hpp>			 // Token
 #include <TMCompiler/compiler/parser/earley_parser.hpp>	 // SubParse
@@ -47,7 +48,7 @@ Compiler::Compiler(std::ifstream& lexical_bnf, std::ifstream& syntax_bnf)
 	// TODO(bwang): make this automatic, by comparing leaves in syntax with
 	// lexical
 	const std::set<std::string> special_tokens{
-		"keyword", "identifier", "constant", "punctuator"};
+		"keyword", "identifier", "integer-constant", "boolean-constant", "punctuator"};
 	syntactical_grammar.mark_special_symbols_as_terminal(special_tokens);
 }
 
@@ -118,32 +119,21 @@ auto Compiler::compile_text(const std::string& program_text) const -> void {
  */
 auto Compiler::generate_parse_tree(const std::string& program_text) const
 	-> std::vector<SubParse> {
-	// split program_text into individual letters
-
-	LOG("INFO") << "Generating character tokens" << std::endl;
-
-	// TODO(bwang): move this to a function
-	// convert each individual letter into a Token type
-	std::vector<Token> letters;
-	for(std::size_t index = 0, line_number = 0, col_number = 0;
-		index < program_text.size();
-		++index, ++col_number) {
-		const char letter = program_text[index];
-		if(letter == '\n') {
-			++line_number;
-			col_number = 0;
-		}
-
-		letters.push_back(
-			Token{"letter", std::string(1, letter), line_number, col_number});
-	}
-
-	// retrieve valid subparses from letters
 	LOG("INFO") << "Tokenizing input" << std::endl;
-	std::vector<SubParse> parse_tree_lexical = lexical_grammar.parse(letters);
 
-	LOG("INFO") << "Turn character subparses into tokens" << std::endl;
-	std::vector<Token> words = tokenize(parse_tree_lexical, program_text);
+	const std::set<std::string> ignored_token_types{"whitespace", "line-comment", "block-commment"};
+
+	std::vector<Token> words;
+	Lexer lexer{"TMCompiler/config/regex_lexical_grammar.bnf"};
+	lexer.set_text(program_text);
+
+	while(lexer.has_next_token()) {
+		const Token token = lexer.get_next_token();
+
+		if(ignored_token_types.find(token.type) == ignored_token_types.end()) {
+			words.push_back(token);
+		}
+	}
 
 	LOG("DEBUG") << "Tokens = " << std::endl;
 	for(const Token& t : words) {
@@ -158,82 +148,4 @@ auto Compiler::generate_parse_tree(const std::string& program_text) const
 		syntactical_grammar.parse(words);
 
 	return parse_tree_syntactical;
-}
-
-/**
- * Given a parse tree built from Earley parsing of letters from program,
- * generate the tokens associated with the lexical BNF. Whitespace
- * is ignored.
- *
- * TODO(bwang): perhaps put comments in as well to ignore
- *
- * For instance, if the source program was "int x = 123;", the parse_tree
- * would look like [([0, 11) is a subparse of tokens), ([0, 3) is a valid
- * subparse of a keyword), ([0, 1) is a valid letter), ...]. After tokenizing,
- * this should return [Token(keyword, "int"), Token(identifier, "x"),
- * Token(punctuator, "="), * Token(constant, "123"), Token(punctuator, ";")].
- */
-auto Compiler::tokenize(const std::vector<SubParse>& parse_tree,
-						const std::string& program_text) const
-	-> std::vector<Token> {
-	// list of tokens to keep: when we see "123" as a constant, we do not need
-	// to know that "1", "2", "3" are all non-zero-digits.
-	const std::set<std::string> tokens{
-		"keyword", "identifier", "constant", "punctuator"};
-
-	// in this programming language, whitespace is ignored
-	const std::set<std::string> token_delimiter{"whitespace"};
-
-	const std::vector<Rule> grammar_rules = lexical_grammar.get_rules();
-
-	std::size_t end = 0;
-	for(SubParse subparse : parse_tree) {
-		end = std::max(subparse.end, end);
-	}
-
-	std::vector<Token> result;
-	std::size_t index = 0;
-
-	/* Start at index 0. Look at all valid subparses starting at index 0.
-	 * Say you found subparse(rule 2, start=0, end=3), and rule 2 is a
-	 * "constant". We store this result as a Token, and now we try again at
-	 * index 3.
-	 */
-	while(index < end) {
-		const std::size_t old_index = index;
-
-		for(SubParse subparse : parse_tree) {
-			if(subparse.start == index) {
-				const std::string production =
-					grammar_rules[subparse.rule].production.value;
-
-				// ignore whitespace
-				if(token_delimiter.find(production) != token_delimiter.end()) {
-					index = subparse.end;
-					break;
-				}
-
-				if(tokens.find(production) != tokens.end()) {
-					result.push_back(Token{
-						production,
-						program_text.substr(subparse.start,
-											subparse.end - subparse.start),
-						0,
-						0});
-					index = subparse.end;
-					break;
-				}
-			}
-		}
-
-		// no token starts at index
-		if(index == old_index) {
-			LOG("ERROR") << "Unrecognized token at index " << index
-						 << std::endl;
-			throw std::invalid_argument("Unrecognized token at index " +
-										std::to_string(index));
-		}
-	}
-
-	return result;
 }

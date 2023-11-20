@@ -154,5 +154,6 @@
 				  | <expression> "," <argument-list>
 
 <primary-expression> ::= <identifier>
-					   | <constant>
+					   | <integer-constant>
+					   | <boolean-constant>
 					   | "(" <expression> ")"
