@@ -36,6 +36,7 @@
  * Token{"identifier", "foo", 0, 4};
  */
 
+#include <cstddef>	// std::size_t
 #include <regex>	// std::regex
 #include <string>	// std::string
 #include <utility>	// std::pair

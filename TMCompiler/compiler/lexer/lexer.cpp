@@ -1,8 +1,7 @@
 #include "lexer.hpp"
 
 #include <algorithm>	  // std::max
-#include <cstddef>		  // std::size_t
-#include <fstream>		  // std::ifstream
+#include <cstddef>		  // std::ptrdiff_t, std::size_t
 #include <iostream>		  // std::endl
 #include <regex>		  // std::regex, std::regex_search, std::smatch
 #include <stdexcept>	  // std::invalid_argument, std::out_of_range

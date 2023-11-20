@@ -1,7 +1,6 @@
 #ifndef BNF_PARSER_HPP
 #define BNF_PARSER_HPP
 
-#include <fstream>
 #include <string>
 #include <vector>
 

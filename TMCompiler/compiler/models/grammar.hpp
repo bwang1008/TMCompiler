@@ -1,10 +1,9 @@
 #ifndef GRAMMAR_HPP
 #define GRAMMAR_HPP
 
-#include <fstream>	// std::ifstream
-#include <set>		// std::set
-#include <string>	// std::string
-#include <vector>	// std::vector
+#include <set>	   // std::set
+#include <string>  // std::string
+#include <vector>  // std::vector
 
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
 #include <TMCompiler/compiler/models/rule.hpp>			  // Rule

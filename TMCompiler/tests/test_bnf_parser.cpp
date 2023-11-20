@@ -1,5 +1,4 @@
 #include <cstddef>	// std::size_t
-#include <fstream>	// std::ifstream
 #include <string>	// std::string
 #include <vector>	// std::vector
 

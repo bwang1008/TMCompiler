@@ -10,7 +10,7 @@ includes_provides = {
         "algorithm": ["std::max", "std::min"],
         "cctype": ["std::isspace"],
         "chrono": ["std::chrono"],
-        "cstddef": ["std::size_t"],
+        "cstddef": ["std::ptrdiff_t", "std::size_t"],
         "ctime": ["std::ctime", "std::time_t"],
         "exception": ["std::exception"],
         "fstream": ["std::ifstream"],

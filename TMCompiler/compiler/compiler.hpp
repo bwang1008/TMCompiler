@@ -9,9 +9,8 @@
 #ifndef COMPILER_HPP
 #define COMPILER_HPP
 
-#include <fstream>	// std::ifstream
-#include <string>	// std::string
-#include <vector>	// std::vector
+#include <string>  // std::string
+#include <vector>  // std::vector
 
 #include <TMCompiler/compiler/models/grammar.hpp>		 // Grammar
 #include <TMCompiler/compiler/models/token.hpp>			 // Token

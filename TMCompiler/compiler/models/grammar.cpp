@@ -1,8 +1,6 @@
 #include "grammar.hpp"
 
-#include <fstream>
 #include <set>	// std::set
-#include <stdexcept>
 #include <string>
 #include <utility>	// std::move
 #include <vector>

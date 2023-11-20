@@ -1,5 +1,4 @@
-#include <fstream>	// std::ifstream
-#include <string>	// std::string
+#include <string>  // std::string
 
 #include <TMCompiler/compiler/compiler.hpp>	   // Compiler
 #include <TMCompiler/utils/logger/logger.hpp>  // logger
