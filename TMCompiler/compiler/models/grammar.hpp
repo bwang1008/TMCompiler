@@ -13,9 +13,9 @@
 class Grammar {
 public:
 	explicit Grammar(const std::string& bnf_file, std::string top_symbol);
-	auto parse(const std::vector<Token>& input_tokens) const
+	[[nodiscard]] auto parse(const std::vector<Token>& input_tokens) const
 		-> std::vector<SubParse>;
-	auto get_rules() const -> std::vector<Rule>;
+	[[nodiscard]] auto get_rules() const -> std::vector<Rule>;
 	auto mark_special_symbols_as_terminal(
 		const std::set<std::string>& special_tokens) -> void;
 

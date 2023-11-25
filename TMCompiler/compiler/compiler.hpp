@@ -55,11 +55,12 @@ private:
 	Grammar syntactical_grammar;
 
 	// convert lexical parse tree into list of tokens
-	auto tokenize(const std::vector<SubParse>& parse_tree,
-				  const std::string& program_text) const -> std::vector<Token>;
+	[[nodiscard]] auto tokenize(const std::vector<SubParse>& parse_tree,
+								const std::string& program_text) const
+		-> std::vector<Token>;
 	// frontend of compiler: turn source code text into a parse tree
-	auto generate_parse_tree(const std::string& program_text) const
-		-> std::vector<SubParse>;
+	[[nodiscard]] auto generate_parse_tree(
+		const std::string& program_text) const -> std::vector<SubParse>;
 };
 
 #endif
