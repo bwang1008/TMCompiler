@@ -39,7 +39,7 @@ def needs_to_run_clang_format(file_name):
 def needs_to_run_clang_tidy(file_name):
     file_contents = get_file_contents(file_name)
 
-    result = subprocess.run(["clang-tidy", file_name, "-config=", "-header-filter=.*", "--quiet", "--", "-std=c++14", "-I.", "-isystem", "TMCompiler/utils/vendor"], capture_output=True)
+    result = subprocess.run(["clang-tidy", file_name, "-config=", "-header-filter=.*", "--quiet", "--", "-std=c++17", "-I.", "-isystem", "TMCompiler/utils/vendor"], capture_output=True)
     output = result.stdout.decode("utf-8")
 
     return len(output) != 0

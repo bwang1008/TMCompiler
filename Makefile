@@ -85,8 +85,8 @@ CXX = g++
 # search current directory (root of project) for include paths
 CPPFLAGS = -I. -isystem TMCompiler/utils/vendor
 
-# use c++14 standard. MMD and MP to generate .d files for use by Make
-CXXFLAGS = -std=c++14 $(WARNINGS) -MMD -MP
+# use c++17 standard. MMD and MP to generate .d files for use by Make
+CXXFLAGS = -std=c++17 $(WARNINGS) -MMD -MP
 
 ### MAKE RECIPES
 .PHONY: all clean

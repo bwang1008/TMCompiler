@@ -78,9 +78,9 @@ set(WARNINGS
 # additional compile flags
 # see https://cliutils.gitlab.io/modern-cmake/chapters/features/cpp11.html
 set_target_properties(tmc PROPERTIES
-	CXX_STANDARD 14			# use -std=c++14
+	CXX_STANDARD 17			# use -std=c++17
     CXX_STANDARD_REQUIRED ON
-	CXX_EXTENSIONS OFF		# do not use -std=gnu++14
+	CXX_EXTENSIONS OFF		# do not use -std=gnu++17
 )
 
 target_compile_options(tmc
