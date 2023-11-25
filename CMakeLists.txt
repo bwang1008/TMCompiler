@@ -25,8 +25,8 @@ add_executable(tmc
 
 # have build tree be aware of config files
 configure_file(
-	"${CMAKE_SOURCE_DIR}/TMCompiler/config/language_lexical_grammar.bnf" 
-	"${CMAKE_BINARY_DIR}/TMCompiler/config/language_lexical_grammar.bnf"
+	"${CMAKE_SOURCE_DIR}/TMCompiler/config/regex_lexical_grammar.bnf" 
+	"${CMAKE_BINARY_DIR}/TMCompiler/config/regex_lexical_grammar.bnf"
 	COPYONLY
 )
 configure_file(
