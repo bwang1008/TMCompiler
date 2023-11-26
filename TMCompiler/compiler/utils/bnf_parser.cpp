@@ -3,9 +3,9 @@
 #include <cctype>		  // std::isspace
 #include <cstddef>		  // std::size_t
 #include <fstream>		  // std::ifstream
-#include <iostream>		  // std::endl
 #include <stdexcept>	  // std::invalid_argument
 #include <string>		  // std::string, std::to_string, std::getline
+#include <string_view>	  // std::string_view
 #include <unordered_map>  // std::unordered_map
 #include <utility>		  // std::pair, std::make_pair
 #include <vector>		  // std::vector
@@ -26,54 +26,9 @@ const std::unordered_map<char, char> escaped_characters = {{'\'', '\''},
 														   {'t', '\t'}};
 
 /**
- * One pass of converting a string with backslashes, replacing escaped
- * characters with their true escaped version.
- *
- * For instance, when reading in the terminal symbol "\t" in a BNF, reading
- * in the BNF file results in the two characters "\" and "t". However,
- * the user really intended "\t" to mean the one character for tab.
- * This function converts the two character string with "\" and "t" into the
- * one character string "\t", that represents a tab.
- *
- * @param text: text to interpret escape characters
- * @return text converted by replacing escape sequences with
- * appropriate escape characters.
- */
-auto interpret_backslashes(const std::string& text) -> std::string {
-	std::vector<char> final_characters;
-
-	for(std::size_t i = 0; i < text.size(); ++i) {
-		if(text[i] == '\\') {
-			if(i + 1 < text.size() && escaped_characters.find(text[i + 1]) !=
-										  escaped_characters.end()) {
-				// if i at '\', and i+1 at 'n', then add '\n' newline char,
-				// advance 2
-				final_characters.push_back(escaped_characters.at(text[i + 1]));
-				++i;
-			} else if(i + 1 < text.size()) {
-				// illegal escape sequence
-				LOG("CRITICAL") << "Illegal escape sequence used in BNF: \\"
-								<< text[i + 1] << std::endl;
-				throw std::invalid_argument(
-					"Illegal escape sequence used in BNF");
-			} else {
-				// symbol ended in backslash
-				LOG("CRITICAL")
-					<< "Symbols should not end in backslash" << std::endl;
-				throw std::invalid_argument("BNF symbol ended in backslash");
-			}
-		} else {
-			final_characters.push_back(text[i]);
-		}
-	}
-
-	return std::string(final_characters.begin(), final_characters.end());
-}
-
-/**
  * Finds the next pattern within text starting from pos.
  * If searching for a character that is escaped, find
- * the next unescaped characater.
+ * the next unescaped character.
  *
  * @param text: string to be searching in
  * @param pattern: string to be searching for
@@ -81,9 +36,10 @@ auto interpret_backslashes(const std::string& text) -> std::string {
  * @return index at which pattern next exists. std::string::npos
  * if it does not exist
  */
-auto find_next_unescaped_string(const std::string& text,
-								const std::string& pattern,
-								const std::size_t pos) -> std::size_t {
+[[gnu::pure]] auto find_next_unescaped_string(const std::string_view text,
+											  const std::string_view pattern,
+											  const std::size_t pos)
+	-> std::size_t {
 	std::size_t find_pos = pos;
 	bool search_current = true;
 
@@ -105,8 +61,8 @@ auto find_next_unescaped_string(const std::string& text,
  * @param pos: index in text to start searching for pattern
  * @return true if pattern exists in text at pos; false otherwise
  */
-auto text_matches_pattern(const std::string& text,
-						  const std::string& pattern,
+auto text_matches_pattern(const std::string_view text,
+						  const std::string_view pattern,
 						  const std::size_t pos) -> bool {
 	return pos + pattern.size() <= text.size() &&
 		   text.substr(pos, pattern.size()) == pattern;
@@ -119,7 +75,7 @@ auto text_matches_pattern(const std::string& text,
  * @param start_index: index in bnf_contents to start reading symbol
  * @return pair(symbol that was read, and index after end of symbol)
  */
-auto parse_symbol(const std::string& bnf_contents,
+auto parse_symbol(const std::string_view bnf_contents,
 				  const std::size_t start_index)
 	-> std::pair<GrammarSymbol, std::size_t> {
 	if(start_index >= bnf_contents.size()) {
@@ -182,12 +138,13 @@ auto parse_symbol(const std::string& bnf_contents,
 	if(end_position + symbol_end.size() > bnf_contents.size()) {
 		throw std::invalid_argument(
 			"No matching " + symbol_end + " at end of symbol " + symbol_start +
-			bnf_contents.substr(symbol_contents_start, symbol_contents_size));
+			std::string(bnf_contents.substr(symbol_contents_start,
+											symbol_contents_size)));
 	}
 
 	// found symbol_end
-	const std::string symbol_contents =
-		bnf_contents.substr(symbol_contents_start, symbol_contents_size);
+	const std::string symbol_contents = std::string(
+		bnf_contents.substr(symbol_contents_start, symbol_contents_size));
 	GrammarSymbol parsed_symbol = {symbol_contents, is_terminal};
 	return std::make_pair(parsed_symbol, end_position + symbol_end.size());
 }
@@ -231,8 +188,9 @@ auto parse_rules(const std::string& bnf_file) -> std::vector<Rule> {
  * @param bnf_contents: all characters from a BNF file, including newlines
  * @return list of words from the BNF file
  */
-auto tokenize(const std::string& bnf_contents) -> std::vector<std::string> {
-	std::vector<std::string> tokens;
+auto tokenize(const std::string_view bnf_contents)
+	-> std::vector<std::string_view> {
+	std::vector<std::string_view> tokens;
 	std::size_t curr_index = 0;
 
 	while(curr_index < bnf_contents.size()) {
@@ -297,10 +255,10 @@ auto tokenize(const std::string& bnf_contents) -> std::vector<std::string> {
  * @param bnf_contents lines of BNf file concatenated by newlines
  * @return vector of Rule representing the replacement rules in the BNF file
  */
-auto parse_rules_contents(const std::string& bnf_contents)
+auto parse_rules_contents(const std::string_view bnf_contents)
 	-> std::vector<Rule> {
 	// tokenize string into list of words
-	const std::vector<std::string> tokens = tokenize(bnf_contents);
+	const std::vector<std::string_view> tokens = tokenize(bnf_contents);
 
 	// separate out into different rules:
 	// there is one nonterminal symbol before a ::=
@@ -309,7 +267,7 @@ auto parse_rules_contents(const std::string& bnf_contents)
 	ReplacementAlternatives current_replacements;
 
 	for(std::size_t i = 0; i < tokens.size(); ++i) {
-		const std::string token = tokens[i];
+		const std::string_view token = tokens[i];
 		if(i + 1 < tokens.size() &&
 		   tokens[i + 1] == BnfParser::bnf_replacement_separation) {
 			// current rule ends; new rule started
