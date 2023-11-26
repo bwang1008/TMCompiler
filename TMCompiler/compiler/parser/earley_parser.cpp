@@ -52,7 +52,7 @@ auto item_to_string(const FlippedEarleyItem item) -> std::string {
  * @param item2: right operand to compare with
  * @return true iff both items have the same contents
  */
-auto equals(const EarleyItem item1, const EarleyItem item2) -> bool {
+[[gnu::const]] auto equals(const EarleyItem item1, const EarleyItem item2) -> bool {
 	return item1.rule == item2.rule && item1.start == item2.start &&
 		   item1.next == item2.next;
 }
@@ -64,7 +64,7 @@ auto equals(const EarleyItem item1, const EarleyItem item2) -> bool {
  * @param actual: Token input that is scanned next
  * return true iff actual is an instance of predicted
  */
-auto matches(const GrammarSymbol& predicted, const Token& actual) -> bool {
+[[gnu::pure]] auto matches(const GrammarSymbol& predicted, const Token& actual) -> bool {
 	// special symbols, like <identifier>, matches if the token type
 	// ("identifier") is what the BNF predicted as <identifier>
 	if(predicted.value == actual.type) {
