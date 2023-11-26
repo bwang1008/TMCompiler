@@ -6,7 +6,7 @@
 #include <stdexcept>	  // std::invalid_argument
 #include <string>		  // std::string, std::to_string, std::getline
 #include <string_view>	  // std::string_view
-#include <unordered_map>  // std::unordered_map
+#include <unordered_set>  // std::unordered_set
 #include <utility>		  // std::pair, std::make_pair
 #include <vector>		  // std::vector
 
@@ -16,14 +16,8 @@
 namespace BnfParser {
 
 // from https://en.cppreference.com/w/cpp/language/escape
-const std::unordered_map<char, char> escaped_characters = {{'\'', '\''},
-														   {'\"', '\"'},
-														   {'?', '\?'},
-														   {'\\', '\\'},
-														   {'f', '\f'},
-														   {'n', '\n'},
-														   {'r', '\r'},
-														   {'t', '\t'}};
+const std::unordered_set<char> escaped_characters = {
+	'\'', '\"', '?', '\\', 'f', 'n', 'r', 't'};
 
 /**
  * Finds the next pattern within text starting from pos.
