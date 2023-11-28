@@ -12,8 +12,6 @@ auto Logger::operator<<(T val) -> Logger& {
 		return *this;
 	}
 
-	std::clog << level_mapping.at(message_level).color_info;
 	std::clog << val;
-	std::clog << reset_color;
 	return *this;
 }

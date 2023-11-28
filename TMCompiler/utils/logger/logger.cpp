@@ -15,6 +15,46 @@
 #include <stdexcept>  // std::invalid_argument
 #include <string>	  // std::string
 
+/**
+ * Information associated with each logging level.
+ * pretty_name: name of the level, like "WARNING"
+ * importance: integer of how important. Higher values are more important.
+ * color_info: terminal codes for printing out color
+ */
+struct LevelInfo {
+	std::string pretty_name;
+	int importance;
+	std::string color_info;
+};
+
+
+/**
+ * List out what logging levels are allowed, as well as each level of
+ * importance and color information for printing.
+ *
+ * Note that \033 is the ASCII for Escape
+ *
+ * https://chrisyeh96.github.io/2020/03/28/terminal-colors.html
+ */
+const std::map<std::string, LevelInfo> level_mapping{
+	{"DEBUG", LevelInfo{"DEBUG", 10, "\033[34m"}},		// blue
+	{"INFO", LevelInfo{"INFO", 20, "\033[0m"}},			// reset to default
+	{"WARNING", LevelInfo{"WARNING", 30, "\033[33m"}},	// yellow
+	{"ERROR", LevelInfo{"ERROR", 40, "\033[1;31m"}},	// bold red
+	{"CRITICAL",
+	 LevelInfo{
+		 "CRITICAL", 50, "\033[1;31;46m"}},	 // bold red font, cyan background
+	{"NONE", LevelInfo{"NONE", 1000, "\033[0m"}},  // reset to default
+};
+
+// terminal code for resetting color/formatting to normal
+const std::string reset_color{"\033[0m"};
+
+// terminal code for setting color of timestamp and file name in logs
+const std::string time_color{"\033[32m"};  // green
+const std::string file_color{"\033[35m"};  // magenta
+const std::string func_color{"\033[36m"};  // light blue
+
 // one global logger
 Logger logger{};
 
