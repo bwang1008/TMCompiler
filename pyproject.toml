@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "tmcompiler"
+version = "2.0.0"
+description = ""
+authors = ["bwang1008 <bwang1008@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+rich = "^13.7.0"
+black = "^23.11.0"
+mypy = "^1.7.1"
+typer = "^0.9.0"
+ruff = "^0.1.6"
+
+# install Poetry: https://python-poetry.org/docs/#installation
+# activate virtual environment with "source .venv/bin/activate"
+# run "poetry install"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

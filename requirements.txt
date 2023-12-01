@@ -1,7 +1,0 @@
-# to start, run `python3 -m venv .venv`
-# then `source .venv/bin/activate`
-# then `python3 -m pip install -r requirements.txt`
-# When done, do `deactivate`
-
-# cool-looking display and output
-rich
