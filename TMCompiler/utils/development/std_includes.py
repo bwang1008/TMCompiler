@@ -1,11 +1,7 @@
 import re
-from typing import Dict, Generator, List, Set, Tuple
+from typing import Dict, Generator, List, Optional, Set, Tuple
 
-from rich import print
 from rich.panel import Panel
-from rich.progress import track
-
-from check_files import c_plus_plus_files
 
 includes_provides: Dict[str, List[str]] = {
     "algorithm": ["std::max", "std::min"],
@@ -42,6 +38,8 @@ belongs_in_what_header: Dict[str, str] = {
     provided: k for k, v in includes_provides.items() for provided in v
 }
 
+vendor_headers: List[str] = ["catch2/catch_amalgamated.hpp"]
+
 
 def find_all(pattern: str, text: str) -> Generator[int, None, None]:
     start = 0
@@ -63,9 +61,12 @@ def what_is_included(lines: List[str]) -> Set[str]:
             if begin == -1:
                 continue
 
-            btwn: str = line[1 + begin : end]
-            if not btwn.startswith("TMCompiler"):
-                includes.add(btwn)
+            header_name: str = line[1 + begin : end]
+            if (
+                not header_name.startswith("TMCompiler")
+                and header_name not in vendor_headers
+            ):
+                includes.add(header_name)
 
     return includes
 
@@ -73,23 +74,86 @@ def what_is_included(lines: List[str]) -> Set[str]:
 def what_is_used(lines: List[str]) -> Set[str]:
     used: Set[str] = set()
 
+    in_string: bool = False
+    in_line_comment: bool = False
+    in_block_comment: bool = False
+
     for line in lines:
-        # disregard the ones right after the #include
-        if line.startswith("#include"):
-            continue
+        in_string = False
+        in_line_comment = False
+        curr_index = 0
 
-        # this includes comments in its search
-        for index in find_all("std::", line):
-            regex_pattern: str = "[^a-z_]"
+        while curr_index < len(line):
+            if in_block_comment:
+                if (
+                    curr_index + len("*/") <= len(line)
+                    and line[curr_index : curr_index + len("*/")] == "*/"
+                ):
+                    in_block_comment = False
+                    curr_index += len("*/")
+                else:
+                    curr_index += 1
+                continue
+            # in_block_comment False
+            if in_line_comment:
+                curr_index = len(line)
+                continue
+            # in_line_comment False
+            if in_string:
+                if line[curr_index] == '"':
+                    in_string = False
+                    curr_index += 1
+                elif line[curr_index : curr_index + 1] == "\\":
+                    curr_index += 2
+                else:
+                    curr_index += 1
+                continue
+            # in_string False
+            if (
+                curr_index + len("/*") <= len(line)
+                and line[curr_index : curr_index + len("/*")] == "/*"
+            ):
+                in_block_comment = True
+                curr_index += len("/*")
+                continue
+            if (
+                curr_index + len("//") <= len(line)
+                and line[curr_index : curr_index + len("//")] == "//"
+            ):
+                in_line_comment = True
+                curr_index += len("//")
+                continue
+            if line[curr_index] == '"':
+                in_string = True
+                curr_index += 1
+                continue
+            # disregard the ones right after the #include
+            if (
+                curr_index + len("#include") <= len(line)
+                and line[curr_index : curr_index + len("#include")] == "#include"
+            ):
+                curr_index = len(line)
+                continue
+            if (
+                curr_index + len("std::") <= len(line)
+                and line[curr_index : curr_index + len("std::")] == "std::"
+            ):
+                regex_pattern: str = "[^a-z_]"
+                matches: List[Tuple[int, int]] = [
+                    m.span()
+                    for m in re.finditer(
+                        regex_pattern, line[curr_index + len("std::") :]
+                    )
+                ]
 
-            #  match = re.search(regex_pattern, line[index + 5:])
-            matches: List[Tuple[int, int]] = [
-                m.span() for m in re.finditer(regex_pattern, line[index + 5 :])
-            ]
+                if matches:
+                    end_std_index: int = curr_index + len("std::") + matches[0][0]
+                    used.add(line[curr_index:end_std_index])
+                    curr_index = end_std_index
+                else:
+                    curr_index += len("std::")
 
-            if matches:
-                end_std_index: int = index + len("std::") + matches[0][0]
-                used.add(line[index:end_std_index])
+            curr_index += 1
 
     return used
 
@@ -108,12 +172,10 @@ def check_mismatches(
 
     for use in used:  # ex std::endl
         if use not in belongs_in_what_header:
-            #  print(f"I do not know what header {use} belongs in")
             unrecognized_identifiers.append(use)
         elif (
             belongs_in_what_header[use] not in current_matchings
         ):  # if <iostream> not in included
-            #  print(f"This file should include {belongs_in_what_header[use]} for {use}")
             unincluded_identifiers.append((belongs_in_what_header[use], use))
         else:
             belonging_header: str = belongs_in_what_header[use]  # iostream
@@ -126,7 +188,7 @@ def check_mismatches(
     return unrecognized_identifiers, unincluded_identifiers, unused_headers
 
 
-def check_std_includes_in_file(file: str) -> None:
+def check_std_includes_in_file(file: str) -> Optional[Panel]:
     lines: List[str] = []
     with open(file, "r") as f:
         lines = f.readlines()
@@ -156,23 +218,8 @@ def check_std_includes_in_file(file: str) -> None:
         panel_lines.append(f"Unused headers: {sorted(unused_headers)}")
 
     if len(panel_lines) > 0:
-        print(
-            Panel.fit("\n".join(panel_lines), title=file, border_style="dark_orange3")
+        return Panel.fit(
+            "\n".join(panel_lines), title=file, border_style="dark_orange3"
         )
-    else:
-        print(f"{file} standard includes [yellow]OK")
 
-
-def check_std_includes() -> None:
-    files: List[str] = c_plus_plus_files()
-
-    for file_name in track(files, description=" Checking standard includes..."):
-        check_std_includes_in_file(file_name)
-
-
-def main() -> None:
-    check_std_includes()
-
-
-if __name__ == "__main__":
-    main()
+    return None

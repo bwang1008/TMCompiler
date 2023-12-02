@@ -2,11 +2,13 @@ import datetime
 import glob
 import os
 import subprocess
-from typing import List, Set
+from typing import List, Optional, Set
 
 from rich import print
 from rich.panel import Panel
 from rich.progress import track
+
+from TMCompiler.utils.development.std_includes import check_std_includes_in_file
 
 
 def c_plus_plus_files() -> List[str]:
@@ -47,8 +49,6 @@ def needs_to_run_clang_format(file_name: str) -> bool:
 
 
 def needs_to_run_clang_tidy(file_name: str) -> bool:
-    file_contents: str = get_file_contents(file_name)
-
     result: subprocess.CompletedProcess[bytes] = subprocess.run(
         [
             "clang-tidy",
@@ -71,7 +71,7 @@ def needs_to_run_clang_tidy(file_name: str) -> bool:
 
 def check_clang_format(files: List[str]) -> None:
     needs_changing: List[str] = []
-    for file_name in track(files, description="Checking clang-format..."):
+    for file_name in track(files, description=" Checking clang-format..."):
         if needs_to_run_clang_format(file_name):
             needs_changing.append(file_name)
 
@@ -101,7 +101,7 @@ def check_clang_tidy(files: List[str]) -> None:
     try:
         with open(cache_file_name, "r") as f:
             cache_lines = f.readlines()
-    except:
+    except Exception:
         pass
 
     previous_bad_files: Set[str] = set()
@@ -119,7 +119,7 @@ def check_clang_tidy(files: List[str]) -> None:
     clang_tidy_changed: bool = clang_tidy_mtime > past_run_time
 
     needs_changing: List[str] = []
-    for file_name in track(files, description="Checking clang-tidy...  "):
+    for file_name in track(files, description=" Checking clang-tidy...  "):
         file_mtime: datetime.datetime = datetime.datetime.fromtimestamp(
             os.path.getmtime(file_name)
         )
@@ -163,11 +163,26 @@ def check_clang_tidy(files: List[str]) -> None:
         )
 
 
+def check_std_includes(files: List[str]) -> List[Panel]:
+    results: List[Panel] = []
+
+    for file_name in track(files, description=" Checking standard includes..."):
+        panel: Optional[Panel] = check_std_includes_in_file(file_name)
+        if panel is not None:
+            results.append(panel)
+
+    return results
+
+
 def main() -> None:
     files: List[str] = c_plus_plus_files()
 
     check_clang_format(files)
     check_clang_tidy(files)
+    panels: List[Panel] = check_std_includes(files)
+
+    for panel in panels:
+        print(panel)
 
 
 if __name__ == "__main__":
