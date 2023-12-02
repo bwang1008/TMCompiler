@@ -12,7 +12,6 @@
  */
 
 #include <ios>		// std::ios, std::ios_base
-#include <map>		// std::map
 #include <ostream>	// std::ostream
 #include <string>	// std::string
 
@@ -46,7 +45,6 @@
 					  __LINE__,                                         \
 					  std::string(static_cast<const char*>(__func__))); \
 	logger
-
 
 class Logger {
 public:

@@ -11,6 +11,7 @@
 #include <iomanip>	  // std::setw
 #include <ios>		  // std::ios, std::ios_base, std::left, std::right
 #include <iostream>	  // std::clog, std::endl
+#include <map>		  // std::map
 #include <ostream>	  // std::ostream
 #include <stdexcept>  // std::invalid_argument
 #include <string>	  // std::string
@@ -26,7 +27,6 @@ struct LevelInfo {
 	int importance;
 	std::string color_info;
 };
-
 
 /**
  * List out what logging levels are allowed, as well as each level of

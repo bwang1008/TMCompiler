@@ -181,8 +181,12 @@ def main() -> None:
     check_clang_tidy(files)
     panels: List[Panel] = check_std_includes(files)
 
-    for panel in panels:
-        print(panel)
+    if panels:
+        for panel in panels:
+            print(panel)
+    else:
+        print(Panel.fit("All  files std includes [yellow]OK", title="Status: 🎉", border_style="dark_orange3"))
+
 
 
 if __name__ == "__main__":
