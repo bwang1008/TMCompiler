@@ -38,8 +38,6 @@ belongs_in_what_header: Dict[str, str] = {
     provided: k for k, v in includes_provides.items() for provided in v
 }
 
-vendor_headers: List[str] = ["catch2/catch_amalgamated.hpp"]
-
 
 def find_all(pattern: str, text: str) -> Generator[int, None, None]:
     start = 0
@@ -62,10 +60,7 @@ def what_is_included(lines: List[str]) -> Set[str]:
                 continue
 
             header_name: str = line[1 + begin : end]
-            if (
-                not header_name.startswith("TMCompiler")
-                and header_name not in vendor_headers
-            ):
+            if not header_name.startswith("TMCompiler"):
                 includes.add(header_name)
 
     return includes

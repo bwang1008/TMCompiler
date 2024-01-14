@@ -24,4 +24,4 @@ set -euo pipefail
 # cppcoreguidelines-macro-usage: forbids function-like macros, but I need it for logging and unittests
 # google-runtime-references: I prefer to pass by reference to modify in a function, as opposed to passing by pointer (see https://stackoverflow.com/questions/2139224/how-should-i-pass-objects-to-functions)
 
-clang-tidy "$1" -config='' -header-filter=.* --quiet -- -std=c++17 -I. -isystem TMCompiler/utils/vendor
+clang-tidy "$1" -config='' -header-filter=.* --quiet -- -std=c++17 -I.

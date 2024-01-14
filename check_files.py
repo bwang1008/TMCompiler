@@ -15,17 +15,7 @@ def c_plus_plus_files() -> List[str]:
     cpp_files: List[str] = glob.glob("TMCompiler/**/*.cpp", recursive=True)
     hpp_files: List[str] = glob.glob("TMCompiler/**/*.hpp", recursive=True)
 
-    exception_folders: List[str] = [
-        "TMCompiler/utils/vendor/**/*.cpp",
-        "TMCompiler/utils/vendor/**/*.hpp",
-    ]
-    exception_files: Set[str] = set(
-        file
-        for file_glob in exception_folders
-        for file in glob.glob(file_glob, recursive=True)
-    )
-
-    return sorted(set(cpp_files + hpp_files) - exception_files)
+    return sorted(set(cpp_files + hpp_files))
 
 
 def get_file_contents(file_name: str) -> str:
@@ -59,8 +49,6 @@ def needs_to_run_clang_tidy(file_name: str) -> bool:
             "--",
             "-std=c++17",
             "-I.",
-            "-isystem",
-            "TMCompiler/utils/vendor",
         ],
         capture_output=True,
     )
@@ -185,8 +173,13 @@ def main() -> None:
         for panel in panels:
             print(panel)
     else:
-        print(Panel.fit("All  files std includes [yellow]OK", title="Status: 🎉", border_style="dark_orange3"))
-
+        print(
+            Panel.fit(
+                "All  files std includes [yellow]OK",
+                title="Status: 🎉",
+                border_style="dark_orange3",
+            )
+        )
 
 
 if __name__ == "__main__":
