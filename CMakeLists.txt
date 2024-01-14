@@ -7,7 +7,7 @@
 cmake_minimum_required(VERSION 3.12)
 
 project(TMCompiler
-	VERSION 2.0
+	VERSION 2.0.0
 	DESCRIPTION "Compile C-like programs into Turing Machines"
 	LANGUAGES CXX
 )
@@ -35,22 +35,42 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(tomlplusplus Catch2)
 
+################################
+### Global compilation flags ###
+################################
+
+set(CMAKE_CXX_STANDARD 17)		# use -std=c++17
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)	# do not use -std=gnu++17
+
 ####################
 ### Main targets ###
 ####################
 
-# source files to generate tmc executable
-add_executable(tmc
-	main.cpp
+add_library(tmclib
 	TMCompiler/compiler/compiler.cpp
 	TMCompiler/compiler/lexer/lexer.cpp
 	TMCompiler/compiler/models/grammar.cpp
 	TMCompiler/compiler/parser/earley_parser.cpp
 	TMCompiler/compiler/utils/bnf_parser.cpp
 	TMCompiler/utils/logger/logger.cpp
-	# Configuration files
-	TMCompiler/config/regex_lexical_grammar.bnf
-	TMCompiler/config/language_grammar.bnf
+)
+
+# source files to generate tmc executable
+add_executable(tmc
+	main.cpp
+)
+
+configure_file(
+	"${CMAKE_SOURCE_DIR}/TMCompiler/config/regex_lexical_grammar.bnf"
+	"${CMAKE_BINARY_DIR}/TMCompiler/config/regex_lexical_grammar.bnf"
+	COPYONLY
+)
+
+configure_file(
+	"${CMAKE_SOURCE_DIR}/TMCompiler/config/language_grammar.bnf"
+	"${CMAKE_BINARY_DIR}/TMCompiler/config/language_grammar.bnf"
+	COPYONLY
 )
 
 configure_file(
@@ -63,6 +83,12 @@ add_executable(tests
 	TMCompiler/tests/test_bnf_parser.cpp
 	TMCompiler/tests/test_compiler.cpp
 	TMCompiler/tests/test_lexer.cpp
+)
+
+configure_file(
+	"${CMAKE_SOURCE_DIR}/TMCompiler/tests/data/example_grammar.bnf"
+	"${CMAKE_BINARY_DIR}/TMCompiler/tests/data/example_grammar.bnf"
+	COPYONLY
 )
 
 ##############################
@@ -106,27 +132,23 @@ set(WARNINGS
 
 # additional compile flags
 # see https://cliutils.gitlab.io/modern-cmake/chapters/features/cpp11.html
-set_target_properties(tmc PROPERTIES
-	CXX_STANDARD 17			# use -std=c++17
-    CXX_STANDARD_REQUIRED ON
-	CXX_EXTENSIONS OFF		# do not use -std=gnu++17
-)
 
-target_compile_options(tmc
+# configure tmclib
+target_compile_options(tmclib
 	PRIVATE "${WARNINGS}" "--optimize=3"
 )
 
 # add -I. from root of project directory
-target_include_directories(tmc
+target_include_directories(tmclib
 	PUBLIC "${CMAKE_SOURCE_DIR}"
 )
 
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
-target_include_directories(tests
-	PUBLIC "${CMAKE_SOURCE_DIR}"
+# configure tmc
+target_compile_options(tmc
+	PRIVATE "${WARNINGS}" "--optimize=3"
 )
-set_target_properties(tests PROPERTIES
-	CXX_STANDARD 17
-    CXX_STANDARD_REQUIRED ON
-	CXX_EXTENSIONS OFF		# do not use -std=gnu++17
-)
+
+target_link_libraries(tmc PRIVATE tmclib)
+
+# configure tests
+target_link_libraries(tests PRIVATE tmclib Catch2::Catch2WithMain)
