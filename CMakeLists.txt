@@ -12,6 +12,33 @@ project(TMCompiler
 	LANGUAGES CXX
 )
 
+#############################
+### Third-party libraries ###
+#############################
+
+include(FetchContent)
+
+# tomlplusplus: library to parse TOML files
+FetchContent_Declare(
+    tomlplusplus
+    GIT_REPOSITORY https://github.com/marzer/tomlplusplus.git
+    GIT_TAG        v3.4.0
+)
+FetchContent_MakeAvailable(tomlplusplus)
+
+# Catch2: unittesting library
+FetchContent_Declare(
+	Catch2
+	GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+	GIT_TAG        v3.4.0 # or a later release
+)
+
+FetchContent_MakeAvailable(tomlplusplus Catch2)
+
+####################
+### Main targets ###
+####################
+
 # source files to generate tmc executable
 add_executable(tmc
 	main.cpp
@@ -21,26 +48,28 @@ add_executable(tmc
 	TMCompiler/compiler/parser/earley_parser.cpp
 	TMCompiler/compiler/utils/bnf_parser.cpp
 	TMCompiler/utils/logger/logger.cpp
+	# Configuration files
+	TMCompiler/config/regex_lexical_grammar.bnf
+	TMCompiler/config/language_grammar.bnf
 )
 
-# have build tree be aware of config files
-configure_file(
-	"${CMAKE_SOURCE_DIR}/TMCompiler/config/regex_lexical_grammar.bnf" 
-	"${CMAKE_BINARY_DIR}/TMCompiler/config/regex_lexical_grammar.bnf"
-	COPYONLY
-)
-configure_file(
-	"${CMAKE_SOURCE_DIR}/TMCompiler/config/language_grammar.bnf"
-	"${CMAKE_BINARY_DIR}/TMCompiler/config/language_grammar.bnf"
-	COPYONLY
-)
 configure_file(
 	"${CMAKE_SOURCE_DIR}/sample_program.cpp"
 	"${CMAKE_BINARY_DIR}/sample_program.cpp"
 	COPYONLY
 )
 
-# compile warnings
+add_executable(tests
+	TMCompiler/tests/test_bnf_parser.cpp
+	TMCompiler/tests/test_compiler.cpp
+	TMCompiler/tests/test_lexer.cpp
+)
+
+##############################
+### Compile and Link Flags ###
+##############################
+
+# warning flags
 set(WARNINGS
 	-Wall 					# enable many other warnings
 	-Wextra 				# more warnings
@@ -90,4 +119,14 @@ target_compile_options(tmc
 # add -I. from root of project directory
 target_include_directories(tmc
 	PUBLIC "${CMAKE_SOURCE_DIR}"
+)
+
+target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
+target_include_directories(tests
+	PUBLIC "${CMAKE_SOURCE_DIR}"
+)
+set_target_properties(tests PROPERTIES
+	CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+	CXX_EXTENSIONS OFF		# do not use -std=gnu++17
 )

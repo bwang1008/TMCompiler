@@ -2,7 +2,8 @@
 
 #include <TMCompiler/compiler/compiler.hpp>	   // Compiler
 #include <TMCompiler/utils/logger/logger.hpp>  // logger
-#include <catch2/catch_amalgamated.hpp>
+
+#include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("program_text_0") {
 	logger.set_level("NONE");

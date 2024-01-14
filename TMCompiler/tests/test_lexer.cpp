@@ -3,7 +3,8 @@
 
 #include <TMCompiler/compiler/lexer/lexer.hpp>	 // Lexer
 #include <TMCompiler/compiler/models/token.hpp>	 // Token
-#include <catch2/catch_amalgamated.hpp>
+
+#include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("test_lexer_comment_0") {
 	Lexer lexer("TMCompiler/config/regex_lexical_grammar.bnf");

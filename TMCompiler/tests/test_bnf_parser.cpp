@@ -5,7 +5,8 @@
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
 #include <TMCompiler/compiler/models/rule.hpp>			  // Rule
 #include <TMCompiler/compiler/utils/bnf_parser.hpp>		  // BnfParser
-#include <catch2/catch_amalgamated.hpp>
+
+#include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("test0") {
 	const std::string input_bnf = "TMCompiler/tests/data/example_grammar.bnf";
