@@ -16,7 +16,7 @@
 
 std::vector<Rule> get_grammar_rules() {
 	std::vector<Rule> grammar_rules;
-	
+
 	GrammarSymbol sum {"Sum", false};
 	GrammarSymbol product {"Product", false};
 	GrammarSymbol factor {"Factor", false};
@@ -86,7 +86,7 @@ std::vector<Rule> get_grammar_rules() {
 
 	Rule rule7 {number, rhs};
 	grammar_rules.push_back(rule7);
-	
+
 	return grammar_rules;
 }
 
@@ -108,10 +108,10 @@ std::vector<Token> get_inputs() {
 
 void printItem(std::vector<Rule> grammar_rules, EarleyItem item) {
 	// std::cout << "{ rule = " << item.rule << ", start = " << item.start << ", next = " << item.next << "}" << std::endl;
-	
+
 	const std::size_t max_width = 55;
 	std::size_t total_length = 0;
-	
+
 	Rule rule = grammar_rules[item.rule];
 	std::cout << rule.production.value << " -> ";
 	total_length += (rule.production.value.size()) + 4;
@@ -308,7 +308,7 @@ void parse_actual_file() {
 	std::vector<SubParse> tree = build_earley_parse_tree(items, earley_rules, tokens, default_start);
 
 	for(std::size_t i = 0; i < tree.size(); ++i) {
-		std::cout << i << ": " << "{ " << tree[i].rule << ", " << tree[i].end << "} " << " starting from " << tree[i].start << " parent= " << tree[i].parent << std::endl; 
+		std::cout << i << ": " << "{ " << tree[i].rule << ", " << tree[i].end << "} " << " starting from " << tree[i].start << " parent= " << tree[i].parent << std::endl;
 	}
 
 	print_tree(tokens, tree);
@@ -343,7 +343,7 @@ void attempt_parse() {
 	std::vector<SubParse> tree = build_earley_parse_tree(items, grammar_rules, tokens, default_start);
 
 	for(std::size_t i = 0; i < tree.size(); ++i) {
-		std::cout << i << ": " << "{ " << tree[i].rule << ", " << tree[i].end << "} " << " starting from " << tree[i].start << " parent= " << tree[i].parent << std::endl; 
+		std::cout << i << ": " << "{ " << tree[i].rule << ", " << tree[i].end << "} " << " starting from " << tree[i].start << " parent= " << tree[i].parent << std::endl;
 	}
 
 	std::cout << "TOKENS:" << std::endl;

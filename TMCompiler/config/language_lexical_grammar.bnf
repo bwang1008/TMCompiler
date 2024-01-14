@@ -42,7 +42,7 @@
 								| <punctuator> <tokens-with-optional-whitespace-prefix>
 
 <token> ::= <keyword>
-		  | <identifier> 
+		  | <identifier>
 		  | <constant>
 		  | <punctuator>
 
