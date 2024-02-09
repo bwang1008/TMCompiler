@@ -1,0 +1,388 @@
+title = "Language Specification"
+description = "Programming Language Lexical and Syntactical Grammar"
+version = "2.0.0"
+
+[token]
+
+	[[token.regexes]]
+	name = "whitespace"
+	production = '\s+'
+	ignore = true
+
+	# line-comments start with // and end with newline
+	[[token.regexes]]
+	name = "line-comment"
+	production = '//[^\n\r]+[\n\r]'
+	ignore = true
+
+	# block-comments start with /* and end with */. In between is (not */)
+	# Each section either starts with no star, or it starts with a star,
+	# followed by a non-star, or it is any number of stars and ends with */
+	# /\* matches /*
+	# (A|B)* matches A or B any number of times
+	# [^*]+ matches at least one character that is not *
+	# \*+[^/] matches at least one star, then a character that is not /
+	# \** matches 0 or more stars *
+	# \*/ matches */
+	[[token.regexes]]
+	name = "block-comment"
+	production = '/\*([^*]+|\*+[^/])*\**\*/'
+	ignore = true
+
+	[[token.regexes]]
+	name = "keyword"
+	production = '(void|int|bool|for|while|if|else|break|continue|return)'
+
+	[[token.regexes]]
+	name = "integer-constant"
+	production = '\d+'
+
+	[[token.regexes]]
+	name = "boolean-constant"
+	production = '(true|false)'
+
+	[[token.regexes]]
+	name = "identifier"
+	production = '[a-zA-Z_][a-zA-Z0-9_]*'
+
+	[[token.regexes]]
+	name = "punctuator"
+	production = '(\[|\]|\(|\)|\{|\}|\*|\+|-|!|/|%|<|>|\^|;|=|,|&|\|)'
+
+[syntax]
+main = "compilation-unit"
+
+	[[syntax.rules]]
+	name = "compilation-unit"
+	production = [["<function-definitions>"]]
+
+	# Functions
+
+	[[syntax.rules]]
+	name = "function-definitions"
+	production = [
+		["<function-definition>"],
+		["<function-definition>", "<function-definitions>"],
+	]
+
+	[[syntax.rules]]
+	name = "function-definition"
+	production = [
+		["<function-header>", "<compound-statement>"]
+	]
+
+	[[syntax.rules]]
+	name = "function-header"
+	production = [
+		["<return-type>", "<identifier>", "(", ")"],
+		["<return-type>", "<identifier>", "(", "<formal-parameter-list>", ")"],
+	]
+
+	[[syntax.rules]]
+	name = "formal-parameter-list"
+	production = [
+		["<formal-parameter>"],
+		["<formal-parameter>", ",", "<formal-parameter-list>"],
+	]
+
+	[[syntax.rules]]
+	name = "formal-parameter"
+	production = [
+		["<type>", "<identifier>"]
+	]
+
+	[[syntax.rules]]
+	name = "return-type"
+	production = [
+		["void"],
+		["<type>"]
+	]
+
+	[[syntax.rules]]
+	name = "type"
+	production = [
+		["<built-in-type>"]
+	]
+
+	[[syntax.rules]]
+	name = "built-in-type"
+	production = [
+		["int"],
+		["bool"]
+	]
+
+	# Statements
+
+	[[syntax.rules]]
+	name = "statements"
+	production = [
+		["<statement>"],
+		["<statement>", "<statements>"]
+	]
+
+	[[syntax.rules]]
+	name = "statement"
+	production = [
+		["<local-variable-declaration-statement>"],
+		["<expression-statement>"],
+		["<compound-statement>"],
+		["<selection-statement>"],
+		["<iteration-statement>"],
+		["<jump-statement>"]
+	]
+
+	# ex: int x, y = 0, z;
+	[[syntax.rules]]
+	name = "local-variable-declaration-statement"
+	production = [
+		["<local-variable-declaration>", ";"]
+	]
+
+	[[syntax.rules]]
+	name = "local-variable-declaration"
+	production = [
+		["<type>", "<variable-declarators>"]
+	]
+
+	[[syntax.rules]]
+	name = "variable-declarators"
+	production = [
+		["<variable-declarator>"],
+		["<variable-declarator>", ",", "<variable-declarators>"]
+	]
+
+	# ex: y = 0
+	[[syntax.rules]]
+	name = "variable-declarator"
+	production = [
+		["<identifier>"],
+		["<identifier>", "=", "<expression>"]
+	]
+
+	[[syntax.rules]]
+	name = "expression-statement"
+	production = [
+		[";"],
+		["<expression>", ";"]
+	]
+
+	[[syntax.rules]]
+	name = "compound-statement"
+	production = [
+		["{", "}"],
+		["{", "<statements>", "}"]
+	]
+
+	[[syntax.rules]]
+	name = "selection-statement"
+	production = [
+		["if", "(", "<expression>", ")", "<statement>"],
+		["if", "(", "<expression>", ")", "<statement>", "else", "<statement>"]
+	]
+
+	[[syntax.rules]]
+	name = "iteration-statement"
+	production = [
+		["while", "(", "<expression>", ")", "<statement>"],
+		["do", "<statement>", "while", "(", "<expression>", ")", ";"],
+		["for", "(", "<for-init>", ";", "<expression>", ";", "<expression>", ")",
+			"<statement>"]
+	]
+
+	[[syntax.rules]]
+	name = "for-init"
+	production = [
+		["<local-variable-declaration>"],
+		["<statement-expression-list>"]
+	]
+
+	[[syntax.rules]]
+	name = "statement-expression-list"
+	production = [
+		["<statement-expression>"],
+		["<statement-expression>", "<statement-expression-list>"]
+	]
+
+	[[syntax.rules]]
+	name = "statement-expression"
+	production = [
+		["<assignment-expression>"],
+		["<method-invocation>"]
+	]
+
+	[[syntax.rules]]
+	name = "jump-statement"
+	production = [
+		["continue", ";"],
+		["break", ";"],
+		["return", "<expression-statement>"]
+	]
+
+	# Expressions
+
+	# to preserve order of operations, we start from lowest-precedence to highest
+	# see https://introcs.cs.princeton.edu/java/11precedence/
+	# and https://cs.wmich.edu/~gupta/teaching/cs4850/sumII06/The%20syntax%20of%20C%20in%20Backus-Naur%20form.htm
+
+	[[syntax.rules]]
+	name = "expression"
+	production = [
+		["<assignment-expression>"]
+	]
+
+	# assignment-expression means assignment, or anything with higher precedence
+	# purposely different from C BNF: C uses
+	# <unary-expression> <assignment-operations> <assignment-expression>
+	# this is because this grammar does not have ++ nor --
+
+	[[syntax.rules]]
+	name = "assignment-expression"
+	production = [
+		["<conditional-expression>"],
+		["<left-hand-side>", "<assignment-operator>", "<assignment-expression>"]
+	]
+
+	[[syntax.rules]]
+	name = "left-hand-side"
+	production = [
+		["<identifier>"],
+		["<identifier>", "[", "<expression>", "]"]
+	]
+
+	[[syntax.rules]]
+	name = "assignment-operator"
+	production = [
+		["="],
+		["*", "="],
+		["/", "="],
+		["%", "="],
+		["+", "="],
+		["-", "="],
+		["&", "="],
+		["^", "="],
+		["|", "="]
+	]
+
+	[[syntax.rules]]
+	name = "conditional-expression"
+	production = [
+		["<logical-or-expression>"],
+		["<logical-or-expression>", "?", "<expression>", ":",
+			"<conditional-expression>"]
+	]
+
+	[[syntax.rules]]
+	name = "logical-or-expression"
+	production = [
+		["<logical-and-expression>"],
+		["<logical-or-expression>", "|", "|", "<logical-and-expression>"]
+	]
+
+	[[syntax.rules]]
+	name = "logical-and-expression"
+	production = [
+		["<bitwise-or-expression>"],
+		["<logical-and-expression>", "&", "&", "<bitwise-or-expression>"]
+	]
+
+	[[syntax.rules]]
+	name = "bitwise-or-expression"
+	production = [
+		["<xor-expression>"],
+		["<bitwise-or-expression>", "|", "<xor-expression>"]
+	]
+
+	[[syntax.rules]]
+	name = "xor-expression"
+	production = [
+		["<bitwise-and-expression>"],
+		["<xor-expression>", "^", "<bitwise-and-expression>"]
+	]
+
+	[[syntax.rules]]
+	name = "bitwise-and-expression"
+	production = [
+		["<equality-expression>"],
+		["<bitwise-and-expression>", "&", "<equality-expression>"]
+	]
+
+	[[syntax.rules]]
+	name = "equality-expression"
+	production = [
+		["<relational-expression>"],
+		["<equality-expression>", "=", "=", "<relational-expression>"],
+		["<equality-expression>", "!", "=", "<relational-expression>"]
+	]
+
+	[[syntax.rules]]
+	name = "relational-expression"
+	production = [
+		["<additive-expression>"],
+		["<relational-expression>", "<", "<additive-expression>"],
+		["<relational-expression>", ">", "<additive-expression>"],
+		["<relational-expression>", "<", "=", "<additive-expression>"],
+		["<relational-expression>", ">", "=", "<additive-expression>"]
+	]
+
+	[[syntax.rules]]
+	name = "additive-expression"
+	production = [
+		["<multiplicative-expression>"],
+		["<additive-expression>", "+", "<multiplicative-expression>"],
+		["<additive-expression>", "-", "<multiplicative-expression>"]
+	]
+
+	[[syntax.rules]]
+	name = "multiplicative-expression"
+	production = [
+		["<unary-expression>"],
+		["<multiplicative-expression>", "*", "<unary-expression>"],
+		["<multiplicative-expression>", "/", "<unary-expression>"],
+		["<multiplicative-expression>", "%", "<unary-expression>"]
+	]
+
+	[[syntax.rules]]
+	name = "unary-expression"
+	production = [
+		["<postfix-expression>"],
+		["<unary-operator>", "<multiplicative-expression>"]
+	]
+
+	[[syntax.rules]]
+	name = "unary-operator"
+	production = [
+		["+"],
+		["-"],
+		["!"]
+	]
+
+	[[syntax.rules]]
+	name = "postfix-expression"
+	production = [
+		["<primary-expression>"],
+		["<postfix-expression>", "[", "<expression>", "]"],
+		["<method-invocation>"]
+	]
+
+	[[syntax.rules]]
+	name = "method-invocation"
+	production = [
+		["<postfix-expression>", "(", ")"],
+		["<postfix-expression>", "(", "<argument-list>", ")"]
+	]
+
+	[[syntax.rules]]
+	name = "argument-list"
+	production = [
+		["<expression>"],
+		["<expression>", ",", "<argument-list>"]
+	]
+
+	[[syntax.rules]]
+	name = "primary-expression"
+	production = [
+		["<identifier>"],
+		["<integer-constant>"],
+		["<boolean-constant>"],
+		["(", "<expression>", ")"]
+	]
