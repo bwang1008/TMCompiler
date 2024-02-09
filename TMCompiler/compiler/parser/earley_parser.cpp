@@ -7,7 +7,7 @@
 #include <cstddef>	// std::size_t
 #include <iostream>
 #include <sstream>
-#include <stdexcept>  // std::invalid_argument
+#include <stdexcept>  // std::invalid_argument, std::logic_error
 #include <string>
 #include <utility>
 #include <vector>

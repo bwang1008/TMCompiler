@@ -98,7 +98,7 @@ auto convert_token_rules_to_regexes(const std::vector<Rule>& rules)
 /**
  * Constructor for Lexer class.
  *
- * @param lexcial_config_file: file path name of BNF file containing
+ * @param lexical_config_file: file path name of BNF file containing
  * token-productions and token-type productions
  */
 Lexer::Lexer(const std::string& lexical_config_file)
