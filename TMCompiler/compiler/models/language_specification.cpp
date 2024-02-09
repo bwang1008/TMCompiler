@@ -35,7 +35,8 @@
 #include <vector>	  // std::vector
 
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
-#include <toml++/toml.hpp>								  // toml namespace
+
+#include <toml++/toml.hpp>	// toml namespace
 
 /**
  * @brief Read in [[syntax.rules]] list from TOML file

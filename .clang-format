@@ -74,7 +74,7 @@ IncludeCategories:
   - Regex:           '<[^\.]*>'
     Priority:        2
     SortPriority:    0
-  - Regex:           '<TMCompiler/\.*>'
+  - Regex:           '<TMCompiler/.*>'
     Priority:        3
     SortPriority:    0
   - Regex:           '.*'
