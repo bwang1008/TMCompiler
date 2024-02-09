@@ -24,7 +24,6 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/marzer/tomlplusplus.git
     GIT_TAG        v3.4.0
 )
-FetchContent_MakeAvailable(tomlplusplus)
 
 # Catch2: unittesting library
 FetchContent_Declare(
@@ -70,6 +69,12 @@ configure_file(
 configure_file(
 	"${CMAKE_SOURCE_DIR}/TMCompiler/config/language_grammar.bnf"
 	"${CMAKE_BINARY_DIR}/TMCompiler/config/language_grammar.bnf"
+	COPYONLY
+)
+
+configure_file(
+	"${CMAKE_SOURCE_DIR}/TMCompiler/config/language.toml"
+	"${CMAKE_BINARY_DIR}/TMCompiler/config/language.toml"
 	COPYONLY
 )
 
@@ -148,7 +153,7 @@ target_compile_options(tmc
 	PRIVATE "${WARNINGS}" "--optimize=3"
 )
 
-target_link_libraries(tmc PRIVATE tmclib)
+target_link_libraries(tmc PRIVATE tmclib tomlplusplus::tomlplusplus)
 
 # configure tests
 target_link_libraries(tests PRIVATE tmclib Catch2::Catch2WithMain)
