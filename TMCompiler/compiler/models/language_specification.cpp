@@ -55,8 +55,8 @@
  *		  that has a string right-hand-side.
  * @return std::string that is on right-hand-side of "="
  */
-auto _read_top_level_string(const toml::table language_spec_table,
-							const std::string key) -> std::string {
+auto _read_top_level_string(const toml::table& language_spec_table,
+							const std::string& key) -> std::string {
 	const std::optional<std::string> rhs =
 		language_spec_table[key].value<std::string>();
 	if(!rhs.has_value()) {
@@ -103,12 +103,10 @@ auto _read_token_regexes(const toml::array* token_regexes)
 	std::vector<std::pair<std::string, std::regex>> name_and_regexes;
 	std::unordered_set<std::string> ignore_set;
 
-	for(toml::const_array_iterator it = token_regexes->cbegin();
-		it != token_regexes->cend();
-		++it) {
+	for(const toml::v3::node& token_regex_node : *token_regexes) {
 		// regex_table contains {name: "whitespace", production = '\s+', ignore
 		// = true}
-		const toml::table* regex_table = it->as_table();
+		const toml::table* regex_table = token_regex_node.as_table();
 
 		// name = "whitespace"
 		const std::optional<std::string> name =
@@ -134,8 +132,8 @@ auto _read_token_regexes(const toml::array* token_regexes)
 		const bool is_ignore =
 			(is_ignore_opt.has_value() && is_ignore_opt.value());
 
-		name_and_regexes.push_back(
-			{name.value(), std::regex(regex_pattern.value())});
+		name_and_regexes.emplace_back(name.value(),
+									  std::regex(regex_pattern.value()));
 
 		if(is_ignore) {
 			ignore_set.insert(name.value());
@@ -156,27 +154,23 @@ auto _read_syntax_rule_production(const toml::array* production)
 	-> std::vector<std::vector<GrammarSymbol>> {
 	std::vector<std::vector<GrammarSymbol>> production_as_vec;
 
-	for(toml::const_array_iterator it = production->cbegin();
-		it != production->cend();
-		++it) {
-		// it / rhs points to a RHS of a rule, like ["<type>",
+	for(const toml::v3::node& production_node : *production) {
+		// production_node / rhs points to a RHS of a rule, like ["<type>",
 		// "<identifier>"]
-		const toml::array* rhs = it->as_array();
+		const toml::array* rhs = production_node.as_array();
 		std::vector<GrammarSymbol> rhs_vec;
 
-		for(toml::const_array_iterator it_symbol = rhs->cbegin();
-			it_symbol != rhs->cend();
-			++it_symbol) {
-			// it_symbol points to a string like "<type>"
+		for(const toml::v3::node& symbol_node : *rhs) {
+			// symbol_node points to a string like "<type>"
 			const std::optional<std::string> symbol_string_opt =
-				it_symbol->value<std::string>();
+				symbol_node.value<std::string>();
 
 			if(!symbol_string_opt.has_value()) {
 				throw std::logic_error(
 					"Symbol in production cannot be parsed as a string");
 			}
 
-			const std::string symbol_string = symbol_string_opt.value();
+			const std::string& symbol_string = symbol_string_opt.value();
 
 			// nonterminal symbols look like "<type>". That is, surrounded by
 			// angle brackets. If so, remove surrounding angle brackets.
@@ -224,12 +218,10 @@ auto _read_syntax_rule_production(const toml::array* production)
  */
 auto _read_syntax_rules(const toml::array* syntax_rules) -> std::vector<Rule> {
 	std::vector<Rule> parsed_syntax_rules;
-	for(toml::const_array_iterator it = syntax_rules->cbegin();
-		it != syntax_rules->cend();
-		++it) {
+	for(const toml::v3::node& syntax_rule_node : *syntax_rules) {
 		// rule_table contains {name: "function-header", production =
 		// [["<return-type>", "<identifier>", "(", ")"], ...]}
-		const toml::table* rule_table = it->as_table();
+		const toml::table* rule_table = syntax_rule_node.as_table();
 
 		// name = "function-header"
 		const std::optional<std::string> name =
@@ -247,7 +239,7 @@ auto _read_syntax_rules(const toml::array* syntax_rules) -> std::vector<Rule> {
 		const std::vector<std::vector<GrammarSymbol>> productions =
 			_read_syntax_rule_production(production_node);
 
-		for(std::vector<GrammarSymbol> production : productions) {
+		for(const std::vector<GrammarSymbol>& production : productions) {
 			// add Rule("function-header", vector["return-type", "identifier",
 			// "(", ")"])
 			parsed_syntax_rules.push_back(Rule{left_hand_side, production});
@@ -325,30 +317,50 @@ auto read_language_specification_toml(
 	};
 }
 
-int main() {
-	LanguageSpecification ls =
-		read_language_specification_toml("TMCompiler/config/language.toml");
+auto main() -> int {
+	try {
+		LanguageSpecification ls =
+			read_language_specification_toml("TMCompiler/config/language.toml");
 
-	std::cout << "title = " << ls.title << std::endl;
-	std::cout << "description = " << ls.description << std::endl;
-	std::cout << "version = " << ls.version << std::endl;
+		std::cout << "title = " << ls.title << std::endl;
+		std::cout << "description = " << ls.description << std::endl;
+		std::cout << "version = " << ls.version << std::endl;
 
-	std::cout << "len of token_regexes: " << ls.token_regexes.size()
-			  << std::endl;
-	for(auto x : ls.token_regexes) {
-		std::cout << "\t" << x.first << std::endl;
+		std::cout << "len of token_regexes: " << ls.token_regexes.size()
+				  << std::endl;
+		for(const auto& x : ls.token_regexes) {
+			std::cout << "\t" << x.first << std::endl;
+		}
+
+		std::cout << "len of token_regexes_ignore: "
+				  << ls.token_regexes_ignore.size() << std::endl;
+		for(const auto& x : ls.token_regexes_ignore) {
+			std::cout << "\t" << x << std::endl;
+		}
+
+		std::cout << "syntax_main = " << ls.syntax_main << std::endl;
+
+		std::cout << "len of syntax_rules = " << ls.syntax_rules.size()
+				  << std::endl;
+
+		const int max_rules_to_show = 20;
+		for(int i = 0; i < max_rules_to_show; ++i) {
+			Rule rule = ls.syntax_rules[i];
+			std::cout << "\t" << rule.production.value << ": [";
+			for(const GrammarSymbol& gs : rule.replacement) {
+				std::cout << "\"" << gs.value << "\", ";
+			}
+			std::cout << "]" << std::endl;
+		}
+	} catch(const std::logic_error& e) {
+		std::cout << "Logic error parsing TOML file" << std::endl;
+		std::cout << e.what() << std::endl;
+		return 1;
+	} catch(const std::exception& e) {
+		std::cout << "UNKNOWN EXCEPTION" << std::endl;
+		std::cout << e.what() << std::endl;
+		return -1;
 	}
-
-	std::cout << "len of token_regexes_ignore: "
-			  << ls.token_regexes_ignore.size() << std::endl;
-	for(auto x : ls.token_regexes_ignore) {
-		std::cout << "\t" << x << std::endl;
-	}
-
-	std::cout << "syntax_main = " << ls.syntax_main << std::endl;
-
-	std::cout << "len of syntax_rules = " << ls.syntax_rules.size()
-			  << std::endl;
 
 	return 0;
 }
