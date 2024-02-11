@@ -27,6 +27,7 @@
 
 #include "language_specification.hpp"
 
+#include <iostream>
 #include <optional>		  // std::optional
 #include <regex>		  // std::regex
 #include <stdexcept>	  // std::logic_error
@@ -289,6 +290,25 @@ auto read_language_specification_toml(
 int main() {
 	LanguageSpecification ls =
 		read_language_specification_toml("TMCompiler/config/language.toml");
+
+	std::cout << "len of token_regexes: " << ls.token_regexes.size()
+			  << std::endl;
+	for(auto x : ls.token_regexes) {
+		std::cout << "\t" << x.first << std::endl;
+	}
+
+	std::cout << "len of token_regexes_ignore: "
+			  << ls.token_regexes_ignore.size() << std::endl;
+	for(auto x : ls.token_regexes_ignore) {
+		std::cout << "\t" << x << std::endl;
+	}
+
+	std::cout << "syntax_main = " << ls.syntax_main << std::endl;
+
+	std::cout << "len of syntax_rules = " << ls.syntax_rules.size()
+			  << std::endl;
+
+	std::cout << "version = " << ls.version << std::endl;
 
 	return 0;
 }
