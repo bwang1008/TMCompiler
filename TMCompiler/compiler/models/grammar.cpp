@@ -1,11 +1,12 @@
 #include "grammar.hpp"
 
-#include <set>	// std::set
-#include <string>
+#include <set>		// std::set
+#include <string>	// std::string
 #include <utility>	// std::move
-#include <vector>
+#include <vector>	// std::vector
 
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
+#include <TMCompiler/compiler/models/rule.hpp>			  // Rule
 #include <TMCompiler/compiler/models/token.hpp>			  // Token
 #include <TMCompiler/compiler/parser/earley_parser.hpp>	 // build_earley_items, build_earley_parse_tree, EarleyItem, SubParse
 #include <TMCompiler/compiler/utils/bnf_parser.hpp>	 // BnfParser
@@ -14,11 +15,6 @@ Grammar::Grammar(const std::string& bnf_file, std::string top_symbol)
 	: default_start(std::move(top_symbol)) {
 	rules = BnfParser::parse_rules(bnf_file);
 }
-
-// LR parsing? Earley parsing?
-// AbstractSyntaxTreeNode Grammar::parse_helper(const std::vector<char>&
-// program, int cursor, GrammarSymbol symbol) {
-// }
 
 auto Grammar::parse(const std::vector<Token>& input_tokens) const
 	-> std::vector<SubParse> {
