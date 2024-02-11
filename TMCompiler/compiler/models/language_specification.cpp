@@ -263,15 +263,15 @@ auto read_language_specification_toml(
 	const toml::table language_spec_table =
 		toml::parse_file(language_specification_toml);
 
-	std::pair<std::vector<std::pair<std::string, std::regex>>,
-			  std::unordered_set<std::string>>
+	const std::pair<std::vector<std::pair<std::string, std::regex>>,
+					std::unordered_set<std::string>>
 		name_regex_and_ignore_set = _read_token_regexes(
 			language_spec_table["token"]["regexes"].as_array());
 
-	std::vector<std::pair<std::string, std::regex>> parsed_token_regexes =
+	const std::vector<std::pair<std::string, std::regex>> parsed_token_regexes =
 		name_regex_and_ignore_set.first;
 
-	std::unordered_set<std::string> parsed_token_regexes_ignore =
+	const std::unordered_set<std::string> parsed_token_regexes_ignore =
 		name_regex_and_ignore_set.second;
 
 	const std::vector<Rule> parsed_syntax_rules =
