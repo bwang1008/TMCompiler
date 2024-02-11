@@ -42,6 +42,33 @@
 #include <toml++/toml.hpp>	// toml namespace
 
 /**
+ * @brief Read in string attribute from top-level of TOML file
+ *
+ * For instance, given the following TOML section:
+ * ------------
+ * title = "Language Specification"
+ * ------------
+ * with parameter "key" := "title" should return "Language Specification"
+ *
+ * @param language_spec_table Table of entire TOML file
+ * @param key Attribute in top-level of TOML (not under a [header])
+ *		  that has a string right-hand-side.
+ * @return std::string that is on right-hand-side of "="
+ */
+auto _read_top_level_string(const toml::table language_spec_table,
+							const std::string key) -> std::string {
+	const std::optional<std::string> rhs =
+		language_spec_table[key].value<std::string>();
+	if(!rhs.has_value()) {
+		throw std::logic_error(key +
+							   " attribute in top-level TOML either missing "
+							   "or not parsable as string");
+	}
+
+	return rhs.value();
+}
+
+/**
  * @brief Read in [[token.regexes]] list from TOML file
  *
  * For instance, given the following TOML section:
@@ -263,6 +290,13 @@ auto read_language_specification_toml(
 	const toml::table language_spec_table =
 		toml::parse_file(language_specification_toml);
 
+	const std::string parsed_title =
+		_read_top_level_string(language_spec_table, "title");
+	const std::string parsed_description =
+		_read_top_level_string(language_spec_table, "description");
+	const std::string parsed_version =
+		_read_top_level_string(language_spec_table, "version");
+
 	const std::pair<std::vector<std::pair<std::string, std::regex>>,
 					std::unordered_set<std::string>>
 		name_regex_and_ignore_set = _read_token_regexes(
@@ -280,16 +314,24 @@ auto read_language_specification_toml(
 	const std::string parsed_syntax_main =
 		_read_syntax_main(language_spec_table["syntax"].as_table());
 
-	return LanguageSpecification{parsed_token_regexes,
-								 parsed_token_regexes_ignore,
-								 parsed_syntax_main,
-								 parsed_syntax_rules,
-								 "2.0.0"};
+	return LanguageSpecification{
+		parsed_title,
+		parsed_description,
+		parsed_version,
+		parsed_token_regexes,
+		parsed_token_regexes_ignore,
+		parsed_syntax_main,
+		parsed_syntax_rules,
+	};
 }
 
 int main() {
 	LanguageSpecification ls =
 		read_language_specification_toml("TMCompiler/config/language.toml");
+
+	std::cout << "title = " << ls.title << std::endl;
+	std::cout << "description = " << ls.description << std::endl;
+	std::cout << "version = " << ls.version << std::endl;
 
 	std::cout << "len of token_regexes: " << ls.token_regexes.size()
 			  << std::endl;
@@ -307,8 +349,6 @@ int main() {
 
 	std::cout << "len of syntax_rules = " << ls.syntax_rules.size()
 			  << std::endl;
-
-	std::cout << "version = " << ls.version << std::endl;
 
 	return 0;
 }

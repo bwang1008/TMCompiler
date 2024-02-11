@@ -7,6 +7,10 @@
 #include <TMCompiler/compiler/models/rule.hpp>	// Rule
 
 struct LanguageSpecification {
+	std::string title;
+	std::string description;
+	std::string version;
+
 	// pairs of token names and their corresponding regex pattern
 	// found in language.toml [[token.regexes]] tables
 	// ex: [("whitespace", "\s+"), ("integer-constant", "\d+"), ...]
@@ -21,8 +25,6 @@ struct LanguageSpecification {
 
 	// list of rules in [[syntax.rules]]
 	std::vector<Rule> syntax_rules;
-
-	std::string version;
 };
 
 auto read_language_specification_toml(
