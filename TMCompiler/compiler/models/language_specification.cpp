@@ -269,24 +269,23 @@ auto _read_syntax_main(const toml::table* syntax) -> std::string {
 }
 
 /**
- * @brief Read specification file and put information in struct
- * LanguageSpecification.
+ * @brief Read specification file and put information in LanguageSpecification
+ * namespace.
  *
  * @param language_specification_toml: TOML file path containing the
  * programming language specification, such as the regexes to parse tokens
  * and the BNF specifying the grammar. Ex: "TMCompiler/config/language.toml"
- * @return LanguageSpecification information within the TOML file as struct
  */
-auto read_language_specification_toml(
-	const std::string& language_specification_toml) -> LanguageSpecification {
+auto LanguageSpecification::read_language_specification_toml(
+	const std::string& language_specification_toml) -> void {
 	const toml::table language_spec_table =
 		toml::parse_file(language_specification_toml);
 
-	const std::string parsed_title =
+	LanguageSpecification::title =
 		_read_top_level_string(language_spec_table, "title");
-	const std::string parsed_description =
+	LanguageSpecification::description =
 		_read_top_level_string(language_spec_table, "description");
-	const std::string parsed_version =
+	LanguageSpecification::version =
 		_read_top_level_string(language_spec_table, "version");
 
 	const std::pair<std::vector<std::pair<std::string, std::regex>>,
@@ -294,58 +293,49 @@ auto read_language_specification_toml(
 		name_regex_and_ignore_set = _read_token_regexes(
 			language_spec_table["token"]["regexes"].as_array());
 
-	const std::vector<std::pair<std::string, std::regex>> parsed_token_regexes =
-		name_regex_and_ignore_set.first;
-
-	const std::unordered_set<std::string> parsed_token_regexes_ignore =
+	LanguageSpecification::token_regexes = name_regex_and_ignore_set.first;
+	LanguageSpecification::token_regexes_ignore =
 		name_regex_and_ignore_set.second;
 
-	const std::vector<Rule> parsed_syntax_rules =
-		_read_syntax_rules(language_spec_table["syntax"]["rules"].as_array());
-
-	const std::string parsed_syntax_main =
+	LanguageSpecification::syntax_main =
 		_read_syntax_main(language_spec_table["syntax"].as_table());
-
-	return LanguageSpecification{
-		parsed_title,
-		parsed_description,
-		parsed_version,
-		parsed_token_regexes,
-		parsed_token_regexes_ignore,
-		parsed_syntax_main,
-		parsed_syntax_rules,
-	};
+	LanguageSpecification::syntax_rules =
+		_read_syntax_rules(language_spec_table["syntax"]["rules"].as_array());
 }
 
 auto main() -> int {
 	try {
-		LanguageSpecification ls =
-			read_language_specification_toml("TMCompiler/config/language.toml");
+		LanguageSpecification::read_language_specification_toml(
+			"TMCompiler/config/language.toml");
 
-		std::cout << "title = " << ls.title << std::endl;
-		std::cout << "description = " << ls.description << std::endl;
-		std::cout << "version = " << ls.version << std::endl;
-
-		std::cout << "len of token_regexes: " << ls.token_regexes.size()
+		std::cout << "title = " << LanguageSpecification::title << std::endl;
+		std::cout << "description = " << LanguageSpecification::description
 				  << std::endl;
-		for(const auto& x : ls.token_regexes) {
+		std::cout << "version = " << LanguageSpecification::version
+				  << std::endl;
+
+		std::cout << "len of token_regexes: "
+				  << LanguageSpecification::token_regexes.size() << std::endl;
+		for(const auto& x : LanguageSpecification::token_regexes) {
 			std::cout << "\t" << x.first << std::endl;
 		}
 
 		std::cout << "len of token_regexes_ignore: "
-				  << ls.token_regexes_ignore.size() << std::endl;
-		for(const auto& x : ls.token_regexes_ignore) {
+				  << LanguageSpecification::token_regexes_ignore.size()
+				  << std::endl;
+		for(const auto& x : LanguageSpecification::token_regexes_ignore) {
 			std::cout << "\t" << x << std::endl;
 		}
 
-		std::cout << "syntax_main = " << ls.syntax_main << std::endl;
-
-		std::cout << "len of syntax_rules = " << ls.syntax_rules.size()
+		std::cout << "syntax_main = " << LanguageSpecification::syntax_main
 				  << std::endl;
+
+		std::cout << "len of syntax_rules = "
+				  << LanguageSpecification::syntax_rules.size() << std::endl;
 
 		const int max_rules_to_show = 20;
 		for(int i = 0; i < max_rules_to_show; ++i) {
-			Rule rule = ls.syntax_rules[i];
+			Rule rule = LanguageSpecification::syntax_rules[i];
 			std::cout << "\t" << rule.production.value << ": [";
 			for(const GrammarSymbol& gs : rule.replacement) {
 				std::cout << "\"" << gs.value << "\", ";
