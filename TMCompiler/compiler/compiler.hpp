@@ -21,13 +21,11 @@ public:
 	/**
 	 * Constructor for Compiler class.
 	 *
-	 * @param lexical_bnf: BNF file specifying lexical grammar,
-	 * i.e. how tokens are formed from letters
-	 * @param syntax_bnf: BNF file specifying syntactical
-	 * grammar, i.e. how each language construct is made up of smaller
-	 * constructs
+	 * @param language_spec_file_name: path of TOML file specifying
+	 * token regexes and BNF grammar.
+	 * Ex: "TMCompiler/config/language.toml"
 	 */
-	Compiler(std::string lexical_bnf, const std::string& syntax_bnf);
+	Compiler(const std::string& language_spec_file_name);
 
 	/**
 	 * Wrapper program that reads in source code from file_name and compiles the
@@ -49,7 +47,7 @@ public:
 private:
 	// programming language of source code can be described using 2
 	// specifications: list of regexes for how to parse tokens / words from
-	// letters, and a gramamr for how to parse tokens into programming-language
+	// letters, and a grammar for how to parse tokens into programming-language
 	// constructs
 	std::string lexical_file;
 	Grammar syntactical_grammar;

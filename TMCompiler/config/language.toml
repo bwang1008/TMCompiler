@@ -31,7 +31,7 @@ version = "2.0.0"
 
 	[[token.regexes]]
 	name = "keyword"
-	production = '(void|int|bool|for|while|if|else|break|continue|return)'
+	production = '(void|int|bool|for|do|while|if|else|break|continue|return)'
 
 	[[token.regexes]]
 	name = "integer-constant"

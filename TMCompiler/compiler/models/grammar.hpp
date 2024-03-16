@@ -12,7 +12,14 @@
 
 class Grammar {
 public:
-	explicit Grammar(const std::string& bnf_file, std::string top_symbol);
+	/**
+	 * Constructor for Grammar class.
+	 *
+	 * @param language_spec_file_name: path of TOML file specifying
+	 * token regexes and BNF grammar.
+	 * Ex: "TMCompiler/config/language.toml"
+	 */
+	explicit Grammar(const std::string& language_spec_file_name);
 	[[nodiscard]] auto parse(const std::vector<Token>& input_tokens) const
 		-> std::vector<SubParse>;
 	[[nodiscard]] auto get_rules() const -> std::vector<Rule>;
