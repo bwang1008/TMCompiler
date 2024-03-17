@@ -13,7 +13,6 @@
 #include <set>		  // std::set
 #include <stdexcept>  // std::invalid_argument
 #include <string>	  // std::string, std::getline
-#include <utility>	  // std::move
 #include <vector>	  // std::vector
 
 #include <TMCompiler/compiler/lexer/lexer.hpp>					  // Lexer

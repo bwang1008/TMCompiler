@@ -1,14 +1,13 @@
 #include "lexer.hpp"
 
-#include <algorithm>	  // std::max
-#include <cstddef>		  // std::ptrdiff_t, std::size_t
-#include <iostream>		  // std::endl
-#include <regex>		  // std::regex, std::regex_search, std::smatch
-#include <stdexcept>	  // std::invalid_argument, std::out_of_range
-#include <string>		  // std::string, std::to_string
-#include <unordered_map>  // std::unordered_map
-#include <utility>		  // std::move, std::pair
-#include <vector>		  // std::vector
+#include <algorithm>  // std::max
+#include <cstddef>	  // std::ptrdiff_t, std::size_t
+#include <iostream>	  // std::endl
+#include <regex>	  // std::regex, std::regex_search, std::smatch
+#include <stdexcept>  // std::invalid_argument, std::out_of_range
+#include <string>	  // std::string, std::to_string
+#include <utility>	  // std::move, std::pair
+#include <vector>	  // std::vector
 
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
 #include <TMCompiler/compiler/models/rule.hpp>			  // Rule
