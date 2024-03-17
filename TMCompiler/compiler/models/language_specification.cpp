@@ -343,8 +343,8 @@ auto main() -> int {
 		std::cout << "len of syntax_rules = " << ls.syntax_rules.size()
 				  << std::endl;
 
-		const int max_rules_to_show = 20;
-		for(int i = 0; i < max_rules_to_show; ++i) {
+		const std::size_t max_rules_to_show = 20;
+		for(std::size_t i = 0; i < max_rules_to_show; ++i) {
 			Rule rule = ls.syntax_rules[i];
 			std::cout << "\t" << rule.production.value << ": [";
 			for(const GrammarSymbol& gs : rule.replacement) {
