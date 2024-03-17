@@ -52,6 +52,9 @@ version = "2.0.0"
 [syntax]
 main = "compilation-unit"
 
+	# reference https://cs.wmich.edu/~gupta/teaching/cs4851/sumII06/The%20syntax%20of%20C%20in%20Backus-Naur%20form.htm
+	# and https://cs.au.dk/~amoeller/RegAut/JavaBNF.html
+
 	[[syntax.rules]]
 	name = "compilation-unit"
 	production = [["<function-definitions>"]]
@@ -222,7 +225,7 @@ main = "compilation-unit"
 
 	# to preserve order of operations, we start from lowest-precedence to highest
 	# see https://introcs.cs.princeton.edu/java/11precedence/
-	# and https://cs.wmich.edu/~gupta/teaching/cs4850/sumII06/The%20syntax%20of%20C%20in%20Backus-Naur%20form.htm
+	# and https://cs.wmich.edu/~gupta/teaching/cs4850/sumII06/The%20syntax%20of%20C%20in%20Backus-Naur%20form.htm from which most of this is from
 
 	[[syntax.rules]]
 	name = "expression"
