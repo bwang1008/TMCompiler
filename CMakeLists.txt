@@ -52,25 +52,12 @@ add_library(tmclib
 	TMCompiler/compiler/models/grammar.cpp
 	TMCompiler/compiler/models/language_specification.cpp
 	TMCompiler/compiler/parser/earley_parser.cpp
-	TMCompiler/compiler/utils/bnf_parser.cpp
 	TMCompiler/utils/logger/logger.cpp
 )
 
 # source files to generate tmc executable
 add_executable(tmc
 	main.cpp
-)
-
-configure_file(
-	"${CMAKE_SOURCE_DIR}/TMCompiler/config/regex_lexical_grammar.bnf"
-	"${CMAKE_BINARY_DIR}/TMCompiler/config/regex_lexical_grammar.bnf"
-	COPYONLY
-)
-
-configure_file(
-	"${CMAKE_SOURCE_DIR}/TMCompiler/config/language_grammar.bnf"
-	"${CMAKE_BINARY_DIR}/TMCompiler/config/language_grammar.bnf"
-	COPYONLY
 )
 
 configure_file(
@@ -86,15 +73,8 @@ configure_file(
 )
 
 add_executable(tests
-	TMCompiler/tests/test_bnf_parser.cpp
 	TMCompiler/tests/test_compiler.cpp
 	TMCompiler/tests/test_lexer.cpp
-)
-
-configure_file(
-	"${CMAKE_SOURCE_DIR}/TMCompiler/tests/data/example_grammar.bnf"
-	"${CMAKE_BINARY_DIR}/TMCompiler/tests/data/example_grammar.bnf"
-	COPYONLY
 )
 
 ##############################

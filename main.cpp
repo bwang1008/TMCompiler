@@ -10,7 +10,6 @@
 #include <TMCompiler/compiler/models/rule.hpp>			  // Rule
 #include <TMCompiler/compiler/models/token.hpp>			  // Token
 #include <TMCompiler/compiler/parser/earley_parser.hpp>
-#include <TMCompiler/compiler/utils/bnf_parser.hpp>
 #include <TMCompiler/utils/logger/logger.hpp>
 
 std::vector<Rule> get_grammar_rules() {
@@ -239,86 +238,6 @@ void print_tree(std::vector<Token> tokens, std::vector<SubParse> tree) {
 	return;
 }
 
-void parse_actual_file() {
-	const std::string input_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
-	const std::vector<Rule> rules = BnfParser::parse_rules(input_bnf);
-
-	std::cout << "Parsed BNF rules" << std::endl;
-
-	std::vector<Rule> earley_rules = rules;
-
-	std::cout << "generated Rules" << std::endl;
-
-	std::cout << "num rules = " << earley_rules.size() << std::endl;
-	for(std::size_t i = 0; i < earley_rules.size(); ++i) {
-		const Rule rule = earley_rules[i];
-		std::cout << i << ": " << rule.production.value << " -> ";
-		for(std::size_t j = 0; j < rule.replacement.size(); ++j) {
-			std::cout << rule.replacement[j].value << " ";
-		}
-
-		std::cout << std::endl;
-	}
-
-	std::cout << std::endl;
-
-	// const std::string input{"int x = 5;"};
-	// const std::string input{"for(int i = 5; i < 10; i+=1) { print(i); }"};
-	// const std::string input{"int compute(int y) { return 0; }"};
-
-	//                       01234567890123456789012345678901234567890123456789012345
-	const std::string input{
-		"void foo() {  for ( int i = 0; i < 10; i += 1) {  }  } "};
-
-	std::vector<Token> tokens;
-	for(std::size_t i = 0; i < input.size(); ++i) {
-		Token k{"?", input.substr(i, 1), 0, i};
-		tokens.push_back(k);
-	}
-
-	std::cout << "Generated tokens" << std::endl;
-
-	std::cout << "TOKENS:" << std::endl;
-	for(std::size_t i = 0; i < tokens.size(); ++i) {
-		std::cout << "Token " << i << ": " << tokens[i].value << std::endl;
-	}
-
-	std::string default_start{"tokens"};
-
-	std::vector<std::vector<EarleyItem> > items =
-		build_earley_items(earley_rules, tokens, default_start);
-
-	std::cout << "Finished building earley sets" << std::endl;
-
-	std::cout << "How many Earley sets? " << items.size() << std::endl;
-
-	// for(std::size_t i = 0; i < items.size(); ++i) {
-	// std::cout << "Earley Set[" << i << "]" << std::endl;
-	// for(std::size_t j = 0; j < items[i].size(); ++j) {
-	// EarleyItem item = items[i][j];
-
-	// printItem(earley_rules, item);
-	// }
-
-	// std::cout << std::endl;
-	// }
-
-	std::cout << "======================================================"
-			  << std::endl;
-
-	std::vector<SubParse> tree =
-		build_earley_parse_tree(items, earley_rules, tokens, default_start);
-
-	for(std::size_t i = 0; i < tree.size(); ++i) {
-		std::cout << i << ": "
-				  << "{ " << tree[i].rule << ", " << tree[i].end << "} "
-				  << " starting from " << tree[i].start
-				  << " parent= " << tree[i].parent << std::endl;
-	}
-
-	print_tree(tokens, tree);
-}
-
 void attempt_parse() {
 	std::vector<Rule> grammar_rules = get_grammar_rules();
 	std::vector<Token> tokens = get_inputs();
@@ -377,11 +296,6 @@ void attempt_parse() {
 }
 
 void trial() {
-	// const std::string lexical_bnf =
-	// "TMCompiler/config/regex_lexical_grammar.bnf"; const std::string
-	// syntax_bnf = "TMCompiler/config/language_grammar.bnf";
-
-	// Compiler compiler(lexical_bnf, syntax_bnf);
 	Compiler compiler("TMCompiler/config/language.toml");
 
 	std::string program_text{"?"};
@@ -396,7 +310,6 @@ int main() {
 
 	LOG("INFO") << "BEGIN" << std::endl;
 	// attempt_parse();
-	// parse_actual_file();
 	trial();
 	LOG("INFO") << "DONE" << std::endl;
 
