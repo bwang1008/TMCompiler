@@ -49,6 +49,8 @@ def needs_to_run_clang_tidy(file_name: str) -> bool:
             "--",
             "-std=c++17",
             "-I.",
+            "-isystem",
+            "build/_deps/tomlplusplus-src/include",
         ],
         capture_output=True,
     )
