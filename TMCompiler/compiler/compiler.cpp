@@ -39,19 +39,6 @@
 Compiler::Compiler(const std::string& language_spec_file_name) {
 	spec = LanguageSpecification::read_language_specification_toml(
 		language_spec_file_name);
-
-	// modify rules for special tokens
-	// for instance, <identifier> becomes terminal
-	// instead of non-terminal
-	//
-	// TODO(bwang): make this automatic, by comparing leaves in syntax with
-	// lexical
-	const std::set<std::string> special_tokens{"keyword",
-											   "identifier",
-											   "integer-constant",
-											   "boolean-constant",
-											   "punctuator"};
-	syntactical_grammar.mark_special_symbols_as_terminal(special_tokens);
 }
 
 /**
@@ -145,6 +132,19 @@ auto Compiler::generate_parse_tree(const std::string& program_text) const
 
 	LOG("INFO") << "Generating grammar" << std::endl;
 	Grammar grammar{spec.syntax_rules, spec.syntax_main};
+
+	// modify rules for special tokens
+	// for instance, <identifier> becomes terminal
+	// instead of non-terminal
+	//
+	// TODO(bwang): make this automatic, by comparing leaves in syntax with
+	// lexical
+	const std::set<std::string> special_tokens{"keyword",
+											   "identifier",
+											   "integer-constant",
+											   "boolean-constant",
+											   "punctuator"};
+	grammar.mark_special_symbols_as_terminal(special_tokens);
 
 	// obtain parse tree of source program from tokens
 	LOG("INFO") << "Parsing tokens into parse tree" << std::endl;
