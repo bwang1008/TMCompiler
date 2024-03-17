@@ -5,22 +5,21 @@
 #include <tuple>
 #include <vector>
 
-#include <TMCompiler/compiler/utils/bnf_parser.hpp>
-#include <TMCompiler/compiler/parser/earley_parser.hpp>
-#include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
-#include <TMCompiler/compiler/models/rule.hpp>	// Rule
-#include <TMCompiler/compiler/models/token.hpp>	  // Token
-#include <TMCompiler/utils/logger/logger.hpp>
-
 #include <TMCompiler/compiler/compiler.hpp>
+#include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
+#include <TMCompiler/compiler/models/rule.hpp>			  // Rule
+#include <TMCompiler/compiler/models/token.hpp>			  // Token
+#include <TMCompiler/compiler/parser/earley_parser.hpp>
+#include <TMCompiler/compiler/utils/bnf_parser.hpp>
+#include <TMCompiler/utils/logger/logger.hpp>
 
 std::vector<Rule> get_grammar_rules() {
 	std::vector<Rule> grammar_rules;
 
-	GrammarSymbol sum {"Sum", false};
-	GrammarSymbol product {"Product", false};
-	GrammarSymbol factor {"Factor", false};
-	GrammarSymbol number {"Number", false};
+	GrammarSymbol sum{"Sum", false};
+	GrammarSymbol product{"Product", false};
+	GrammarSymbol factor{"Factor", false};
+	GrammarSymbol number{"Number", false};
 
 	std::vector<GrammarSymbol> rhs;
 
@@ -30,14 +29,14 @@ std::vector<Rule> get_grammar_rules() {
 	rhs.push_back(GrammarSymbol{"[+-]", true});
 	rhs.push_back(product);
 
-	Rule rule0 {sum, rhs};
+	Rule rule0{sum, rhs};
 	grammar_rules.push_back(rule0);
 
 	// 1: Sum -> Product
 	rhs.clear();
 	rhs.push_back(product);
 
-	Rule rule1 {sum, rhs};
+	Rule rule1{sum, rhs};
 	grammar_rules.push_back(rule1);
 
 	// 2: Product -> Product [*/] Factor
@@ -46,14 +45,14 @@ std::vector<Rule> get_grammar_rules() {
 	rhs.push_back(GrammarSymbol{"[*/]", true});
 	rhs.push_back(factor);
 
-	Rule rule2 {product, rhs};
+	Rule rule2{product, rhs};
 	grammar_rules.push_back(rule2);
 
 	// 3: Product -> Factor
 	rhs.clear();
 	rhs.push_back(factor);
 
-	Rule rule3 {product, rhs};
+	Rule rule3{product, rhs};
 	grammar_rules.push_back(rule3);
 
 	// 4: Factor -> '(' Sum ')'
@@ -62,14 +61,14 @@ std::vector<Rule> get_grammar_rules() {
 	rhs.push_back(sum);
 	rhs.push_back(GrammarSymbol{"\\)", true});
 
-	Rule rule4 {factor, rhs};
+	Rule rule4{factor, rhs};
 	grammar_rules.push_back(rule4);
 
 	// 5: Factory -> Number
 	rhs.clear();
 	rhs.push_back(number);
 
-	Rule rule5 {factor, rhs};
+	Rule rule5{factor, rhs};
 	grammar_rules.push_back(rule5);
 
 	// 6: Number -> [0-9] Number
@@ -77,14 +76,14 @@ std::vector<Rule> get_grammar_rules() {
 	rhs.push_back(GrammarSymbol{"[0-9]", true});
 	rhs.push_back(number);
 
-	Rule rule6 {number, rhs};
+	Rule rule6{number, rhs};
 	grammar_rules.push_back(rule6);
 
 	// 7: Number -> [0-9]
 	rhs.clear();
 	rhs.push_back(GrammarSymbol{"[0-9]", true});
 
-	Rule rule7 {number, rhs};
+	Rule rule7{number, rhs};
 	grammar_rules.push_back(rule7);
 
 	return grammar_rules;
@@ -107,7 +106,8 @@ std::vector<Token> get_inputs() {
 }
 
 void printItem(std::vector<Rule> grammar_rules, EarleyItem item) {
-	// std::cout << "{ rule = " << item.rule << ", start = " << item.start << ", next = " << item.next << "}" << std::endl;
+	// std::cout << "{ rule = " << item.rule << ", start = " << item.start << ",
+	// next = " << item.next << "}" << std::endl;
 
 	const std::size_t max_width = 55;
 	std::size_t total_length = 0;
@@ -128,7 +128,6 @@ void printItem(std::vector<Rule> grammar_rules, EarleyItem item) {
 		std::cout << rule.replacement[i].value << " ";
 		total_length += rule.replacement[i].value.size() + 1;
 	}
-
 
 	while(total_length < max_width) {
 		std::cout << " ";
@@ -167,12 +166,12 @@ void print_tree(std::vector<Token> tokens, std::vector<SubParse> tree) {
 	for(std::size_t i = 0; i < length; ++i) {
 		if(i % fence_length == 0) {
 			std::cout << "|";
-		}
-		else {
+		} else {
 			std::cout << "-";
 		}
 	}
-	std::cout << std::endl;;
+	std::cout << std::endl;
+	;
 
 	std::vector<std::size_t> rule_nums;
 	std::vector<char> line_chars(length, ' ');
@@ -185,7 +184,8 @@ void print_tree(std::vector<Token> tokens, std::vector<SubParse> tree) {
 		std::size_t end = what.end;
 
 		// std::cout << "setting " << start << " " << end << std::endl;
-		// std::cout << "so go from [" << 4 * start << ", " << 4 * end << "]" << std::endl;
+		// std::cout << "so go from [" << 4 * start << ", " << 4 * end << "]" <<
+		// std::endl;
 
 		if(fence_length * start < index) {
 			// first print
@@ -206,7 +206,8 @@ void print_tree(std::vector<Token> tokens, std::vector<SubParse> tree) {
 			index = 0;
 		}
 
-		for(std::size_t j = fence_length * start; j <= fence_length * end; ++j) {
+		for(std::size_t j = fence_length * start; j <= fence_length * end;
+			++j) {
 			line_chars[j] = '-';
 		}
 
@@ -224,12 +225,10 @@ void print_tree(std::vector<Token> tokens, std::vector<SubParse> tree) {
 			if(line_chars[j]) {
 				if(j % fence_length == 0) {
 					std::cout << "|";
-				}
-				else {
+				} else {
 					std::cout << "-";
 				}
-			}
-			else {
+			} else {
 				std::cout << " ";
 			}
 		}
@@ -268,7 +267,8 @@ void parse_actual_file() {
 	// const std::string input{"int compute(int y) { return 0; }"};
 
 	//                       01234567890123456789012345678901234567890123456789012345
-	const std::string input{"void foo() {  for ( int i = 0; i < 10; i += 1) {  }  } "};
+	const std::string input{
+		"void foo() {  for ( int i = 0; i < 10; i += 1) {  }  } "};
 
 	std::vector<Token> tokens;
 	for(std::size_t i = 0; i < input.size(); ++i) {
@@ -285,34 +285,38 @@ void parse_actual_file() {
 
 	std::string default_start{"tokens"};
 
-	std::vector<std::vector<EarleyItem> > items = build_earley_items(earley_rules, tokens, default_start);
+	std::vector<std::vector<EarleyItem> > items =
+		build_earley_items(earley_rules, tokens, default_start);
 
 	std::cout << "Finished building earley sets" << std::endl;
 
 	std::cout << "How many Earley sets? " << items.size() << std::endl;
 
 	// for(std::size_t i = 0; i < items.size(); ++i) {
-		// std::cout << "Earley Set[" << i << "]" << std::endl;
-		// for(std::size_t j = 0; j < items[i].size(); ++j) {
-			// EarleyItem item = items[i][j];
+	// std::cout << "Earley Set[" << i << "]" << std::endl;
+	// for(std::size_t j = 0; j < items[i].size(); ++j) {
+	// EarleyItem item = items[i][j];
 
-			// printItem(earley_rules, item);
-		// }
-
-		// std::cout << std::endl;
+	// printItem(earley_rules, item);
 	// }
 
+	// std::cout << std::endl;
+	// }
 
-	std::cout << "======================================================" << std::endl;
+	std::cout << "======================================================"
+			  << std::endl;
 
-	std::vector<SubParse> tree = build_earley_parse_tree(items, earley_rules, tokens, default_start);
+	std::vector<SubParse> tree =
+		build_earley_parse_tree(items, earley_rules, tokens, default_start);
 
 	for(std::size_t i = 0; i < tree.size(); ++i) {
-		std::cout << i << ": " << "{ " << tree[i].rule << ", " << tree[i].end << "} " << " starting from " << tree[i].start << " parent= " << tree[i].parent << std::endl;
+		std::cout << i << ": "
+				  << "{ " << tree[i].rule << ", " << tree[i].end << "} "
+				  << " starting from " << tree[i].start
+				  << " parent= " << tree[i].parent << std::endl;
 	}
 
 	print_tree(tokens, tree);
-
 }
 
 void attempt_parse() {
@@ -320,7 +324,8 @@ void attempt_parse() {
 	std::vector<Token> tokens = get_inputs();
 	std::string default_start = "Sum";
 
-	std::vector<std::vector<EarleyItem> > items = build_earley_items(grammar_rules, tokens, default_start);
+	std::vector<std::vector<EarleyItem> > items =
+		build_earley_items(grammar_rules, tokens, default_start);
 
 	std::cout << "Finished building earley sets" << std::endl;
 
@@ -337,13 +342,17 @@ void attempt_parse() {
 		std::cout << std::endl;
 	}
 
+	std::cout << "======================================================"
+			  << std::endl;
 
-	std::cout << "======================================================" << std::endl;
-
-	std::vector<SubParse> tree = build_earley_parse_tree(items, grammar_rules, tokens, default_start);
+	std::vector<SubParse> tree =
+		build_earley_parse_tree(items, grammar_rules, tokens, default_start);
 
 	for(std::size_t i = 0; i < tree.size(); ++i) {
-		std::cout << i << ": " << "{ " << tree[i].rule << ", " << tree[i].end << "} " << " starting from " << tree[i].start << " parent= " << tree[i].parent << std::endl;
+		std::cout << i << ": "
+				  << "{ " << tree[i].rule << ", " << tree[i].end << "} "
+				  << " starting from " << tree[i].start
+				  << " parent= " << tree[i].parent << std::endl;
 	}
 
 	std::cout << "TOKENS:" << std::endl;
@@ -368,10 +377,12 @@ void attempt_parse() {
 }
 
 void trial() {
-	const std::string lexical_bnf = "TMCompiler/config/regex_lexical_grammar.bnf";
-	const std::string syntax_bnf = "TMCompiler/config/language_grammar.bnf";
+	// const std::string lexical_bnf =
+	// "TMCompiler/config/regex_lexical_grammar.bnf"; const std::string
+	// syntax_bnf = "TMCompiler/config/language_grammar.bnf";
 
-	Compiler compiler(lexical_bnf, syntax_bnf);
+	// Compiler compiler(lexical_bnf, syntax_bnf);
+	Compiler compiler("TMCompiler/config/language.toml");
 
 	std::string program_text{"?"};
 	program_text = "void foo() {}  void main() { foo(); }";
