@@ -307,6 +307,7 @@ auto read_language_specification_toml(
 		_read_syntax_main(language_spec_table["syntax"].as_table());
 
 	return LanguageSpecification{
+		language_specification_toml,
 		parsed_title,
 		parsed_description,
 		parsed_version,
@@ -321,6 +322,7 @@ auto main() -> int {
 	try {
 		LanguageSpecification ls =
 			read_language_specification_toml("TMCompiler/config/language.toml");
+		std::cout << "Parsing from " << ls.spec_file_name << std::endl;
 
 		std::cout << "title = " << ls.title << std::endl;
 		std::cout << "description = " << ls.description << std::endl;
