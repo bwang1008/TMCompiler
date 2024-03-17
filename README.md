@@ -4,6 +4,8 @@ This project implements a compiler that translates a program with C-like syntax 
 
 The Turing-completeness of a programming language implies the set of computable functions that can be computed by the programming language, is the same as that of a Turing Machine. In other words, for any well-formed program in the programming language, there is an equivalent Turing Machine that computes the same function! This project demonstrates this statement by explicitly constructing a multi-tape, 3-symbol Turing Machine from a given program written with C-like syntax.
 
+Note: the `main` branch is the main development branch and will not necessarily reflect a working version.
+
 ## Installation
 1. This project is meant to run through command-line on a Linux or Mac machine (sorry Windows!). Ensure you have the following installed: git, CMake, Make, and a C++ compiler. You can check this through `git --version`, `cmake --version`, `make --version`, and `g++ --version` (if you use `g++` for your C++ compiler).
 
