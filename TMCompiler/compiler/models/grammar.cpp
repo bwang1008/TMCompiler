@@ -9,11 +9,9 @@
 #include <TMCompiler/compiler/models/rule.hpp>			  // Rule
 #include <TMCompiler/compiler/models/token.hpp>			  // Token
 #include <TMCompiler/compiler/parser/earley_parser.hpp>	 // build_earley_items, build_earley_parse_tree, EarleyItem, SubParse
-#include <TMCompiler/compiler/utils/bnf_parser.hpp>	 // BnfParser
 
-Grammar::Grammar(std::vector<Rule> rules, std::string default_start)
-	: rules(rules), default_start(std::move(top_symbol)) {
-	rules = BnfParser::parse_rules(bnf_file);
+Grammar::Grammar(std::vector<Rule> _rules, std::string _default_start)
+	: rules(std::move(_rules)), default_start(std::move(_default_start)) {
 }
 
 auto Grammar::parse(const std::vector<Token>& input_tokens) const

@@ -19,7 +19,7 @@ public:
 	 * @param default_start: non-terminal symbol name that every compilation
 	 * matches
 	 */
-	Grammar(std::vector<Rule> rules, std::string default_start);
+	Grammar(std::vector<Rule> _rules, std::string _default_start);
 	[[nodiscard]] auto parse(const std::vector<Token>& input_tokens) const
 		-> std::vector<SubParse>;
 	[[nodiscard]] auto get_rules() const -> std::vector<Rule>;
