@@ -6,7 +6,7 @@ In a Theory of Compuation course, we learn that "any program written in a Turing
 
 However, I find that the statement "for any given C++ program, I can build an equivalent Turing Machine that computes the same thing" is much more incredulous than the statement "I can write a C++ program that can simulate a Turing Machine". This project serves to demonstrate a watered-down version of the first statement by constructing an explicit multi-tape Turing Machine from a given program written in a restricted subset of C++.
  
-The current project version is 1.0.
+The current project version is version 0.0.0.
 
 ## Installation
 1. This project is meant to run through command-line on a Linux or Mac machine (sorry Windows!). Ensure you have the following installed: git, CMake, Make, and a C++ compiler. You can check this through `git --version`, `cmake --version`, `make --version`, and `g++ --version` (if you use `g++`).
