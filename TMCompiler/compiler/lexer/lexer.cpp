@@ -22,9 +22,12 @@
  * @param lexical_config_file: file path name of BNF file containing
  * token-productions and token-type productions
  */
-Lexer::Lexer(
-	const std::vector<std::pair<std::string, std::regex>> _token_regexes)
-	: text{""}, cursor{0}, row{0}, col{0}, token_regexes{_token_regexes} {
+Lexer::Lexer(std::vector<std::pair<std::string, std::regex>> _token_regexes)
+	: text{""},
+	  cursor{0},
+	  row{0},
+	  col{0},
+	  token_regexes{std::move(_token_regexes)} {
 }
 
 /**

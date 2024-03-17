@@ -41,7 +41,8 @@
 
 class Lexer {
 public:
-	Lexer(const std::vector<std::pair<std::string, std::regex>> _token_regexes);
+	explicit Lexer(
+		std::vector<std::pair<std::string, std::regex>> _token_regexes);
 	auto set_text(std::string text_to_read) -> void;
 	[[nodiscard]] auto has_next_token() const -> bool;
 	auto get_next_token() -> Token;
