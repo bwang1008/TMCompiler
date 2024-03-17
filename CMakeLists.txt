@@ -75,6 +75,7 @@ configure_file(
 add_executable(tests
 	TMCompiler/tests/test_compiler.cpp
 	TMCompiler/tests/test_lexer.cpp
+	TMCompiler/tests/test_language_specification.cpp
 )
 
 ##############################

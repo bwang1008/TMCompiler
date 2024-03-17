@@ -5,7 +5,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-TEST_CASE("program_text_0") {
+TEST_CASE("compiles") {
 	logger.set_level("NONE");
 
 	Compiler compiler("TMCompiler/config/language.toml");
