@@ -12,7 +12,6 @@
 #include <TMCompiler/compiler/models/grammar_symbol.hpp>  // GrammarSymbol
 #include <TMCompiler/compiler/models/rule.hpp>			  // Rule
 #include <TMCompiler/compiler/models/token.hpp>			  // Token
-#include <TMCompiler/compiler/utils/bnf_parser.hpp>		  // BnfParser
 #include <TMCompiler/utils/logger/logger.hpp>			  // LOG
 
 /**

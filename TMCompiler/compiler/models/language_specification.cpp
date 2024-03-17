@@ -27,9 +27,6 @@
 
 #include "language_specification.hpp"
 
-#include <cstddef>	  // std::size_t
-#include <exception>  // std::exception
-#include <iostream>
 #include <optional>		  // std::optional
 #include <regex>		  // std::regex
 #include <stdexcept>	  // std::logic_error
