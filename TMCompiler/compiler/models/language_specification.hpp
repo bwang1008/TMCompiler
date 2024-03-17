@@ -1,3 +1,6 @@
+#ifndef LANGUAGE_SPECIFICATION_HPP
+#define LANGUAGE_SPECIFICATION_HPP
+
 #include <regex>		  // std::regex
 #include <string>		  // std::string
 #include <unordered_set>  // std::unorderedset
@@ -35,3 +38,5 @@ struct LanguageSpecification {
 		const std::string& language_specification_toml)
 		-> LanguageSpecification;
 };
+
+#endif
