@@ -16,6 +16,7 @@ includes_provides: Dict[str, List[str]] = {
     "iostream": ["std::cout", "std::endl", "std::clog"],
     "list": ["std::list"],
     "map": ["std::map"],
+    "optional": ["std::optional"],
     "ostream": ["std::ostream"],
     "regex": ["std::regex", "std::regex_match", "std::regex_search", "std::smatch"],
     "set": ["std::set"],
@@ -60,7 +61,10 @@ def what_is_included(lines: List[str]) -> Set[str]:
                 continue
 
             header_name: str = line[1 + begin : end]
-            if not header_name.startswith("TMCompiler"):
+            if not header_name.startswith("TMCompiler") and header_name not in [
+                "toml++/toml.hpp",
+                "catch2/catch_test_macros.hpp",
+            ]:
                 includes.add(header_name)
 
     return includes
