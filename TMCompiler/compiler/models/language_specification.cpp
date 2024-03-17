@@ -320,52 +320,52 @@ auto LanguageSpecification::read_language_specification_toml(
 	};
 }
 
-auto main() -> int {
-	try {
-		LanguageSpecification ls =
-			LanguageSpecification::read_language_specification_toml(
-				"TMCompiler/config/language.toml");
-		std::cout << "Parsing from " << ls.spec_file_name << std::endl;
+// auto main() -> int {
+// try {
+// LanguageSpecification ls =
+// LanguageSpecification::read_language_specification_toml(
+// "TMCompiler/config/language.toml");
+// std::cout << "Parsing from " << ls.spec_file_name << std::endl;
 
-		std::cout << "title = " << ls.title << std::endl;
-		std::cout << "description = " << ls.description << std::endl;
-		std::cout << "version = " << ls.version << std::endl;
+// std::cout << "title = " << ls.title << std::endl;
+// std::cout << "description = " << ls.description << std::endl;
+// std::cout << "version = " << ls.version << std::endl;
 
-		std::cout << "len of token_regexes: " << ls.token_regexes.size()
-				  << std::endl;
-		for(const auto& x : ls.token_regexes) {
-			std::cout << "\t" << x.first << std::endl;
-		}
+// std::cout << "len of token_regexes: " << ls.token_regexes.size()
+// << std::endl;
+// for(const auto& x : ls.token_regexes) {
+// std::cout << "\t" << x.first << std::endl;
+// }
 
-		std::cout << "len of token_regexes_ignore: "
-				  << ls.token_regexes_ignore.size() << std::endl;
-		for(const auto& x : ls.token_regexes_ignore) {
-			std::cout << "\t" << x << std::endl;
-		}
+// std::cout << "len of token_regexes_ignore: "
+// << ls.token_regexes_ignore.size() << std::endl;
+// for(const auto& x : ls.token_regexes_ignore) {
+// std::cout << "\t" << x << std::endl;
+// }
 
-		std::cout << "syntax_main = " << ls.syntax_main << std::endl;
+// std::cout << "syntax_main = " << ls.syntax_main << std::endl;
 
-		std::cout << "len of syntax_rules = " << ls.syntax_rules.size()
-				  << std::endl;
+// std::cout << "len of syntax_rules = " << ls.syntax_rules.size()
+// << std::endl;
 
-		const std::size_t max_rules_to_show = 20;
-		for(std::size_t i = 0; i < max_rules_to_show; ++i) {
-			Rule rule = ls.syntax_rules[i];
-			std::cout << "\t" << rule.production.value << ": [";
-			for(const GrammarSymbol& gs : rule.replacement) {
-				std::cout << "\"" << gs.value << "\", ";
-			}
-			std::cout << "]" << std::endl;
-		}
-	} catch(const std::logic_error& e) {
-		std::cout << "Logic error parsing TOML file" << std::endl;
-		std::cout << e.what() << std::endl;
-		return 1;
-	} catch(const std::exception& e) {
-		std::cout << "UNKNOWN EXCEPTION" << std::endl;
-		std::cout << e.what() << std::endl;
-		return -1;
-	}
+// const std::size_t max_rules_to_show = 20;
+// for(std::size_t i = 0; i < max_rules_to_show; ++i) {
+// Rule rule = ls.syntax_rules[i];
+// std::cout << "\t" << rule.production.value << ": [";
+// for(const GrammarSymbol& gs : rule.replacement) {
+// std::cout << "\"" << gs.value << "\", ";
+// }
+// std::cout << "]" << std::endl;
+// }
+// } catch(const std::logic_error& e) {
+// std::cout << "Logic error parsing TOML file" << std::endl;
+// std::cout << e.what() << std::endl;
+// return 1;
+// } catch(const std::exception& e) {
+// std::cout << "UNKNOWN EXCEPTION" << std::endl;
+// std::cout << e.what() << std::endl;
+// return -1;
+// }
 
-	return 0;
-}
+// return 0;
+// }
