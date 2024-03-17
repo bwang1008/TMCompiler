@@ -50,6 +50,7 @@ add_library(tmclib
 	TMCompiler/compiler/compiler.cpp
 	TMCompiler/compiler/lexer/lexer.cpp
 	TMCompiler/compiler/models/grammar.cpp
+	TMCompiler/compiler/models/language_specification.cpp
 	TMCompiler/compiler/parser/earley_parser.cpp
 	TMCompiler/compiler/utils/bnf_parser.cpp
 	TMCompiler/utils/logger/logger.cpp
@@ -148,12 +149,14 @@ target_include_directories(tmclib
 	PUBLIC "${CMAKE_SOURCE_DIR}"
 )
 
+target_link_libraries(tmclib PRIVATE tomlplusplus::tomlplusplus)
+
 # configure tmc
 target_compile_options(tmc
 	PRIVATE "${WARNINGS}" "--optimize=3"
 )
 
-target_link_libraries(tmc PRIVATE tmclib tomlplusplus::tomlplusplus)
+target_link_libraries(tmc PRIVATE tmclib)
 
 # configure tests
 target_link_libraries(tests PRIVATE tmclib Catch2::Catch2WithMain)
