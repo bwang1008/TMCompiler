@@ -7,9 +7,6 @@
 #include <TMCompiler/compiler/models/rule.hpp>	// Rule
 
 struct LanguageSpecification {
-	// name of TOML file information is parsed from
-	std::string spec_file_name;
-
 	std::string title;
 	std::string description;
 	std::string version;
@@ -28,7 +25,13 @@ struct LanguageSpecification {
 
 	// list of rules in [[syntax.rules]]
 	std::vector<Rule> syntax_rules;
-};
 
-auto read_language_specification_toml(
-	const std::string& language_specification_toml) -> LanguageSpecification;
+	// METADATA
+
+	// name of TOML file information is parsed from
+	std::string spec_file_name;
+
+	static auto read_language_specification_toml(
+		const std::string& language_specification_toml)
+		-> LanguageSpecification;
+};

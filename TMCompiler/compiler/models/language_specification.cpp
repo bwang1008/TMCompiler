@@ -277,7 +277,7 @@ auto _read_syntax_main(const toml::table* syntax) -> std::string {
  * and the BNF specifying the grammar. Ex: "TMCompiler/config/language.toml"
  * @return LanguageSpecification information within the TOML file as struct
  */
-auto read_language_specification_toml(
+auto LanguageSpecification::read_language_specification_toml(
 	const std::string& language_specification_toml) -> LanguageSpecification {
 	const toml::table language_spec_table =
 		toml::parse_file(language_specification_toml);
@@ -307,7 +307,6 @@ auto read_language_specification_toml(
 		_read_syntax_main(language_spec_table["syntax"].as_table());
 
 	return LanguageSpecification{
-		language_specification_toml,
 		parsed_title,
 		parsed_description,
 		parsed_version,
@@ -315,13 +314,15 @@ auto read_language_specification_toml(
 		parsed_token_regexes_ignore,
 		parsed_syntax_main,
 		parsed_syntax_rules,
+		language_specification_toml,
 	};
 }
 
 auto main() -> int {
 	try {
 		LanguageSpecification ls =
-			read_language_specification_toml("TMCompiler/config/language.toml");
+			LanguageSpecification::read_language_specification_toml(
+				"TMCompiler/config/language.toml");
 		std::cout << "Parsing from " << ls.spec_file_name << std::endl;
 
 		std::cout << "title = " << ls.title << std::endl;
