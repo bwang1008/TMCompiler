@@ -51,6 +51,10 @@ def needs_to_run_clang_tidy(file_name: str) -> bool:
             "-I.",
             "-isystem",
             "build/_deps/tomlplusplus-src/include",
+            "-isystem",
+            "build/_deps/catch2-src/src",
+            "-isystem",
+            "build/_deps/catch2-build/generated-includes/",
         ],
         capture_output=True,
     )
