@@ -13,98 +13,26 @@ TEST_CASE("test_lexer_comment_0") {
 			"TMCompiler/config/language.toml");
 	Lexer lexer(spec.token_regexes);
 
-	std::string program_text = "/**/";
-
-	lexer.set_text(program_text);
-	std::vector<Token> tokens;
-
-	while(lexer.has_next_token()) {
-		tokens.push_back(lexer.get_next_token());
+	std::string program_text;
+	SECTION("text0") {
+		program_text = "/**/";
+	}
+	SECTION("text1") {
+		program_text = "/* */";
+	}
+	SECTION("text2") {
+		program_text = "/***/";
+	}
+	SECTION("text3") {
+		program_text = "/**********/";
+	}
+	SECTION("text4") {
+		program_text = "/*/*/";
+	}
+	SECTION("text5") {
+		program_text = "/*/////////////*/";
 	}
 
-	REQUIRE(tokens.size() == 1);
-	REQUIRE(tokens[0].type == "block-comment");
-}
-
-TEST_CASE("test_lexer_comment_1") {
-	const LanguageSpecification spec =
-		LanguageSpecification::read_language_specification_toml(
-			"TMCompiler/config/language.toml");
-	Lexer lexer(spec.token_regexes);
-
-	std::string program_text = "/* */";
-	lexer.set_text(program_text);
-	std::vector<Token> tokens;
-
-	while(lexer.has_next_token()) {
-		tokens.push_back(lexer.get_next_token());
-	}
-
-	REQUIRE(tokens.size() == 1);
-	REQUIRE(tokens[0].type == "block-comment");
-}
-
-TEST_CASE("test_lexer_comment_2") {
-	const LanguageSpecification spec =
-		LanguageSpecification::read_language_specification_toml(
-			"TMCompiler/config/language.toml");
-	Lexer lexer(spec.token_regexes);
-
-	std::string program_text = "/***/";
-	lexer.set_text(program_text);
-	std::vector<Token> tokens;
-
-	while(lexer.has_next_token()) {
-		tokens.push_back(lexer.get_next_token());
-	}
-
-	REQUIRE(tokens.size() == 1);
-	REQUIRE(tokens[0].type == "block-comment");
-}
-
-TEST_CASE("test_lexer_comment_3") {
-	const LanguageSpecification spec =
-		LanguageSpecification::read_language_specification_toml(
-			"TMCompiler/config/language.toml");
-	Lexer lexer(spec.token_regexes);
-
-	std::string program_text = "/**********/";
-	lexer.set_text(program_text);
-	std::vector<Token> tokens;
-
-	while(lexer.has_next_token()) {
-		tokens.push_back(lexer.get_next_token());
-	}
-
-	REQUIRE(tokens.size() == 1);
-	REQUIRE(tokens[0].type == "block-comment");
-}
-
-TEST_CASE("test_lexer_comment_4") {
-	const LanguageSpecification spec =
-		LanguageSpecification::read_language_specification_toml(
-			"TMCompiler/config/language.toml");
-	Lexer lexer(spec.token_regexes);
-
-	std::string program_text = "/*/*/";
-	lexer.set_text(program_text);
-	std::vector<Token> tokens;
-
-	while(lexer.has_next_token()) {
-		tokens.push_back(lexer.get_next_token());
-	}
-
-	REQUIRE(tokens.size() == 1);
-	REQUIRE(tokens[0].type == "block-comment");
-}
-
-TEST_CASE("test_lexer_comment_5") {
-	const LanguageSpecification spec =
-		LanguageSpecification::read_language_specification_toml(
-			"TMCompiler/config/language.toml");
-	Lexer lexer(spec.token_regexes);
-
-	std::string program_text = "/*/////////////*/";
 	lexer.set_text(program_text);
 	std::vector<Token> tokens;
 
