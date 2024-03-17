@@ -17,94 +17,14 @@
 #include <TMCompiler/utils/logger/logger.hpp>			  // LOG
 
 /**
- * Given a list of Rules, convert into a more usable list of token-productions.
- *
- * For instance, parameter "rules" may contain the following:
- * Rule{"token" => "whitespace"}
- * Rule{"token" => "identifier"}
- * Rule{"identifier" => "[a-zA-Z][a-zA-Z0-9]*"
- * Rule{"whitespace" => "\s+"}
- *
- * This function will return the following list:
- * [
- *	  ("whitespace", std::regex("\s+")),
- *	  ("identifier", std::regex("[a-zA-Z][a-zA-Z0-9]*")),
- * ]
- *
- * @param rules: list of Rule objects from a BNF file, containing some
- * productions of non-terminal "token", as well as some productions of
- * non-terminal token-types to their respective terminal regular-expression
- * @return: a list of (token-type, regex) pairs in the order found in rules
- */
-auto convert_token_rules_to_regexes(const std::vector<Rule>& rules)
-	-> std::vector<std::pair<std::string, std::regex> > {
-	// store instances of "whitespace" -> "\s+"
-	std::unordered_map<std::string, std::string> token_type_to_regex_string;
-
-	bool found_token_rule = false;
-	for(const Rule& rule : rules) {
-		if(rule.production.value == "token") {
-			found_token_rule = true;
-		} else {
-			const std::vector<GrammarSymbol> replacement = rule.replacement;
-			if(replacement.size() != 1 || !replacement[0].terminal) {
-				throw std::invalid_argument(
-					"Each rule of lexical grammar must have only one value on "
-					"the right-hand-side that is a string literal describing "
-					"the regex of the token pattern");
-			}
-
-			// found <whitespace> ::= "\s+"; store as "whitespace" -> "\s+"
-			token_type_to_regex_string[rule.production.value] =
-				replacement.at(0).value;
-		}
-	}
-
-	if(!found_token_rule) {
-		throw std::invalid_argument(
-			"Lexical grammar must have one rule with left-hand-side <token>, "
-			"with right-hand-side describing the order of operations to check "
-			"token type");
-	}
-
-	// order (token_type, token_regex) based on order in list of rules
-	std::vector<std::pair<std::string, std::regex> > token_regexes;
-
-	// find instances of Rule("token", "whitespace"),
-	// Rule("token", "identifier"), ...
-	for(const Rule& rule : rules) {
-		if(rule.production.value == "token") {
-			// add ("whitespace", std::regex("\s+"))
-			const std::string token_type = rule.replacement[0].value;
-
-			if(token_type_to_regex_string.find(token_type) ==
-			   token_type_to_regex_string.end()) {
-				throw std::invalid_argument(
-					std::string("Lexical grammar states a token can have type ")
-						.append(token_type) +
-					", but no production <" + token_type +
-					"> ::= \"...\" was found");
-			}
-
-			const std::string token_regex =
-				token_type_to_regex_string[token_type];
-			token_regexes.emplace_back(token_type, std::regex(token_regex));
-		}
-	}
-
-	return token_regexes;
-}
-
-/**
  * Constructor for Lexer class.
  *
  * @param lexical_config_file: file path name of BNF file containing
  * token-productions and token-type productions
  */
-Lexer::Lexer(const std::string& lexical_config_file)
-	: text{""}, cursor{0}, row{0}, col{0} {
-	const std::vector<Rule> rules = BnfParser::parse_rules(lexical_config_file);
-	token_regexes = convert_token_rules_to_regexes(rules);
+Lexer::Lexer(
+	const std::vector<std::pair<std::string, std::regex>> _token_regexes)
+	: text{""}, cursor{0}, row{0}, col{0}, token_regexes{_token_regexes} {
 }
 
 /**

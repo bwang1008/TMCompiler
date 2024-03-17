@@ -3,28 +3,23 @@
 
 /**
  * The Lexer class implements a scanner that tokenizes a given string into
- * individual tokens / words, based on a list of regular-expressions in a BNF
- * configuration file.
+ * individual tokens / words, based on a list of regular-expressions.
  *
- * The BNF file must have the following structure:
- *		- a "token" production to a list of token-type productions
- *		- a production for every token-type, that leads to one regular
- *expression
- *
- * For instance, the following is a valid BNF configuration:
- * <token> ::= <whitespace>
- *           | <identifier>
- * <whitespace> ::= "\s+"
- * <identifier> ::= "[a-zA-Z][a-zA-Z0-9]*"
+ * For instance, given the following as input,
+ * ("whitespace", std::regex("\\s+")),
+ * ("identifier", std::regex("[a-zA-Z][a-zA-Z0-9]*")
  *
  * This tells the lexer that there are two kinds of tokens: whitespace and
  * identifiers, based on the corresponding regular-expression.
  *
- * The lexer will parse text in the order given by the productions of "token"
+ * The lexer will parse text in the order given.
  *
  * One way to use the lexer is as follows:
  *
- * Lexer lexer{"TMCompiler/config/regex_lexical_grammar.bnf"};
+ * std::vector<std::pair<std::string, std::regex>> regexs;
+ * regexs.emplace_back("whitespace", std::regex("\\s+"));
+ * regexs.emplace_back("identifier", std::regex("[a-zA-Z][a-zA-Z0-9]*"));
+ * Lexer lexer{regexs};
  * lexer.set_text("int foo");
  * while(lexer.has_next_token()) {
  *		Token token = lexer.get_next_token();
@@ -46,17 +41,22 @@
 
 class Lexer {
 public:
-	explicit Lexer(const std::string& lexical_config_file);
+	Lexer(const std::vector<std::pair<std::string, std::regex>> _token_regexes);
 	auto set_text(std::string text_to_read) -> void;
 	[[nodiscard]] auto has_next_token() const -> bool;
 	auto get_next_token() -> Token;
 
 private:
-	std::string text;
-	std::size_t cursor;
+	std::string text;	 // text to parse from
+	std::size_t cursor;	 // current position in text
 	std::size_t row;
 	std::size_t col;
-	std::vector<std::pair<std::string, std::regex> > token_regexes;
+	// list of token type to regex, such as
+	// [
+	//	  ("whitespace", std::regex("\s+")),
+	//	  ("identifier", std::regex("[a-zA-Z][a-zA-Z0-9]//")),
+	// ]
+	std::vector<std::pair<std::string, std::regex>> token_regexes;
 };
 
 #endif
