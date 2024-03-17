@@ -69,5 +69,5 @@ TEST_CASE("program_text_0") {
 	}
 
 	compiler.compile_text(program_text);
-	REQUIRE(1 == 1);
+	SUCCEED("Compiled without errors");
 }
