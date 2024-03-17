@@ -16,29 +16,29 @@
 #include <utility>	  // std::move
 #include <vector>	  // std::vector
 
-#include <TMCompiler/compiler/lexer/lexer.hpp>
-#include <TMCompiler/compiler/models/rule.hpp>			 // Rule
-#include <TMCompiler/compiler/models/token.hpp>			 // Token
+#include <TMCompiler/compiler/lexer/lexer.hpp>					  // Lexer
+#include <TMCompiler/compiler/models/language_specification.hpp>  // LanguageSpecification
+#include <TMCompiler/compiler/models/rule.hpp>					  // Rule
+#include <TMCompiler/compiler/models/token.hpp>					  // Token
 #include <TMCompiler/compiler/parser/earley_parser.hpp>	 // SubParse
 #include <TMCompiler/utils/logger/logger.hpp>			 // LOG
 
 /**
  * Constructor for Compiler class.
  *
- * This initializes both the lexical and syntactical Grammar instance variables.
+ * Initializes the LanguageSpecification struct containing
+ * token regexes and BNF grammar, the data to parse source code.
+ *
  * Then it marks certain symbols in the syntactical BNF as terminal: some
  * non-terminals actually appear in the lexical BNF instead, like "identifier"
  * and "constants".
  *
- * @param lexical_bnf: BNF file specifying lexical grammar, i.e.
- * how tokens are formed from letters
- * @param syntax_bnf: BNF file specifying syntactical grammar,
- * i.e. how each language construct is made up of smaller constructs
+ * @param language_spec_file_name: path of TOML file specifying
+ * programming language syntax
  */
-Compiler::Compiler(std::string lexical_bnf, const std::string& syntax_bnf)
-	: lexical_file(std::move(lexical_bnf)),
-	  syntactical_grammar(syntax_bnf, "compilation-unit") {
-	// detect default start from both BNFs
+Compiler::Compiler(const std::string& language_spec_file_name) {
+	spec = LanguageSpecification::read_language_specification_toml(
+		language_spec_file_name);
 
 	// modify rules for special tokens
 	// for instance, <identifier> becomes terminal
@@ -123,17 +123,15 @@ auto Compiler::generate_parse_tree(const std::string& program_text) const
 	-> std::vector<SubParse> {
 	LOG("INFO") << "Tokenizing input" << std::endl;
 
-	const std::set<std::string> ignored_token_types{
-		"whitespace", "line-comment", "block-commment"};
-
-	std::vector<Token> words;
-	Lexer lexer{lexical_file};
+	Lexer lexer{spec.token_regexes};
 	lexer.set_text(program_text);
+	std::vector<Token> words;
 
 	while(lexer.has_next_token()) {
 		const Token token = lexer.get_next_token();
 
-		if(ignored_token_types.find(token.type) == ignored_token_types.end()) {
+		if(spec.token_regexes_ignore.find(token.type) ==
+		   spec.token_regexes_ignore.end()) {
 			words.push_back(token);
 		}
 	}
@@ -145,10 +143,12 @@ auto Compiler::generate_parse_tree(const std::string& program_text) const
 					 << std::endl;
 	}
 
+	LOG("INFO") << "Generating grammar" << std::endl;
+	Grammar grammar{spec.syntax_rules, spec.syntax_main};
+
 	// obtain parse tree of source program from tokens
 	LOG("INFO") << "Parsing tokens into parse tree" << std::endl;
-	std::vector<SubParse> parse_tree_syntactical =
-		syntactical_grammar.parse(words);
+	std::vector<SubParse> parse_tree_syntactical = grammar.parse(words);
 
 	return parse_tree_syntactical;
 }

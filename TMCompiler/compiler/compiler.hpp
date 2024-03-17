@@ -12,8 +12,9 @@
 #include <string>  // std::string
 #include <vector>  // std::vector
 
-#include <TMCompiler/compiler/models/grammar.hpp>		 // Grammar
-#include <TMCompiler/compiler/models/token.hpp>			 // Token
+#include <TMCompiler/compiler/models/grammar.hpp>				  // Grammar
+#include <TMCompiler/compiler/models/language_specification.hpp>  // LanguageSpecification
+#include <TMCompiler/compiler/models/token.hpp>					  // Token
 #include <TMCompiler/compiler/parser/earley_parser.hpp>	 // SubParse
 
 class Compiler {
@@ -45,12 +46,10 @@ public:
 	auto compile_text(const std::string& program_text) const -> void;
 
 private:
-	// programming language of source code can be described using 2
-	// specifications: list of regexes for how to parse tokens / words from
-	// letters, and a grammar for how to parse tokens into programming-language
-	// constructs
-	std::string lexical_file;
-	Grammar syntactical_grammar;
+	// specification of syntax of programming language: contains list of regexes
+	// for how to parse tokens / words from letters as well as the grammar for
+	// how to parse tokens into programming-language constructs
+	LanguageSpecification spec;
 
 	// convert lexical parse tree into list of tokens
 	[[nodiscard]] auto tokenize(const std::vector<SubParse>& parse_tree,
