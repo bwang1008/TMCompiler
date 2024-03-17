@@ -1,13 +1,17 @@
 #include <string>  // std::string
 #include <vector>  // std::vector
 
-#include <TMCompiler/compiler/lexer/lexer.hpp>	 // Lexer
-#include <TMCompiler/compiler/models/token.hpp>	 // Token
+#include <TMCompiler/compiler/lexer/lexer.hpp>					  // Lexer
+#include <TMCompiler/compiler/models/language_specification.hpp>  // LanguageSpecification
+#include <TMCompiler/compiler/models/token.hpp>					  // Token
 
 #include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("test_lexer_comment_0") {
-	Lexer lexer("TMCompiler/config/regex_lexical_grammar.bnf");
+	const LanguageSpecification spec =
+		LanguageSpecification::read_language_specification_toml(
+			"TMCompiler/config/language.toml");
+	Lexer lexer(spec.token_regexes);
 
 	std::string program_text = "/**/";
 
@@ -23,7 +27,10 @@ TEST_CASE("test_lexer_comment_0") {
 }
 
 TEST_CASE("test_lexer_comment_1") {
-	Lexer lexer("TMCompiler/config/regex_lexical_grammar.bnf");
+	const LanguageSpecification spec =
+		LanguageSpecification::read_language_specification_toml(
+			"TMCompiler/config/language.toml");
+	Lexer lexer(spec.token_regexes);
 
 	std::string program_text = "/* */";
 	lexer.set_text(program_text);
@@ -38,7 +45,10 @@ TEST_CASE("test_lexer_comment_1") {
 }
 
 TEST_CASE("test_lexer_comment_2") {
-	Lexer lexer("TMCompiler/config/regex_lexical_grammar.bnf");
+	const LanguageSpecification spec =
+		LanguageSpecification::read_language_specification_toml(
+			"TMCompiler/config/language.toml");
+	Lexer lexer(spec.token_regexes);
 
 	std::string program_text = "/***/";
 	lexer.set_text(program_text);
@@ -53,7 +63,10 @@ TEST_CASE("test_lexer_comment_2") {
 }
 
 TEST_CASE("test_lexer_comment_3") {
-	Lexer lexer("TMCompiler/config/regex_lexical_grammar.bnf");
+	const LanguageSpecification spec =
+		LanguageSpecification::read_language_specification_toml(
+			"TMCompiler/config/language.toml");
+	Lexer lexer(spec.token_regexes);
 
 	std::string program_text = "/**********/";
 	lexer.set_text(program_text);
@@ -68,7 +81,10 @@ TEST_CASE("test_lexer_comment_3") {
 }
 
 TEST_CASE("test_lexer_comment_4") {
-	Lexer lexer("tmcompiler/config/regex_lexical_grammar.bnf");
+	const LanguageSpecification spec =
+		LanguageSpecification::read_language_specification_toml(
+			"TMCompiler/config/language.toml");
+	Lexer lexer(spec.token_regexes);
 
 	std::string program_text = "/*/*/";
 	lexer.set_text(program_text);
@@ -83,7 +99,10 @@ TEST_CASE("test_lexer_comment_4") {
 }
 
 TEST_CASE("test_lexer_comment_5") {
-	Lexer lexer("TMCompiler/config/regex_lexical_grammar.bnf");
+	const LanguageSpecification spec =
+		LanguageSpecification::read_language_specification_toml(
+			"TMCompiler/config/language.toml");
+	Lexer lexer(spec.token_regexes);
 
 	std::string program_text = "/*/////////////*/";
 	lexer.set_text(program_text);
