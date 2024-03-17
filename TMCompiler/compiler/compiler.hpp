@@ -26,7 +26,7 @@ public:
 	 * token regexes and BNF grammar.
 	 * Ex: "TMCompiler/config/language.toml"
 	 */
-	Compiler(const std::string& language_spec_file_name);
+	explicit Compiler(const std::string& language_spec_file_name);
 
 	/**
 	 * Wrapper program that reads in source code from file_name and compiles the
