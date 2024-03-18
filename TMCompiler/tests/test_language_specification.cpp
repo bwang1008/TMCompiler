@@ -1,6 +1,7 @@
 #include <string>  // std::string
 
 #include <TMCompiler/compiler/models/language_specification.hpp>  // LanguageSpecification
+// #include <TMCompiler/utils/logger/logger.hpp>  // logger
 
 #include <catch2/catch_test_macros.hpp>
 
