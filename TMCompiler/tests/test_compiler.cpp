@@ -1,13 +1,10 @@
 #include <string>  // std::string
 
-#include <TMCompiler/compiler/compiler.hpp>	   // Compiler
-#include <TMCompiler/utils/logger/logger.hpp>  // logger
+#include <TMCompiler/compiler/compiler.hpp>	 // Compiler
 
 #include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("compiles") {
-	logger.set_level("NONE");
-
 	Compiler compiler("TMCompiler/config/language.toml");
 	std::string program_text;
 
